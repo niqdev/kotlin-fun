@@ -1,0 +1,17 @@
+# logging
+https://sylhare.github.io/2020/04/24/Java-logging.html
+
+# format/lint
+https://github.com/detekt/detekt
+https://github.com/pinterest/ktlint
+https://github.com/facebookincubator/ktfmt
+
+# metrics
+https://sylhare.github.io/2020/12/12/Prometheus-Garfana-Metrics.html
+
+# arrow core
+https://arrow-kt.io/docs/core
+
+# http
+https://ktor.io
+https://www.http4k.org
