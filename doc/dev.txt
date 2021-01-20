@@ -6,8 +6,8 @@ https://docs.github.com/en/github/administering-a-repository/keeping-your-depend
 https://sylhare.github.io/2020/04/24/Java-logging.html
 
 # format/lint
-https://github.com/detekt/detekt
 https://github.com/pinterest/ktlint
+https://github.com/detekt/detekt
 https://github.com/facebookincubator/ktfmt
 
 # metrics
