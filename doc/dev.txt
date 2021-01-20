@@ -1,3 +1,7 @@
+# dependencies
+https://dependabot.com
+https://docs.github.com/en/github/administering-a-repository/keeping-your-dependencies-updated-automatically
+
 # logging
 https://sylhare.github.io/2020/04/24/Java-logging.html
 
