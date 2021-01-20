@@ -1,11 +1,13 @@
 package com.github.niqdev
 
 import kotlin.test.Test
-import kotlin.test.assertNotNull
+import kotlin.test.assertEquals
 
 class AppTest {
-    @Test fun testAppHasAGreeting() {
+
+    @Test
+    fun testAppHasAGreeting() {
         val classUnderTest = App()
-        assertNotNull(classUnderTest.greeting, "app should have a greeting")
+        assertEquals(classUnderTest.greeting, "Hello World!", "app should have a greeting")
     }
 }

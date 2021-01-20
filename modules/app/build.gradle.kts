@@ -6,7 +6,6 @@ plugins {
 }
 
 repositories {
-    // Use JCenter for resolving dependencies.
     jcenter()
 }
 
@@ -19,6 +18,5 @@ dependencies {
 }
 
 application {
-    // Define the main class for the application.
     mainClass.set("com.github.niqdev.AppKt")
 }
