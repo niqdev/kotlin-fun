@@ -1,0 +1,48 @@
+# Setup
+
+Install [Gradle](https://docs.gradle.org/current/userguide/userguide.html)
+
+```
+java --version
+
+sdk install gradle
+gradle -v
+```
+
+Setup Kotlin application
+
+```
+gradle init
+
+Select type of project to generate:
+  1: basic
+  2: application
+  3: library
+  4: Gradle plugin
+Enter selection (default: basic) [1..4] 2
+
+Select implementation language:
+  1: C++
+  2: Groovy
+  3: Java
+  4: Kotlin
+  5: Scala
+  6: Swift
+Enter selection (default: Java) [1..6] 4
+
+Split functionality across multiple subprojects?:
+  1: no - only one application project
+  2: yes - application and library projects
+Enter selection (default: no - only one application project) [1..2] 1
+
+Select build script DSL:
+  1: Groovy
+  2: Kotlin
+Enter selection (default: Kotlin) [1..2] 2
+
+Project name (default: kotlin-fp):
+Source package (default: kotlin.fp): com.github.niqdev
+
+> Task :init
+Get more help with your project: https://docs.gradle.org/6.8/samples/sample_building_kotlin_applications.html
+```
