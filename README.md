@@ -6,12 +6,18 @@
 ./gradlew run
 ./gradlew test
 ./gradlew tasks
+
+# format code
+./gradlew ktfmtCheck
+./gradlew ktfmtFormat
 ```
 
 TODO
-* format
-* lint
+* format/lint
+* dependabot
+* version from git commit/tag
 * travis
+* multi-project
 * examples
     - logging
     - property based tests

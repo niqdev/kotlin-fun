@@ -1,8 +1,7 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.4.21-2"
-
-    // application plugin
     application
+    id("org.jetbrains.kotlin.jvm") version "1.4.21-2"
+    id("com.ncorti.ktfmt.gradle") version "0.2.0"
 }
 
 repositories {
