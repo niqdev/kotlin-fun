@@ -8,8 +8,8 @@
 ./gradlew tasks
 
 # format code
-./gradlew ktfmtCheck
-./gradlew ktfmtFormat
+./gradlew lintKotlin
+./gradlew formatKotlin
 ```
 
 TODO

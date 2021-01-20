@@ -1,24 +1,24 @@
 plugins {
-    application
-    id("org.jetbrains.kotlin.jvm") version "1.4.21-2"
-    id("com.ncorti.ktfmt.gradle") version "0.2.0"
+  application
+  id("org.jetbrains.kotlin.jvm") version "1.4.21-2"
+  id("org.jmailen.kotlinter") version "3.3.0"
 }
 
 repositories {
-    jcenter()
+  jcenter()
 }
 
 dependencies {
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+  implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
 
-    implementation("org.slf4j:slf4j-api:1.7.30")
-    implementation("ch.qos.logback:logback-classic:1.2.3")
+  implementation("org.slf4j:slf4j-api:1.7.30")
+  implementation("ch.qos.logback:logback-classic:1.2.3")
 
-    // tests
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+  // tests
+  testImplementation("org.jetbrains.kotlin:kotlin-test")
+  testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }
 
 application {
-    mainClass.set("com.github.niqdev.AppKt")
+  mainClass.set("com.github.niqdev.AppKt")
 }
