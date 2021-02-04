@@ -1,6 +1,6 @@
 plugins {
   application
-  id("org.jetbrains.kotlin.jvm") version "1.4.21-2"
+  id("org.jetbrains.kotlin.jvm") version "1.4.30"
   id("org.jmailen.kotlinter") version "3.3.0"
 }
 
