@@ -3,9 +3,11 @@
 * Kotlin [docs](https://kotlinlang.org)
 
 ```bash
+./gradlew tasks
+
 ./gradlew run
 ./gradlew test
-./gradlew tasks
+./gradlew :modules:app:test --tests *AppTest
 
 # format code
 ./gradlew lintKotlin

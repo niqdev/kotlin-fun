@@ -5,6 +5,9 @@ https://docs.github.com/en/github/administering-a-repository/keeping-your-depend
 # logging
 https://sylhare.github.io/2020/04/24/Java-logging.html
 
+# config
+https://github.com/sksamuel/hoplite
+
 # format/lint
 https://github.com/pinterest/ktlint
 https://github.com/detekt/detekt
@@ -13,9 +16,18 @@ https://github.com/facebookincubator/ktfmt
 # metrics
 https://sylhare.github.io/2020/12/12/Prometheus-Garfana-Metrics.html
 
-# arrow core
-https://arrow-kt.io/docs/core
-
 # http
 https://ktor.io
 https://www.http4k.org
+
+https://github.com/thomasnield/kotlin-data-science-resources
+
+# fp with arrow
+https://arrow-kt.io/
+https://lambda.show/blog/arrow-io-monad
+https://blog.frankel.ch/imperative-functional-programming/1/
+
+https://adrianfilip.com/2020/04/07/moving-from-kotlin-spring-reactor-arrow-to-scala-zio
+# course
+https://www.47deg.com/academy/2021-01-19-fp-in-kotlin-with-arrow-course-jan-2021
+https://github.com/47degrees/ArrowInPractice
