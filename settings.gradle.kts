@@ -1,2 +1,2 @@
 rootProject.name = "kotlin-fp"
-include("modules:app")
+include("modules:app", "modules:intro")
