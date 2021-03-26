@@ -46,3 +46,8 @@ Source package (default: kotlin.fp): com.github.niqdev
 > Task :init
 Get more help with your project: https://docs.gradle.org/6.8/samples/sample_building_kotlin_applications.html
 ```
+
+# buildSrc
+https://proandroiddev.com/gradle-dependency-management-with-kotlin-94eed4df9a28
+https://handstandsam.com/2018/02/11/kotlin-buildsrc-for-better-gradle-dependency-management
+https://quickbirdstudios.com/blog/gradle-kotlin-buildsrc-plugin-android

@@ -5,9 +5,10 @@
 ```bash
 ./gradlew tasks
 
-./gradlew run
+./gradlew clean build
 ./gradlew test
 ./gradlew :modules:app:test --tests *AppTest
+./gradlew run
 
 # format code
 ./gradlew lintKotlin

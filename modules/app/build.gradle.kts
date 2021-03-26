@@ -1,7 +1,7 @@
 plugins {
   application
-  id("org.jetbrains.kotlin.jvm") version "1.4.32"
-  id("org.jmailen.kotlinter") version "3.4.0"
+  id("org.jetbrains.kotlin.jvm") version Versions.kotlin
+  id("org.jmailen.kotlinter") version Versions.kotlinter
 }
 
 repositories {
@@ -11,8 +11,8 @@ repositories {
 dependencies {
   implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
 
-  implementation("org.slf4j:slf4j-api:1.7.30")
-  implementation("ch.qos.logback:logback-classic:1.2.3")
+  implementation("org.slf4j:slf4j-api:${Versions.slf4j}")
+  implementation("ch.qos.logback:logback-classic:${Versions.logback}")
 
   // tests
   testImplementation("org.jetbrains.kotlin:kotlin-test")
