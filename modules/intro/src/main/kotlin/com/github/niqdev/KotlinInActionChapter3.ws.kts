@@ -97,8 +97,8 @@ fun <T> myVarArg(vararg values: T): List<T> = listOf(*values)
 // PAIR
 infix fun Any.myTo(other: Any) = Pair(this, other)
 // destructuring declaration
-//val (aNumber, aNumber) = 1 myTo "one"
-//println("$aNumber: $aNumber")
+// val (aNumber, aNumber) = 1 myTo "one"
+// println("$aNumber: $aNumber")
 
 // ------------------------------
 
