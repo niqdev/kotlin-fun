@@ -20,8 +20,8 @@ println("hello")
 
 // Code compiled with the Kotlin compiler depends on the Kotlin runtime library
 // It contains the definitions of Kotlin’s own standard library classes and the extensions that Kotlin adds to the standard Java APIs. The runtime library needs to be distributed with your application
-//kotlinc <source file or directory> -include-runtime -d <jar name>
-//java -jar <jar name>
+// kotlinc <source file or directory> -include-runtime -d <jar name>
+// java -jar <jar name>
 
 // REPL kotlinc
 
@@ -74,7 +74,7 @@ println(Color.BLUE.rgb())
 
 // expression
 fun getColorName(color: Color): String =
-  when(color) {
+  when (color) {
     // combine multiple e.g.
     // Color.RED, Color.GREEN -> "myColor"
     Color.RED -> "red"
@@ -84,7 +84,7 @@ fun getColorName(color: Color): String =
 println(getColorName(Color.BLUE))
 
 fun getColorSet(c1: Color, c2: Color): String =
-  when(setOf(c1, c2)) {
+  when (setOf(c1, c2)) {
     setOf(Color.RED, Color.GREEN) -> "myColor"
     else -> TODO()
   }
@@ -93,15 +93,15 @@ fun getColorSet(c1: Color, c2: Color): String =
 
 // `:` class implements an interface
 interface Expr
-class Num(val value: Int): Expr
-class Sum(val left: Expr, val right: Expr): Expr
+class Num(val value: Int) : Expr
+class Sum(val left: Expr, val right: Expr) : Expr
 
 // `is` is called smart cast
 // `is` check is similar to instanceof in Java
 // in Java you need to add an explicit cast
 // java-like: `e is Num` and `e as Num`
 fun eval(e: Expr): Int =
-  when(e) {
+  when (e) {
     is Num -> e.value
     is Sum -> eval(e.left) + eval(e.right)
     else -> TODO()
@@ -150,7 +150,7 @@ println(isNotDigit('x'))
 
 // uses java.lang.Comparable
 fun recognize(c: Char) =
-  when(c) {
+  when (c) {
     in '0'..'9' -> "digit"
     in 'a'..'z', in 'A'..'Z' -> "letter"
     else -> "unknown"
@@ -159,7 +159,7 @@ fun recognize(c: Char) =
 // ------------------------------
 
 // throw construct is an expression and can be used as a part of other expressions
-//throw IllegalArgumentException("BAD")
+// throw IllegalArgumentException("BAD")
 
 // checked exceptions in Java need to be handled explicitly
 // Kotlin doesn't differentiate between checked and unchecked exceptions
