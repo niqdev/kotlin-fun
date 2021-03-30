@@ -16,10 +16,15 @@ repositories {
 
 dependencies {
   implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+  implementation(kotlin("script-runtime"))
 
   // logging
   implementation("org.slf4j:slf4j-api:${Versions.slf4j}")
   implementation("ch.qos.logback:logback-classic:${Versions.logback}")
+
+  // config
+  implementation("com.sksamuel.hoplite:hoplite-core:${Versions.hoplite}")
+  implementation("com.sksamuel.hoplite:hoplite-yaml:${Versions.hoplite}")
 
   // arrow
   implementation("io.arrow-kt:arrow-core:${Versions.arrow}")
@@ -38,4 +43,11 @@ application {
 idea {
   module.setDownloadJavadoc(true)
   module.setDownloadSources(true)
+}
+
+// TODO remove multiple dependency of kotlin-stdlib 1.4.20 and 1.4.32 ???
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
 }
