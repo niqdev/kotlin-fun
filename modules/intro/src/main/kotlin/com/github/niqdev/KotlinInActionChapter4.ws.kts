@@ -128,10 +128,10 @@ class User(val name: String, val isSubscribed: Boolean = true)
 
 // If your class has a superclass, the primary constructor also needs to initialize the superclass
 open class User1(val name: String)
-class TwitterUser1(val nickname: String): User1(nickname)
+class TwitterUser1(val nickname: String) : User1(nickname)
 
 // private constructor: ensure that your class can't be instantiated
-class Secretive private constructor() {}
+class Secretive private constructor()
 
 // ------------------------------
 
@@ -146,7 +146,7 @@ class MyButton : View {
   // invokes View constructor
   constructor(ctx: String) : super(ctx)
   // invokes MyButton constructor
-  constructor(ctx: String, attr: String): this(ctx)
+  constructor(ctx: String, attr: String) : this(ctx)
 }
 
 // next chapters
@@ -177,4 +177,89 @@ class Client(val name: String, val postalCode: Int) {
   override fun hashCode(): Int = name.hashCode() * 31 + postalCode
 }
 
-// TODO pag 90 copy
+// ------------------------------
+
+val client1 = ClientData(name = "myName", postalCode = 123)
+val client2 = client1.copy(name = "myNewName")
+println(client1)
+println(client2)
+
+// ------------------------------
+
+// Decorator pattern: `by` keyword
+class DelegatingCollection<T>(
+  innerList: Collection<T> = ArrayList<T>()
+) : Collection<T> by innerList
+
+// ------------------------------
+
+// - "object" declaration is a way to define a singleton
+// - "companion objects" can contain factory methods and other methods that are related to this class
+// but don't require a class instance to be called. Their members can be accessed via class name
+// - "object expression" is used instead of Java's anonymous inner class
+
+// SINGLETON
+// the object declaration combines a "class declaration" and a declaration of a "single instance" of that class
+// The only things that aren't allowed are constructors (either primary or secondary)
+// in Java you access it with Payroll.INSTANCE
+object Payroll {
+  val allEmployees = arrayListOf<String>()
+  fun calculateSalary() {
+    for (person in allEmployees) { println(person) }
+  }
+}
+
+// ------------------------------
+
+// COMPANION OBJECT
+class Example1 private constructor(val name: String) {
+  private val bar = 1
+
+  // only one companion object is allowed per class
+  companion object {
+    // alternative to secondary constructors: factories
+    fun instance() =
+      Example1("hello")
+  }
+}
+class Example2(val name: String) {
+  companion object Foo {
+    fun bar() = println(this.javaClass)
+  }
+}
+println("${Example1.instance()} ${Example2.Foo.bar()}")
+
+// a companion object can implement interfaces
+// in Java: Person.Companion.fromJSON
+interface JSONFactory<T> {
+  fun fromJSON(jsonText: String): T
+}
+class Example3(val name: String) {
+  companion object : JSONFactory<Example3> {
+    override fun fromJSON(jsonText: String): Example3 {
+      TODO("Not yet implemented")
+    }
+  }
+}
+
+// See @JvmStatic @JvmField for Java interop
+
+// COMPANION OBJECT extension
+class Example4(val name: String) {
+  // you have to declare a companion object in your class, even an empty one, in order to be able to define extensions to it
+  companion object
+}
+fun Example4.Companion.foo(bar: String): Example4 = Example4(bar)
+
+println(Example4.foo("bar").name)
+
+// ------------------------------
+
+// declaring anonymous objects
+// Unlike object declarations, anonymous objects aren’t singletons. Every time an object expression is executed, a new instance of the object is created
+// Object expressions are mostly useful when you need to override multiple methods in your anonymous object
+val myExample = object : JSONFactory<Example4> {
+  override fun fromJSON(jsonText: String): Example4 {
+    TODO("Not yet implemented")
+  }
+}

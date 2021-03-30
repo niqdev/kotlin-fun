@@ -16,6 +16,9 @@
 
 # dowanload sources
 ./gradlew cleanIdea idea
+
+# dependency tree
+./gradlew :modules:app:dependencies
 ```
 
 TODO
