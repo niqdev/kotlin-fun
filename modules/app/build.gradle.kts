@@ -1,5 +1,7 @@
 plugins {
   application
+  // https://docs.gradle.org/current/userguide/idea_plugin.html
+  idea
   id("org.jetbrains.kotlin.jvm") version Versions.kotlin
   id("org.jmailen.kotlinter") version Versions.kotlinter
   // https://kotlinlang.org/docs/kapt.html
@@ -31,4 +33,9 @@ dependencies {
 
 application {
   mainClass.set("com.github.niqdev.AppKt")
+}
+
+idea {
+  module.setDownloadJavadoc(true)
+  module.setDownloadSources(true)
 }

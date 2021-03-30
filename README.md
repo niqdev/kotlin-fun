@@ -13,6 +13,9 @@
 # format code
 ./gradlew lintKotlin
 ./gradlew formatKotlin
+
+# dowanload sources
+./gradlew cleanIdea idea
 ```
 
 TODO
