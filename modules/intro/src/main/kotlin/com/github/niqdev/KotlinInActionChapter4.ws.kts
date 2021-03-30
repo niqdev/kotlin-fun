@@ -85,6 +85,7 @@ class Outer {
 // Under the hood, the Expr class has a private constructor, which can be called only inside the class.
 // You can't declare a sealed interface
 sealed class Expr {
+  // the `()` means invoke the default constructor
   class Num(val value: Int) : Expr()
   class Sum(val left: Expr, val right: Expr) : Expr()
 }
@@ -125,4 +126,55 @@ class UserVerbose1(_name: String) {
 // If all the constructor parameters have default values, the compiler generates an additional constructor without parameters that uses all the default values
 class User(val name: String, val isSubscribed: Boolean = true)
 
-// TODO pag 80
+// If your class has a superclass, the primary constructor also needs to initialize the superclass
+open class User1(val name: String)
+class TwitterUser1(val nickname: String): User1(nickname)
+
+// private constructor: ensure that your class can't be instantiated
+class Secretive private constructor() {}
+
+// ------------------------------
+
+// multiple constructors are usually replaced with default parameters
+// mainly fo Java interoperability
+// This class doesn't declare a primary constructor (as you can tell because there are no parentheses after the class name in the class header)
+open class View {
+  constructor(ctx: String) {}
+  constructor(ctx: String, attr: String) {}
+}
+class MyButton : View {
+  // invokes View constructor
+  constructor(ctx: String) : super(ctx)
+  // invokes MyButton constructor
+  constructor(ctx: String, attr: String): this(ctx)
+}
+
+// next chapters
+// lateinit
+// @JvmField
+// const
+
+// ------------------------------
+
+// Universal object methods: toString, equals, and hashCode
+data class ClientData(val name: String, val postalCode: Int)
+// equivalent to
+class Client(val name: String, val postalCode: Int) {
+  override fun toString() = "Client(name=$name, postalCode=$postalCode)"
+
+  // If applied to primitive types, Java's == compares values, whereas == on reference types compares references
+  // in Java, there's the well-known practice of always calling equals, and there’s the well-known problem of forgetting to do so
+  // In Kotlin, the == operator is the default way to compare two objects: it compares their values by calling equals under the hood
+  // For reference comparison, you can use the === operator
+  override fun equals(other: Any?): Boolean {
+    if (other == null || other !is Client)
+      return false
+    return name == other.name &&
+      postalCode == other.postalCode
+  }
+  // The hashCode method should be always overridden together with equals
+  // e.g. hashSetOf + .contains will return wrong value otherwise
+  override fun hashCode(): Int = name.hashCode() * 31 + postalCode
+}
+
+// TODO pag 90 copy
