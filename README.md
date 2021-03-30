@@ -14,7 +14,7 @@
 ./gradlew lintKotlin
 ./gradlew formatKotlin
 
-# dowanload sources
+# download sources
 ./gradlew cleanIdea idea
 
 # dependency tree
