@@ -120,3 +120,115 @@ fun <T: Any> printHashCode1(t: T) {
 
 // A platform type is essentially a type for which Kotlin doesn’t have nullability information
 // as in Java, you have full responsibility for the operations you perform with that type. The compiler will allow all operations
+
+// ------------------------------
+
+// Kotlin doesn't differentiate primitive types and wrappers
+val intList: List<Int> = listOf(1, 2, 3)
+
+// Java makes a distinction between primitive types and reference types.
+// A variable of a `primitive type` (such as int) holds its value directly.
+// A variable of a `reference type` (such as String) holds a reference to the memory location containing the object
+
+// ------------------------------
+
+// `coerceIn` restrict the value to the specified range
+fun showProgress(progress: Int): Int {
+  val percentage = progress.coerceIn(0, 100)
+  println("$progress | $percentage")
+  return percentage
+}
+
+// - Integer types - Byte, Short, Int, Long
+// - Floating-point number types - Float,Double
+// - Character type - Char
+// - Boolean type - Boolean
+// the Kotlin types above are compiled under the hood to the corresponding Java primitive type, because the values of both types can't store the null reference
+
+// Nullable types (e.g. Int?, Boolean?) in Kotlin can't be represented by Java primitive types, because null can only be stored in a variable of a Java reference type.
+// That means whenever you use a nullable version of a primitive type in Kotlin, it's compiled to the corresponding wrapper type.
+
+// ------------------------------
+
+// - Literals of type Long use the L suffix: 123L
+// - Literals of type Double use the standard representation of floating-point numbers: 0.12, 2.0, 1.2e10, 1.2e-10
+// - Literals of type Float use the f or F suffix: 123.4f, .456F, 1e3f
+// - Hexadecimal literals use the 0x or 0X prefix (such as 0xCAFEBABE or 0xbcdL)
+// - Binary literals use the 0b or 0B prefix (such as 0b000000101)
+// - valid character literals: '1', '\t' (the tab character), '\u0009' (the tab character represented using a Unicode escape sequence)
+// toInt, toByte, toBoolean, and so on throws a NumberFormatException if the parsing fails
+
+// ------------------------------
+
+// the root types: `Any` and `Any?`
+
+// Similar to how Object is the root of the class hierarchy in Java,
+// the Any type is the supertype of all non-nullable types in Kotlin
+// Any is a supertype of all types, including the primitive types such as Int
+// Any is a non-nullable type
+// If you need a variable that can hold any possible value including `null`, you must use the `Any?` type
+// Under the hood, the Any type corresponds to `java.lang.Object` in the Java bytecode
+// toString, equals, and hashCode are inherited from Any
+val answer: Any = 42
+
+// ------------------------------
+
+// the unit/void type: `Unit`
+// used in functional languages and it means "only one instance"
+
+// Unit is a full-fledged type, and, unlike void, it can be used as a type argument
+// you don't need to write an explicit return statement because return Unit is added implicitly by the compiler
+
+// ------------------------------
+
+// the `Nothing` type: "This function never returns"
+
+// - throwing an exception
+// - infinite loop
+
+// ------------------------------
+
+// collection of nullable value
+val x: List<Int?> = listOf()
+val y: List<Int> = x.filterNotNull()
+
+// collection that holds a nullable list of nullable numbers
+val z: List<Int?>? = listOf()
+
+// ------------------------------
+
+// kotlin.collections.Collection: read-only
+// kotlin.collections.MutableCollection extends Collection
+
+// you can use `defensive copy` with read-only collections
+// - read-only collections aren't necessarily immutable
+// - it's essential to understand that read-only collections aren't always thread-safe
+
+/*
+
+Collection Type | Read-only | Mutable
+List | listOf | mutableListOf, arrayListOf
+Set | setOf | mutableSetOf, hashSetOf, linkedSetOf, sortedSetOf
+Map | mapOf | mutableMapOf, hashMapOf, linkedMapOf, sortedMapOf
+
+*/
+
+// ------------------------------
+
+// types defined in Java code are seen as platform types in Kotlin
+
+// ------------------------------
+
+// >>> you should prefer using collections to arrays by default
+
+val example1: Array<String> = arrayOf("aaa")
+val letters = Array(26) { i -> ('a' + i).toString() }
+
+val strings = listOf("a", "b", "c")
+// one of the most common cases for creating an array in Kotlin code is when you need to call a Java method that takes an array, or a Kotlin function with a vararg parameter
+// spread operator `*` is used to pass an array when vararg parameter is expected
+println("%s/%s/%s".format(*strings.toTypedArray()))
+
+// type arguments of array types always become object types
+// an Array<Int> will become an array of boxed integers (its Java type will be java.lang.Integer[])
+val ints: IntArray = intArrayOf(3, 2, 1)
