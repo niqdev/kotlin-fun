@@ -6,7 +6,7 @@ fun strLen(s: String) = s.length
 
 strLen("aaa")
 // Calling strLen with an argument that may be null isn't allowed and will be flagged as error at compile time
-//strLen(null)
+// strLen(null)
 
 // put a question mark after any type, to indicate that the variables of this type can store `null`
 // a type without a question mark denotes that variables of this type can't store null references
@@ -42,7 +42,7 @@ fun printShippingLabel(person: Person) {
   // throw ;-(
   val address = person.company?.address ?: throw IllegalArgumentException("No address")
 
-  with (address) {
+  with(address) {
     println(streetAddress)
     println("$zipCode $city, $country")
   }
@@ -106,11 +106,11 @@ fun <T> printHashCode0(t: T) {
 printHashCode0(null)
 
 // To make the type parameter non-null, you need to specify a non-null upper bound for it. That will reject a nullable value as an argument.
-fun <T: Any> printHashCode1(t: T) {
+fun <T : Any> printHashCode1(t: T) {
   println(t.hashCode())
 }
 // DOESN'T COMPILE
-//printHashCode1(null)
+// printHashCode1(null)
 
 // ------------------------------
 
