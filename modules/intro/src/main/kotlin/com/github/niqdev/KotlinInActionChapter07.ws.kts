@@ -55,7 +55,7 @@ operator fun Point.unaryMinus(): Point = Point(-x, -y)
 
 // ------------------------------
 
-class Person(val firstName: String, val lastName: String): Comparable<Person> {
+class Person(val firstName: String, val lastName: String) : Comparable<Person> {
   override fun compareTo(other: Person): Int {
     return compareValuesBy(this, other, Person::lastName, Person::firstName)
   }
@@ -100,7 +100,7 @@ Point(5, 5) in rectangle
 // `..` is equivalent to `rangeTo` which uses `Comparable`
 val now = java.time.LocalDate.now()
 // now.rangeTo(now.plusDays(10))
-val tenDays = now .. now.plusDays(10)
+val tenDays = now..now.plusDays(10)
 now.plusWeeks(1) in tenDays
 
 // the rangeTo operator has lower priority than arithmetic operators
@@ -124,3 +124,51 @@ myPoint.component2()
 
 val map = mapOf("Oracle" to "Java", "JetBrains" to "Kotlin")
 for ((key, value) in map) { println("$key -> $value") }
+
+// ------------------------------
+
+// delegated properties
+// For example, properties can store their values in database tables, in a browser session, in a map, and so on
+// "delegation": a design pattern where an object, instead of performing a task, delegates that task to another helper object. The helper object is called a delegate
+/*
+class Foo {
+  var p: Type by Delegate()
+}
+*/
+
+// ------------------------------
+
+// See 7.5
+
+// "Lazy initialization" is a common pattern that entails creating part of an object on demand, when it's accessed for the first time and only once
+
+// The lazy function returns an object that has a method called getValue with the proper signature
+// use it together with the `by` keyword to create a delegated property
+// The argument of `lazy` is a lambda that it calls to initialize the value
+// The `lazy` function is thread-safe by default
+// The object to the right of by is called the `delegate`.
+// Kotlin automatically stores the delegate in a hidden property and calls `getValue` and `setValue` on the delegate when you access or modify the main property
+/*
+class Person0(val name: String) {
+  val emails by lazy { loadEmails(this) }
+}
+
+class ObservableProperty(
+  var propValue: Int, val changeSupport: java.beans.PropertyChangeSupport
+){
+  operator fun getValue(p: Person, prop: kotlin.reflect.KProperty<*>): Int = propValue
+  operator fun setValue(p: Person, prop: kotlin.reflect.KProperty<*>, newValue: Int) {
+    val oldValue = propValue
+    propValue = newValue
+    changeSupport.firePropertyChange(prop.name, oldValue, newValue)
+  }
+}
+class Person1(
+  val name: String, age: Int, salary: Int
+) : PropertyChangeAware() {
+  var age: Int by ObservableProperty(age, changeSupport)
+  var salary: Int by ObservableProperty(salary, changeSupport)
+}
+*/
+
+// Another common pattern where delegated properties come into play is objects that have a dynamically defined set of attributes associated with them. Such objects are sometimes called `expando objects`
