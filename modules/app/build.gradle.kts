@@ -40,6 +40,13 @@ application {
   mainClass.set("com.github.niqdev.AppKt")
 }
 
+// TODO how to run multiple main
+// TODO ./gradlew :modules:app:run
+// TODO ./gradlew run -Pmain=com.github.niqdev.HelloWorld
+//application {
+//  mainClass.set(project.findProperty("main").toString())
+//}
+
 idea {
   module.setDownloadJavadoc(true)
   module.setDownloadSources(true)

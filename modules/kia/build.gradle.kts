@@ -11,9 +11,3 @@ repositories {
 dependencies {
   implementation(kotlin("script-runtime"))
 }
-
-// TODO ./gradlew :modules:app:run
-// TODO ./gradlew run -Pmain=com.github.niqdev.HelloWorld
-//application {
-//  mainClass.set(project.findProperty("main").toString())
-//}
