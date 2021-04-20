@@ -1,6 +1,6 @@
 # kotlin-fp
 
-* Kotlin [docs](https://kotlinlang.org)
+* Kotlin [docs](https://kotlinlang.org/docs/home.html)
 
 ```bash
 ./gradlew tasks
