@@ -17,7 +17,7 @@ interface MyList<T> {
 
 // Type parameter constraints let you restrict the types that can be used as type arguments for a class or function
 // `:` single upper bound constraint
-interface MyComparable<T: MyComparable<T>> {
+interface MyComparable<T : MyComparable<T>> {
   fun compareTo(other: T): Int
 }
 
@@ -161,8 +161,10 @@ interface Function1<in I, out O> {
 // use-site variance: every time you use a type with a type parameter, you can also specify whether this type parameter can be replaced with its subtypes or supertypes
 
 // `type projection`: "source" isn't a regular MutableList, but a `projected` (restricted) one
-fun <T> copyData(source: MutableList<out T>,
-                 destination: MutableList<in T>) {
+fun <T> copyData(
+  source: MutableList<out T>,
+  destination: MutableList<in T>
+) {
   for (item in source) {
     destination.add(item)
   }

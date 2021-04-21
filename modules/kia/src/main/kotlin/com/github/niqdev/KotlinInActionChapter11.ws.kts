@@ -93,7 +93,7 @@ inline fun <T, R> myWith(receiver: T, block: T.() -> R): R =
   receiver.block()
 
 val map = mutableMapOf(1 to "one")
-map.myApply { this[2] = "two"}
+map.myApply { this[2] = "two" }
 myWith(map) { this[3] = "three" }
 println(map)
 
@@ -107,7 +107,7 @@ println(map)
 open class Tag(val name: String) {
   private val children = mutableListOf<Tag>()
 
-  protected fun <T: Tag> doInit(child: T, init: T.() -> Unit) {
+  protected fun <T : Tag> doInit(child: T, init: T.() -> Unit) {
     child.init()
     children.add(child)
   }
@@ -119,17 +119,17 @@ open class Tag(val name: String) {
 fun table(init: TABLE.() -> Unit) =
   TABLE().apply(init)
 
-class TABLE: Tag("table") {
+class TABLE : Tag("table") {
   fun tr(init: TR.() -> Unit) =
     doInit(TR(), init)
 }
 
-class TR: Tag("tr") {
+class TR : Tag("tr") {
   fun td(init: TD.() -> Unit) =
     doInit(TD(), init)
 }
 
-class TD: Tag("td")
+class TD : Tag("td")
 
 fun createTable() =
   table {
@@ -207,7 +207,7 @@ interface Matcher<T> {
 infix fun <T> T.should(matcher: Matcher<T>) =
   matcher.test(this)
 
-class startsWith(val prefix: String): Matcher<String> {
+class startsWith(val prefix: String) : Matcher<String> {
   override fun test(value: String): Boolean =
     when {
       value.startsWith(prefix) -> true

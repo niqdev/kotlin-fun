@@ -1,8 +1,8 @@
 // `use-site` annotation target declaration e.g. @get:Rule, @file:JvmName
 // see 10.1.2
 
-//@Volatile
-//@Strictfp
+// @Volatile
+// @Strictfp
 // @JvmName changes the name of a Java method or field generated from a Kotlin declaration
 // @JvmStatic can be applied to methods of an object declaration or a companion object to expose them as static Java methods
 // @JvmOverloads instructs the Kotlin compiler to generate overloads for a function that has default parameter values
@@ -79,7 +79,7 @@ println(Example::class)
 val kClass = example.javaClass.kotlin
 println(kClass)
 
-kClass.members.forEach{ println(it.name) }
+kClass.members.forEach { println(it.name) }
 
 // ------------------------------
 
