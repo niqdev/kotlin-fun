@@ -18,13 +18,10 @@ import java.lang.StringBuilder
 // This grammar is what allows us to call an internal DSL a `language`
 
 // In a Kotlin DSL, structure is most commonly created through the nesting of lambdas or through chained method calls
-// https://github.com/gradle/kotlin-dsl-samples
-// https://github.com/kotest/kotest
 
 // ------------------------------
 
 // lambdas with receivers: are a powerful Kotlin feature that allows you to build APIs with a structure
-// https://github.com/Kotlin/kotlinx.html
 
 fun buildString(builderAction: (StringBuilder) -> Unit): String {
   val sb = StringBuilder()
@@ -102,6 +99,8 @@ println(map)
 
 // ------------------------------
 
+// example of https://github.com/Kotlin/kotlinx.html
+
 // A Kotlin DSL for HTML is usually called an HTML builder, and it represents a more general concept of type-safe builders
 // Builders provide a way to create an object hierarchy in a declarative way
 
@@ -168,6 +167,8 @@ println(Greeter("Hello")("World"))
 
 // ------------------------------
 
+// example of https://github.com/gradle/kotlin-dsl-samples
+
 class DependencyHandler {
   // defines a regular command API
   fun compile(coordinate: String) =
@@ -197,4 +198,63 @@ dependencies.invoke({
 
 // ------------------------------
 
-// pag 303
+// example of https://github.com/kotest/kotest
+
+interface Matcher<T> {
+  fun test(value: T): Boolean
+}
+
+infix fun <T> T.should(matcher: Matcher<T>) =
+  matcher.test(this)
+
+class startsWith(val prefix: String): Matcher<String> {
+  override fun test(value: String): Boolean =
+    when {
+      value.startsWith(prefix) -> true
+      else -> false
+    }
+}
+
+"myString" should startsWith("my")
+
+// ------------------------------
+
+object starts
+
+infix fun String.verify(x: starts): StartWrapper = StartWrapper(this)
+
+class StartWrapper(val value: String) {
+  infix fun with(prefix: String): Boolean =
+    when {
+      value.startsWith(prefix) -> true
+      else -> false
+    }
+}
+
+"myString" verify starts with("my")
+
+// ------------------------------
+
+// example of https://github.com/yole/kxdate
+
+// "this" refers to the value of the numeric constant
+val Int.days: java.time.Period get() =
+  java.time.Period.ofDays(this)
+
+// invokes LocalDate.minus using operator syntax
+val java.time.Period.ago: java.time.LocalDate get() =
+  java.time.LocalDate.now() - this
+
+// invokes LocalDate.plus using operator syntax
+val java.time.Period.fromNow: java.time.LocalDate get() =
+  java.time.LocalDate.now() + this
+
+println(1.days.ago)
+println(1.days.fromNow)
+
+// ------------------------------
+
+// member extensions: declaring extension functions and extension properties in a class
+
+// https://github.com/jetbrains/exposed
+// https://github.com/Kotlin/anko
