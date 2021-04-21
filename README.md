@@ -21,11 +21,21 @@
 ./gradlew :modules:app:dependencies
 ```
 
-TODO
+## Modules
+
+* Kotlin in Action
+    - [book](https://www.manning.com/books/kotlin-in-action)
+    - official [repository](https://github.com/Kotlin/kotlin-in-action)
+    - [notes](modules/kia/src/main/kotlin/com/github/niqdev)
+
+## TODO
+
+* rename: kotlin-playground
 * format/lint
+* dokka (markdown)
 * dependabot
 * version from git commit/tag
-* travis
+* ~~travis~~ github action
 * multi-project
 * examples
     - logging

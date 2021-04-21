@@ -1,3 +1,6 @@
+# ecosystem
+https://kotlin.link
+
 # dependencies
 https://dependabot.com
 https://docs.github.com/en/github/administering-a-repository/keeping-your-dependencies-updated-automatically
@@ -12,6 +15,12 @@ https://github.com/sksamuel/hoplite
 https://github.com/pinterest/ktlint
 https://github.com/detekt/detekt
 https://github.com/facebookincubator/ktfmt
+
+# tests
+https://github.com/kotest/kotest
+https://github.com/spekframework/spek
+https://github.com/npryce/hamkrest
+https://github.com/mockito/mockito-kotlin
 
 # metrics
 https://sylhare.github.io/2020/12/12/Prometheus-Garfana-Metrics.html
@@ -33,6 +42,16 @@ https://github.com/47degrees/ArrowInPractice
 
 # fp
 https://github.com/lucapiccinelli/konad
+# old
+https://github.com/MarioAriasC/funKTionale
+
+# json
+https://github.com/uberto/kondor-json
+https://github.com/kittinunf/Forge
+# json reflection
+https://github.com/FasterXML/jackson-module-kotlin
+https://github.com/SalomonBrys/Kotson
+https://github.com/cbeust/klaxon
 
 # gui
 https://github.com/edvin/tornadofx
@@ -40,3 +59,10 @@ https://docs.oracle.com/javase/8/javafx/get-started-tutorial/jfx-overview.htm
 
 # orm
 https://github.com/jetbrains/exposed
+
+# di
+https://micronaut.io
+https://github.com/Kodein-Framework/Kodein-DI
+
+# JavaFX
+https://github.com/edvin/tornadofx
