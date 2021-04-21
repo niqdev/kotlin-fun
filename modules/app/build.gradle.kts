@@ -28,7 +28,6 @@ dependencies {
 
   // arrow
   implementation("io.arrow-kt:arrow-core:${Versions.arrow}")
-  implementation("io.arrow-kt:arrow-syntax:${Versions.arrow}")
   kapt("io.arrow-kt:arrow-meta:${Versions.arrow}")
 
   // tests
