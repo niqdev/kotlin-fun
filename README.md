@@ -23,10 +23,9 @@
 
 ## Modules
 
-* Kotlin in Action
-    - [book](https://www.manning.com/books/kotlin-in-action)
-    - official [repository](https://github.com/Kotlin/kotlin-in-action)
-    - [notes](modules/kia/src/main/kotlin/com/github/niqdev)
+* Kotlin in Action [ [book](https://www.manning.com/books/kotlin-in-action) | [repository](https://github.com/Kotlin/kotlin-in-action) | [notes](modules/kia/src/main/kotlin/com/github/niqdev) ]
+* The Joy of Kotlin [ [book](https://www.manning.com/books/the-joy-of-kotlin) | [repository](https://github.com/pysaumont/fpinkotlin) | [notes](modules/jok/src/main/kotlin/com/github/niqdev) ]
+* Functional Programming in Kotlin [ [book](https://www.manning.com/books/functional-programming-in-kotlin) ]
 
 ## TODO
 
