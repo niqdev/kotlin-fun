@@ -66,3 +66,6 @@ https://github.com/Kodein-Framework/Kodein-DI
 
 # JavaFX
 https://github.com/edvin/tornadofx
+
+# code generation
+https://square.github.io/kotlinpoet
