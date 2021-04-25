@@ -63,3 +63,83 @@ val myRef2: () -> Int = (MyClass)::ref1
 val myRef3: kotlin.reflect.KFunction0<Int> = (MyClass)::ref1
 val myRef4: (MyClass) -> Int = MyClass::ref0
 val myRef5: kotlin.reflect.KFunction1<MyClass, Int> = MyClass::ref0
+
+// ---------- 3.1 ----------
+
+fun compose0(f: (Int) -> Int, g: (Int) -> Int): (Int) -> Int = { x -> f(g(x)) }
+fun compose1(f: (Int) -> Int, g: (Int) -> Int): (Int) -> Int = { f(g(it)) }
+
+val square: (Int) -> Int = { it * it }
+fun triple(value: Int): Int = value * 3
+val squareOfTriple: (Int) -> Int = compose1(square, ::triple)
+println(squareOfTriple(2))
+
+// ---------- 3.2 ----------
+
+fun <I, O, T> compose2(f: (T) -> O, g: (I) -> T): (I) -> O = { f(g(it)) }
+
+fun <T> ((T) -> T).compose3(g: (T) -> T): (T) -> T = { this(g(it)) }
+
+square.compose3(::triple)
+
+// ---------- 3.3 ----------
+
+// integer binary operator
+
+//typealias IntBinOp = (Int) -> (Int) -> Int
+val myAdd: (Int) -> (Int) -> Int = { a -> { b -> a + b } }
+myAdd(1)(2)
+
+// ---------- 3.4 ----------
+
+// a function taking functions as its arguments and returning functions, is called a higher-order function (HOF)
+
+val compose4: ((Int) -> Int) -> ((Int) -> Int) -> (Int) -> Int = { f -> { g -> { value -> f(g(value)) } }}
+compose4(square)(::triple)(2)
+
+// ---------- 3.5 ----------
+
+// >>> you can't define polymorphic properties
+
+fun <I, O, T> higherCompose(): ((T) -> O) -> ((I) -> T) -> (I) -> O = { f -> { g -> { value -> f(g(value)) } }}
+// Not enough information to infer parameter: specify types <Int, Int, Int>
+higherCompose<Int, Int, Int>()(square)(::triple)(2)
+
+// ---------- 3.6 ----------
+
+fun <I, O, T> higherAndThen(): ((I) -> T) -> ((T) -> O) -> (I) -> O = { f -> { g -> { value -> g(f(value)) } }}
+higherAndThen<Int, Int, Int>()(square)(::triple)(2)
+
+// ------------------------------
+
+// anonymous functions
+// Don't worry about the creation of anonymous functions. Kotlin won't always create new objects each time the function is called. Instantiating such objects is cheap
+// focus on clarity and maintainability of your code
+// If you're concerned with performance and reusability, you should use function references as often as possible
+
+val cos0 = higherCompose<Double, Double, Double>()({ x: Double -> Math.PI / 2 - x })(Math::sin)
+val cos1 = higherCompose<Double, Double, Double>()() { x: Double -> Math.PI / 2 - x }(Math::sin)
+
+val cosValue: Double = cos1(2.0)
+
+// ------------------------------
+
+fun cos2(arg: Double): Double {
+
+  // local functions
+  fun f(x: Double): Double = Math.PI / 2 - x
+  fun sin(x: Double): Double = Math.sin(x)
+  return higherCompose<Double, Double, Double>()(::f)(::sin)(arg)
+}
+
+// Kotlin lambdas can access mutable variables of the enclosing scope
+
+// ------------------------------
+
+// currying and partial application are closely related
+// currying consists in replacing a function of a tuple with a new function that you can partially apply, one argument after another
+// with a function of a tuple, all arguments are evaluated before the function is applied
+
+// ---------- 3.7 ----------
+
+fun <I, O, T> applyCurried(input: I, f: (I) -> (T) -> O): (T) -> O = f(input)
