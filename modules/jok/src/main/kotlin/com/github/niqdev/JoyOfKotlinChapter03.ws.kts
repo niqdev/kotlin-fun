@@ -142,4 +142,58 @@ fun cos2(arg: Double): Double {
 
 // ---------- 3.7 ----------
 
-fun <I, O, T> applyCurried(input: I, f: (I) -> (T) -> O): (T) -> O = f(input)
+// write a function to partially apply a curried function of two arguments to its first argument
+fun <I, O, T> applyCurried1(input: I, f: (I) -> (T) -> O): (T) -> O = f(input)
+
+// ---------- 3.8 ----------
+
+// write a function to partially apply a curried function of two arguments to its second argument
+fun <I, O, T> applyCurried2(input: T, f: (I) -> (T) -> O): (I) -> O = { i -> f(i)(input) }
+
+// ---------- 3.9 ----------
+
+// convert the following function into a curried function
+fun <A, B, C, D> applyCurried3a(a: A, b: B, c: C, d: D): String = "$a, $b, $c, $d"
+
+fun <A, B, C, D> applyCurried3b(): (A) -> (B) -> (C) -> (D) -> String = { a: A -> { b: B -> { c: C -> { d: D -> "$a, $b, $c, $d" }}}}
+
+// ---------- 3.10 ----------
+
+// write a function to curry a function of a (A, B) to C
+fun <A, B, C> applyCurried4(f: (A, B) -> C): (A) -> (B) -> C = { a -> { b -> f(a, b) }}
+
+// ---------- 3.10 ----------
+
+// write a function to swap the arguments of a curried function
+fun <A, B, C> swapCurried(f: (A) -> (B) -> C): (B) -> (A) -> C = { b -> { a -> f(a)(b) }}
+
+// ------------------------------
+
+// a neutral element acts as the 0 for addition, or 1 for multiplication, or the empty string for string concatenation
+// a neutral element is only neutral for a given operation/function composition: the `identity` function
+
+// ???
+//val identityElement = { it }
+
+// ------------------------------
+
+// `value types` are types representing values: you can't mix types!
+data class Weight(val value: Double) {
+  operator fun plus(weight: Weight) = Weight(this.value + weight.value)
+}
+
+data class Price private constructor(private val value: Double) {
+  operator fun plus(price: Price) = Price(this.value + price.value)
+  companion object {
+    val identity = Price(0.0)
+
+    // the constructor is private and the `invoke` function of the companion object is declared as operator and contains the validation code
+    // the operator that's overloaded is `()`, which corresponds to the invocation of a function
+    // as a result, you can use the factory function exactly like the constructor, which is now private
+    // the private constructor of a data class isn't private because it's exposed by the generated copy function.
+    // But this isn't a problem. You can only copy an object that has already been validated
+    operator fun invoke(value: Double) =
+      if (value > 0) Price(value)
+      else throw IllegalArgumentException("Price must be positive or null") // Either ???
+  }
+}
