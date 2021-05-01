@@ -1,3 +1,4 @@
+import java.util.concurrent.ConcurrentHashMap
 
 // `corecursion` is composing computation steps by using the output of one step as the input of the next one, starting with the first step
 // `recursion` is the same operation but starts with the last step: computation must be delayed until the terminal condition is reached
@@ -171,8 +172,8 @@ fun fibonacciNaive(n: Int): Int =
 
 fun fibonacciTailRecursive(n: Int): java.math.BigInteger {
   tailrec fun loop(i: Int, previous: java.math.BigInteger, current: java.math.BigInteger): java.math.BigInteger =
-    when {
-      i == 0 -> current
+    when(i) {
+      0 -> current
       else -> loop(i - 1, current, previous.add(current))
     }
   return loop(n, java.math.BigInteger.ZERO, java.math.BigInteger.ONE)
@@ -299,3 +300,133 @@ fun rangeUnfold(start: Int, end: Int): List<Int> =
   myUnfold<Int>()(start)() { it + 1 }() { it < end }
 
 rangeUnfold(0, 8)
+
+// ------------------------------
+
+// `memoization` is the technique of keeping the result of a computation in memory so it can be returned immediately if you have to redo the same computation in the future
+
+fun fibonacciNaiveMemoization(n: Int): List<java.math.BigInteger> =
+  when {
+    n < 1 -> throw IllegalArgumentException("???")
+    n == 1 -> listOf(java.math.BigInteger.ONE)
+    else -> {
+      var fibonacci1 = java.math.BigInteger.ONE
+      var fibonacci2 = java.math.BigInteger.ONE
+      var fibonacci: java.math.BigInteger
+      val result = mutableListOf<java.math.BigInteger>(java.math.BigInteger.ONE, java.math.BigInteger.ONE)
+
+      for (i in 2 until n) {
+        fibonacci = fibonacci1.add(fibonacci2)
+        result.add(fibonacci)
+        // memoization: computes only once
+        fibonacci1 = fibonacci2
+        fibonacci2 = fibonacci
+      }
+
+      result
+    }
+  }
+
+fibonacciNaiveMemoization(100)
+
+// ---------- 4.15 ----------
+
+fun fibonacciCoRecursiveMemoization(n: Int): List<java.math.BigInteger> {
+
+  fun loop(
+    index: java.math.BigInteger,
+    fibonacci1: java.math.BigInteger,
+    fibonacci2: java.math.BigInteger,
+    result: List<java.math.BigInteger>
+  ): List<java.math.BigInteger> =
+    when(index) {
+      java.math.BigInteger.ZERO -> result
+      java.math.BigInteger.ONE -> result + fibonacci1.add(fibonacci2)
+      else -> loop(
+        index = index - java.math.BigInteger.ONE,
+        fibonacci1 = fibonacci2,
+        fibonacci2 = fibonacci1.add(fibonacci2),
+        result = result + fibonacci1.add(fibonacci2)
+      )
+    }
+
+  return loop(
+    java.math.BigInteger.valueOf(n.toLong()),
+    java.math.BigInteger.ONE,
+    java.math.BigInteger.ONE,
+    listOf<java.math.BigInteger>(java.math.BigInteger.ONE, java.math.BigInteger.ONE)
+  )
+}
+
+fibonacciCoRecursiveMemoization(100)
+
+// ------------------------------
+
+// instead of a suite of numbers, you could see the Fibonacci series as a suite of pairs
+// 1, 1, 2, 3, 5, 8, 13, 21, ...
+// (1, 1), (1, 2), (2, 3), (3, 5), (5, 8), (8, 13), (13, 21), ...
+// each tuple can be constructed from the previous one
+// - the second element of tuple `n` becomes the first element of tuple `n + 1`
+// - the second element of tuple `n + 1` is equal to the sum of the two elements of tuple `n`
+
+// ---------- 4.16 ----------
+
+fun <T> myIterate(): (T) -> ((T) -> T) -> (Int) -> List<T> =
+  { seed -> { f -> { count ->
+    tailrec fun loop(index: Int, current: T, result: List<T>): List<T> =
+      when {
+        index >= count -> result
+        else -> loop(index + 1, f(current), result + current)
+      }
+    loop(0, seed, listOf())
+  }}}
+
+myIterate<Int>()(0)() { i -> i + 1 }(5)
+
+// ---------- 4.17 ----------
+
+fun <I, O> List<I>.myMap(): ((I) -> O) -> List<O> =
+  { f ->
+    tailrec fun loop(tmp: List<I>, result: List<O>): List<O> =
+      when {
+        tmp.isEmpty() -> result
+        else -> loop(tmp.tail(), result + f(tmp.head()))
+      }
+    loop(this, listOf())
+  }
+
+listOf(1, 2, 3).myMap<Int, Int>()() { it + 5 }
+
+// ---------- 4.18 ----------
+
+fun fibonacciComposition(n: Int): String {
+  val seed = Pair(java.math.BigInteger.ZERO, java.math.BigInteger.ONE)
+  val f = { (a, b): Pair<java.math.BigInteger, java.math.BigInteger> -> Pair(b, a + b) }
+  val listOfPairs = myIterate<Pair<java.math.BigInteger, java.math.BigInteger>>()(seed)(f)(n + 1)
+  val list = listOfPairs.myMap<Pair<java.math.BigInteger, java.math.BigInteger>, java.math.BigInteger>()() { it.first }
+  return makeStringRecursive(list, " - ")
+}
+
+fibonacciComposition(10)
+
+// ------------------------------
+
+object Doubler {
+  private val cache = mutableMapOf<Int, Int>()
+  fun double(x: Int): Int = cache.computeIfAbsent(x) { it * 2 }
+}
+
+class Memoizer<T, U> private constructor() {
+  private val cache = ConcurrentHashMap<T, U>()
+
+  private fun doMemoize(function: (T) -> U): (T) -> U =
+    { input -> cache.computeIfAbsent(input) { function(it) } }
+
+  companion object {
+    // returns a memoized version of its function argument
+    fun <T, U> memoize(function: (T) -> U): (T) -> U =
+      Memoizer<T, U>().doMemoize(function)
+  }
+}
+
+// memoizing is about maintaining state between function calls
