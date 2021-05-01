@@ -159,7 +159,7 @@ fun List<Int>.sum(): Int {
 }
 listOf(1, 2, 3).sum()
 
-// ------------------------------
+// ---------- 4.3 ----------
 
 // doubly recursive functions
 // f(0) = 1
@@ -181,3 +181,121 @@ fun fibonacciTailRecursive(n: Int): java.math.BigInteger {
 // 1 1 2 3 5 8 13 21 34 55
 (0 until 10).map(::fibonacciNaive).forEach { print("$it ")}
 (0 until 1000).map(::fibonacciTailRecursive).forEach { println(it)}
+
+// ---------- 4.4 ----------
+
+fun <T> makeString(list: List<T>, delim: String): String =
+  when {
+    list.isEmpty() -> ""
+    list.tail().isEmpty() -> "${list.head()}${makeString(list.tail(), delim)}"
+    else -> "${list.head()}$delim${makeString(list.tail(), delim)}"
+  }
+
+// write a tail-recursive version of the makeString function
+
+fun <T> makeStringRecursive(list: List<T>, delim: String): String  {
+  tailrec fun loop(tmp: List<T>, result: String): String =
+    when {
+      tmp.isEmpty() -> result
+      result == "" -> loop(tmp.tail(), "${tmp.head()}")
+      else -> loop(tmp.tail(), "$result$delim${tmp.head()}")
+    }
+  return loop(list, "")
+}
+
+makeString(listOf(1, 2, 3, 4), " - ")
+makeStringRecursive(listOf(1, 2, 3, 4), " - ")
+
+// ---------- 4.5 ----------
+
+fun <I, O> List<I>.myFoldLeft(): (O) -> ((O, I) -> O) -> O =
+  { zero -> { f ->
+    tailrec fun loop(tmp: List<I>, accumulator: O): O =
+      when {
+        tmp.isEmpty() -> accumulator
+        else -> loop(tmp.tail(), f(accumulator, tmp.head()))
+      }
+    loop(this, zero)
+  }}
+
+listOf(1, 2, 3).myFoldLeft<Int, Int>()(0)() { acc, i -> acc + i }
+listOf(1, 2, 3).myFoldLeft<Int, String>()("")(String::plus)
+
+// ---------- 4.6 ----------
+
+fun <I, O> List<I>.myFoldRight(): (O) -> ((I, O) -> O) -> O =
+  { zero -> { f ->
+    when {
+      isEmpty() -> zero
+      else -> f(head(), tail().myFoldRight<I, O>()(zero)(f))
+    }
+  }}
+
+listOf(1, 2, 3).myFoldRight<Int, String>()("")() { int, acc -> "$int$acc" }
+
+// ---------- 4.7-8 ----------
+
+fun <T> List<T>.myReverse(): List<T> {
+  val result = mutableListOf<T>()
+  (this.size downTo 1).forEach { result.add(this[it - 1]) }
+  return result
+}
+
+// define a reverse function using a fold
+
+fun <T> List<T>.myReverseFoldLef(): List<T> =
+  this.myFoldLeft<T, List<T>>()(listOf())() { acc, t -> listOf(t) + acc }
+
+fun <T> List<T>.myReverseFoldRight(): List<T> =
+  this.myFoldRight<T, List<T>>()(listOf())() { t, acc -> acc + t }
+
+listOf(1, 2, 3).myReverse()
+listOf(1, 2, 3).myReverseFoldLef()
+listOf(1, 2, 3).myReverseFoldRight()
+
+// ---------- 4.9-12 ----------
+
+fun rangeImperative(start: Int, end: Int): List<Int> {
+  var index = start
+  val result = mutableListOf<Int>()
+  while (index < end) {
+    result.add(index)
+    index ++
+  }
+  return result
+}
+
+fun rangeCoRecursive(start: Int, end: Int): List<Int> {
+  tailrec fun loop(index: Int, result: List<Int>): List<Int> =
+    when {
+      index >= end -> result
+      else -> loop(index + 1, result + index)
+    }
+  return loop(start, listOf())
+}
+
+rangeImperative(0, 8)
+rangeCoRecursive(0, 8)
+
+// ---------- 4.10-13-14 ----------
+
+//fun <T> myUnfold(seed: T, f: (T) -> T, p: (T) -> Boolean): List<T> = TODO()
+
+fun <T> myUnfold(): (T) -> ((T) -> T) -> ((T) -> Boolean) -> List<T> =
+  { seed -> { f -> { p ->
+    tailrec fun loop(current: T, result: List<T>): List<T> =
+      when {
+        !p(current) -> result
+        else -> loop(f(current), result + current)
+      }
+    loop(seed, listOf())
+  }}}
+
+myUnfold<Int>()(0)() { i -> i + 1 }() { i -> i < 8 }
+
+// ---------- 4.11 ----------
+
+fun rangeUnfold(start: Int, end: Int): List<Int> =
+  myUnfold<Int>()(start)() { it + 1 }() { it < end }
+
+rangeUnfold(0, 8)
