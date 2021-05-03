@@ -38,14 +38,14 @@ class Person1 constructor(name: String) {
 }
 // equivalent to (combine the constructor declaration, the property declaration, and the property initialization)
 // added `val`
-class Person2 constructor(val name: String) {}
+class Person2 constructor(val name: String) // with {} (formatKotlin removed it)
 // equivalent to (because the block {} is empty, it can be removed and also the word `constructor`)
 class Person3(val name: String)
 
 // ------------------------------
 
 // must be declared `open for extension`
-open class Person4(val name: String): java.io.Serializable, Comparable<Person4> {
+open class Person4(val name: String) : java.io.Serializable, Comparable<Person4> {
 
   // when extending a class or implementing an interface overriding must be explicitly specified
   override fun compareTo(other: Person4): Int =
@@ -138,11 +138,14 @@ fun myClosure(limit: Int): Int {
   // local inner function
   // inc() function `close over` the "seq" variable: such a construct is called a `closure`
   // multi-line lambda
-  fun inc(): Int = seq.fold(0, { acc, i ->
-    val result = acc + i
-    // the value returned by the lambda is the value of the expression on the last line
-    if (result < limit) result else acc
-  })
+  fun inc(): Int = seq.fold(
+    0,
+    { acc, i ->
+      val result = acc + i
+      // the value returned by the lambda is the value of the expression on the last line
+      if (result < limit) result else acc
+    }
+  )
 
   return inc()
 }
@@ -169,7 +172,7 @@ fun triple(list: List<Int>): List<Int> = list.map({ a -> a * 3 })
 fun product(list: List<Int>): Int = list.fold(1) { acc: Int, value: Int -> acc * value }
 
 // simplified syntax for lambdas with a single parameter implicitly named `it`
-fun List<Int>.myTriple0(): List<Int> = this.map{ it * 3 }
+fun List<Int>.myTriple0(): List<Int> = this.map { it * 3 }
 fun List<Int>.myTriple1(): List<Int> = map { it * 3 }
 
 // ------------------------------
@@ -180,12 +183,12 @@ fun List<Int>.myTriple1(): List<Int> = map { it * 3 }
 val nonNullable: Int = 3
 val nullable: Int? = nonNullable
 // this doesn't compile
-//val nonNullableFromNullable: Int = nullable
+// val nonNullableFromNullable: Int = nullable
 
 val nullableString: String? = "maybeNull"
 // the dot "." is called `dereferencing operator` and can't be used here because it could cause an NPE (NullPointerException)
 // this doesn't compile
-//val size = nullableString.length
+// val size = nullableString.length
 
 // Kotlin make sure there is a NULL check
 val size0 = if (nullableString != null) nullableString else null
@@ -204,7 +207,7 @@ val size3 = nullableString?.length ?: 0
 
 // "when" replaces "switch...case"
 val myValue = "aaa"
-val verifyValue0 = when(myValue) {
+val verifyValue0 = when (myValue) {
   "aaa" -> "A"
   "bbb" -> "B"
   "ccc" -> "C"
@@ -233,10 +236,10 @@ for (i in 0 until 10 step 2) println(i)
 // automatically close resources in Java with the "try with resource" construct, provided these resources implement either Closable or AutoClosable
 // Kotlin offers the `use` function
 
-//val lines= java.nio.file.Files.newInputStream(java.nio.file.Paths.get("myFile.txt")).use {
+// val lines= java.nio.file.Files.newInputStream(java.nio.file.Paths.get("myFile.txt")).use {
 //  it.bufferedReader().lineSequence()
-//}
-//lines.forEach(::println)
+// }
+// lines.forEach(::println)
 
 // alternative
 // java.io.File("myFile.txt").forEachLine { println(it) }

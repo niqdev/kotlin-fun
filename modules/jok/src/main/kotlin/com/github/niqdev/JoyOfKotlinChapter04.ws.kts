@@ -20,7 +20,7 @@
 // corecursion
 fun appendCharsToString(init: List<Char>): String {
 
-  //fun append(s: String, c: Char): String = "$s$c"
+  // fun append(s: String, c: Char): String = "$s$c"
   val append = { s: String, c: Char -> "$s$c" }
 
   /* tailrec */ fun loop(chars: List<Char>, result: String): String =
@@ -64,7 +64,7 @@ fun sumImperative(n: Int): Int {
   var result = 0
   var i = 0
   // Should it be `<=` or `<`? Should `i` be incremented before or after `result`?
-  while(i <= n) {
+  while (i <= n) {
     result += i
     // increment after
     i++
@@ -102,7 +102,7 @@ fun add(a: Int, b: Int): Int {
 }
 add(5, 3)
 
-//tailrec fun addAlternative(a: Int, b: Int): Int = if (b == 0) a else add(inc(a), dec(b))
+// tailrec fun addAlternative(a: Int, b: Int): Int = if (b == 0) a else add(inc(a), dec(b))
 
 // ---------- 4.2 ----------
 
@@ -110,7 +110,7 @@ fun factorialRecursion(n: Int): Int = if (n == 0) 1 else n * factorialRecursion(
 
 fun factorialCoRecursion(n: Int): Int {
   fun loop(i: Int, result: Int): Int =
-    when(i) {
+    when (i) {
       0 -> result
       else -> loop(i - 1, i * result)
     }
@@ -170,7 +170,7 @@ fun fibonacciNaive(n: Int): Int =
 
 fun fibonacciTailRecursive(n: Int): java.math.BigInteger {
   tailrec fun loop(i: Int, previous: java.math.BigInteger, current: java.math.BigInteger): java.math.BigInteger =
-    when(i) {
+    when (i) {
       0 -> current
       else -> loop(i - 1, current, previous.add(current))
     }
@@ -178,8 +178,8 @@ fun fibonacciTailRecursive(n: Int): java.math.BigInteger {
 }
 
 // 1 1 2 3 5 8 13 21 34 55
-(0 until 10).map(::fibonacciNaive).forEach { print("$it ")}
-(0 until 1000).map(::fibonacciTailRecursive).forEach { println(it)}
+(0 until 10).map(::fibonacciNaive).forEach { print("$it ") }
+(0 until 1000).map(::fibonacciTailRecursive).forEach { println(it) }
 
 // ---------- 4.4 ----------
 
@@ -192,7 +192,7 @@ fun <T> makeString(list: List<T>, delim: String): String =
 
 // write a tail-recursive version of the makeString function
 
-fun <T> makeStringRecursive(list: List<T>, delim: String): String  {
+fun <T> makeStringRecursive(list: List<T>, delim: String): String {
   tailrec fun loop(tmp: List<T>, result: String): String =
     when {
       tmp.isEmpty() -> result
@@ -208,14 +208,16 @@ makeStringRecursive(listOf(1, 2, 3, 4), " - ")
 // ---------- 4.5 ----------
 
 fun <I, O> List<I>.myFoldLeft(): (O) -> ((O, I) -> O) -> O =
-  { zero -> { f ->
-    tailrec fun loop(tmp: List<I>, accumulator: O): O =
-      when {
-        tmp.isEmpty() -> accumulator
-        else -> loop(tmp.tail(), f(accumulator, tmp.head()))
-      }
-    loop(this, zero)
-  }}
+  { zero ->
+    { f ->
+      tailrec fun loop(tmp: List<I>, accumulator: O): O =
+        when {
+          tmp.isEmpty() -> accumulator
+          else -> loop(tmp.tail(), f(accumulator, tmp.head()))
+        }
+      loop(this, zero)
+    } 
+  }
 
 listOf(1, 2, 3).myFoldLeft<Int, Int>()(0)() { acc, i -> acc + i }
 listOf(1, 2, 3).myFoldLeft<Int, String>()("")(String::plus)
@@ -223,12 +225,14 @@ listOf(1, 2, 3).myFoldLeft<Int, String>()("")(String::plus)
 // ---------- 4.6 ----------
 
 fun <I, O> List<I>.myFoldRight(): (O) -> ((I, O) -> O) -> O =
-  { zero -> { f ->
-    when {
-      isEmpty() -> zero
-      else -> f(head(), tail().myFoldRight<I, O>()(zero)(f))
-    }
-  }}
+  { zero ->
+    { f ->
+      when {
+        isEmpty() -> zero
+        else -> f(head(), tail().myFoldRight<I, O>()(zero)(f))
+      }
+    } 
+  }
 
 listOf(1, 2, 3).myFoldRight<Int, String>()("")() { int, acc -> "$int$acc" }
 
@@ -278,17 +282,21 @@ rangeCoRecursive(0, 8)
 
 // ---------- 4.10-13-14 ----------
 
-//fun <T> myUnfold(seed: T, f: (T) -> T, p: (T) -> Boolean): List<T> = TODO()
+// fun <T> myUnfold(seed: T, f: (T) -> T, p: (T) -> Boolean): List<T> = TODO()
 
 fun <T> myUnfold(): (T) -> ((T) -> T) -> ((T) -> Boolean) -> List<T> =
-  { seed -> { f -> { p ->
-    tailrec fun loop(current: T, result: List<T>): List<T> =
-      when {
-        !p(current) -> result
-        else -> loop(f(current), result + current)
-      }
-    loop(seed, listOf())
-  }}}
+  { seed ->
+    { f ->
+      { p ->
+        tailrec fun loop(current: T, result: List<T>): List<T> =
+          when {
+            !p(current) -> result
+            else -> loop(f(current), result + current)
+          }
+        loop(seed, listOf())
+      } 
+    } 
+  }
 
 myUnfold<Int>()(0)() { i -> i + 1 }() { i -> i < 8 }
 
@@ -337,7 +345,7 @@ fun fibonacciCoRecursiveMemoization(n: Int): List<java.math.BigInteger> {
     fibonacci2: java.math.BigInteger,
     result: List<java.math.BigInteger>
   ): List<java.math.BigInteger> =
-    when(index) {
+    when (index) {
       java.math.BigInteger.ZERO -> result
       java.math.BigInteger.ONE -> result + fibonacci1.add(fibonacci2)
       else -> loop(
@@ -370,14 +378,18 @@ fibonacciCoRecursiveMemoization(100)
 // ---------- 4.16 ----------
 
 fun <T> myIterate(): (T) -> ((T) -> T) -> (Int) -> List<T> =
-  { seed -> { f -> { count ->
-    tailrec fun loop(index: Int, current: T, result: List<T>): List<T> =
-      when {
-        index >= count -> result
-        else -> loop(index + 1, f(current), result + current)
-      }
-    loop(0, seed, listOf())
-  }}}
+  { seed ->
+    { f ->
+      { count ->
+        tailrec fun loop(index: Int, current: T, result: List<T>): List<T> =
+          when {
+            index >= count -> result
+            else -> loop(index + 1, f(current), result + current)
+          }
+        loop(0, seed, listOf())
+      } 
+    } 
+  }
 
 myIterate<Int>()(0)() { i -> i + 1 }(5)
 

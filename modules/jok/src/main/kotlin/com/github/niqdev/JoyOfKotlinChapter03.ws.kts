@@ -86,7 +86,7 @@ square.compose3(::triple)
 
 // integer binary operator
 
-//typealias IntBinOp = (Int) -> (Int) -> Int
+// typealias IntBinOp = (Int) -> (Int) -> Int
 val myAdd: (Int) -> (Int) -> Int = { a -> { b -> a + b } }
 myAdd(1)(2)
 
@@ -94,20 +94,20 @@ myAdd(1)(2)
 
 // a function taking functions as its arguments and returning functions, is called a higher-order function (HOF)
 
-val compose4: ((Int) -> Int) -> ((Int) -> Int) -> (Int) -> Int = { f -> { g -> { value -> f(g(value)) } }}
+val compose4: ((Int) -> Int) -> ((Int) -> Int) -> (Int) -> Int = { f -> { g -> { value -> f(g(value)) } } }
 compose4(square)(::triple)(2)
 
 // ---------- 3.5 ----------
 
 // >>> you can't define polymorphic properties
 
-fun <I, O, T> higherCompose(): ((T) -> O) -> ((I) -> T) -> (I) -> O = { f -> { g -> { value -> f(g(value)) } }}
+fun <I, O, T> higherCompose(): ((T) -> O) -> ((I) -> T) -> (I) -> O = { f -> { g -> { value -> f(g(value)) } } }
 // Not enough information to infer parameter: specify types <Int, Int, Int>
 higherCompose<Int, Int, Int>()(square)(::triple)(2)
 
 // ---------- 3.6 ----------
 
-fun <I, O, T> higherAndThen(): ((I) -> T) -> ((T) -> O) -> (I) -> O = { f -> { g -> { value -> g(f(value)) } }}
+fun <I, O, T> higherAndThen(): ((I) -> T) -> ((T) -> O) -> (I) -> O = { f -> { g -> { value -> g(f(value)) } } }
 higherAndThen<Int, Int, Int>()(square)(::triple)(2)
 
 // ------------------------------
@@ -155,17 +155,17 @@ fun <I, O, T> applyCurried2(input: T, f: (I) -> (T) -> O): (I) -> O = { i -> f(i
 // convert the following function into a curried function
 fun <A, B, C, D> applyCurried3a(a: A, b: B, c: C, d: D): String = "$a, $b, $c, $d"
 
-fun <A, B, C, D> applyCurried3b(): (A) -> (B) -> (C) -> (D) -> String = { a: A -> { b: B -> { c: C -> { d: D -> "$a, $b, $c, $d" }}}}
+fun <A, B, C, D> applyCurried3b(): (A) -> (B) -> (C) -> (D) -> String = { a: A -> { b: B -> { c: C -> { d: D -> "$a, $b, $c, $d" } } } }
 
 // ---------- 3.10 ----------
 
 // write a function to curry a function of a (A, B) to C
-fun <A, B, C> applyCurried4(f: (A, B) -> C): (A) -> (B) -> C = { a -> { b -> f(a, b) }}
+fun <A, B, C> applyCurried4(f: (A, B) -> C): (A) -> (B) -> C = { a -> { b -> f(a, b) } }
 
 // ---------- 3.10 ----------
 
 // write a function to swap the arguments of a curried function
-fun <A, B, C> swapCurried(f: (A) -> (B) -> C): (B) -> (A) -> C = { b -> { a -> f(a)(b) }}
+fun <A, B, C> swapCurried(f: (A) -> (B) -> C): (B) -> (A) -> C = { b -> { a -> f(a)(b) } }
 
 // ------------------------------
 
@@ -173,7 +173,7 @@ fun <A, B, C> swapCurried(f: (A) -> (B) -> C): (B) -> (A) -> C = { b -> { a -> f
 // a neutral element is only neutral for a given operation/function composition: the `identity` function
 
 // ???
-//val identityElement = { it }
+// val identityElement = { it }
 
 // ------------------------------
 

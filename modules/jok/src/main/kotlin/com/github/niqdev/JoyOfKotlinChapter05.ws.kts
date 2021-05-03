@@ -49,18 +49,18 @@ sealed class MyList<A> {
   abstract fun isEmpty(): Boolean
 
   // empty list
-  private object Nil: MyList<Nothing>() {
+  private object Nil : MyList<Nothing>() {
     override fun isEmpty(): Boolean = true
     override fun toString(): String = "[NIL]"
   }
 
   // non-empty list: "Cons" means "construct"
   // parameters are declared `internal` so that they won't be visible from outside the file or the module in which the List class is declared
-  private class Cons<A>(internal val head: A, internal val tail: MyList<A>): MyList<A>() {
+  private class Cons<A>(internal val head: A, internal val tail: MyList<A>) : MyList<A>() {
     override fun isEmpty(): Boolean = false
     override fun toString(): String {
       tailrec fun loop(tmp: MyList<A>, result: String): String =
-        when(tmp) {
+        when (tmp) {
           is Nil -> result
           is Cons -> loop(tmp.tail, "$result${tmp.head}, ")
         }
@@ -72,18 +72,20 @@ sealed class MyList<A> {
 
     // subclasses have been made private, so you must construct lists through calls to the companion object `invoke` function
     // the `invoke` function, together with the modifier `operator`, allows calling the function with a simplified syntax e.g. MyList(1, 2, 3)
-    //operator fun <A> invoke(vararg items: A): MyList<A> =
+    // operator fun <A> invoke(vararg items: A): MyList<A> =
     //  items.asList().myFoldRight<A, A>()(Nil as List<A>)() { a: A, list: List<A> -> Cons(a, list)}
 
     fun <I, O> MyList<I>.foldLeft(): (O) -> ((O, I) -> O) -> O =
-      { zero -> { f ->
-        tailrec fun loop(tmp: MyList<I>, accumulator: O): O =
-          when(tmp) {
-            is Nil -> accumulator
-            is Cons -> loop(tmp.tail, f(accumulator, tmp.head))
-          }
-        loop(this, zero)
-      }}
+      { zero ->
+        { f ->
+          tailrec fun loop(tmp: MyList<I>, accumulator: O): O =
+            when (tmp) {
+              is Nil -> accumulator
+              is Cons -> loop(tmp.tail, f(accumulator, tmp.head))
+            }
+          loop(this, zero)
+        } 
+      }
   }
 }
 
