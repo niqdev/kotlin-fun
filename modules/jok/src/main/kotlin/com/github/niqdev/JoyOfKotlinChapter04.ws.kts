@@ -216,7 +216,7 @@ fun <I, O> List<I>.myFoldLeft(): (O) -> ((O, I) -> O) -> O =
           else -> loop(tmp.tail(), f(accumulator, tmp.head()))
         }
       loop(this, zero)
-    } 
+    }
   }
 
 listOf(1, 2, 3).myFoldLeft<Int, Int>()(0)() { acc, i -> acc + i }
@@ -231,7 +231,7 @@ fun <I, O> List<I>.myFoldRight(): (O) -> ((I, O) -> O) -> O =
         isEmpty() -> zero
         else -> f(head(), tail().myFoldRight<I, O>()(zero)(f))
       }
-    } 
+    }
   }
 
 listOf(1, 2, 3).myFoldRight<Int, String>()("")() { int, acc -> "$int$acc" }
@@ -294,8 +294,8 @@ fun <T> myUnfold(): (T) -> ((T) -> T) -> ((T) -> Boolean) -> List<T> =
             else -> loop(f(current), result + current)
           }
         loop(seed, listOf())
-      } 
-    } 
+      }
+    }
   }
 
 myUnfold<Int>()(0)() { i -> i + 1 }() { i -> i < 8 }
@@ -387,8 +387,8 @@ fun <T> myIterate(): (T) -> ((T) -> T) -> (Int) -> List<T> =
             else -> loop(index + 1, f(current), result + current)
           }
         loop(0, seed, listOf())
-      } 
-    } 
+      }
+    }
   }
 
 myIterate<Int>()(0)() { i -> i + 1 }(5)
