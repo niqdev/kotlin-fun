@@ -1,5 +1,3 @@
-import java.util.concurrent.ConcurrentHashMap
-
 // `corecursion` is composing computation steps by using the output of one step as the input of the next one, starting with the first step
 // `recursion` is the same operation but starts with the last step: computation must be delayed until the terminal condition is reached
 
@@ -417,7 +415,7 @@ object Doubler {
 }
 
 class Memoizer<T, U> private constructor() {
-  private val cache = ConcurrentHashMap<T, U>()
+  private val cache = java.util.concurrent.ConcurrentHashMap<T, U>()
 
   private fun doMemoize(function: (T) -> U): (T) -> U =
     { input -> cache.computeIfAbsent(input) { function(it) } }
