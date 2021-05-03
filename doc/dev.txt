@@ -39,6 +39,8 @@ https://adrianfilip.com/2020/04/07/moving-from-kotlin-spring-reactor-arrow-to-sc
 # arrow course
 https://www.47deg.com/academy/2021-01-19-fp-in-kotlin-with-arrow-course-jan-2021
 https://github.com/47degrees/ArrowInPractice
+# recursion schema
+https://github.com/aedans/Katalyst
 
 # fp
 https://github.com/lucapiccinelli/konad
