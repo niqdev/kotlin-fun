@@ -2,6 +2,7 @@ package com.github.niqdev
 
 // single linked list
 // `sealed classes` allow defining algebraic data types (ADT): types that have a limited set of subtypes
+// covariant in A
 sealed class MyList<out A> {
 
   abstract fun isEmpty(): Boolean
@@ -42,6 +43,18 @@ sealed class MyList<out A> {
     }
   }
 }
+
+fun <T> MyList<T>.head(): T? =
+  when (this) {
+    is MyList.MyNil -> null
+    is MyList.MyCons -> head
+  }
+
+fun <T> MyList<T>.tail(): MyList<T>? =
+  when (this) {
+    is MyList.MyNil -> null
+    is MyList.MyCons -> tail
+  }
 
 // ---------- 5.1 ----------
 
@@ -89,7 +102,53 @@ fun <A> MyList<A>.dropWhile(): ((A) -> Boolean) -> MyList<A> =
     loop(this)
   }
 
+// ------------------------------
+
+fun <A> MyList<A>.concat(): (MyList<A>) -> MyList<A> =
+  { list ->
+    tailrec fun loop(tmp: MyList<A>, result: MyList<A>): MyList<A> =
+      when (tmp) {
+        is MyList.MyNil -> result
+        is MyList.MyCons -> loop(tmp.tail, result.cons()(tmp.head))
+      }
+    loop(this, list)
+  }
+
 // ---------- 5.5 ----------
+
+// drop last element
+// http://zvon.org/other/haskell/Outputprelude/init_f.html
+fun <A> MyList<A>.init(): MyList<A> {
+  tailrec fun loop(tmp: MyList<A>, result: MyList<A>): MyList<A> =
+    when (tmp) {
+      is MyList.MyNil -> result
+      is MyList.MyCons -> when (tmp.tail) {
+        is MyList.MyNil -> result
+        is MyList.MyCons -> loop(tmp.tail, result.cons()(tmp.head))
+      }
+    }
+  return loop(this, MyList())
+}
+
+fun <A> MyList<A>.reverse(): MyList<A> {
+  tailrec fun loop(tmp: MyList<A>, result: MyList<A>): MyList<A> =
+    when (tmp) {
+      is MyList.MyNil -> result
+      is MyList.MyCons -> loop(tmp.tail, result.cons()(tmp.head))
+    }
+  return loop(this, MyList())
+}
+
+// ---------- 5.6 ----------
+
+fun MyList<Int>.sum(): Int {
+  tailrec fun loop(tmp: MyList<Int>, result: Int): Int =
+    when (tmp) {
+      is MyList.MyNil -> result
+      is MyList.MyCons -> loop(tmp.tail, result + tmp.head)
+    }
+  return loop(this, 0)
+}
 
 fun main() {
   val list: MyList<Int> = MyList(1, 2, 3)
@@ -99,4 +158,8 @@ fun main() {
   println(list.setHead()(0))
   println(list.drop()(2))
   println(MyList(1, 2, 3, 4, 5).dropWhile()() { it < 3 })
+  println(MyList(1, 2, 3).concat()(MyList(4, 5, 6))) // 3, 2, 1, 4, 5, 6, Nil
+  println(MyList(1, 2, 3, 4, 5).init())
+  println(MyList(1, 2, 3, 4, 5).reverse().tail()?.reverse())
+  println(MyList(1, 2, 3).sum())
 }
