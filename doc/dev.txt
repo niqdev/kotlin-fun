@@ -48,6 +48,7 @@ https://github.com/lucapiccinelli/konad
 https://github.com/MarioAriasC/funKTionale
 
 # json
+https://47degrees.github.io/helios
 https://github.com/uberto/kondor-json
 https://github.com/kittinunf/Forge
 # json reflection
