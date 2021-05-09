@@ -140,6 +140,7 @@ fun <A> MyList<A>.reverse(): MyList<A> {
 }
 
 // ---------- 5.6 ----------
+// ---------- 5.7 ----------
 
 fun MyList<Int>.sum(): Int {
   tailrec fun loop(tmp: MyList<Int>, result: Int): Int =
@@ -149,6 +150,50 @@ fun MyList<Int>.sum(): Int {
     }
   return loop(this, 0)
 }
+
+// ---------- 5.9 ----------
+// ---------- 5.10 ----------
+
+// @UnsafeVariance
+// the `absorbing element` for multiplication is 0, also called the `zero element` or `short circuiting` or `identity`
+
+fun <A, B> MyList<A>.foldLeft(): (B) -> (f: (B, A) -> B) -> B =
+  { zero ->
+    { f ->
+      tailrec fun loop(tmp: MyList<A>, result: B): B =
+        when (tmp) {
+          is MyList.MyNil -> result
+          is MyList.MyCons -> loop(tmp.tail, f(result, tmp.head))
+        }
+      loop(this, zero)
+    } 
+  }
+
+// ---------- 5.12 ----------
+// ---------- 5.13 ----------
+
+fun <A, B> MyList<A>.foldRight(): (B) -> (f: (A) -> (B) -> B) -> B =
+  { zero -> { f -> this.foldLeft<A, B>()(zero)() { a, b -> f(b)(a) } } }
+
+// ---------- 5.8 ----------
+
+fun <A> MyList<A>.length(): Int =
+  this.foldRight<A, Int>()(0)() { { acc -> acc + 1 } }
+
+// ---------- 5.11 ----------
+
+fun <A> MyList<A>.reverseWithFoldLeft(): MyList<A> =
+  this.foldLeft<A, MyList<A>>()(MyList.MyNil as MyList<A>)() { acc, i -> acc.cons()(i) }
+
+// ---------- 5.14 ----------
+
+fun <A> MyList<A>.concatWithFoldLeft(): (MyList<A>) -> MyList<A> =
+  { list -> this.reverse().foldLeft<A, MyList<A>>()(list)() { acc, i -> acc.cons()(i) } }
+
+// ---------- 5.15 ----------
+
+fun <A> MyList<MyList<A>>.flatten(): MyList<A> =
+  this.reverse().foldLeft<MyList<A>, MyList<A>>()(MyList())() { acc, i -> i.concatWithFoldLeft()(acc) }
 
 fun main() {
   val list: MyList<Int> = MyList(1, 2, 3)
@@ -162,4 +207,11 @@ fun main() {
   println(MyList(1, 2, 3, 4, 5).init())
   println(MyList(1, 2, 3, 4, 5).reverse().tail()?.reverse())
   println(MyList(1, 2, 3).sum())
+  println(MyList(1, 2, 3, 4, 5).foldLeft<Int, Int>()(0)() { acc, i -> acc + i })
+  println(MyList(1, 2, 3, 4, 5).foldLeft<Int, Int>()(1)() { acc, i -> acc * i })
+  println(MyList(1, 2, 3).foldLeft<Int, MyList<Int>>()(MyList(4, 5))() { acc, i -> acc.cons()(i) })
+  println(MyList(1, 2, 3, 4, 5).length())
+  println(MyList(1, 2, 3, 4, 5).reverseWithFoldLeft())
+  println(MyList(1, 2, 3).concatWithFoldLeft()(MyList(4, 5)))
+  println(MyList(MyList(1, 2), MyList(3), MyList(), MyList(4, 5)).flatten())
 }
