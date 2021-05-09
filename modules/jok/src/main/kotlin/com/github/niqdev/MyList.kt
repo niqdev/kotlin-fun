@@ -166,7 +166,7 @@ fun <A, B> MyList<A>.foldLeft(): (B) -> (f: (B, A) -> B) -> B =
           is MyList.MyCons -> loop(tmp.tail, f(result, tmp.head))
         }
       loop(this, zero)
-    } 
+    }
   }
 
 // ---------- 5.12 ----------
@@ -195,6 +195,32 @@ fun <A> MyList<A>.concatWithFoldLeft(): (MyList<A>) -> MyList<A> =
 fun <A> MyList<MyList<A>>.flatten(): MyList<A> =
   this.reverse().foldLeft<MyList<A>, MyList<A>>()(MyList())() { acc, i -> i.concatWithFoldLeft()(acc) }
 
+// ---------- 5.16 ----------
+// ---------- 5.17 ----------
+
+fun MyList<Int>.timesThree(): MyList<Int> =
+  this.reverse().foldLeft<Int, MyList<Int>>()(MyList())() { acc, i -> acc.cons()(i * 3) }
+
+// ---------- 5.18 ----------
+
+fun <A, B> MyList<A>.map(f: (A) -> B): MyList<B> =
+  this.foldLeft<A, MyList<B>>()(MyList())() { acc, i -> acc.cons()(f(i)) }.reverse()
+
+// ---------- 5.19 ----------
+
+fun <A> MyList<A>.filter(p: (A) -> Boolean): MyList<A> =
+  this.foldLeft<A, MyList<A>>()(MyList())() { acc, i -> if (p(i)) acc.cons()(i) else acc }.reverse()
+
+// ---------- 5.20 ----------
+
+fun <A, B> MyList<A>.flatMap(f: (A) -> MyList<B>): MyList<B> =
+  this.map(f).flatten()
+
+// ---------- 5.21 ----------
+
+fun <A> MyList<A>.filterWithFlatMap(p: (A) -> Boolean): MyList<A> =
+  this.flatMap { i -> if (p(i)) MyList(i) else MyList.MyNil }
+
 fun main() {
   val list: MyList<Int> = MyList(1, 2, 3)
   println(list)
@@ -214,4 +240,9 @@ fun main() {
   println(MyList(1, 2, 3, 4, 5).reverseWithFoldLeft())
   println(MyList(1, 2, 3).concatWithFoldLeft()(MyList(4, 5)))
   println(MyList(MyList(1, 2), MyList(3), MyList(), MyList(4, 5)).flatten())
+  println(MyList(1, 2, 3, 4, 5).timesThree())
+  println(MyList(1, 2, 3, 4, 5).map { it * 3 })
+  println(MyList(1, 2, 3, 4, 5).filter { it % 2 == 0 }) // even
+  println(MyList(1, 2, 3).flatMap { i -> MyList(i, -i) })
+  println(MyList(1, 2, 3, 4, 5).filterWithFlatMap { it % 2 != 0 })
 }
