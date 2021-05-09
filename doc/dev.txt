@@ -50,6 +50,7 @@ https://github.com/MarioAriasC/funKTionale
 # json
 https://47degrees.github.io/helios
 https://github.com/uberto/kondor-json
+https://github.com/uberto/funky/tree/master/funky-core/src/main/kotlin/com/ubertob/funky/json
 https://github.com/kittinunf/Forge
 # json reflection
 https://github.com/FasterXML/jackson-module-kotlin
