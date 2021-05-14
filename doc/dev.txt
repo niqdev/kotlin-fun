@@ -73,3 +73,7 @@ https://github.com/edvin/tornadofx
 
 # code generation
 https://square.github.io/kotlinpoet
+
+# TODO
+https://www.youtube.com/watch?v=LpqvtgibbsQ
+https://www.youtube.com/watch?v=pvYAQNT4o0I
