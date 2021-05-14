@@ -41,12 +41,56 @@ fun <A> Option<A>.getOrElse(default: @UnsafeVariance A): A =
 
 fun getDefault(): Int = throw RuntimeException()
 
-fun <A> Option<A>.getOrElseLazy(default: A): A = TODO()
+fun <A> Option<A>.getOrElseLazy(default: () -> A): A =
+  when (this) {
+    is Option.None -> default()
+    is Option.Some -> this.value
+  }
+
+// ---------- 6.3 ----------
+
+fun <A, B> Option<A>.map(f: (A) -> B): Option<B> =
+  when (this) {
+    is Option.None -> Option.None
+    is Option.Some -> Option(f(this.value))
+  }
+
+// ---------- 6.4 ----------
+
+fun <A, B> Option<A>.flatMap(f: (A) -> Option<B>): Option<B> =
+  when (this) {
+    is Option.None -> Option.None
+    is Option.Some -> f(this.value)
+  }
+
+fun <A, B> Option<A>.flatMapWithMap(f: (A) -> Option<B>): Option<B> =
+  this.map(f).getOrElse(Option.None)
+
+// ---------- 6.5 ----------
+
+fun <A> Option<A>.orElse(default: () -> Option<A>): Option<A> =
+  Option(this).getOrElseLazy(default)
+
+// ---------- 6.6 ----------
+
+fun <A> Option<A>.filter(p: (A) -> Boolean): Option<A> =
+  this.flatMapWithMap { a -> if (p(a)) Option(a) else Option.None }
+
+// ------------------------------
+
+fun <K, V> Map<K, V>.getOption(key: K): Option<V> =
+  Option(this[key])
 
 fun main() {
+  println(listOf<Int>().maybeMax())
+  println(listOf(1, 2, 3, 4, 5).maybeMax())
   println(Option<Int>())
   println(Option(42))
   println(Option<Int>().getOrElse(42))
-  println(listOf<Int>().maybeMax())
-  println(listOf(1, 2, 3, 4, 5).maybeMax())
+  println(Option(42).getOrElseLazy(::getDefault))
+  println(Option(42).map { it.toString() })
+  println(Option(42).flatMap { int -> Option(int.toString()) })
+  println(Option(42).flatMapWithMap { int -> Option(int.toString()) })
+  println(Option(42).filter { it < 8 })
+  println(mapOf<Int, String>().getOption(1))
 }
