@@ -81,6 +81,27 @@ fun <A> Option<A>.filter(p: (A) -> Boolean): Option<A> =
 fun <K, V> Map<K, V>.getOption(key: K): Option<V> =
   Option(this[key])
 
+// ---------- 6.8 ----------
+
+fun <A, B> lift(f: (A) -> B): (Option<A>) -> Option<B> =
+  { it.map(f) }
+
+fun <A, B> ((A) -> B).liftOption(): (Option<A>) -> Option<B> =
+  { it.map(this) }
+
+// ---------- 6.9 ----------
+
+fun <A, B> liftSafe(): ((A) -> B) -> (Option<A>) -> Option<B> =
+  { f -> { maybeA -> try { maybeA.map(f) } catch (e: Exception) { Option.None } } }
+
+// ---------- 6.10----------
+
+fun <A, B, C> Option<A>.map2(): (Option<B>) -> ((A, B) -> C) -> Option<C> =
+  { maybeB -> { f -> this.flatMap { a -> maybeB.map { b -> f(a, b) } } } }
+
+fun <A, B, C, D> Option<A>.map3(): (Option<B>) -> (Option<C>) -> ((A) -> (B) -> (C) -> D) -> Option<D> =
+  { maybeB -> { maybeC -> { f -> this.flatMap { a -> maybeB.flatMap { b -> maybeC.map { c -> f(a)(b)(c) } } } } } }
+
 fun main() {
   println(listOf<Int>().maybeMax())
   println(listOf(1, 2, 3, 4, 5).maybeMax())
@@ -93,4 +114,12 @@ fun main() {
   println(Option(42).flatMapWithMap { int -> Option(int.toString()) })
   println(Option(42).filter { it < 8 })
   println(mapOf<Int, String>().getOption(1))
+
+  val abs: (Double) -> Double = { d -> if (d > 0) d else -d }
+  println(lift(abs)(Option(1.0)))
+  println(lift(abs)(Option.None))
+  println(lift(String::toUpperCase)(Option("example")))
+  println(abs.liftOption()(Option(1.0)))
+
+  println(Option(42).map2<Int, Int, String>()(Option(8))() { a, b -> "$a | $b" })
 }

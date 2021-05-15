@@ -221,6 +221,19 @@ fun <A, B> MyList<A>.flatMap(f: (A) -> MyList<B>): MyList<B> =
 fun <A> MyList<A>.filterWithFlatMap(p: (A) -> Boolean): MyList<A> =
   this.flatMap { i -> if (p(i)) MyList(i) else MyList.MyNil }
 
+// ---------- 6.11----------
+
+fun <A> MyList<Option<A>>.sequence(): Option<MyList<A>> =
+  when {
+    this.isEmpty() -> Option.None
+    else -> this.foldLeft<Option<A>, Option<MyList<A>>>()(Option(MyList()))() { result, item ->
+      when (item) {
+        is Option.None -> Option.None
+        is Option.Some -> result.map { it.cons()(item.value) }
+      }
+    }.map { it.reverse() }
+  }
+
 fun main() {
   val list: MyList<Int> = MyList(1, 2, 3)
   println(list)
@@ -245,4 +258,7 @@ fun main() {
   println(MyList(1, 2, 3, 4, 5).filter { it % 2 == 0 }) // even
   println(MyList(1, 2, 3).flatMap { i -> MyList(i, -i) })
   println(MyList(1, 2, 3, 4, 5).filterWithFlatMap { it % 2 != 0 })
+  println(MyList(Option.Some(1), Option.Some(2), Option.Some(3)).sequence())
+  println(MyList(Option.Some(1), Option.None, Option.Some(3)).sequence())
+  println(MyList<Option<Int>>().sequence())
 }

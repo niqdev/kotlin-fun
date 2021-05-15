@@ -1,3 +1,6 @@
+import com.github.niqdev.Option
+import com.github.niqdev.flatMap
+
 // `null pointer`: most data is represented by a reference pointing to it, so the most obvious way to represent the absence of data is to use a pointer to nothing
 // in Kotlin, a `reference` is a pointer to a value
 // in most programming languages, `references` can be changed to point to a new value: `variable` is often used as a replacement for reference
@@ -14,3 +17,22 @@
 // ------------------------------
 
 // see Option
+
+// ---------- 6.7 ----------
+
+val mean: (List<Double>) -> Option<Double> = { list ->
+  when {
+    list.isEmpty() -> Option()
+    else -> Option(list.sum() / list.size)
+  }
+}
+
+val variance: (List<Double>) -> Option<Double> = { list ->
+  mean(list).flatMap { m ->
+    mean(
+      list.map { x ->
+        Math.pow(x - m, 2.0)
+      }
+    )
+  }
+}
