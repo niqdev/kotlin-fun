@@ -7,4 +7,4 @@
 
 // ------------------------------
 
-// see Either
+// see Either and Result
