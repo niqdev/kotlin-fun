@@ -245,6 +245,18 @@ fun <A, B> MyList<A>.traverse(): ((A) -> Option<B>) -> Option<MyList<B>> =
 fun <A, B> MyList<A>.traverseWithMap2(): ((A) -> Option<B>) -> Option<MyList<B>> =
   { f -> this.foldRight<A, Option<MyList<B>>>()(Option(MyList()))() { item -> { result -> f(item).map2<B, MyList<B>, MyList<B>>()(result)() { i, r -> r.cons()(i) } } } }
 
+// ------------------------------
+
+fun <A : Comparable<A>> MyList<A>.maxEither(): Either<String, A> =
+  when (this) {
+    is MyList.MyNil -> Either.left("empty list")
+    is MyList.MyCons -> Either.right(
+      this.foldLeft<A, A>()(this.head)() { max, i ->
+        if (max.compareTo(i) == 0) max else i
+      }
+    )
+  }
+
 fun main() {
   val list: MyList<Int> = MyList(1, 2, 3)
   println(list)
@@ -279,4 +291,6 @@ fun main() {
   println(MyList("1", "2", "3").traverse<String, Int>()(hLift<String, Int>()(String::toInt)))
   println(MyList("1", "2", "3").traverseWithMap2<String, Int>()(hLift<String, Int>()(String::toInt)))
   println(MyList("1", "aaa", "3").traverse<String, Int>()(hLift<String, Int>()(String::toInt)))
+  println(MyList(1, 2, 3, 4, 5).maxEither())
+  println(MyList<Int>().maxEither())
 }

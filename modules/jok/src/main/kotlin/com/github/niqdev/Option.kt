@@ -24,7 +24,7 @@ sealed class Option<out A> {
   }
 }
 
-fun List<Int>.maybeMax(): Option<Int> = Option(this.max())
+fun List<Int>.maxOption(): Option<Int> = Option(this.max())
 
 // ---------- 6.1 ----------
 
@@ -106,8 +106,8 @@ fun <A, B, C, D> Option<A>.map3(): (Option<B>) -> (Option<C>) -> ((A) -> (B) -> 
   { maybeB -> { maybeC -> { f -> this.flatMap { a -> maybeB.flatMap { b -> maybeC.map { c -> f(a)(b)(c) } } } } } }
 
 fun main() {
-  println(listOf<Int>().maybeMax())
-  println(listOf(1, 2, 3, 4, 5).maybeMax())
+  println(listOf<Int>().maxOption())
+  println(listOf(1, 2, 3, 4, 5).maxOption())
   println(Option<Int>())
   println(Option(42))
   println(Option<Int>().getOrElse(42))
