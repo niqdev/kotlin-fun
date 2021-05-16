@@ -221,7 +221,7 @@ fun <A, B> MyList<A>.flatMap(f: (A) -> MyList<B>): MyList<B> =
 fun <A> MyList<A>.filterWithFlatMap(p: (A) -> Boolean): MyList<A> =
   this.flatMap { i -> if (p(i)) MyList(i) else MyList.MyNil }
 
-// ---------- 6.11----------
+// ---------- 6.11 ----------
 
 fun <A> MyList<Option<A>>.sequence(): Option<MyList<A>> =
   when {
@@ -233,6 +233,17 @@ fun <A> MyList<Option<A>>.sequence(): Option<MyList<A>> =
       }
     }.map { it.reverse() }
   }
+
+fun <A> MyList<Option<A>>.sequenceWithTraverse(): Option<MyList<A>> =
+  this.traverse<Option<A>, A>()() { it }
+
+// ---------- 6.12 ----------
+
+fun <A, B> MyList<A>.traverse(): ((A) -> Option<B>) -> Option<MyList<B>> =
+  { f -> this.map(f).foldRight<Option<B>, Option<MyList<B>>>()(Option(MyList()))() { item -> { result -> result.flatMap { r -> item.map { i -> r.cons()(i) } } } } }
+
+fun <A, B> MyList<A>.traverseWithMap2(): ((A) -> Option<B>) -> Option<MyList<B>> =
+  { f -> this.foldRight<A, Option<MyList<B>>>()(Option(MyList()))() { item -> { result -> f(item).map2<B, MyList<B>, MyList<B>>()(result)() { i, r -> r.cons()(i) } } } }
 
 fun main() {
   val list: MyList<Int> = MyList(1, 2, 3)
@@ -249,6 +260,7 @@ fun main() {
   println(MyList(1, 2, 3, 4, 5).foldLeft<Int, Int>()(0)() { acc, i -> acc + i })
   println(MyList(1, 2, 3, 4, 5).foldLeft<Int, Int>()(1)() { acc, i -> acc * i })
   println(MyList(1, 2, 3).foldLeft<Int, MyList<Int>>()(MyList(4, 5))() { acc, i -> acc.cons()(i) })
+  println(MyList(1, 2, 3, 4, 5).foldRight<Int, Int>()(1)() { i -> { acc -> acc * i } })
   println(MyList(1, 2, 3, 4, 5).length())
   println(MyList(1, 2, 3, 4, 5).reverseWithFoldLeft())
   println(MyList(1, 2, 3).concatWithFoldLeft()(MyList(4, 5)))
@@ -259,6 +271,12 @@ fun main() {
   println(MyList(1, 2, 3).flatMap { i -> MyList(i, -i) })
   println(MyList(1, 2, 3, 4, 5).filterWithFlatMap { it % 2 != 0 })
   println(MyList(Option.Some(1), Option.Some(2), Option.Some(3)).sequence())
+  println(MyList(Option.Some(1), Option.Some(2), Option.Some(3)).sequenceWithTraverse())
   println(MyList(Option.Some(1), Option.None, Option.Some(3)).sequence())
+  println(MyList(Option.Some(1), Option.None, Option.Some(3)).sequenceWithTraverse())
   println(MyList<Option<Int>>().sequence())
+  println(MyList<Option<Int>>().sequenceWithTraverse())
+  println(MyList("1", "2", "3").traverse<String, Int>()(hLift<String, Int>()(String::toInt)))
+  println(MyList("1", "2", "3").traverseWithMap2<String, Int>()(hLift<String, Int>()(String::toInt)))
+  println(MyList("1", "aaa", "3").traverse<String, Int>()(hLift<String, Int>()(String::toInt)))
 }

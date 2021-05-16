@@ -94,7 +94,10 @@ fun <A, B> ((A) -> B).liftOption(): (Option<A>) -> Option<B> =
 fun <A, B> liftSafe(): ((A) -> B) -> (Option<A>) -> Option<B> =
   { f -> { maybeA -> try { maybeA.map(f) } catch (e: Exception) { Option.None } } }
 
-// ---------- 6.10----------
+fun <A, B> hLift(): ((A) -> B) -> (A) -> Option<B> =
+  { f -> { a -> try { Option(a).map(f) } catch (e: Exception) { Option.None } } }
+
+// ---------- 6.10 ----------
 
 fun <A, B, C> Option<A>.map2(): (Option<B>) -> ((A, B) -> C) -> Option<C> =
   { maybeB -> { f -> this.flatMap { a -> maybeB.map { b -> f(a, b) } } } }

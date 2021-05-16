@@ -16,7 +16,7 @@ import com.github.niqdev.flatMap
 
 // ------------------------------
 
-// see Option
+// see Option and MyList monad
 
 // ---------- 6.7 ----------
 
