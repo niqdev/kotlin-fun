@@ -1,6 +1,6 @@
 package com.github.niqdev
 
-// single linked list
+// data structure: single linked list
 // `sealed classes` allow defining algebraic data types (ADT): types that have a limited set of subtypes
 // covariant in A
 sealed class MyList<out A> {
@@ -156,6 +156,7 @@ fun MyList<Int>.sum(): Int {
 
 // @UnsafeVariance
 // the `absorbing element` for multiplication is 0, also called the `zero element` or `short circuiting` or `identity`
+// `foldLeft` and `foldRight` are only ways to abstract recursion
 
 fun <A, B> MyList<A>.foldLeft(): (B) -> (f: (B, A) -> B) -> B =
   { zero ->
