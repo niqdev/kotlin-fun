@@ -1,5 +1,7 @@
 package com.github.niqdev
 
+import java.lang.IllegalStateException
+
 // data structure: single linked list
 // `sealed classes` allow defining algebraic data types (ADT): types that have a limited set of subtypes
 // covariant in A
@@ -44,11 +46,33 @@ sealed class MyList<out A> {
   }
 }
 
-fun <T> MyList<T>.head(): T? =
+fun <T> MyList<T>.unsafeHead(): T? =
   when (this) {
     is MyList.MyNil -> null
     is MyList.MyCons -> head
   }
+
+// ---------- 8.2 ----------
+
+fun <T> MyList<T>.head(): Result<T> =
+  when (this) {
+    is MyList.MyNil -> Result.Empty
+    is MyList.MyCons -> Result(head)
+  }
+
+// ---------- 8.4 ----------
+
+// keep always the first value
+fun <T> MyList<T>.headWithFold(): Result<T> =
+  this.foldLeft<T, Result<T>>()(Result.Empty)() { result, t -> if (result is Result.Empty) Result(t) else result }
+
+// ---------- 8.3 ----------
+
+// keep always the last value
+fun <T> MyList<T>.last(): Result<T> =
+  this.foldLeft<T, Result<T>>()(Result.Empty)() { _, t -> Result(t) }
+
+// ------------------------------
 
 fun <T> MyList<T>.tail(): MyList<T>? =
   when (this) {
@@ -258,6 +282,14 @@ fun <A : Comparable<A>> MyList<A>.maxEither(): Either<String, A> =
     )
   }
 
+// ---------- 8.5 ----------
+
+fun <A> MyList<Result<A>>.flattenSuccessWithFilter(): MyList<A> =
+  this.filter { it is Result.Success }.map { it.getOrElse()() { throw IllegalStateException("impossible") } }
+
+fun <A> MyList<Result<A>>.flattenSuccess(): MyList<A> =
+  this.flatMap { result -> result.map<A, MyList<A>>()() { MyList(it) }.getOrElse()() { MyList.MyNil } }
+
 fun main() {
   val list: MyList<Int> = MyList(1, 2, 3)
   println(list)
@@ -294,4 +326,10 @@ fun main() {
   println(MyList("1", "aaa", "3").traverse<String, Int>()(hLift<String, Int>()(String::toInt)))
   println(MyList(1, 2, 3, 4, 5).maxEither())
   println(MyList<Int>().maxEither())
+  println(MyList<Int>().head())
+  println(MyList(1, 2, 3, 4, 5).last())
+  println(MyList(1, 2, 3, 4, 5).headWithFold())
+  println(MyList(Result(1), Result.failure("error"), Result(2)).flattenSuccessWithFilter())
+  println(MyList(Result(1), Result.failure("error"), Result(2)).flattenSuccess())
+  println(MyList(Result.failure<Int>("error")).flattenSuccess())
 }
