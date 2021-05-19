@@ -44,6 +44,7 @@ https://github.com/aedans/Katalyst
 
 # fp
 https://github.com/lucapiccinelli/konad
+https://drawson.medium.com/higher-kinds-in-kotlin-cdb6904c2fdb
 # old
 https://github.com/MarioAriasC/funKTionale
 
