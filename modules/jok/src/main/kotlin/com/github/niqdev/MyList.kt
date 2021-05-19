@@ -1,7 +1,5 @@
 package com.github.niqdev
 
-import java.lang.IllegalStateException
-
 // data structure: single linked list
 // `sealed classes` allow defining algebraic data types (ADT): types that have a limited set of subtypes
 // covariant in A
@@ -290,6 +288,69 @@ fun <A> MyList<Result<A>>.flattenSuccessWithFilter(): MyList<A> =
 fun <A> MyList<Result<A>>.flattenSuccess(): MyList<A> =
   this.flatMap { result -> result.map<A, MyList<A>>()() { MyList(it) }.getOrElse()() { MyList.MyNil } }
 
+// ---------- 8.6 ----------
+
+// what about higher-kinded types constructor ?
+fun <A> MyList<Result<A>>.sequence(): Result<MyList<A>> =
+  this.foldLeft<Result<A>, Result<MyList<A>>>()(Result(MyList()))() { result, item ->
+    result.map2<MyList<A>, A, MyList<A>>()(item)() { list ->
+      { a ->
+        list.cons()(a)
+      }
+    }
+  }
+
+// ---------- 8.7 ----------
+
+fun <A, B> MyList<A>.traverseResult(): ((A) -> Result<B>) -> Result<MyList<B>> =
+  { f ->
+    this.foldRight<A, Result<MyList<B>>>()(Result(MyList()))() { a ->
+      {
+        it.map2<MyList<B>, B, MyList<B>>()(f(a))() {
+          it.cons()::invoke
+        }
+      }
+    }
+  }
+
+// ---------- 8.8 ----------
+
+// `zipping` is the process of assembling two lists into one by combining the elements having the same index
+// `unzipping` is the reverse procedure, consisting of making two lists out of one by deconstructing the elements
+
+fun <A, B, C> MyList<A>.zipWith(): (MyList<B>) -> ((A) -> (B) -> C) -> MyList<C> =
+  {
+    { f ->
+      tailrec fun loop(la: MyList<A>, lb: MyList<B>, result: MyList<C>): MyList<C> =
+        when (la) {
+          is MyList.MyNil -> result
+          is MyList.MyCons -> when (lb) {
+            is MyList.MyNil -> result
+            is MyList.MyCons -> loop(la.tail, lb.tail, result.cons()(f(la.head)(lb.head)))
+          }
+        }
+      loop(this, it, MyList())
+    } 
+  }
+
+// ---------- 8.9 ----------
+
+fun <A> A.repeat(): (Int) -> MyList<A> =
+  { count ->
+    tailrec fun loop(tmpCount: Int, result: MyList<A>): MyList<A> =
+      when {
+        tmpCount <= 0 -> result
+        else -> loop(tmpCount - 1, result.cons()(this))
+      }
+    loop(count, MyList())
+  }
+
+fun MyList<String>.productString(): (MyList<String>) -> MyList<String> =
+  { list -> this.foldRight<String, MyList<String>>()(MyList())() { item -> { result -> result.concat()(item.repeat()(list.length()).zipWith<String, String, String>()(list)() { s1 -> { s2 -> s1 + s2 } }) } } }
+
+fun <A, B, C> MyList<A>.product(): (MyList<B>) -> ((A, B) -> C) -> MyList<C> =
+  { listB -> { f -> this.flatMap { a -> listB.map { b -> f(a, b) } } } }
+
 fun main() {
   val list: MyList<Int> = MyList(1, 2, 3)
   println(list)
@@ -332,4 +393,10 @@ fun main() {
   println(MyList(Result(1), Result.failure("error"), Result(2)).flattenSuccessWithFilter())
   println(MyList(Result(1), Result.failure("error"), Result(2)).flattenSuccess())
   println(MyList(Result.failure<Int>("error")).flattenSuccess())
+  println(MyList(Result(1), Result(2), Result(3)).sequence())
+  println(MyList(Result(1), Result.failure("error"), Result(2)).sequence())
+  println(MyList(1, 1, 1).zipWith<Int, String, Pair<Int, String>>()(MyList("a", "b", "c", "d"))() { int -> { string -> int to string } })
+  println(1.repeat()(5))
+  println(MyList("a", "b", "c").productString()(MyList("1", "2", "3")))
+  println(MyList(1, 2).product<Int, Int, Pair<Int, Int>>()(MyList(4, 5, 6))() { a, b -> a to b })
 }

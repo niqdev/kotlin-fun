@@ -41,3 +41,7 @@ fun <A> MyListMemoized<A>.length(): Long =
     is MyListMemoized.MyNil -> 0
     is MyListMemoized.MyCons -> this.size + 1 // TODO
   }
+
+// ------------------------------
+
+// see MyList
