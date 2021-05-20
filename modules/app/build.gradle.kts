@@ -2,14 +2,13 @@ plugins {
   application
   // https://docs.gradle.org/current/userguide/idea_plugin.html
   idea
-  id("org.jetbrains.kotlin.jvm") version Versions.kotlin
+  kotlin("jvm") version Versions.kotlin
   id("org.jmailen.kotlinter") version Versions.kotlinter
   // https://kotlinlang.org/docs/kapt.html
   kotlin("kapt") version Versions.kapt
 }
 
 repositories {
-  jcenter()
   mavenCentral()
   maven(url = "https://dl.bintray.com/arrow-kt/arrow-kt/")
 }
