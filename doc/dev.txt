@@ -44,9 +44,12 @@ https://github.com/aedans/Katalyst
 
 # fp
 https://github.com/lucapiccinelli/konad
-https://drawson.medium.com/higher-kinds-in-kotlin-cdb6904c2fdb
 # old
 https://github.com/MarioAriasC/funKTionale
+
+# higher kinded type constructors
+https://drawson.medium.com/higher-kinds-in-kotlin-cdb6904c2fdb
+https://www.youtube.com/watch?v=ERM0mBPNLHc
 
 # json
 https://47degrees.github.io/helios
