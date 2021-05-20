@@ -330,7 +330,7 @@ fun <A, B, C> MyList<A>.zipWith(): (MyList<B>) -> ((A) -> (B) -> C) -> MyList<C>
           }
         }
       loop(this, it, MyList())
-    } 
+    }
   }
 
 // ---------- 8.9 ----------
@@ -350,6 +350,10 @@ fun MyList<String>.productString(): (MyList<String>) -> MyList<String> =
 
 fun <A, B, C> MyList<A>.product(): (MyList<B>) -> ((A, B) -> C) -> MyList<C> =
   { listB -> { f -> this.flatMap { a -> listB.map { b -> f(a, b) } } } }
+
+// ---------- 8.10 ----------
+
+fun <A, B> MyList<Pair<A, B>>.unzip(): Pair<MyList<A>, MyList<B>> = TODO()
 
 fun main() {
   val list: MyList<Int> = MyList(1, 2, 3)

@@ -24,7 +24,7 @@ sealed class Option<out A> {
   }
 }
 
-fun List<Int>.maxOption(): Option<Int> = Option(this.max())
+fun List<Int>.maxOption(): Option<Int> = Option(this.maxOrNull())
 
 // ---------- 6.1 ----------
 
