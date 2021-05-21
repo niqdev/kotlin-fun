@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
   implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-  implementation(kotlin("script-runtime"))
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
 
   // logging
   implementation("org.slf4j:slf4j-api:${Versions.slf4j}")
