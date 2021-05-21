@@ -353,7 +353,48 @@ fun <A, B, C> MyList<A>.product(): (MyList<B>) -> ((A, B) -> C) -> MyList<C> =
 
 // ---------- 8.10 ----------
 
-fun <A, B> MyList<Pair<A, B>>.unzip(): Pair<MyList<A>, MyList<B>> = TODO()
+fun <A, B> MyList<Pair<A, B>>.unzipPair(): Pair<MyList<A>, MyList<B>> =
+  this.unzip<Pair<A, B>, A, B>()() { it }
+
+// ---------- 8.11 ----------
+
+fun <A, A1, A2> MyList<A>.unzip(): ((A) -> Pair<A1, A2>) -> Pair<MyList<A1>, MyList<A2>> =
+  { f ->
+    this.map(f).foldRight<Pair<A1, A2>, Pair<MyList<A1>, MyList<A2>>>()(MyList<A1>() to MyList<A2>())() { item ->
+      { it.first.cons()(item.first) to it.second.cons()(item.second) }
+    }
+  }
+
+// ---------- 8.12 ----------
+// ---------- 8.13 ----------
+
+fun <A> MyList<A>.getAt(): (Int) -> Result<A> =
+  { index ->
+    this.foldRight<A, Pair<Int, Result<A>>>()(0 to Result.Empty)() { item ->
+      { result ->
+        when {
+          (result.first + 1) != index -> result.first + 1 to result.second
+          else -> index to Result(item)
+        }
+      }
+    }.second
+  }
+
+// ---------- 8.14 ----------
+// ---------- 8.15 ----------
+
+fun <A> MyList<A>.splitAt(): (Int) -> Pair<MyList<A>, MyList<A>> =
+  { index ->
+    tailrec fun loop(i: Int, list: MyList<A>, result: Pair<MyList<A>, MyList<A>>): Pair<MyList<A>, MyList<A>> =
+      when {
+        i <= index -> when (list) {
+          is MyList.MyNil -> result.first.reverse() to result.second
+          is MyList.MyCons -> loop(i + 1, list.tail, result.first.cons()(list.head) to result.second)
+        }
+        else -> result.first.reverse() to result.second.concat()(list)
+      }
+    loop(0, this, MyList<A>() to MyList<A>())
+  }
 
 fun main() {
   val list: MyList<Int> = MyList(1, 2, 3)
@@ -403,4 +444,9 @@ fun main() {
   println(1.repeat()(5))
   println(MyList("a", "b", "c").productString()(MyList("1", "2", "3")))
   println(MyList(1, 2).product<Int, Int, Pair<Int, Int>>()(MyList(4, 5, 6))() { a, b -> a to b })
+  println(MyList(1 to "a", 2 to "b", 3 to "c").unzipPair())
+  println(MyList(1, 2, 3, 4, 5).getAt()(8))
+  println(MyList(1, 2, 3, 4, 5).getAt()(2))
+  println(MyList(1, 2, 3, 4, 5).splitAt()(2))
+  println(MyList(1, 2, 3, 4, 5).splitAt()(-1))
 }
