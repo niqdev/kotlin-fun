@@ -396,6 +396,49 @@ fun <A> MyList<A>.splitAt(): (Int) -> Pair<MyList<A>, MyList<A>> =
     loop(0, this, MyList<A>() to MyList<A>())
   }
 
+// ---------- 8.16 ----------
+
+fun <A> MyList<A>.contains(): (MyList<A>) -> Boolean =
+  { subList ->
+    tailrec fun loop(list: MyList<A>, currentSubList: MyList<A>): Boolean =
+      when (list) {
+        is MyList.MyNil ->
+          // a match has been found (ignore empty sublist)
+          currentSubList.isEmpty() && !subList.isEmpty()
+        is MyList.MyCons ->
+          when (currentSubList) {
+            is MyList.MyNil ->
+              // a match has been found (ignore empty sublist)
+              !subList.isEmpty()
+            is MyList.MyCons ->
+              when {
+                // possible match: advance sublist
+                list.head == currentSubList.head -> loop(list.tail, currentSubList.tail)
+                // continue searching: restart sublist
+                else -> loop(list.tail, subList)
+              }
+          }
+      }
+    loop(this, subList)
+  }
+
+// ---------- 8.17 ----------
+
+fun <A, B> MyList<A>.groupBy(): ((A) -> B) -> Map<B, MyList<A>> =
+  { f ->
+    tailrec fun loop(list: MyList<A>, result: Map<B, MyList<A>>): Map<B, MyList<A>> =
+      when (list) {
+        is MyList.MyNil ->
+          result
+        is MyList.MyCons -> {
+          val key = f(list.head)
+          val value = result.getOrDefault(key, MyList())
+          loop(list.tail, result.plus(key to value.cons()(list.head)))
+        }
+      }
+    loop(this, mapOf())
+  }
+
 fun main() {
   val list: MyList<Int> = MyList(1, 2, 3)
   println(list)
@@ -449,4 +492,7 @@ fun main() {
   println(MyList(1, 2, 3, 4, 5).getAt()(2))
   println(MyList(1, 2, 3, 4, 5).splitAt()(2))
   println(MyList(1, 2, 3, 4, 5).splitAt()(-1))
+  println(MyList(1, 2, 3, 4, 5).contains()(MyList(3, 4, 5)))
+  println(MyList(1, 2, 3, 4, 5).contains()(MyList(2, 4, 5)))
+  println(MyList("a1", "b1", "a2", "c1", "d1").groupBy<String, String>()() { if (it.startsWith("a")) "A" else "other" })
 }
