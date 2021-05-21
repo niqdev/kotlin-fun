@@ -56,3 +56,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
     jvmTarget = "1.8"
   }
 }
+// TODO how to set JVM options ???
+tasks.named<JavaExec>("run") {
+  jvmArgs = listOf("-Dkotlinx.coroutines.debug")
+}

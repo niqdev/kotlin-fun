@@ -81,3 +81,6 @@ https://square.github.io/kotlinpoet
 # TODO
 https://www.youtube.com/watch?v=LpqvtgibbsQ
 https://www.youtube.com/watch?v=pvYAQNT4o0I
+
+# coroutine
+https://elizarov.medium.com/reactive-streams-and-kotlin-flows-bfd12772cda4
