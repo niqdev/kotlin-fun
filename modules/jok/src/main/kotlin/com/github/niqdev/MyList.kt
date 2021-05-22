@@ -439,6 +439,33 @@ fun <A, B> MyList<A>.groupBy(): ((A) -> B) -> Map<B, MyList<A>> =
     loop(this, mapOf())
   }
 
+// ---------- 8.18 ----------
+
+fun <A, B> A.unfold(): ((A) -> (Option<Pair<A, B>>)) -> MyList<B> =
+  { f ->
+    tailrec fun loop(item: A, result: MyList<B>): MyList<B> =
+      when (val maybe = f(item)) {
+        is Option.None -> result
+        is Option.Some -> loop(maybe.value.first, result.cons()(maybe.value.second))
+      }
+    loop(this, MyList())
+  }
+
+// ---------- 8.19 ----------
+
+fun Int.range(): (Int) -> MyList<Int> =
+  { max -> this.unfold<Int, Int>()() { if (it < max) Option(it + 1 to it) else Option.None }.reverse() }
+
+// ---------- 8.20 ----------
+
+fun <A> MyList<A>.exists(): ((A) -> Boolean) -> Boolean =
+  { f -> this.foldLeft<A, Boolean>()(false)() { result, item -> if (f(item)) true else result } }
+
+// ---------- 8.21 ----------
+
+fun <A> MyList<A>.forAll(): ((A) -> Boolean) -> Boolean =
+  { f -> this.foldLeft<A, Boolean>()(true)() { result, item -> f(item) && result } }
+
 fun main() {
   val list: MyList<Int> = MyList(1, 2, 3)
   println(list)
@@ -495,4 +522,10 @@ fun main() {
   println(MyList(1, 2, 3, 4, 5).contains()(MyList(3, 4, 5)))
   println(MyList(1, 2, 3, 4, 5).contains()(MyList(2, 4, 5)))
   println(MyList("a1", "b1", "a2", "c1", "d1").groupBy<String, String>()() { if (it.startsWith("a")) "A" else "other" })
+  println(0.unfold<Int, Int>()() { if (it < 10) Option(it + 1 to it) else Option.None })
+  println(3.range()(8))
+  println(MyList(1, 2, 3, 4, 5).exists()() { it == 3 })
+  println(MyList(1, 2, 3, 4, 5).exists()() { it == 8 })
+  println(MyList(2, 4, 6, 8).forAll()() { it % 2 == 0 })
+  println(MyList(1, 2, 3, 4, 5).forAll()() { it % 2 == 0 })
 }
