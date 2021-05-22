@@ -1,4 +1,6 @@
-# kotlin-fp
+# kotlin-fun
+
+Personal notes about Kotlin. The project's name was inspired by [this](https://www.youtube.com/watch?v=GrzM3jK3Y2E) talk!
 
 * Kotlin [docs](https://kotlinlang.org/docs/home.html)
 
@@ -29,7 +31,6 @@
 
 ## TODO
 
-* rename: kotlin-playground
 * format/lint
 * dokka (markdown)
 * dependabot
