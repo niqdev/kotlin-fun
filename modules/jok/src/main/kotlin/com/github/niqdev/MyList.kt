@@ -20,10 +20,10 @@ sealed class MyList<out A> {
     override fun toString(): String {
       tailrec fun loop(tmp: MyList<A>, result: String): String =
         when (tmp) {
-          is MyNil -> "${result}Nil"
+          is MyNil -> "${result}Nil)"
           is MyCons -> loop(tmp.tail, "$result${tmp.head}, ")
         }
-      return loop(this, "")
+      return loop(this, "MyList(")
     }
   }
 
@@ -466,6 +466,34 @@ fun <A> MyList<A>.exists(): ((A) -> Boolean) -> Boolean =
 fun <A> MyList<A>.forAll(): ((A) -> Boolean) -> Boolean =
   { f -> this.foldLeft<A, Boolean>()(true)() { result, item -> f(item) && result } }
 
+// ---------- 8.22 ----------
+
+fun <A> MyList<A>.splitListAt(): (Int) -> MyList<MyList<A>> =
+  { index ->
+    if (this.isEmpty()) MyList()
+    else {
+      val pair = this.splitAt()(this.length() / index)
+      MyList(pair.first, pair.second)
+    }
+  }
+
+fun <A> MyList<A>.divide(): (Int) -> MyList<MyList<A>> =
+  { index ->
+    this.splitListAt()(index).foldLeft<MyList<A>, MyList<MyList<A>>>()(MyList())() { result, item ->
+      if (item.length() > index) result.concat()(item.divideByTwo())
+      else result.cons()(item)
+    }
+  }
+
+fun <A> MyList<A>.divideByTwo(): MyList<MyList<A>> =
+  this.divide()(2)
+
+// ---------- 8.23 ----------
+// ---------- 8.24 ----------
+
+// see https://github.com/pysaumont/fpinkotlin/blob/master/fpinkotlin-parent/fpinkotlin-advancedlisthandling-solutions/src/main/kotlin/com/fpinkotlin/advancedlisthandling/exercise23/List.kt
+fun <A, B> MyList<A>.parFoldLeft(es: java.util.concurrent.ExecutorService): (B) -> ((B, A) -> B) -> ((B, B) -> B) -> Result<B> = TODO()
+
 fun main() {
   val list: MyList<Int> = MyList(1, 2, 3)
   println(list)
@@ -528,4 +556,9 @@ fun main() {
   println(MyList(1, 2, 3, 4, 5).exists()() { it == 8 })
   println(MyList(2, 4, 6, 8).forAll()() { it % 2 == 0 })
   println(MyList(1, 2, 3, 4, 5).forAll()() { it % 2 == 0 })
+  println(MyList(1, 2, 3, 4, 5).splitListAt()(2))
+  println(MyList<Int>().splitListAt()(2))
+  println(MyList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12).divideByTwo())
+  println(MyList(1, 2, 3).divideByTwo())
+  println(MyList(1, 2).divideByTwo())
 }
