@@ -71,3 +71,7 @@ fun MyLazy<String>.concat(): (MyLazy<String>) -> MyLazy<String> =
 val hello = MyLazy { println("load hello"); "hello" }
 hello.concat()(MyLazy { println("load world"); "world" }).invoke()
 hello.concat()(MyLazy { println("load world"); "world" }).invoke()
+
+// ------------------------------
+
+// see MyLazy and MyList and MyStream

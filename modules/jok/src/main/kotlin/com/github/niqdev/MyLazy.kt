@@ -24,6 +24,12 @@ fun <A, B> MyLazy<A>.map(): ((A) -> B) -> MyLazy<B> =
 fun <A, B> MyLazy<A>.flatMap(): ((A) -> MyLazy<B>) -> MyLazy<B> =
   { f -> f(this.invoke()) }
 
+// ---------- 9.10 ----------
+
+// TODO ???
+fun <A> MyLazy<A>.forEach(): (Boolean) -> (() -> Unit) -> (() -> Unit) -> MyLazy<Unit> =
+  { condition -> { truthy -> { falsy -> if (condition) MyLazy { truthy() } else MyLazy { falsy() } } } }
+
 fun main() {
   liftMyLazy2<String, String, String>()(greetingMessage)
 
