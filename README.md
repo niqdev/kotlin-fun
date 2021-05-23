@@ -40,10 +40,11 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
 
 * [x] dependency management: [Dependabot](https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically)
 * [x] linting/formatting: [ktlint](https://ktlint.github.io)
-* [x] multi-project: [doc](https://docs.gradle.org/current/userguide/multi_project_builds.html)
+* [x] Gradle multi-project: [doc](https://docs.gradle.org/current/userguide/multi_project_builds.html)
 * [x] Gradle `buildSrc`
-* [ ] CI/CD with github action
-* [ ] release management with github action (git commit/tag)
+* [ ] github action
+    * [ ] CI/CD
+    * [ ] release management (git commit/tag)
 * [ ] markdown documentation: [dokka](https://kotlin.github.io/dokka) vs [docusaurus](https://docusaurus.io)
 * [ ] property based tests with [Kotest](https://kotest.io)
 * [ ] http with [Ktor](https://ktor.io)
