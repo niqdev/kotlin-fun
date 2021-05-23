@@ -30,26 +30,26 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
 
 ## Modules
 
-* Kotlin in Action [ [book](https://www.manning.com/books/kotlin-in-action) | [repository](https://github.com/Kotlin/kotlin-in-action) | [notes](modules/kia/src/main/kotlin/com/github/niqdev) ]
-* The Joy of Kotlin [ [book](https://www.manning.com/books/the-joy-of-kotlin) | [repository](https://github.com/pysaumont/fpinkotlin) | [notes](modules/jok/src/main/kotlin/com/github/niqdev) ]
-* Functional Programming in Kotlin [ [book](https://www.manning.com/books/functional-programming-in-kotlin) ]
-* Category Theory for Programmers [ [book](https://github.com/hmemcpy/milewski-ctfp-pdf) ]
-* Crafting Interpreters [ [book](https://craftinginterpreters.com) ]
+* Kotlin in Action [ [book](https://www.manning.com/books/kotlin-in-action) | [notes](modules/kia/src/main/kotlin/com/github/niqdev) ]
+* The Joy of Kotlin [ [book](https://www.manning.com/books/the-joy-of-kotlin) | [notes](modules/jok/src/main/kotlin/com/github/niqdev) ]
+* Functional Programming in Kotlin [ [book](https://www.manning.com/books/functional-programming-in-kotlin) | TODO ]
+* Category Theory for Programmers [ [book](https://github.com/hmemcpy/milewski-ctfp-pdf) | TODO ]
+* Crafting Interpreters [ [book](https://craftinginterpreters.com) | TODO ]
 
-## TODO
+## Examples
 
-* format/lint
-* dokka (markdown)
-* dependabot
-* version from git commit/tag
-* ~~travis~~ github action
-* multi-project
-* examples
-    - logging
-    - property based tests
-    - http (ktor)
-    - postgres
-    - kafka
-* fp
-    - re-implement basic types
-    - arrows
+* [x] dependency management: [Dependabot](https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically)
+* [x] linting/formatting: [ktlint](https://ktlint.github.io)
+* [x] multi-project: [doc](https://docs.gradle.org/current/userguide/multi_project_builds.html)
+* [x] Gradle `buildSrc`
+* [ ] CI/CD with github action
+* [ ] release management with github action (git commit/tag)
+* [ ] markdown documentation: [dokka](https://kotlin.github.io/dokka) vs [docusaurus](https://docusaurus.io)
+* [ ] property based tests with [Kotest](https://kotest.io)
+* [ ] http with [Ktor](https://ktor.io)
+    * [x] logging
+    * [x] config with [hoplite](https://github.com/sksamuel/hoplite)
+    * [ ] server
+    * [ ] client
+* [ ] postgres
+* [ ] kafka
