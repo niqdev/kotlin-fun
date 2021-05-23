@@ -52,4 +52,43 @@ orLazy({ first }, { second })
 
 // ---------- 9.1 ----------
 
-// pag 231
+class MyLazy<out A>(f: () -> A) : () -> A {
+  private val value: A by lazy(f)
+  override operator fun invoke(): A = value
+}
+
+val myFirst = MyLazy { true }
+val mySecond = MyLazy { throw IllegalStateException() }
+
+fun orMyLazy(a: MyLazy<Boolean>, b: MyLazy<Boolean>): Boolean = if (a()) true else b()
+
+orMyLazy(myFirst, mySecond)
+
+// ---------- 9.2 ----------
+// ---------- 9.3 ----------
+
+fun MyLazy<String>.concat(): (MyLazy<String>) -> MyLazy<String> =
+  { value -> MyLazy { "${this.invoke()} | ${value()}" } }
+
+// hello is evaluated only once
+val hello = MyLazy { println("load hello"); "hello" }
+hello.concat()(MyLazy { println("load world"); "world" }).invoke()
+hello.concat()(MyLazy { println("load world"); "world" }).invoke()
+
+// ---------- 9.4 ----------
+// ---------- 9.5 ----------
+
+fun <A, B, C> liftMyLazy2(): ((A) -> (B) -> C) -> (MyLazy<A>) -> (MyLazy<B>) -> MyLazy<C> =
+  { eager -> { lazy1 -> { lazy2 -> MyLazy { eager(lazy1())(lazy2()) } } } }
+
+val greetingMessage: (String) -> (String) -> String =
+  { greetings -> { name -> "$greetings, $name" } }
+
+liftMyLazy2<String, String, String>()(greetingMessage)
+
+// ---------- 9.6 ----------
+
+fun <A, B> MyLazy<A>.map(): ((A) -> B) -> MyLazy<B> =
+  { f -> MyLazy { f(this.invoke()) } }
+
+MyLazy { 42 }.map<Int, String>()() { "value: $it" }.invoke()
