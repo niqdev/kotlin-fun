@@ -37,13 +37,10 @@ dependencies {
 application {
   mainClass.set("com.github.niqdev.AppKt")
 }
-
-// TODO how to run multiple main
-// TODO ./gradlew :modules:app:run
-// TODO ./gradlew run -Pmain=com.github.niqdev.HelloWorld
-//application {
-//  mainClass.set(project.findProperty("main").toString())
-//}
+// TODO how to set JVM options ???
+tasks.named<JavaExec>("run") {
+  jvmArgs = listOf("-Dkotlinx.coroutines.debug")
+}
 
 idea {
   module.setDownloadJavadoc(true)
@@ -55,8 +52,4 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
   kotlinOptions {
     jvmTarget = "1.8"
   }
-}
-// TODO how to set JVM options ???
-tasks.named<JavaExec>("run") {
-  jvmArgs = listOf("-Dkotlinx.coroutines.debug")
 }

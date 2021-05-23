@@ -6,11 +6,16 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
 
 ```bash
 ./gradlew tasks
+./gradlew :modules:jok:tasks
 
 ./gradlew clean build
 ./gradlew test
 ./gradlew :modules:app:test --tests *AppTest
 ./gradlew run
+
+# custom main tasks
+./gradlew runMyStream
+./gradlew runMyList --debug-jvm
 
 # format code
 ./gradlew lintKotlin

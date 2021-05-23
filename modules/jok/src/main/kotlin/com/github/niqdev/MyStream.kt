@@ -86,11 +86,15 @@ fun <A> MyStream<A>.dropAtMost(): (Int) -> MyStream<A> =
 
 // ---------- 9.15 ----------
 
-fun <A> MyStream<A>.toList(): MyList<A> = TODO()
+fun <A> MyStream<A>.toList(): MyList<A> =
+  when (this) {
+    is MyStream.Empty -> MyList.MyNil
+    is MyStream.Cons -> MyList(this.head()).concat()(this.tail().toList())
+  }
 
 fun main() {
   // val stream = MyStream.from(0).dropAtMost()(60000).takeAtMost()(60000)
   println(MyStream.from(3).head())
 
-  println(({ 42 }).repeat().takeAtMost()(5))
+  println(({ 42 }).repeat().takeAtMost()(5).toList())
 }
