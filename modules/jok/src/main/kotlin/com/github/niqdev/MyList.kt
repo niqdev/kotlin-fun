@@ -494,6 +494,16 @@ fun <A> MyList<A>.divideByTwo(): MyList<MyList<A>> =
 // see https://github.com/pysaumont/fpinkotlin/blob/master/fpinkotlin-parent/fpinkotlin-advancedlisthandling-solutions/src/main/kotlin/com/fpinkotlin/advancedlisthandling/exercise23/List.kt
 fun <A, B> MyList<A>.parFoldLeft(es: java.util.concurrent.ExecutorService): (B) -> ((B, A) -> B) -> ((B, B) -> B) -> Result<B> = TODO()
 
+// ---------- 9.8 ----------
+
+fun <A> MyList<MyLazy<A>>.sequence(): MyLazy<MyList<A>> =
+  MyLazy { this.map { it.invoke() } }
+
+// ---------- 9.9 ----------
+
+fun <A> MyList<MyLazy<A>>.sequenceResult(): MyLazy<Result<MyList<A>>> =
+  MyLazy { this.map { Result.of(it) }.sequence() }
+
 fun main() {
   val list: MyList<Int> = MyList(1, 2, 3)
   println(list)
@@ -561,4 +571,6 @@ fun main() {
   println(MyList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12).divideByTwo())
   println(MyList(1, 2, 3).divideByTwo())
   println(MyList(1, 2).divideByTwo())
+  println(MyList(MyLazy { 1 }, MyLazy { 2 }, MyLazy { 3 }).sequence().invoke())
+  println(MyList(MyLazy { 1 }, MyLazy { 2 }, MyLazy { throw IllegalArgumentException() }).sequenceResult().invoke())
 }

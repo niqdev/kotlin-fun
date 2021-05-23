@@ -38,6 +38,9 @@ sealed class Result<out A> : Serializable {
         // wrap checked exception in runtime exception
         else -> Failure(IllegalStateException(exception))
       }
+
+    fun <A> of(a: () -> A): Result<A> =
+      try { Result(a()) } catch (e: Throwable) { failure(e) }
   }
 }
 
