@@ -147,7 +147,7 @@ fun <A> MyStream<A>.dropWhile(): ((A) -> Boolean) -> MyStream<A> =
     loop(this)
   }
 
-// ---------- 9.20 ----------
+// ---------- 9.19 ----------
 
 fun <A> MyStream<A>.exists(): ((A) -> Boolean) -> Boolean =
   { p ->
@@ -163,6 +163,41 @@ fun <A> MyStream<A>.exists(): ((A) -> Boolean) -> Boolean =
     loop(this)
   }
 
+// ---------- 9.20 ----------
+
+fun <A, B> MyStream<A>.foldRight(): (MyLazy<B>) -> ((A) -> (MyLazy<B>) -> B) -> B =
+  { zero ->
+    { f ->
+      when (this) {
+        is MyStream.Empty -> zero()
+        is MyStream.Cons -> f(this.unsafeHead())(MyLazy { this.unsafeTail().foldRight<A, B>()(zero)(f) })
+      }
+    } 
+  }
+
+// FIXME ???
+fun <A, B> MyStream<A>.foldRight0(): (MyLazy<B>) -> ((A) -> (MyLazy<B>) -> B) -> B =
+  { zero ->
+    { f ->
+      tailrec fun loop(stream: MyStream<A>, result: MyLazy<B>): B =
+        when (stream) {
+          is MyStream.Empty -> result()
+          is MyStream.Cons -> loop(stream.unsafeTail(), MyLazy { f(stream.unsafeHead())(result) })
+        }
+      loop(this, zero)
+    } 
+  }
+
+// ---------- 9.21 ----------
+
+fun <A> MyStream<A>.takeWhileWithFoldRight(): ((A) -> Boolean) -> MyStream<A> =
+  { p -> this.foldRight<A, MyStream<A>>()(MyLazy { MyStream.Empty })() { a -> { lazyB -> if (p(a)) MyStream.cons(MyLazy { a }, lazyB) else lazyB() } } }
+
+// ---------- 9.22 ----------
+
+fun <A> MyStream<A>.headSafe(): Result<A> =
+  this.foldRight<A, Result<A>>()(MyLazy { Result.Empty })() { a -> { Result.of { a } } }
+
 fun main() {
   println(MyStream.from(3).head())
 
@@ -173,4 +208,8 @@ fun main() {
   println(MyStream.from(0).takeWhile()() { it < 5 }.toList())
   println(MyStream.from(0).dropWhile()() { it < 5 }.takeAtMost()(5).toList())
   println(MyStream.from(0).exists()() { it == 8 })
+  println(MyStream.from(1).takeAtMost()(5).foldRight<Int, Int>()(MyLazy { 10 })() { a -> { lazyB -> lazyB() + a } })
+  println(MyStream.from(0).takeWhileWithFoldRight()() { it < 5 }.toList())
+  println(MyStream.from(3).headSafe())
+  println(MyStream.Empty.headSafe())
 }
