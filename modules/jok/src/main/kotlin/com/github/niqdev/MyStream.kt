@@ -21,6 +21,14 @@ sealed class MyStream<out A> {
 
     fun from(i: Int): MyStream<Int> =
       cons(MyLazy { i }, MyLazy { from(i + 1) })
+
+    // ---------- 9.16 ----------
+
+    fun <A> iterate(): (A) -> ((A) -> A) -> MyStream<A> =
+      { seed -> { f -> cons(MyLazy { seed }, MyLazy { iterate<A>()(f(seed))(f) }) } }
+
+    fun fromIterate(i: Int): MyStream<Int> =
+      iterate<Int>()(i)() { it + 1 }
   }
 }
 
@@ -112,9 +120,57 @@ fun <A> MyStream<A>.toList(): MyList<A> {
   return loop(this, MyList())
 }
 
+// ---------- 9.17 ----------
+
+fun <A> MyStream<A>.takeWhile(): ((A) -> Boolean) -> MyStream<A> =
+  { predicate ->
+    tailrec fun loop(stream: MyStream<A>, result: MyStream<A>): MyStream<A> =
+      when {
+        this is MyStream.Cons && (predicate(stream.unsafeHead())) ->
+          loop(stream.unsafeTail(), MyStream.cons(MyLazy { stream.unsafeHead() }, MyLazy { result }))
+        else -> result
+      }
+    loop(this, MyStream.Empty)
+  }
+
+// ---------- 9.18 ----------
+
+fun <A> MyStream<A>.dropWhile(): ((A) -> Boolean) -> MyStream<A> =
+  { predicate ->
+    tailrec fun loop(stream: MyStream<A>): MyStream<A> {
+      return when {
+        this is MyStream.Cons && (predicate(stream.unsafeHead())) ->
+          loop(stream.unsafeTail())
+        else -> stream
+      }
+    }
+    loop(this)
+  }
+
+// ---------- 9.20 ----------
+
+fun <A> MyStream<A>.exists(): ((A) -> Boolean) -> Boolean =
+  { p ->
+    tailrec fun loop(stream: MyStream<A>): Boolean =
+      when (stream) {
+        is MyStream.Empty -> false
+        is MyStream.Cons ->
+          when {
+            p(stream.unsafeHead()) -> true
+            else -> loop(stream.unsafeTail())
+          }
+      }
+    loop(this)
+  }
+
 fun main() {
   println(MyStream.from(3).head())
 
   println(({ 42 }).repeat().takeAtMost()(5).toList())
   println(MyStream.from(3).dropAtMost()(39).takeAtMost()(8).toList())
+  println(MyStream.from(0).dropAtMost()(60000).takeAtMost()(60000))
+  println(MyStream.fromIterate(-10).takeAtMost()(5).toList())
+  println(MyStream.from(0).takeWhile()() { it < 5 }.toList())
+  println(MyStream.from(0).dropWhile()() { it < 5 }.takeAtMost()(5).toList())
+  println(MyStream.from(0).exists()() { it == 8 })
 }
