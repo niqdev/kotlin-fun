@@ -30,6 +30,12 @@ fun <A> MyStream<A>.head(): Result<A> =
     is MyStream.Cons -> Result.of(this.head)
   }
 
+fun <A> MyStream<A>.unsafeHead(): A =
+  when (this) {
+    is MyStream.Empty -> throw IllegalArgumentException("invalid head")
+    is MyStream.Cons -> this.head()
+  }
+
 fun <A> MyStream<A>.tail(): Result<MyStream<A>> =
   when (this) {
     is MyStream.Empty -> Result()
@@ -55,13 +61,12 @@ fun <A> (() -> A).repeat(): MyStream<A> =
 
 // ---------- 9.12 ----------
 
-// TODO test
 fun <A> MyStream<A>.takeAtMost(): (Int) -> MyStream<A> =
   { length ->
     tailrec fun loop(stream: MyStream<A>, count: Int, result: MyStream<A>): MyStream<A> =
       when {
         this is MyStream.Cons && (count < length) ->
-          loop(stream.unsafeTail(), count + 1, MyStream.cons(this.head, MyLazy { result }))
+          loop(stream.unsafeTail(), count + 1, MyStream.cons(MyLazy { stream.unsafeHead() }, MyLazy { result }))
         else -> result
       }
     loop(this, 0, MyStream.Empty)
@@ -70,31 +75,46 @@ fun <A> MyStream<A>.takeAtMost(): (Int) -> MyStream<A> =
 // ---------- 9.13 ----------
 // ---------- 9.14 ----------
 
-// TODO test
 fun <A> MyStream<A>.dropAtMost(): (Int) -> MyStream<A> =
   { length ->
-    tailrec fun loop(stream: MyStream<A>, count: Int, result: MyStream<A>): MyStream<A> =
-      when {
+    tailrec fun loop(stream: MyStream<A>, count: Int): MyStream<A> {
+      return when {
         this is MyStream.Cons && (count < length) ->
-          loop(stream.unsafeTail(), count + 1, MyStream.Empty)
-        this is MyStream.Cons ->
-          loop(stream.unsafeTail(), count + 1, MyStream.cons(this.head, MyLazy { result }))
-        else -> result
+          loop(stream.unsafeTail(), count + 1)
+        else -> stream
       }
-    loop(this, 0, MyStream.Empty)
+    }
+    loop(this, 0)
   }
 
 // ---------- 9.15 ----------
 
-fun <A> MyStream<A>.toList(): MyList<A> =
-  when (this) {
-    is MyStream.Empty -> MyList.MyNil
-    is MyStream.Cons -> MyList(this.head()).concat()(this.tail().toList())
-  }
+fun <A> MyStream<A>.toList(): MyList<A> {
+  tailrec fun loop(stream: MyStream<A>, result: MyList<A>): MyList<A> =
+    when (this) {
+      is MyStream.Empty -> result
+      is MyStream.Cons -> {
+        val headList = when (val maybeHead = stream.head()) {
+          is Result.Success -> MyList(maybeHead.value)
+          else -> MyList.MyNil
+        }
+        val tailStream = when (val maybeTail = stream.tail()) {
+          is Result.Success -> maybeTail.value
+          else -> MyStream.Empty
+        }
+        // println("$headList | $tailStream | $result")
+        when {
+          headList.isEmpty() -> result
+          else -> loop(tailStream, headList.concat()(result))
+        }
+      }
+    }
+  return loop(this, MyList())
+}
 
 fun main() {
-  // val stream = MyStream.from(0).dropAtMost()(60000).takeAtMost()(60000)
   println(MyStream.from(3).head())
 
   println(({ 42 }).repeat().takeAtMost()(5).toList())
+  println(MyStream.from(3).dropAtMost()(39).takeAtMost()(8).toList())
 }
