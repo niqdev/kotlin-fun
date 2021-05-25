@@ -1,8 +1,8 @@
 object Versions {
   // plugins
-  val kotlin = "1.5.0"
+  val kotlin = "1.5.10"
   val kotlinter = "3.4.4"
-  val kapt = "1.5.0-RC"
+  val kapt = "1.5.10"
 
   val arrow = "0.13.2"
   val hoplite = "1.4.0"

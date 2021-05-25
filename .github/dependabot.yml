@@ -1,5 +1,6 @@
 # https://help.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
-# https://github.blog/2020-06-01-keep-all-your-packages-up-to-date-with-dependabot/
+# https://github.blog/2020-06-01-keep-all-your-packages-up-to-date-with-dependabot
+# https://github.com/dependabot/dependabot-core/issues/2180
 
 version: 2
 updates:
