@@ -5,6 +5,7 @@ object Versions {
   val kapt = "1.5.10"
 
   val arrow = "0.13.2"
+  val clikt = "3.2.0"
   val hoplite = "1.4.0"
   val logback = "1.2.3"
   val reactor = "3.4.6"

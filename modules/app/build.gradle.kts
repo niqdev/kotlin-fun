@@ -26,6 +26,8 @@ dependencies {
   implementation("com.sksamuel.hoplite:hoplite-core:${Versions.hoplite}")
   implementation("com.sksamuel.hoplite:hoplite-yaml:${Versions.hoplite}")
 
+  implementation("com.github.ajalt.clikt:clikt:${Versions.clikt}")
+
   // reactor
   implementation("io.projectreactor:reactor-core:${Versions.reactor}")
   implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:${Versions.reactorKotlin}")
@@ -55,6 +57,11 @@ tasks.named<JavaExec>("run") {
 task("runFileExample", JavaExec::class) {
   main = "com.github.niqdev.reactor.FileExampleKt"
   classpath = sourceSets["main"].runtimeClasspath
+}
+task("runCliktExample", JavaExec::class) {
+  main = "com.github.niqdev.clikt.CliktExampleKt"
+  classpath = sourceSets["main"].runtimeClasspath
+  args = listOf((project.properties.getOrElse("args", { "--help" }) as String))
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
