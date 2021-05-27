@@ -13,6 +13,7 @@ repositories {
   maven(url = "https://dl.bintray.com/arrow-kt/arrow-kt/")
 }
 
+// TODO remove multiple dependency versions e.g. kotlin-stdlib
 dependencies {
   implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
@@ -25,6 +26,10 @@ dependencies {
   implementation("com.sksamuel.hoplite:hoplite-core:${Versions.hoplite}")
   implementation("com.sksamuel.hoplite:hoplite-yaml:${Versions.hoplite}")
 
+  // reactor
+  implementation("io.projectreactor:reactor-core:${Versions.reactor}")
+  implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:${Versions.reactorKotlin}")
+
   // arrow
   implementation("io.arrow-kt:arrow-core:${Versions.arrow}")
   kapt("io.arrow-kt:arrow-meta:${Versions.arrow}")
@@ -32,6 +37,11 @@ dependencies {
   // tests
   testImplementation("org.jetbrains.kotlin:kotlin-test")
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+}
+
+idea {
+  module.setDownloadJavadoc(true)
+  module.setDownloadSources(true)
 }
 
 application {
@@ -42,12 +52,11 @@ tasks.named<JavaExec>("run") {
   jvmArgs = listOf("-Dkotlinx.coroutines.debug")
 }
 
-idea {
-  module.setDownloadJavadoc(true)
-  module.setDownloadSources(true)
+task("runFileExample", JavaExec::class) {
+  main = "com.github.niqdev.reactor.FileExampleKt"
+  classpath = sourceSets["main"].runtimeClasspath
 }
 
-// TODO remove multiple dependency of kotlin-stdlib 1.4.20 and 1.4.32 ???
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
   kotlinOptions {
     jvmTarget = "1.8"
