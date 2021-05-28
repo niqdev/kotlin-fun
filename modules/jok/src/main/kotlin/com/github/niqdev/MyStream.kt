@@ -172,7 +172,7 @@ fun <A, B> MyStream<A>.foldRight(): (MyLazy<B>) -> ((A) -> (MyLazy<B>) -> B) -> 
         is MyStream.Empty -> zero()
         is MyStream.Cons -> f(this.unsafeHead())(MyLazy { this.unsafeTail().foldRight<A, B>()(zero)(f) })
       }
-    } 
+    }
   }
 
 // FIXME ???
@@ -185,22 +185,41 @@ fun <A, B> MyStream<A>.foldRight0(): (MyLazy<B>) -> ((A) -> (MyLazy<B>) -> B) ->
           is MyStream.Cons -> loop(stream.unsafeTail(), MyLazy { f(stream.unsafeHead())(result) })
         }
       loop(this, zero)
-    } 
+    }
   }
 
 // ---------- 9.21 ----------
 
 fun <A> MyStream<A>.takeWhileWithFoldRight(): ((A) -> Boolean) -> MyStream<A> =
-  { p -> this.foldRight<A, MyStream<A>>()(MyLazy { MyStream.Empty })() { a -> { lazyB -> if (p(a)) MyStream.cons(MyLazy { a }, lazyB) else lazyB() } } }
+  { p -> this.foldRight<A, MyStream<A>>()(MyLazy { MyStream.Empty })() { a -> { lazyB -> if (p(a)) MyStream.cons(MyLazy { a }, lazyB) else MyStream.Empty } } }
 
 // ---------- 9.22 ----------
 
 fun <A> MyStream<A>.headSafe(): Result<A> =
   this.foldRight<A, Result<A>>()(MyLazy { Result.Empty })() { a -> { Result.of { a } } }
 
+// ---------- 9.23 ----------
+
+fun <A, B> MyStream<A>.map(): ((A) -> B) -> MyStream<B> =
+  { f -> this.foldRight<A, MyStream<B>>()(MyLazy { MyStream.Empty })() { a -> { lazyB -> MyStream.cons(MyLazy { f(a) }, lazyB) } } }
+
+// ---------- 9.24 ----------
+
+fun <A> MyStream<A>.filter(): ((A) -> Boolean) -> MyStream<A> =
+  { p -> this.foldRight<A, MyStream<A>>()(MyLazy { MyStream.Empty })() { a -> { lazyB -> if (p(a)) MyStream.cons(MyLazy { a }, lazyB) else lazyB() } } }
+
+// ---------- 9.25 ----------
+
+fun <A> MyStream<A>.append(): (MyLazy<MyStream<A>>) -> MyStream<A> =
+  { lazyStreamA -> this.foldRight<A, MyStream<A>>()(lazyStreamA)() { a -> { lazyA -> MyStream.cons(MyLazy { a }, lazyA) } } }
+
+// ---------- 9.26 ----------
+
+fun <A, B> MyStream<A>.flatMap(): ((A) -> MyStream<B>) -> MyStream<B> =
+  { f -> this.foldRight<A, MyStream<B>>()(MyLazy { MyStream.Empty })() { a -> { lazyB -> f(a).append()(lazyB) } } }
+
 fun main() {
   println(MyStream.from(3).head())
-
   println(({ 42 }).repeat().takeAtMost()(5).toList())
   println(MyStream.from(3).dropAtMost()(39).takeAtMost()(8).toList())
   println(MyStream.from(0).dropAtMost()(60000).takeAtMost()(60000))
@@ -212,4 +231,15 @@ fun main() {
   println(MyStream.from(0).takeWhileWithFoldRight()() { it < 5 }.toList())
   println(MyStream.from(3).headSafe())
   println(MyStream.Empty.headSafe())
+  println(MyStream.from(3).takeAtMost()(5).map<Int, String>()() { a -> "value: $a" }.toList())
+  println(MyStream.from(0).filter()() { it % 2 == 0 }.takeAtMost()(10).toList())
+  println(MyStream.from(42).flatMap<Int, String>()() { MyStream.cons(MyLazy { "value: $it" }, MyLazy { MyStream.Empty }) }.takeAtMost()(5).toList())
+
+  // compare invocations
+  val myMap: (Int) -> Int = { println("map $it"); it }
+  val myFilter: (Int) -> Boolean = { println("filter $it"); true }
+  // before all map, then all filter
+  println(MyList(1, 2, 3, 4, 5).map(myMap).filter(myFilter))
+  // map and filter on every item
+  println(MyStream.from(1).takeAtMost()(5).map<Int, Int>()(myMap).filter()(myFilter).toList())
 }
