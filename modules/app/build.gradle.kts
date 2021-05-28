@@ -61,7 +61,7 @@ task("runFileExample", JavaExec::class) {
 task("runCliktExample", JavaExec::class) {
   main = "com.github.niqdev.clikt.CliktExampleKt"
   classpath = sourceSets["main"].runtimeClasspath
-  args = listOf((project.properties.getOrElse("args", { "--help" }) as String))
+  args = listOf((project.properties.getOrElse("myArgs", { "--help" }) as String))
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {

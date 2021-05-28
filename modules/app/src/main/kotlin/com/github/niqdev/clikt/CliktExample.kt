@@ -5,7 +5,11 @@ import com.github.ajalt.clikt.core.CliktCommand
 /**
  * https://ajalt.github.io/clikt
  *
- * ./gradlew runCliktExample -Pargs="--help"
+ * Default arguments
+ * ./gradlew runCliktExample --args="--help"
+ *
+ * Custom property (see gradle task)
+ * ./gradlew runCliktExample -PmyArgs="--help"
  */
 class CliktExample : CliktCommand() {
   override fun run() {
