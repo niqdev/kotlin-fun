@@ -14,7 +14,7 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
 ./gradlew run
 
 # custom main tasks
-./gradlew runFileExample
+./gradlew runReactorExample
 ./gradlew runCliktExample --args="--help"
 ./gradlew runJsonExample
 ./gradlew runMyStream

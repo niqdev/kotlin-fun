@@ -56,8 +56,8 @@ tasks.named<JavaExec>("run") {
   jvmArgs = listOf("-Dkotlinx.coroutines.debug")
 }
 
-task("runFileExample", JavaExec::class) {
-  main = "com.github.niqdev.reactor.FileExampleKt"
+task("runReactorExample", JavaExec::class) {
+  main = "com.github.niqdev.reactor.ReactorExampleKt"
   classpath = sourceSets["main"].runtimeClasspath
 }
 task("runCliktExample", JavaExec::class) {

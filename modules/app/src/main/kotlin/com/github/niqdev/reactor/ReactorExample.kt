@@ -11,7 +11,7 @@ import java.nio.file.StandardOpenOption
 // https://spring.io/blog/2019/12/13/flight-of-the-flux-3-hopping-threads-and-schedulers
 
 /**
- * ./gradlew runFileExample
+ * ./gradlew runReactorExample
  */
 fun main() {
 
