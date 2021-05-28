@@ -1,11 +1,12 @@
 plugins {
-  application
-  // https://docs.gradle.org/current/userguide/idea_plugin.html
-  idea
   kotlin("jvm") version Versions.kotlin
+  kotlin("plugin.serialization") version Versions.kotlin
   id("org.jmailen.kotlinter") version Versions.kotlinter
   // https://kotlinlang.org/docs/kapt.html
   kotlin("kapt") version Versions.kapt
+  application
+  // https://docs.gradle.org/current/userguide/idea_plugin.html
+  idea
 }
 
 repositories {
@@ -16,7 +17,8 @@ repositories {
 // TODO remove multiple dependency versions e.g. kotlin-stdlib
 dependencies {
   implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0")
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutines}")
+  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerialization}")
 
   // logging
   implementation("org.slf4j:slf4j-api:${Versions.slf4j}")
@@ -62,6 +64,10 @@ task("runCliktExample", JavaExec::class) {
   main = "com.github.niqdev.clikt.CliktExampleKt"
   classpath = sourceSets["main"].runtimeClasspath
   args = listOf((project.properties.getOrElse("myArgs", { "--help" }) as String))
+}
+task("runJsonExample", JavaExec::class) {
+  main = "com.github.niqdev.serialization.JsonExampleKt"
+  classpath = sourceSets["main"].runtimeClasspath
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
