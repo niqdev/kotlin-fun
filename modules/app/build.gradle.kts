@@ -10,6 +10,7 @@ plugins {
 }
 
 repositories {
+  mavenLocal()
   mavenCentral()
   maven(url = "https://dl.bintray.com/arrow-kt/arrow-kt/")
 }
@@ -22,7 +23,7 @@ dependencies {
 
   // logging
   implementation("org.slf4j:slf4j-api:${Versions.slf4j}")
-  implementation("ch.qos.logback:logback-classic:${Versions.logback}")
+  runtimeOnly("ch.qos.logback:logback-classic:${Versions.logback}")
 
   // config
   implementation("com.sksamuel.hoplite:hoplite-core:${Versions.hoplite}")
@@ -51,9 +52,12 @@ idea {
 application {
   mainClass.set("com.github.niqdev.AppKt")
 }
-// TODO how to set JVM options ???
+// TODO how to set JVM options for all ???
 tasks.named<JavaExec>("run") {
   jvmArgs = listOf("-Dkotlinx.coroutines.debug")
+}
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+  kotlinOptions.jvmTarget = "11"
 }
 
 task("runReactorExample", JavaExec::class) {
@@ -70,8 +74,8 @@ task("runJsonExample", JavaExec::class) {
   classpath = sourceSets["main"].runtimeClasspath
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
-  kotlinOptions {
-    jvmTarget = "1.8"
-  }
+// the task has precedence over .editorconfig
+kotlinter {
+  // "disabled_rules" is not picked up correctly
+  disabledRules = arrayOf("no-wildcard-imports")
 }

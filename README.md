@@ -12,6 +12,7 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
 ./gradlew test
 ./gradlew :modules:app:test --tests *AppTest
 ./gradlew run
+./gradlew :modules:aws-local:run
 
 # custom main tasks
 ./gradlew runReactorExample
@@ -38,6 +39,7 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
 * Functional Programming in Kotlin [ [book](https://www.manning.com/books/functional-programming-in-kotlin) | TODO ]
 * Category Theory for Programmers [ [book](https://github.com/hmemcpy/milewski-ctfp-pdf) | TODO ]
 * Crafting Interpreters [ [book](https://craftinginterpreters.com) | TODO ]
+* [aws-local](modules/aws-local/README.md)
 
 ## Examples
 
