@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+
+  localstack:
+    container_name: local-localstack
+    image: localstack/localstack:0.12.12
+    ports:
+      - 4566:4566
+    # https://github.com/localstack/localstack#configurations
+    environment:
+      # https://docs.aws.amazon.com/cli/latest/reference/#available-services
+      - SERVICES=lambda,s3,sqs
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - DOCKER_HOST=unix:///var/run/docker.sock
+      - HOST_TMP_FOLDER=${TMPDIR}
+    volumes:
+      - ".localstack:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
