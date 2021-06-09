@@ -1,4 +1,4 @@
-§1require-%:
+require-%:
 	@ if [ "$(shell command -v ${*} 2> /dev/null)" = "" ]; then \
 		echo "[$*] not found"; \
 		exit 1; \
