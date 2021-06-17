@@ -29,6 +29,7 @@ dependencies {
   implementation("com.sksamuel.hoplite:hoplite-core:${Versions.hoplite}")
   implementation("com.sksamuel.hoplite:hoplite-yaml:${Versions.hoplite}")
 
+  // cli
   implementation("com.github.ajalt.clikt:clikt:${Versions.clikt}")
 
   // reactor
@@ -36,7 +37,10 @@ dependencies {
   implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:${Versions.reactorKotlin}")
 
   // arrow
-  implementation("io.arrow-kt:arrow-core:${Versions.arrow}")
+  implementation(platform("io.arrow-kt:arrow-stack:${Versions.arrow}"))
+  implementation("io.arrow-kt:arrow-core")
+  implementation("io.arrow-kt:arrow-fx-coroutines")
+  implementation("io.arrow-kt:arrow-optics")
   kapt("io.arrow-kt:arrow-meta:${Versions.arrow}")
 
   // tests
