@@ -2,6 +2,7 @@ plugins {
   kotlin("jvm") version Versions.kotlin
   kotlin("plugin.serialization") version Versions.kotlin
   id("org.jmailen.kotlinter") version Versions.kotlinter
+  id("com.adarshr.test-logger") version Versions.testLogger
   // https://kotlinlang.org/docs/kapt.html
   kotlin("kapt") version Versions.kapt
   application
@@ -89,7 +90,9 @@ kotlinter {
   disabledRules = arrayOf("no-wildcard-imports")
 }
 
-// required for kotest
 tasks.withType<Test> {
+  // required for kotest
   useJUnitPlatform()
+  // print to stdout
+  testLogging.showStandardStreams = true
 }

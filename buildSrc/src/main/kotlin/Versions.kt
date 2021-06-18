@@ -6,6 +6,7 @@ object Versions {
   val kotlinter = "3.4.4"
   val kapt = "1.5.10"
   val shadow = "7.0.0"
+  val testLogger = "3.0.0"
 
   val aws = "2.16.80"
   val awsLambdaCore = "1.2.1"
