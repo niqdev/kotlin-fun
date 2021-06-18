@@ -1,13 +1,13 @@
 package com.github.niqdev
 
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import io.kotest.core.spec.style.WordSpec
+import io.kotest.matchers.shouldBe
 
-class AppTest {
+class AppTest : WordSpec({
 
-  @Test
-  fun testAppHasAGreeting() {
-    val classUnderTest = App()
-    assertEquals(classUnderTest.greeting, "Hello World!", "app should have a greeting")
+  "App" should {
+    "greeting" {
+      App().greeting shouldBe "Hello World!"
+    }
   }
-}
+})

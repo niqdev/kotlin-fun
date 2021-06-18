@@ -44,8 +44,13 @@ dependencies {
   kapt("io.arrow-kt:arrow-meta:${Versions.arrow}")
 
   // tests
-  testImplementation("org.jetbrains.kotlin:kotlin-test")
-  testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+  testImplementation("io.kotest:kotest-runner-junit5:${Versions.kotest}")
+  testImplementation("io.kotest:kotest-assertions-core:${Versions.kotest}")
+  testImplementation("io.kotest:kotest-assertions-json:${Versions.kotest}")
+  testImplementation("io.kotest:kotest-property:${Versions.kotest}")
+  // TODO fix conflict
+  //testImplementation("org.jetbrains.kotlin:kotlin-test")
+  //testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }
 
 idea {
@@ -82,4 +87,9 @@ task("runJsonExample", JavaExec::class) {
 kotlinter {
   // "disabled_rules" is not picked up correctly
   disabledRules = arrayOf("no-wildcard-imports")
+}
+
+// required for kotest
+tasks.withType<Test> {
+  useJUnitPlatform()
 }
