@@ -44,6 +44,8 @@ https://github.com/aedans/Katalyst
 
 # fp
 https://github.com/lucapiccinelli/konad
+# refined
+https://github.com/fork-handles/forkhandles/tree/trunk/values4k
 # old
 https://github.com/MarioAriasC/funKTionale
 
