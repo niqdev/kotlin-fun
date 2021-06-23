@@ -1,4 +1,4 @@
-# Setup
+ # Setup
 
 Install [Gradle](https://docs.gradle.org/current/userguide/userguide.html)
 
@@ -50,7 +50,7 @@ Get more help with your project: https://docs.gradle.org/6.8/samples/sample_buil
 ---
 
 # upgrade gradle
-gradle wrapper --gradle-version 7.0.2
+gradle wrapper --gradle-version 7.1
 
 ---
 
