@@ -46,6 +46,7 @@ aws --endpoint-url=http://localhost:4566 s3 rb s3://my-bucket-test --force
 # cleanup
 make local-stack-delete env=local
 make local-down
+make local-stack-clean
 ```
 
 <!--
