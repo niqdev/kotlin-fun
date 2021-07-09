@@ -49,6 +49,9 @@ https://github.com/fork-handles/forkhandles/tree/trunk/values4k
 # old
 https://github.com/MarioAriasC/funKTionale
 
+# no-copy
+https://github.com/AhmedMourad0/no-copy
+
 # higher kinded type constructors
 https://drawson.medium.com/higher-kinds-in-kotlin-cdb6904c2fdb
 https://www.youtube.com/watch?v=ERM0mBPNLHc

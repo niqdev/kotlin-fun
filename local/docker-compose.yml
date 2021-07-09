@@ -10,7 +10,10 @@ services:
     # https://github.com/localstack/localstack#configurations
     environment:
       # https://docs.aws.amazon.com/cli/latest/reference/#available-services
-      - SERVICES=lambda,s3,sqs
+      - SERVICES=cloudformation,s3,sqs,lambda
+      #- DEFAULT_REGION=us-east-1
+      #- AWS_ACCESS_KEY_ID=MyAwsAccessKeyId
+      #- AWS_SECRET_ACCESS_KEY=MyAwsSecretAccessKey
       - DEBUG=1
       - DATA_DIR=/tmp/localstack/data
       - DOCKER_HOST=unix:///var/run/docker.sock
@@ -18,3 +21,4 @@ services:
     volumes:
       - ".localstack:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
+      #- "./local/scripts/my_startup_script:/docker-entrypoint-initaws.d"
