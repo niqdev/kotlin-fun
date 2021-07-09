@@ -1,0 +1,62 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Trigger a sqs event when a file is uploaded to s3
+
+Parameters:
+
+  EnvironmentParam:
+    Type: String
+    Description: Environment e.g. local
+
+  RegionParam:
+    Type: String
+    Description: Region of the stack
+
+  AccountIdParam:
+    Type: String
+    Description: Account of the stack
+
+Resources:
+
+  MyBucket:
+    Type: "AWS::S3::Bucket"
+    DependsOn:
+      - MyQueue
+      - MyQueuePolicy
+    Properties:
+      BucketName: !Sub
+        - "my-bucket-${Environment}"
+        - Environment: !Ref EnvironmentParam
+      NotificationConfiguration:
+        QueueConfigurations:
+          - Queue: !Sub
+              - "arn:aws:sqs:${Region}:${AccountId}:my-queue-${Environment}"
+              - Region: !Ref RegionParam
+                AccountId: !Ref AccountIdParam
+                Environment: !Ref EnvironmentParam
+            Event: "s3:ObjectCreated:*"
+
+  MyQueue:
+    Type: "AWS::SQS::Queue"
+    Properties:
+      # seconds
+      VisibilityTimeout: 60
+      QueueName: !Sub
+        - "my-queue-${Environment}"
+        - Environment: !Ref EnvironmentParam
+
+  MyQueuePolicy:
+    Type: "AWS::SQS::QueuePolicy"
+    Properties:
+      Queues:
+        - Ref: MyQueue
+      PolicyDocument:
+        Id: "MyQueuePolicy"
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              AWS: "*"
+            Action:
+              - "SQS:SendMessage"
+            Resource:
+              Fn::GetAtt: [ MyQueue, Arn ]

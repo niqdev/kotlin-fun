@@ -1,0 +1,14 @@
+[
+  {
+    "ParameterKey": "EnvironmentParam",
+    "ParameterValue": "local"
+  },
+  {
+    "ParameterKey": "AccountIdParam",
+    "ParameterValue": "000000000000"
+  },
+  {
+    "ParameterKey": "RegionParam",
+    "ParameterValue": "us-east-1"
+  }
+]
