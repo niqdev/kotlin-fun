@@ -4,7 +4,11 @@
 
 ```bash
 java -jar modules/aws-local/build/libs/aws-local-all.jar
+```
 
+Localstack
+
+```bash
 # setup
 make local-up
 # TODO wait for localstack to be ready: replace with docker-entrypoint-initaws.d
