@@ -266,6 +266,7 @@ fun main() {
   println(MyStream.Empty.headSafe())
   println(MyStream.from(3).takeAtMost()(5).map<Int, String>()() { a -> "value: $a" }.toList())
   println(MyStream.from(0).filter()() { it % 2 == 0 }.takeAtMost()(10).toList())
+  println(MyStream.from(0).filterWithDropWhile()() { it % 2 == 0 }.takeAtMost()(10).toList())
   println(MyStream.from(42).flatMap<Int, String>()() { MyStream.cons(MyLazy { "value: $it" }, MyLazy { MyStream.Empty }) }.takeAtMost()(5).toList())
   println(MyStream.from(3).takeAtMost()(5).find()() { it == 4 })
   println(MyStream.from(3).takeAtMost()(5).find()() { it == 42 })
