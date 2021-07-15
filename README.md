@@ -40,8 +40,11 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
 * Category Theory for Programmers [ [book](https://github.com/hmemcpy/milewski-ctfp-pdf) | TODO ]
 * Crafting Interpreters [ [book](https://craftinginterpreters.com) | TODO ]
 * [aws-local](modules/aws-local/README.md)
+* [examples](modules/app/src/main/kotlin/com/github/niqdev)
 
-## Examples
+<!--
+
+## TODO
 
 * [x] dependency management: [Dependabot](https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically)
 * [x] linting/formatting: [ktlint](https://ktlint.github.io)
@@ -51,7 +54,7 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
     * [ ] CI/CD
     * [ ] release management (git commit/tag)
 * [ ] markdown documentation: [dokka](https://kotlin.github.io/dokka) vs [docusaurus](https://docusaurus.io)
-* [ ] property based tests with [Kotest](https://kotest.io)
+* [x] property based tests with [Kotest](https://kotest.io)
 * [ ] http with [Ktor](https://ktor.io)
     * [x] logging
     * [x] config with [hoplite](https://github.com/sksamuel/hoplite)
@@ -59,3 +62,5 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
     * [ ] client
 * [ ] postgres
 * [ ] kafka
+
+-->

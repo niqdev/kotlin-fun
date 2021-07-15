@@ -22,6 +22,11 @@ sealed class MyStream<out A> {
     fun from(i: Int): MyStream<Int> =
       cons(MyLazy { i }, MyLazy { from(i + 1) })
 
+    // ---------- 9.29 ----------
+
+    fun fromWithUnfold(i: Int): MyStream<Int> =
+      unfold<Int, Int>()(i)() { a -> Result(a to a + 1) }
+
     // ---------- 9.16 ----------
 
     fun <A> iterate(): (A) -> ((A) -> A) -> MyStream<A> =
@@ -218,6 +223,34 @@ fun <A> MyStream<A>.append(): (MyLazy<MyStream<A>>) -> MyStream<A> =
 fun <A, B> MyStream<A>.flatMap(): ((A) -> MyStream<B>) -> MyStream<B> =
   { f -> this.foldRight<A, MyStream<B>>()(MyLazy { MyStream.Empty })() { a -> { lazyB -> f(a).append()(lazyB) } } }
 
+// ---------- 9.27 ----------
+
+fun <A> MyStream<A>.find(): ((A) -> Boolean) -> Result<A> =
+  { p -> this.filter()(p).headSafe() }
+
+// ---------- 9.28 ----------
+
+fun fibonacci(): MyStream<Int> =
+  MyStream.iterate<Pair<Int, Int>>()(1 to 1)() { (a, b) -> b to a + b }.map<Pair<Int, Int>, Int>()() { it.first }
+
+// ---------- 9.29 ----------
+
+fun <A, S> unfold(): (S) -> ((S) -> Result<Pair<A, S>>) -> MyStream<A> =
+  { zero -> { f -> f(zero).map<Pair<A, S>, MyStream<A>>()() { (a, s) -> MyStream.cons(MyLazy { a }, MyLazy { unfold<A, S>()(s)(f) }) }.getOrElse()() { MyStream.Empty } }}
+
+fun fibonacciWithUnfold(): MyStream<Int> =
+  unfold<Int, Pair<Int, Int>>()(1 to 1)() { (a, b) -> Result(a to Pair(b, a + b)) }
+
+// ---------- 9.30 ----------
+
+fun <A> MyStream<A>.filterWithDropWhile(): ((A) -> Boolean) -> MyStream<A> =
+  { p -> this.dropWhile()() { a -> !p(a) }.let { myStream ->
+    when (myStream) {
+      is MyStream.Empty -> myStream
+      is MyStream.Cons -> MyStream.cons(myStream.head, MyLazy { myStream.unsafeTail().filterWithDropWhile()(p) })
+    }
+  } }
+
 fun main() {
   println(MyStream.from(3).head())
   println(({ 42 }).repeat().takeAtMost()(5).toList())
@@ -234,6 +267,8 @@ fun main() {
   println(MyStream.from(3).takeAtMost()(5).map<Int, String>()() { a -> "value: $a" }.toList())
   println(MyStream.from(0).filter()() { it % 2 == 0 }.takeAtMost()(10).toList())
   println(MyStream.from(42).flatMap<Int, String>()() { MyStream.cons(MyLazy { "value: $it" }, MyLazy { MyStream.Empty }) }.takeAtMost()(5).toList())
+  println(MyStream.from(3).takeAtMost()(5).find()() { it == 4 })
+  println(MyStream.from(3).takeAtMost()(5).find()() { it == 42 })
 
   // compare invocations
   val myMap: (Int) -> Int = { println("map $it"); it }
@@ -242,4 +277,7 @@ fun main() {
   println(MyList(1, 2, 3, 4, 5).map(myMap).filter(myFilter))
   // map and filter on every item
   println(MyStream.from(1).takeAtMost()(5).map<Int, Int>()(myMap).filter()(myFilter).toList())
+
+  println("fibonacci: ${fibonacci().takeAtMost()(10).toList()}")
+  println("fibonacciWithUnfold: ${fibonacciWithUnfold().takeAtMost()(10).toList()}")
 }
