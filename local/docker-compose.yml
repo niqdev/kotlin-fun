@@ -22,3 +22,13 @@ services:
       - ".localstack:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
       #- "./local/scripts/my_startup_script:/docker-entrypoint-initaws.d"
+
+  minio:
+    image: minio/minio
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+      - "MINIO_ROOT_USER=LOCAL_ACCESS_KEY"
+      - "MINIO_ROOT_PASSWORD=LOCAL_SECRET_KEY"
+    command: server /data --console-address ":9001"
