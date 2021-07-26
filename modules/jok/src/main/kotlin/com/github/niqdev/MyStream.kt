@@ -236,7 +236,7 @@ fun fibonacci(): MyStream<Int> =
 // ---------- 9.29 ----------
 
 fun <A, S> unfold(): (S) -> ((S) -> Result<Pair<A, S>>) -> MyStream<A> =
-  { zero -> { f -> f(zero).map<Pair<A, S>, MyStream<A>>()() { (a, s) -> MyStream.cons(MyLazy { a }, MyLazy { unfold<A, S>()(s)(f) }) }.getOrElse()() { MyStream.Empty } }}
+  { zero -> { f -> f(zero).map<Pair<A, S>, MyStream<A>>()() { (a, s) -> MyStream.cons(MyLazy { a }, MyLazy { unfold<A, S>()(s)(f) }) }.getOrElse()() { MyStream.Empty } } }
 
 fun fibonacciWithUnfold(): MyStream<Int> =
   unfold<Int, Pair<Int, Int>>()(1 to 1)() { (a, b) -> Result(a to Pair(b, a + b)) }
@@ -244,12 +244,14 @@ fun fibonacciWithUnfold(): MyStream<Int> =
 // ---------- 9.30 ----------
 
 fun <A> MyStream<A>.filterWithDropWhile(): ((A) -> Boolean) -> MyStream<A> =
-  { p -> this.dropWhile()() { a -> !p(a) }.let { myStream ->
-    when (myStream) {
-      is MyStream.Empty -> myStream
-      is MyStream.Cons -> MyStream.cons(myStream.head, MyLazy { myStream.unsafeTail().filterWithDropWhile()(p) })
+  { p ->
+    this.dropWhile()() { a -> !p(a) }.let { myStream ->
+      when (myStream) {
+        is MyStream.Empty -> myStream
+        is MyStream.Cons -> MyStream.cons(myStream.head, MyLazy { myStream.unsafeTail().filterWithDropWhile()(p) })
+      }
     }
-  } }
+  }
 
 fun main() {
   println(MyStream.from(3).head())
