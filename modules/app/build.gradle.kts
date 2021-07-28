@@ -62,9 +62,11 @@ idea {
 application {
   mainClass.set("com.github.niqdev.AppKt")
 }
-// TODO how to set JVM options for all ???
 tasks.named<JavaExec>("run") {
+  // TODO how to set JVM options for all ???
   jvmArgs = listOf("-Dkotlinx.coroutines.debug")
+  // TODO (verify) this should allow to pass any "-Dconfig.key=value" property
+  systemProperties(System.getProperties().mapKeys { it.key.toString() }.toMap())
 }
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
   kotlinOptions.jvmTarget = "11"
