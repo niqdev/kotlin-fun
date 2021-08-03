@@ -18,3 +18,7 @@
 //   * searching a perfectly balanced ordered binary tree takes an amount of time proportional to the height of the tree
 //   * a search takes a time proportional to log2(n), with `n` being the size (number of elements) of the tree
 //   * by contrast, the search time in a singly linked list is proportional to the number of elements
+
+// the balance of the tree depends on the order in which elements are inserted
+// recursive traverse: depth-first pre-order|in-order|post-order
+// non-recursive traverse: breadth-first
