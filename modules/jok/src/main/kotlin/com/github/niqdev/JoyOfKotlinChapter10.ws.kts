@@ -22,3 +22,5 @@
 // the balance of the tree depends on the order in which elements are inserted
 // recursive traverse: depth-first pre-order|in-order|post-order
 // non-recursive traverse: breadth-first
+
+// if the elements inserted are ordered you end up with an unbalanced tree and it will probably overflow the stack
