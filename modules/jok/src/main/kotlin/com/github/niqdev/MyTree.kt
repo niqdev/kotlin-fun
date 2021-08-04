@@ -33,6 +33,9 @@ sealed class MyTree<out T : Comparable<@UnsafeVariance T>> {
         }
       return loop(list, MyEmpty)
     }
+
+    fun <T : Comparable<T>> leaf(value: T): MyTree<T> =
+      MyLeaf(MyEmpty, value, MyEmpty)
   }
 }
 
@@ -70,8 +73,68 @@ fun <T : Comparable<T>> MyTree<T>.containsFull(element: T): Boolean =
 
 // ---------- 10.4 ----------
 
-fun <T : Comparable<T>> MyTree<T>.size(): Int = TODO()
-fun <T : Comparable<T>> MyTree<T>.height(): Int = TODO()
+fun <T : Comparable<T>> MyTree<T>.size(): Int =
+  when (this) {
+    is MyTree.MyEmpty -> 0
+    is MyTree.MyLeaf -> 1 + left.size() + right.size()
+  }
+
+fun <T : Comparable<T>> MyTree<T>.height(): Int =
+  when (this) {
+    // if it were 0, the height would be equal to the number of elements in the path instead of the number of segments
+    is MyTree.MyEmpty -> -1
+    is MyTree.MyLeaf -> 1 + kotlin.math.max(left.height(), right.height())
+  }
+
+// ---------- 10.5 ----------
+
+fun <T : Comparable<T>> MyTree<T>.max(): Result<T> =
+  when (this) {
+    is MyTree.MyEmpty -> Result.Empty
+    is MyTree.MyLeaf -> right.max().orElse()() { Result(value) }
+  }
+
+fun <T : Comparable<T>> MyTree<T>.min(): Result<T> =
+  when (this) {
+    is MyTree.MyEmpty -> Result.Empty
+    is MyTree.MyLeaf -> left.max().orElse()() { Result(value) }
+  }
+
+// ---------- 10.6 ----------
+
+private fun <T : Comparable<T>> removeMerge(ltree: MyTree<T>, rtree: MyTree<T>, element: T): MyTree<T> =
+  // "this" is the root
+  when (ltree) {
+    // merge
+    is MyTree.MyEmpty -> rtree
+    is MyTree.MyLeaf ->
+      when (rtree) {
+        is MyTree.MyEmpty -> ltree
+        is MyTree.MyLeaf ->
+          // TODO fix merge
+          when {
+            // in the left branch replace with the right tree
+            ltree.value < element -> MyTree.MyLeaf(ltree, rtree.value, rtree.right)
+            // in the right branch replace with the left tree
+            rtree.value > element -> MyTree.MyLeaf(ltree.left, ltree.value, rtree)
+            else -> throw IllegalArgumentException("impossible")
+          }
+      }
+  }
+
+fun <T : Comparable<T>> MyTree<T>.remove(element: T): MyTree<T> =
+  when (this) {
+    is MyTree.MyEmpty -> this
+    is MyTree.MyLeaf -> {
+      // while iterating, keep the tree without without the removed element
+      when {
+        element < value -> MyTree.MyLeaf(left.remove(element), value, right)
+        element > value -> MyTree.MyLeaf(left, value, right.remove(element))
+        // found
+        else -> removeMerge(left, right, element)
+      }
+    }
+  }
 
 fun main() {
   val myTree: MyTree<Int> =
@@ -85,4 +148,23 @@ fun main() {
   println(MyTree.from(MyList(1, 2, 3, 4, 5)))
   println(MyTree.from(MyList(1, 2, 3, 4, 5)).contains(3))
   println(MyTree.from(MyList(1, 2, 3, 4, 5)).containsFull(10))
+  println(myTree.size())
+  println(myTree.height())
+  println(MyTree.from(MyList(1, 2, 3, 4, 5)).max())
+  println(MyTree.from(MyList(1, 2, 3, 4, 5)).min())
+  println(MyTree.from(MyList(1, 2, 3, 4, 5)).remove(4))
+
+  val exampleTree: MyTree<Int> =
+    MyTree.MyLeaf(
+      MyTree.MyLeaf(MyTree.leaf(0), 1, MyTree.leaf(2)),
+      3,
+      MyTree.MyLeaf(
+        MyTree.MyLeaf(MyTree.leaf(5), 6, MyTree.leaf(7)),
+        8,
+        MyTree.MyLeaf(MyTree.leaf(9), 10, MyTree.leaf(11))
+      )
+    )
+  println(exampleTree)
+  println(exampleTree.remove(3))
+  println(exampleTree.remove(8))
 }

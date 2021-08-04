@@ -80,6 +80,14 @@ fun <A> Result<A>.getOrElse(): (() -> A) -> A =
     }
   }
 
+fun <A> Result<A>.orElse(): (() -> Result<A>) -> Result<A> =
+  { default ->
+    when (this) {
+      is Result.Success -> this
+      else -> default()
+    }
+  }
+
 // ---------- 7.5 ----------
 
 fun <A> Result<A>.filter(): ((A) -> Boolean) -> Result<A> =
