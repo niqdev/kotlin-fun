@@ -103,9 +103,7 @@ fun <T : Comparable<T>> MyTree<T>.min(): Result<T> =
 // ---------- 10.6 ----------
 
 private fun <T : Comparable<T>> removeMerge(ltree: MyTree<T>, rtree: MyTree<T>, element: T): MyTree<T> =
-  // "this" is the root
   when (ltree) {
-    // merge
     is MyTree.MyEmpty -> rtree
     is MyTree.MyLeaf ->
       when (rtree) {
@@ -125,13 +123,49 @@ private fun <T : Comparable<T>> removeMerge(ltree: MyTree<T>, rtree: MyTree<T>, 
 fun <T : Comparable<T>> MyTree<T>.remove(element: T): MyTree<T> =
   when (this) {
     is MyTree.MyEmpty -> this
-    is MyTree.MyLeaf -> {
+    is MyTree.MyLeaf ->
       // while iterating, keep the tree without without the removed element
       when {
         element < value -> MyTree.MyLeaf(left.remove(element), value, right)
         element > value -> MyTree.MyLeaf(left, value, right.remove(element))
         // found
         else -> removeMerge(left, right, element)
+      }
+  }
+
+// ---------- 10.7 ----------
+
+// TODO verify: merge same root
+fun <T : Comparable<T>> MyTree<T>.merge(tree: MyTree<T>): MyTree<T> =
+  when (tree) {
+    is MyTree.MyEmpty -> this
+    is MyTree.MyLeaf ->
+      when (this) {
+        is MyTree.MyEmpty -> tree
+        is MyTree.MyLeaf ->
+          when {
+            tree.value < this.value ->
+              MyTree.MyLeaf(left, value, right.merge(MyTree.MyLeaf(MyTree.MyEmpty, tree.value, tree.right))).merge(tree.left)
+            tree.value > this.value ->
+              MyTree.MyLeaf(left.merge(MyTree.MyLeaf(tree.left, tree.value, MyTree.MyEmpty)), value, right).merge(tree.right)
+            else ->
+              MyTree.MyLeaf(left.merge(tree.left), value, right.merge(tree.right))
+          }
+      }
+  }
+
+// ---------- 10.8 ----------
+
+// TODO verify: bi-recursive
+fun <A : Comparable<A>, B> MyTree<A>.foldLeft(): (B) -> ((B) -> (A) -> B) -> ((B) -> (B) -> B) -> B =
+  { identity ->
+    { f ->
+      { g ->
+        when (this) {
+          is MyTree.MyEmpty -> identity
+          is MyTree.MyLeaf ->
+            g(right.foldLeft<A, B>()(identity)(f)(g))(f(left.foldLeft<A, B>()(identity)(f)(g))(this.value))
+        }
       }
     }
   }
@@ -167,4 +201,6 @@ fun main() {
   println(exampleTree)
   println(exampleTree.remove(3))
   println(exampleTree.remove(8))
+  println(MyTree.from(MyList(1, 2, 3)).merge(MyTree.from(MyList(4, 5, 6))))
+  println(exampleTree.foldLeft<Int, MyList<Int>>()(MyList())() { ints -> { a -> ints.cons()(a) } }() { x -> { y -> y.concat()(x) } })
 }
