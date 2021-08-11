@@ -157,6 +157,13 @@ fun <T : Comparable<T>> MyTree<T>.merge(tree: MyTree<T>): MyTree<T> =
 // ---------- 10.8 ----------
 
 // TODO verify: bi-recursive
+// multiple implementations
+// Post-order left
+// Pre-order left
+// Post-order right
+// Pre-order right
+// In-order left
+// In-order right
 fun <A : Comparable<A>, B> MyTree<A>.foldLeft(): (B) -> ((B) -> (A) -> B) -> ((B) -> (B) -> B) -> B =
   { identity ->
     { f ->
@@ -166,6 +173,36 @@ fun <A : Comparable<A>, B> MyTree<A>.foldLeft(): (B) -> ((B) -> (A) -> B) -> ((B
           is MyTree.MyLeaf ->
             g(right.foldLeft<A, B>()(identity)(f)(g))(f(left.foldLeft<A, B>()(identity)(f)(g))(this.value))
         }
+      }
+    }
+  }
+
+// ---------- 10.9 ----------
+
+fun <A : Comparable<A>, B> MyTree<A>.foldInOrder(): (B) -> ((B) -> (A) -> (B) -> B) -> B =
+  { identity ->
+    { f ->
+      when (this) {
+        is MyTree.MyEmpty -> identity
+        is MyTree.MyLeaf -> f(left.foldInOrder<A, B>()(identity)(f))(value)(right.foldInOrder<A, B>()(identity)(f))
+      }
+    }
+  }
+fun <A : Comparable<A>, B> MyTree<A>.foldPreOrder(): (B) -> ((A) -> (B) -> (B) -> B) -> B =
+  { identity ->
+    { f ->
+      when (this) {
+        is MyTree.MyEmpty -> identity
+        is MyTree.MyLeaf -> f(value)(left.foldPreOrder<A, B>()(identity)(f))(right.foldPreOrder<A, B>()(identity)(f))
+      }
+    }
+  }
+fun <A : Comparable<A>, B> MyTree<A>.foldPostOrder(): (B) -> ((B) -> (B) -> (A) -> B) -> B =
+  { identity ->
+    { f ->
+      when (this) {
+        is MyTree.MyEmpty -> identity
+        is MyTree.MyLeaf -> f(left.foldPostOrder<A, B>()(identity)(f))(right.foldPostOrder<A, B>()(identity)(f))(value)
       }
     }
   }
@@ -203,4 +240,14 @@ fun main() {
   println(exampleTree.remove(8))
   println(MyTree.from(MyList(1, 2, 3)).merge(MyTree.from(MyList(4, 5, 6))))
   println(exampleTree.foldLeft<Int, MyList<Int>>()(MyList())() { ints -> { a -> ints.cons()(a) } }() { x -> { y -> y.concat()(x) } })
+
+  // In-order: 1234567
+  // Pre-order: 4213657
+  // Post-order: 1325764
+  val treeToFold: MyTree<Int> =
+    MyTree.MyLeaf(
+      MyTree.MyLeaf(MyTree.leaf(1), 2, MyTree.leaf(3)),
+      4,
+      MyTree.MyLeaf(MyTree.leaf(5), 6, MyTree.leaf(7))
+    )
 }
