@@ -207,6 +207,16 @@ fun <A : Comparable<A>, B> MyTree<A>.foldPostOrder(): (B) -> ((B) -> (B) -> (A) 
     }
   }
 
+// ---------- 10.10 ----------
+
+fun <A : Comparable<A>> MyTree<A>.invoke(): (MyTree<A>) -> (A) -> (MyTree<A>) -> MyTree<A> =
+  { left -> { a -> { right -> TODO() } } }
+
+// ---------- 10.11 ----------
+
+fun <A : Comparable<A>, B : Comparable<B>> MyTree<A>.map(): ((A) -> B) -> MyTree<B> =
+  { f -> foldInOrder<A, MyTree<B>>()(MyTree.MyEmpty)() { b1 -> { a -> { b2 -> MyTree.MyLeaf(b1, f(a), b2) } } } }
+
 fun main() {
   val myTree: MyTree<Int> =
     MyTree.MyLeaf(
