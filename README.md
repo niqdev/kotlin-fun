@@ -1,6 +1,7 @@
 # kotlin-fun
 
 [![Continuous Integration][ci-image]][ci-url]
+
 [ci-image]: https://github.com/niqdev/kotlin-fun/actions/workflows/ci.yml/badge.svg
 [ci-url]: https://github.com/niqdev/kotlin-fun/actions/workflows/ci.yml
 
