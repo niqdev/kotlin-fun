@@ -254,10 +254,11 @@ fun main() {
   // In-order: 1234567
   // Pre-order: 4213657
   // Post-order: 1325764
-  val treeToFold: MyTree<Int> =
+  val anotherTree: MyTree<Int> =
     MyTree.MyLeaf(
       MyTree.MyLeaf(MyTree.leaf(1), 2, MyTree.leaf(3)),
       4,
       MyTree.MyLeaf(MyTree.leaf(5), 6, MyTree.leaf(7))
     )
+  println(exampleTree.map<Int, Int>()(){ it * 2 })
 }
