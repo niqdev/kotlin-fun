@@ -1,9 +1,9 @@
 object Versions {
   // plugins
-  val kotlin = "1.5.10"
-  val kotlinxSerialization = "1.2.1"
-  val kotlinter = "3.4.4"
-  val kapt = "1.5.10"
+  val kotlin = "1.5.21"
+  val kotlinxSerialization = "1.2.2"
+  val kotlinter = "3.5.0"
+  val kapt = "1.5.21"
   val shadow = "7.0.0"
   val testLogger = "3.0.0"
 
