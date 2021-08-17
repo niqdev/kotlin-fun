@@ -260,5 +260,5 @@ fun main() {
       4,
       MyTree.MyLeaf(MyTree.leaf(5), 6, MyTree.leaf(7))
     )
-  println(exampleTree.map<Int, Int>()(){ it * 2 })
+  println(exampleTree.map<Int, Int>()() { it * 2 })
 }
