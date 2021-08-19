@@ -209,6 +209,7 @@ fun <A : Comparable<A>, B> MyTree<A>.foldPostOrder(): (B) -> ((B) -> (B) -> (A) 
 
 // ---------- 10.10 ----------
 
+// TODO combine two trees and a root to create a new tree
 fun <A : Comparable<A>> MyTree<A>.invoke(): (MyTree<A>) -> (A) -> (MyTree<A>) -> MyTree<A> =
   { left -> { a -> { right -> TODO() } } }
 
@@ -216,6 +217,20 @@ fun <A : Comparable<A>> MyTree<A>.invoke(): (MyTree<A>) -> (A) -> (MyTree<A>) ->
 
 fun <A : Comparable<A>, B : Comparable<B>> MyTree<A>.map(): ((A) -> B) -> MyTree<B> =
   { f -> foldInOrder<A, MyTree<B>>()(MyTree.MyEmpty)() { b1 -> { a -> { b2 -> MyTree.MyLeaf(b1, f(a), b2) } } } }
+
+// ---------- 10.12 ----------
+
+fun <A : Comparable<A>> MyTree<A>.rotateRight(): MyTree<A> =
+  when (this) {
+    is MyTree.MyEmpty -> this
+    is MyTree.MyLeaf ->
+      when (this.left) {
+        is MyTree.MyEmpty -> this
+        is MyTree.MyLeaf -> TODO()
+      }
+  }
+
+fun <A : Comparable<A>> MyTree<A>.rotateLeft(): MyTree<A> = TODO()
 
 fun main() {
   val myTree: MyTree<Int> =
@@ -260,5 +275,7 @@ fun main() {
       4,
       MyTree.MyLeaf(MyTree.leaf(5), 6, MyTree.leaf(7))
     )
-  println(exampleTree.map<Int, Int>()() { it * 2 })
+  println(anotherTree.map<Int, Int>()() { it * 2 })
+  println(anotherTree.rotateRight())
+  println(anotherTree.rotateLeft())
 }
