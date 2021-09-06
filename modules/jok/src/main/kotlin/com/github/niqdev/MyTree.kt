@@ -226,11 +226,47 @@ fun <A : Comparable<A>> MyTree<A>.rotateRight(): MyTree<A> =
     is MyTree.MyLeaf ->
       when (this.left) {
         is MyTree.MyEmpty -> this
-        is MyTree.MyLeaf -> TODO()
+        is MyTree.MyLeaf -> MyTree.MyLeaf(this.left.left, this.left.value, MyTree.MyLeaf(this.left.right, value, this.right))
       }
   }
 
-fun <A : Comparable<A>> MyTree<A>.rotateLeft(): MyTree<A> = TODO()
+fun <A : Comparable<A>> MyTree<A>.rotateLeft(): MyTree<A> =
+  when (this) {
+    is MyTree.MyEmpty -> this
+    is MyTree.MyLeaf ->
+      when (this.right) {
+        is MyTree.MyEmpty -> this
+        is MyTree.MyLeaf -> MyTree.MyLeaf(MyTree.MyLeaf(this.left, value, this.right.left), this.right.value, this.right.right)
+      }
+  }
+
+// ---------- 10.13 ----------
+
+fun <A : Comparable<A>> MyTree<A>.toListInOrderRight(): MyList<A> {
+  // unBalanceRight - stack-safe corecursive: rotates the tree to the right until the left branch is empty
+  tailrec fun loop(tree: MyTree<A>, result: MyList<A>): MyList<A> =
+    when (tree) {
+      is MyTree.MyEmpty -> result
+      is MyTree.MyLeaf ->
+        when (tree.left) {
+          is MyTree.MyEmpty -> loop(tree.right, result.cons()(tree.value))
+          is MyTree.MyLeaf -> loop(tree.rotateRight(), result)
+        }
+    }
+  return loop(this, MyList.MyNil)
+}
+
+// ---------- 10.14 ----------
+
+// the Day-Stout-Warren algorithm is a simple method for efficiently balancing binary search trees
+// 1) transform the tree into a totally unbalanced tree
+// 2) then apply rotations until the tree is fully balanced
+
+fun <A : Comparable<A>> MyTree<A>.balance(): MyTree<A> = TODO()
+
+// ---------- 10.15 ----------
+
+// big unbalanced trees can overflow the stack: use auto-balancing on insertions, merges, and removals
 
 fun main() {
   val myTree: MyTree<Int> =
@@ -278,4 +314,5 @@ fun main() {
   println(anotherTree.map<Int, Int>()() { it * 2 })
   println(anotherTree.rotateRight())
   println(anotherTree.rotateLeft())
+  println(anotherTree.toListInOrderRight())
 }
