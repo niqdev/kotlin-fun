@@ -68,28 +68,39 @@ fun <T : Comparable<T>> RedBlackTree<T>.isTreeBlack(): Boolean =
 
 // ---------- 11.1 ----------
 
+fun <T : Comparable<T>> RedBlackTree<T>.unsafeLeft(): RedBlackTree<T>? =
+  when (this) {
+    is RedBlackTree.Empty -> null
+    is RedBlackTree.Leaf -> this.left
+  }
+
+fun <T : Comparable<T>> RedBlackTree<T>.unsafeRight(): RedBlackTree<T>? =
+  when (this) {
+    is RedBlackTree.Empty -> null
+    is RedBlackTree.Leaf -> this.right
+  }
+
+fun <T : Comparable<T>> RedBlackTree<T>.unsafeValue(): T? =
+  when (this) {
+    is RedBlackTree.Empty -> null
+    is RedBlackTree.Leaf -> this.value
+  }
+
 /*
-// balance B (T R (T R a x b) y c) z d = T R (T B a x b) y (T B c z d)
-    color == B && left.isTR && left.left.isTR ->
-        T(R, left.left.blacken(), left.value, T(B, left.right, value, right))
-// balance B (T R a x (T R b y c)) z d = T R (T B a x b) y (T B c z d)
-    color == B && left.isTR && left.right.isTR ->
-        T(R, T(B, left.left, left.value, left.right.left), left.right.value,
-          T(B, left.right.right, value, right))
-// balance B a x (T R (T R b y c) z d) = T R (T B a x b) y (T B c z d)
-    color == B && right.isTR && right.left.isTR ->
-        T(R, T(B, left, value, right.left.left), right.left.value,
-          T(B, right.left.right, right.value, right.right))
-// balance B a x (T R b y (T R c z d)) = T R (T B a x b) y (T B c z d)
-    color == B && right.isTR && right.right.isTR ->
-        T(R, T(B, left, value, right.left), right.value, right.right.
-     blacken())
-// balance color a x b = T color a x b
-    else -> T(color, left, value, right)
+ * output T R (T B a x b) y (T B c z d)
+ *
+ *          Red
+ *         ┌───┐
+ *         │ y │
+ *   Black └┬─┬┘ Black
+ *   ┌───┐  │ │  ┌───┐
+ *   │ x │<─┘ └─>│ z │
+ *   └┬─┬┘       └┬─┬┘
+ *    │ │         │ │
+ * a<─┘ └─>b   c<─┘ └─>d
+ *
+ * https://asciiflow.com
  */
-
-// ---> https://asciiflow.com
-
 private fun <T : Comparable<T>> RedBlackTree<T>.balance(
   color: RedBlackTree.Color,
   left: RedBlackTree<T>,
@@ -99,64 +110,151 @@ private fun <T : Comparable<T>> RedBlackTree<T>.balance(
   when (this) {
     is RedBlackTree.Empty -> this
     is RedBlackTree.Leaf ->
-      when (this.left) {
-        is RedBlackTree.Empty -> this
-        is RedBlackTree.Leaf ->
-          when {
-            /*
-             * balance B (T R (T R a x b) y c) z d  -->  T R (T B a x b) y (T B c z d)
-             *
-             *               Black
-             *               ┌───┐
-             *               │ z │
-             *          Red  └┬─┬┘
-             *         ┌───┐  │ │
-             *         │ y │<─┘ └─>d
-             *    Red  └┬─┬┘
-             *   ┌───┐  │ │
-             *   │ x │<─┘ └─>c
-             *   └┬─┬┘
-             *    │ │
-             * a<─┘ └─>b
-             */
-            color == RedBlackTree.Color.Black && this.left.isTreeRed() && this.left.left.isTreeRed() ->
-              RedBlackTree.Leaf(
-                RedBlackTree.Color.Red,
-                this.left.left.blacken(),
-                this.left.value,
-                RedBlackTree.Leaf(RedBlackTree.Color.Black, this.left.right, value, right)
-              )
-            /*
-             * balance B (T R a x (T R b y c)) z d  -->  T R (T B a x b) y (T B c z d)
-             *
-             *         Black
-             *         ┌───┐
-             *         │ z │
-             *    Red  └┬─┬┘
-             *   ┌───┐  │ │
-             *   │ x │<─┘ └─>d
-             *   └┬─┬┘  Red
-             *    │ │  ┌───┐
-             * a<─┘ └─>│ y │
-             *         └┬─┬┘
-             *          │ │
-             *       b<─┘ └─>c
-             */
-            color == RedBlackTree.Color.Black && this.left.isTreeRed() && this.left.right.isTreeRed() -> TODO()
-
-            // balance B a x (T R (T R b y c) z d) = T R (T B a x b) y (T B c z d)
-            color == RedBlackTree.Color.Black && this.right.isTreeRed() && this.right.left.isTreeRed() -> TODO()
-
-            else ->
-              // balance color a x b = T color a x b
-              RedBlackTree.Leaf(color, left, value, right)
-          }
+      // FIXME nested pattern matching to remove unsafe !!
+      when {
+        /*
+         * balance B (T R (T R a x b) y c) z d  -->  T R (T B a x b) y (T B c z d)
+         *
+         *               Black
+         *               ┌───┐
+         *               │ z │
+         *          Red  └┬─┬┘
+         *         ┌───┐  │ │
+         *         │ y │<─┘ └─>d
+         *    Red  └┬─┬┘
+         *   ┌───┐  │ │
+         *   │ x │<─┘ └─>c
+         *   └┬─┬┘
+         *    │ │
+         * a<─┘ └─>b
+         */
+        color == RedBlackTree.Color.Black && left.isTreeRed() && left.unsafeLeft()!!.isTreeRed() ->
+          RedBlackTree.Leaf(
+            RedBlackTree.Color.Red,
+            left.unsafeLeft()!!.blacken(),
+            left.unsafeValue()!!,
+            RedBlackTree.Leaf(RedBlackTree.Color.Black, left.unsafeRight()!!, value, right)
+          )
+        /*
+         * balance B (T R a x (T R b y c)) z d  -->  T R (T B a x b) y (T B c z d)
+         *
+         *         Black
+         *         ┌───┐
+         *         │ z │
+         *    Red  └┬─┬┘
+         *   ┌───┐  │ │
+         *   │ x │<─┘ └─>d
+         *   └┬─┬┘  Red
+         *    │ │  ┌───┐
+         * a<─┘ └─>│ y │
+         *         └┬─┬┘
+         *          │ │
+         *       b<─┘ └─>c
+         */
+        color == RedBlackTree.Color.Black && left.isTreeRed() && left.unsafeRight()!!.isTreeRed() ->
+          RedBlackTree.Leaf(
+            RedBlackTree.Color.Red,
+            RedBlackTree.Leaf(
+              RedBlackTree.Color.Black,
+              left.unsafeLeft()!!,
+              left.unsafeValue()!!,
+              left.unsafeRight()!!.unsafeLeft()!!
+            ),
+            left.unsafeRight()!!.unsafeValue()!!,
+            RedBlackTree.Leaf(RedBlackTree.Color.Black, left.unsafeRight()!!.unsafeRight()!!, value, right)
+          )
+        /*
+         * balance B a x (T R (T R b y c) z d)  -->  T R (T B a x b) y (T B c z d)
+         *
+         *   Black
+         *   ┌───┐
+         *   │ x │
+         *   └┬─┬┘  Red
+         *    │ │  ┌───┐
+         * a<─┘ └─>│ z │
+         *    Red  └┬─┬┘
+         *   ┌───┐  │ │
+         *   │ y │<─┘ └─>d
+         *   └┬─┬┘
+         *    │ │
+         * b<─┘ └─>c
+         */
+        color == RedBlackTree.Color.Black && right.isTreeRed() && right.unsafeLeft()!!.isTreeRed() ->
+          RedBlackTree.Leaf(
+            RedBlackTree.Color.Red,
+            RedBlackTree.Leaf(
+              RedBlackTree.Color.Black,
+              left,
+              value,
+              right.unsafeLeft()!!.unsafeLeft()!!
+            ),
+            right.unsafeLeft()!!.unsafeValue()!!,
+            RedBlackTree.Leaf(
+              RedBlackTree.Color.Black,
+              right.unsafeLeft()!!.unsafeRight()!!,
+              right.unsafeValue()!!,
+              right.unsafeRight()!!
+            )
+          )
+        /*
+         * balance B a x (T R b y (T R c z d))  -->  T R (T B a x b) y (T B c z d)
+         *
+         *   Black
+         *   ┌───┐
+         *   │ x │
+         *   └┬─┬┘  Red
+         *    │ │  ┌───┐
+         * a<─┘ └─>│ y │
+         *         └┬─┬┘  Red
+         *          │ │  ┌───┐
+         *       b<─┘ └─>│ z │
+         *               └┬─┬┘
+         *                │ │
+         *             c<─┘ └─>d
+         */
+        color == RedBlackTree.Color.Black && right.isTreeRed() && right.unsafeRight()!!.isTreeRed() ->
+          RedBlackTree.Leaf(
+            RedBlackTree.Color.Red,
+            RedBlackTree.Leaf(RedBlackTree.Color.Black, left, value, right.unsafeLeft()!!),
+            right.unsafeValue()!!,
+            right.unsafeRight()!!.blacken()
+          )
+        else ->
+          // balance color a x b = T color a x b
+          RedBlackTree.Leaf(color, left, value, right)
       }
   }
 
+private fun <T : Comparable<T>> RedBlackTree<T>.blacken(): RedBlackTree<T> =
+  when (this) {
+    is RedBlackTree.Empty -> this
+    is RedBlackTree.Leaf -> RedBlackTree.Leaf(RedBlackTree.Color.Black, left, value, right)
+  }
 
-private fun <T : Comparable<T>> RedBlackTree<T>.blacken(): RedBlackTree<T> = TODO()
+private fun <T : Comparable<T>> RedBlackTree<T>.add(): (T) -> RedBlackTree<T> =
+  { newValue ->
+    when (this) {
+      is RedBlackTree.Empty ->
+        RedBlackTree.Leaf(RedBlackTree.Color.Red, RedBlackTree.Empty, newValue, RedBlackTree.Empty)
+      is RedBlackTree.Leaf ->
+        when {
+          newValue < value -> balance(color, left.add()(newValue), value, right)
+          newValue > value -> balance(color, left, value, right.add()(newValue))
+          else ->
+            when (color) {
+              RedBlackTree.Color.Red -> RedBlackTree.Leaf(RedBlackTree.Color.Red, left, newValue, right)
+              RedBlackTree.Color.Black -> RedBlackTree.Leaf(RedBlackTree.Color.Black, left, newValue, right)
+            }
+        }
+    }
+  }
 
-private fun <T : Comparable<T>> RedBlackTree<T>.add(): RedBlackTree<T> = TODO()
+operator fun <T : Comparable<T>> RedBlackTree<T>.plus(element: @UnsafeVariance T): RedBlackTree<T> =
+  this.add()(element).blacken()
 
-operator fun <T : Comparable<T>> RedBlackTree<T>.plus(element: @UnsafeVariance T): RedBlackTree<T> = TODO()
+fun main() {
+  println(RedBlackTree.Empty + 3 + 2 + 1)
+  println(RedBlackTree.Empty + 3 + 1 + 2)
+  println(RedBlackTree.Empty + 1 + 3 + 2)
+  println(RedBlackTree.Empty + 1 + 2 + 3)
+}
