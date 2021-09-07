@@ -5,4 +5,4 @@
 // - http://matt.might.net/papers/germane2014deletion.pdf
 // - https://matt.might.net/articles/red-black-delete
 // - https://matt.might.net/articles/implementation-of-immutable-purely-functional-okasaki-red-black-tree-maps-in-scala
-// - https://www.amazon.co.uk/Purely-Functional-Data-Structures-Okasaki/dp/0521663504
+// - https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-introduction-to-algorithms-sma-5503-fall-2005/video-lectures/lecture-10-red-black-trees-rotations-insertions-deletions
