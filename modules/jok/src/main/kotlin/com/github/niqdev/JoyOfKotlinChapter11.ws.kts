@@ -6,3 +6,5 @@
 // - https://matt.might.net/articles/red-black-delete
 // - https://matt.might.net/articles/implementation-of-immutable-purely-functional-okasaki-red-black-tree-maps-in-scala
 // - https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-introduction-to-algorithms-sma-5503-fall-2005/video-lectures/lecture-10-red-black-trees-rotations-insertions-deletions
+
+// binary search trees are used for maps, also called dictionaries or associative arrays
