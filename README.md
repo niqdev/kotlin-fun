@@ -44,7 +44,7 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
 * The Joy of Kotlin [ [book](https://www.manning.com/books/the-joy-of-kotlin) | [notes](modules/jok/src/main/kotlin/com/github/niqdev) ]
 * Functional Programming in Kotlin [ [book](https://www.manning.com/books/functional-programming-in-kotlin) | TODO ]
 * Category Theory for Programmers [ [book](https://github.com/hmemcpy/milewski-ctfp-pdf) | TODO ]
-* Crafting Interpreters [ [book](https://craftinginterpreters.com) | TODO ]
+* Crafting Interpreters [ [book](https://craftinginterpreters.com) | [lox](modules/lox) ]
 * [aws-local](modules/aws-local/README.md)
 * [examples](modules/app/src/main/kotlin/com/github/niqdev)
 
