@@ -10,11 +10,11 @@
 
 ## Resources
 
-* [Crafting Interpreters](http://www.craftinginterpreters.com)
 * [awesome-compilers](https://github.com/aalhour/awesome-compilers)
-* [Structure and Interpretation of Computer Programs](https://mitpress.mit.edu/sites/default/files/sicp/index.html)
+* Structure and Interpretation of Computer Programs [ [book](https://mitpress.mit.edu/sites/default/files/sicp/index.html) | [course](https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-001-structure-and-interpretation-of-computer-programs-spring-2005) ]
 * [Compilers: Principles, Techniques, and Tools](https://suif.stanford.edu/dragonbook)
 * [Let's Build a Compiler](https://xmonader.github.io/letsbuildacompiler-pretty/about.html)
+* [Build Your Own Lisp](https://buildyourownlisp.com)
 
 <!--
 # TODO parser: s-expression, json, arithmetic expression
@@ -28,3 +28,52 @@ https://github.com/sirthias/parboiled/wiki
 https://tpolecat.github.io/atto
 https://gist.github.com/DmitrySoshnikov/2a434dda67019a4a7c37
 -->
+
+## Notes
+
+<p align="center">
+  <img src="../../doc/ci-mountain.png" alt="mountain">
+</p>
+
+1) scanning (or lexing or lexical analysis)
+    * in greek *lex* means *word*
+    * a `scanner` (or `lexer`) takes in the linear stream of characters and chunks them together into a series of words or `tokens`
+    * a token can be a single char or several chars (numbers, string literal, identifiers)
+    * ignores whitespaces or comments
+
+2) parsing
+    * where a syntax gets a grammar: the ability to compose larger expressions and statements out of smaller parts
+    * a `parser` takes the flat sequence of tokens and builds a tree structure that mirrors the nested nature of the grammar: a `parse tree` or `abstract syntax tree` or `syntax tree` or `ast` or `tree`
+
+3) static analysis
+    * the first bit of analysis that most languages do is called `binding` or `resolution`
+    * for each identifier, we find out where that name is defined and wire the two together. This is where scope comes into play — the region of source code where a certain name can be used to refer to a certain declaration
+    * if the language is statically typed, this is when we type check and report `type errors`
+    * all this semantic insight that is visible to us from analysis needs to be stored somewhere: often as attributes on the syntax tree itself, other times in a lookup table off to the side called `symbol table`
+
+4) intermediate representations
+    * well-known styles of IRs: `control flow graph`, `static single-assignment`, `continuation-passing style`, `three-address code`
+    * support multiple source languages and target platforms
+
+5) optimization
+    * swap program with a different one that has the same semantics, but it's implemented more efficiently
+    * e.g. constant folding: if some expression always evaluates to the exact same value, we can do the evaluation at compile time and replace the code for the expression with its result
+
+
+6) code generation
+    * generating code, where "code" here usually refers to the kind of primitive assembly-like instructions a CPU runs
+    * Do we generate instructions for a real CPU or a virtual one?
+    * native machine code is lightning fast, but generating it is a lot of work and it's not portable
+    * virtual machine code is portable, generally called `bytecode` because each instruction is often a single byte long
+
+7) virtual machine
+    * a (language or process) virtual machine (VM) is a program that emulates a hypothetical chip supporting a virtual architecture at runtime
+    * running bytecode in a VM is slower than translating it to native code ahead of time because every instruction must be simulated at runtime each time it executes. In return, you get simplicity and portability
+
+8) runtime
+    * if we compiled it to machine code, we simply tell the operating system to load the executable and off it goes
+    * if we compiled it to bytecode, we need to start up the VM and load the program into that
+
+* `1)` to `3)` are considered `front end` of the implementation
+* from `6)` it's `back end`
+* alternative *compiler-compilers* (parser generators): Lex, Yacc, Bison
