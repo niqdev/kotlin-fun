@@ -77,11 +77,13 @@ https://gist.github.com/DmitrySoshnikov/2a434dda67019a4a7c37
 
 * `1)` to `3)` are considered `front end` of the implementation
 * from `6)` it's `back end`
-* alternative *compiler-compilers* (parser generators): Lex, Yacc, Bison
 * *single-pass compilers*: some simple compilers interleave parsing, analysis, and code generation so that they produce output code directly in the parser, without ever allocating any syntax trees or other IR
 * *tree-walk interpreters*: begin executing code right after parsing it to an AST: to run the program, the interpreter traverses the syntax tree one branch and leaf at a time, evaluating each node as it goes
 * *transpilers* are source-to-source compiler or a transcompiler: write a front end for your language. Then, in the back end, instead of doing all the work to lower the semantics to some primitive target language, you produce a string of valid source code for some other language that's about as high level as yours
 * *just-in-time compilation*: the fastest way to execute code is by compiling it to machine code
+* tools 
+    - *compiler-compilers* (parser generators): Lex, Yacc, Bison
+    - *lexical analyzer* using regex: [Lex](http://dinosaur.compilertools.net/lex/), [flex](https://github.com/westes/flex)
 
 What's the difference between a compiler and an interpreter?
 * compiling is an implementation technique that involves translating a source language to some other—usually lower-level—form. When you generate bytecode or machine code, you are compiling. When you transpile to another high-level language, you are compiling too

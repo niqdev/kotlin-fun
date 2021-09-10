@@ -23,6 +23,4 @@ tasks.withType<Test> {
 task("runLox", JavaExec::class) {
   mainClass.set("com.github.niqdev.Lox")
   classpath = sourceSets["main"].runtimeClasspath
-
-  //systemProperties = System.getProperties().toMap().mapKeys { k -> k as String }
 }

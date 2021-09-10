@@ -14,7 +14,7 @@ object Lox {
 
   @JvmStatic
   fun main(args: Array<String>) {
-    println(">>> ${System.getProperties()}")
+    println("Current working directory: ${System.getProperty("user.dir")}")
     println(">>> ${args[0]}")
 
     when (args.size) {
@@ -31,7 +31,7 @@ object Lox {
   }
 
   // CTRL+D to interrupt
-  fun runPrompt(): Unit {
+  fun runPrompt() {
     val input = InputStreamReader(System.`in`)
     val reader = BufferedReader(input)
 
@@ -42,18 +42,10 @@ object Lox {
     }
   }
 
-  fun run(source: String) = println(source)
-  /*
-  private static void run(String source) {
-    Scanner scanner = new Scanner(source);
-    List<Token> tokens = scanner.scanTokens();
-
-    // For now, just print the tokens.
-    for (Token token : tokens) {
-      System.out.println(token);
-    }
+  fun run(source: String) {
+    val tokens = Scanner(source).scanTokens()
+    tokens.forEach(::println)
   }
-   */
 
   fun reportError(line: Int, message: String) {
     System.err.println("[$line] Error: $message")

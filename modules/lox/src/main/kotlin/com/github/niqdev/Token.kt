@@ -8,12 +8,7 @@ data class Token(
   val line: Int
 ) {
   override fun toString(): String =
-    """
-    type: $type
-    lexeme: $lexeme
-    literal: $literal
-    line: $line
-    """.trimIndent()
+    "type: $type | lexeme: $lexeme | literal: $literal | line: $line"
 }
 
 enum class TokenType {
