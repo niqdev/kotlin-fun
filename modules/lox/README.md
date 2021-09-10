@@ -1,10 +1,11 @@
-### lox
+# lox
 
 > TODO
 
 ## Development
 
 ```bash
+./gradlew :modules:lox:test
 ./gradlew runLox
 ```
 
