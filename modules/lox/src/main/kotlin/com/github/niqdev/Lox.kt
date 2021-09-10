@@ -31,7 +31,7 @@ object Lox {
   }
 
   // CTRL+D to interrupt
-  fun runPrompt() {
+  private fun runPrompt() {
     val input = InputStreamReader(System.`in`)
     val reader = BufferedReader(input)
 
@@ -42,7 +42,7 @@ object Lox {
     }
   }
 
-  fun run(source: String) {
+  private fun run(source: String) {
     val tokens = Scanner(source).scanTokens()
     tokens.forEach(::println)
   }
