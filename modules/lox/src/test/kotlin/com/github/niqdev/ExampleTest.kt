@@ -9,7 +9,7 @@ class ExampleTest : WordSpec({
     "readFile" {
       println("Current working directory: ${System.getProperty("user.dir")}")
 
-      Lox.readFile("data/example.json").isNotBlank() shouldBe true
+      Lox.readFile("data/example.lox").isNotBlank() shouldBe true
     }
   }
 })
