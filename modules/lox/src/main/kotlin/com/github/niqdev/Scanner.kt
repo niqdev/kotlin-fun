@@ -27,7 +27,6 @@ class Scanner(private val source: String) {
   private var current = 0
   private var line = 1
 
-  // non-fp: hard to follow, completely mutable and no test
   fun scanTokens(): List<Token> {
     while (!isAtEnd()) {
       // we are at the beginning of the next lexeme

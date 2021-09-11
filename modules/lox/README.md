@@ -1,6 +1,6 @@
 # lox
 
-> TODO
+> TODO non-fp: hard to follow, completely mutable and no test
 
 ## Development
 
@@ -41,10 +41,28 @@ https://gist.github.com/DmitrySoshnikov/2a434dda67019a4a7c37
     * a `scanner` (or `lexer`) takes in the linear stream of characters and chunks them together into a series of words or `tokens`
     * a token can be a single char or several chars (numbers, string literal, identifiers)
     * ignores whitespaces or comments
+    * *lexical grammar*: the rules for how characters get grouped into tokens
 
 2) parsing
     * where a syntax gets a grammar: the ability to compose larger expressions and statements out of smaller parts
     * a `parser` takes the flat sequence of tokens and builds a tree structure that mirrors the nested nature of the grammar: a `parse tree` or `abstract syntax tree` or `syntax tree` or `ast` or `tree`
+    * *context-free grammar (CFG)*
+        - *derivations* use a finite set of rules to generate strings that are in the grammar
+        - rules are called *productions* because they produce strings in the grammar
+        - each production in a context-free grammar has a *head*, its name, and a *body*, a list of symbols which describes what it generates
+        - *symbols* can be *terminal* i.e. lexemes (tokens coming from the scanner) or *nonterminal* i.e. a named reference to another rule in the grammar
+        - BNF [Backus–Naur form](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form) is a metasyntax notation for context-free grammars
+
+<!--
+https://stackoverflow.com/questions/39435225/how-convert-the-context-free-grammar-of-json-to-state-machine
+https://stackoverflow.com/questions/2245962/is-there-an-alternative-for-flex-bison-that-is-usable-on-8-bit-embedded-systems
+https://stackoverflow.com/questions/25049751/constructing-an-abstract-syntax-tree-with-a-list-of-tokens
+https://stackoverflow.com/questions/24661870/creating-a-syntax-tree-from-tokens
+https://stackoverflow.com/questions/31600121/how-do-you-write-an-arithmetic-expression-parser-in-javascript-without-using-ev
+
+https://stackoverflow.com/questions/29090179/does-java-8-provide-an-alternative-to-the-visitor-pattern
+https://stackoverflow.com/questions/33602705/best-way-to-implement-visitor-pattern-in-kotlin
+-->
 
 3) static analysis
     * the first bit of analysis that most languages do is called `binding` or `resolution`
