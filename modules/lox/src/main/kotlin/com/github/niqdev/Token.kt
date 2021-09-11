@@ -4,7 +4,7 @@ data class Token(
   val type: TokenType,
   // raw substrings of the source code
   val lexeme: String,
-  val literal: Any,
+  val literal: Any?,
   val line: Int
 ) {
   override fun toString(): String =

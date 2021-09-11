@@ -36,17 +36,25 @@ class Scanner(private val source: String) {
       '<' -> addToken(if (match('=')) TokenType.LESS_EQUAL else TokenType.LESS)
       '>' -> addToken(if (match('=')) TokenType.GREATER_EQUAL else TokenType.GREATER)
 
-      '/' ->
-        if (match('/')) {
-          // a comment goes until the end of the line
-          while (peek() != '\n' && !isAtEnd()) advance()
-        } else addToken(TokenType.SLASH)
+      '/' -> scanSlash()
 
-      ' ', '\r', '\t' -> {}
+      ' ', '\r', '\t' -> {
+      }
       '\n' -> incrementLine()
+
+      '"' -> scanString()
       else ->
-        Lox.reportError(line, "Unexpected character: $c")
+        when {
+          c.isDigit() -> scanNumber()
+          c.isAlpha() -> scanIdentifier()
+          else -> Lox.reportError(line, "Unexpected character: $c")
+        }
     }
+
+  private fun addToken(type: TokenType, literal: Any? = null) {
+    val text = source.substring(start, current)
+    tokens.add(Token(type, text, literal, line))
+  }
 
   private fun isAtEnd(): Boolean = current >= source.length
 
@@ -61,12 +69,84 @@ class Scanner(private val source: String) {
 
   // lookahead
   private fun peek(): Char = if (isAtEnd()) '\u0000' else source[current]
+  private fun peekNext(): Char = if (current + 1 >= source.length) '\u0000' else source[current + 1]
 
   private fun incrementOffset(): Int = current++
-  private fun incrementLine() { line++ ; return }
+  private fun incrementLine() {
+    line++; return
+  }
 
-  private fun addToken(type: TokenType) {
-    val text = source.substring(start, current)
-    tokens.add(Token(type, text, "TODO", line))
+  private fun scanSlash() {
+    if (match('/')) {
+      // a comment goes until the end of the line
+      while (peek() != '\n' && !isAtEnd()) advance()
+    } else addToken(TokenType.SLASH)
+  }
+
+  private fun scanString() {
+    while (peek() != '"' && !isAtEnd()) {
+      if (peek() == '\n') line++
+      advance()
+    }
+
+    if (isAtEnd()) {
+      Lox.reportError(line, "Unterminated string")
+      return
+    }
+
+    // the closing "
+    advance()
+    // trim the surrounding quotes
+    val value = source.substring(start + 1, current - 1)
+    addToken(TokenType.STRING, value)
+  }
+
+  private fun scanNumber() {
+    while (peek().isDigit()) advance()
+
+    // look for a fractional part
+    if (peek() == '.' && peekNext().isDigit()) {
+      // consume the "."
+      advance()
+
+      while (peek().isDigit()) advance()
+    }
+
+    val value = source.substring(start, current).toDouble()
+    addToken(TokenType.NUMBER, value)
+  }
+
+  private fun scanIdentifier() {
+    while (peek().isAlphaNumeric()) advance()
+
+    val value = source.substring(start, current)
+    addToken(keywords[value] ?: TokenType.IDENTIFIER)
+  }
+
+  companion object {
+
+    // TODO enum value
+    private val keywords = mapOf(
+      "and" to TokenType.AND,
+      "class" to TokenType.CLASS,
+      "else" to TokenType.ELSE,
+      "false" to TokenType.FALSE,
+      "for" to TokenType.FOR,
+      "fun" to TokenType.FUN,
+      "if" to TokenType.IF,
+      "nil" to TokenType.NIL,
+      "or" to TokenType.OR,
+      "print" to TokenType.PRINT,
+      "return" to TokenType.RETURN,
+      "super" to TokenType.SUPER,
+      "this" to TokenType.THIS,
+      "true" to TokenType.TRUE,
+      "var" to TokenType.VAR,
+      "while" to TokenType.WHILE
+    )
   }
 }
+
+private fun Char.isDigit(): Boolean = this in '0'..'9'
+private fun Char.isAlpha(): Boolean = this in 'a'..'z' || this in 'A'..'Z' || this == '_'
+private fun Char.isAlphaNumeric(): Boolean = this.isDigit() || this.isAlpha()
