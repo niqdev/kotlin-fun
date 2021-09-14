@@ -1,5 +1,7 @@
 package com.github.niqdev
 
+// >>> (2)
+
 data class Token(
   val type: TokenType,
   // raw substrings of the source code

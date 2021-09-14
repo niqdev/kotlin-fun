@@ -8,6 +8,8 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.system.exitProcess
 
+// >>> (1)
+
 object Lox {
 
   private var error = false
@@ -44,11 +46,18 @@ object Lox {
 
   private fun run(source: String) {
     val tokens = Scanner(source).scanTokens()
-    tokens.forEach(::println)
+    val expression = Parser(tokens).parse()
+
+    if (error) return
+
+    println(Expr.pretty(expression))
   }
 
   fun reportError(line: Int, message: String) {
     System.err.println("[$line] Error: $message")
     error = true
   }
+
+  fun error(token: Token, message: String) =
+    reportError(token.line, "[${token.lexeme}] $message")
 }

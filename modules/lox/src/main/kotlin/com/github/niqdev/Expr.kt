@@ -1,5 +1,7 @@
 package com.github.niqdev
 
+// >>> (4)
+
 /**
  * example: 1 - (2 * 3) < 4 == false
  *
@@ -10,12 +12,20 @@ package com.github.niqdev
  * binary         → expression operator expression ;
  * operator       → "==" | "!=" | "<" | "<=" | ">" | ">=" | "+"  | "-"  | "*" | "/" ;
  *
- * Since the grammar is recursive the data structure will form a tree: abstract syntax tree (AST)
+ * expression     → equality ;
+ * equality       → comparison ( ( "!=" | "==" ) comparison )* ;
+ * comparison     → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
+ * term           → factor ( ( "-" | "+" ) factor )* ;
+ * factor         → unary ( ( "/" | "*" ) unary )* ; // rule recurses to match the left operand: left-associative
+ * unary          → ( "!" | "-" ) unary | primary ;
+ * primary        → NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")" ;
+ *
+ * the grammar is recursive the data structure forms a tree: abstract syntax tree (AST)
  */
 sealed class Expr {
   class Binary(val left: Expr, val op: Token, val right: Expr) : Expr()
   class Grouping(val expression: Expr) : Expr()
-  class Literal(val value: Any) : Expr()
+  class Literal(val value: Any?) : Expr()
   class Unary(val op: Token, val expression: Expr) : Expr()
 
   companion object {

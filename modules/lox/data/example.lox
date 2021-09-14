@@ -1,2 +1,2 @@
-// comment
-var language = "lox";
+// var language = "lox";
+1 - (2 * 3) < 4

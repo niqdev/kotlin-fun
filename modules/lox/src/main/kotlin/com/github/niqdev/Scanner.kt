@@ -1,5 +1,7 @@
 package com.github.niqdev
 
+// >>> (3)
+
 // Scanner or Lexer
 class Scanner(private val source: String) {
 
