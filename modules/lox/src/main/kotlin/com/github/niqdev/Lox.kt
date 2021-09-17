@@ -13,6 +13,7 @@ import kotlin.system.exitProcess
 object Lox {
 
   private var error = false
+  private var runtimeError = false
 
   @JvmStatic
   fun main(args: Array<String>) {
@@ -23,7 +24,15 @@ object Lox {
       1 -> run(readFile(args[0]))
       0 -> println("runPrompt")
       // https://www.freebsd.org/cgi/man.cgi?query=sysexits
-      else -> exitProcess(64)
+      else -> {
+        val errorCode =
+          when {
+            error -> 65
+            runtimeError -> 70
+            else -> -1
+          }
+        exitProcess(errorCode)
+      }
     }
   }
 
@@ -50,14 +59,20 @@ object Lox {
 
     if (error) return
 
-    println(Expr.pretty(expression))
+    // TODO move outsite
+    Interpreter().interpret(expression)
   }
+
+  fun error(token: Token, message: String) =
+    reportError(token.line, "[${token.lexeme}] $message")
 
   fun reportError(line: Int, message: String) {
     System.err.println("[$line] Error: $message")
     error = true
   }
 
-  fun error(token: Token, message: String) =
-    reportError(token.line, "[${token.lexeme}] $message")
+  fun reportRuntimeError(error: LoxRuntimeError) {
+    System.err.println("[${error.token.line}] RuntimeError: ${error.message}")
+    runtimeError = true
+  }
 }

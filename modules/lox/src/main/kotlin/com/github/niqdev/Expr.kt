@@ -26,7 +26,7 @@ sealed class Expr {
   class Binary(val left: Expr, val op: Token, val right: Expr) : Expr()
   class Grouping(val expression: Expr) : Expr()
   class Literal(val value: Any?) : Expr()
-  class Unary(val op: Token, val expression: Expr) : Expr()
+  class Unary(val op: Token, val right: Expr) : Expr()
 
   companion object {
     // pretty abstract syntax tree
@@ -35,7 +35,7 @@ sealed class Expr {
         is Binary -> parenthesize(expr.op.lexeme, expr.left, expr.right)
         is Grouping -> parenthesize("group", expr.expression)
         is Literal -> expr.value.toString()
-        is Unary -> parenthesize(expr.op.lexeme, expr.expression)
+        is Unary -> parenthesize(expr.op.lexeme, expr.right)
       }
 
     private fun parenthesize(name: String, vararg exprs: Expr): String {
