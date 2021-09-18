@@ -36,6 +36,7 @@ https://arrow-kt.io/
 https://lambda.show/blog/arrow-io-monad
 https://blog.frankel.ch/imperative-functional-programming/1/
 https://adrianfilip.com/2020/04/07/moving-from-kotlin-spring-reactor-arrow-to-scala-zio
+https://medium.com/google-developer-experts/advanced-fp-for-the-enterprise-bee-traverse-b5e4e8b7b8e4
 # arrow course
 https://www.47deg.com/academy/2021-01-19-fp-in-kotlin-with-arrow-course-jan-2021
 https://github.com/47degrees/ArrowInPractice
