@@ -1,7 +1,0 @@
-{
-  "myInt": 42,
-  "myString": "value",
-  "myObject": {
-    "myNested": "hello"
-  }
-}
