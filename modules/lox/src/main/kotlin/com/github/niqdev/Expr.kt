@@ -5,6 +5,7 @@ package com.github.niqdev
 /**
  * example: 1 - (2 * 3) < 4 == false
  *
+ * // simple but ambiguous
  * expression     → literal | unary | binary | grouping ;
  * literal        → NUMBER | STRING | "true" | "false" | "nil" ;
  * grouping       → "(" expression ")" ;
@@ -12,13 +13,20 @@ package com.github.niqdev
  * binary         → expression operator expression ;
  * operator       → "==" | "!=" | "<" | "<=" | ">" | ">=" | "+"  | "-"  | "*" | "/" ;
  *
+ * // no ambiguity
  * expression     → equality ;
  * equality       → comparison ( ( "!=" | "==" ) comparison )* ;
  * comparison     → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
  * term           → factor ( ( "-" | "+" ) factor )* ;
- * factor         → unary ( ( "/" | "*" ) unary )* ; // rule recurses to match the left operand: left-associative
+ * factor         → unary ( ( "/" | "*" ) unary )* ; // rule recurse to match the left operand: left-associative
  * unary          → ( "!" | "-" ) unary | primary ;
  * primary        → NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")" ;
+ *
+ * // add statements
+ * program        → statement* EOF ;
+ * statement      → exprStmt | printStmt ;
+ * exprStmt       → expression ";" ;
+ * printStmt      → "print" expression ";" ;
  *
  * the grammar is recursive the data structure forms a tree: abstract syntax tree (AST)
  */

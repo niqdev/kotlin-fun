@@ -6,7 +6,7 @@
 
 ```bash
 ./gradlew :modules:lox:test
-./gradlew runLox --args=data/example.lox
+./gradlew runLox --args=data/exampleN.lox
 ```
 
 ## Resources

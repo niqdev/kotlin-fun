@@ -6,13 +6,31 @@ class LoxRuntimeError(val token: Token, message: String) : RuntimeException(mess
 class Interpreter {
 
   // TODO Either
-  fun interpret(expression: Expr): Unit =
+  fun interpret0(expression: Expr): Unit =
     try {
       println(Expr.pretty(expression))
       val value = evaluate(expression)
       println(stringify(value))
     } catch (e: LoxRuntimeError) {
       Lox.reportRuntimeError(e)
+    }
+
+  fun interpret(statements: List<Stmt>): Unit =
+    try {
+      statements.forEach(::execute)
+    } catch (e: LoxRuntimeError) {
+      Lox.reportRuntimeError(e)
+    }
+
+  private fun execute(statement: Stmt): Any? =
+    when (statement) {
+      is Stmt.Expression -> {
+        val expression = statement.expression
+        println("EXPR: ${Expr.pretty(expression)}")
+        val value = evaluate(expression)
+        println("RESULT: ${stringify(value)}")
+      }
+      is Stmt.Print -> println(stringify(evaluate(statement.expression)))
     }
 
   private fun evaluate(expression: Expr): Any? =

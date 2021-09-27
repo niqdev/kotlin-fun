@@ -55,12 +55,12 @@ object Lox {
 
   private fun run(source: String) {
     val tokens = Scanner(source).scanTokens()
-    val expression = Parser(tokens).parse()
+    val statements = Parser(tokens).parse()
 
     if (error) return
 
     // TODO move outsite
-    Interpreter().interpret(expression)
+    Interpreter().interpret(statements)
   }
 
   fun error(token: Token, message: String) =

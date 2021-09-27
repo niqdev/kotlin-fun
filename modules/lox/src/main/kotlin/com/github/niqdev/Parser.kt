@@ -14,12 +14,38 @@ import java.lang.IllegalStateException
 class Parser(private val tokens: List<Token>) {
   private var current = 0
 
-  fun parse(): Expr =
+  fun parse0(): Expr =
     try {
       expression()
     } catch (error: ParseError) {
       throw IllegalStateException("TODO null")
     }
+
+  fun parse(): List<Stmt> {
+    val statements = mutableListOf<Stmt>()
+    while (!isAtEnd()) {
+      statements.add(statement())
+    }
+    return statements
+  }
+
+  private fun statement(): Stmt =
+    when {
+      match(TokenType.PRINT) -> printStatement()
+      else -> expressionStatement()
+    }
+
+  private fun printStatement(): Stmt {
+    val expr = expression()
+    consume(TokenType.SEMICOLON, "Expected ';' after value")
+    return Stmt.Print(expr)
+  }
+
+  private fun expressionStatement(): Stmt {
+    val expr = expression()
+    consume(TokenType.SEMICOLON, "Expected ';' after expression")
+    return Stmt.Expression(expr)
+  }
 
   private fun expression(): Expr = equality()
 
