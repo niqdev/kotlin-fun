@@ -1,40 +1,15 @@
 package com.github.niqdev.bool
 
-enum class TokenType {
-  // single-character tokens
-  LEFT_PAREN,
-  RIGHT_PAREN,
+/*
+https://cs.au.dk/~danvy/dProgSprog16/Lecture-notes/lecture-notes_week-3.html
+https://xmonader.github.io/letsbuildacompiler-pretty/tutor06_booleanexpressions.html
+https://compilers.iecc.com/crenshaw/tutor6.txt
+https://www.cs.unb.ca/~wdu/cs4613/a2ans.htm
+https://docs.oracle.com/cd/E13203_01/tuxedo/tux80/atmi/fml0516.htm
 
-  // one or two character tokens
-  BANG,
-  BANG_EQUAL,
-  EQUAL_EQUAL,
-  GREATER,
-  GREATER_EQUAL,
-  LESS,
-  LESS_EQUAL,
-
-  // literals
-  STRING,
-  NUMBER,
-
-  // keywords
-  AND,
-  OR
-}
-
-sealed class Token {
-  internal data class TokenInt(val value: Int) : Token()
-  internal data class TokenString(val value: String) : Token()
-  internal object TokenLess : Token()
-}
-
-fun Token.pretty() =
-  when (this) {
-    is Token.TokenInt -> "Int($value)"
-    is Token.TokenString -> "String($value)"
-    is Token.TokenLess -> "Symbol(<)"
-  }
+https://cs.wmich.edu/~gupta/teaching/cs4850/sumII06/The%20syntax%20of%20C%20in%20Backus-Naur%20form.htm
+https://www.cs.unc.edu/~plaisted/comp455/Algol60.pdf
+ */
 
 object StringLexer {
 
@@ -106,5 +81,5 @@ private fun Char.isDigit(): Boolean = this in '0'..'9'
 private fun Char.isAlpha(): Boolean = this in 'a'..'z' || this in 'A'..'Z' || "._-".contains(this)
 
 fun main() {
-  println(StringLexer.tokenize("8 < 42 aaa.bbb 56").map { it.pretty() })
+  println(StringLexer.tokenize("8 < 42 aaa.bbb 56").map { Token::pretty })
 }
