@@ -24,40 +24,47 @@ enum class TokenType {
   OR
 }
 
-// TODO key
 sealed class Token {
-  internal data class TokenInt(val value: Int) : Token()
-  internal data class TokenString(val value: String) : Token()
-  internal object TokenLeftParentheses : Token()
-  internal object TokenRightParentheses : Token()
-  internal object TokenBangEqual : Token()
-  internal object TokenEqual : Token()
-  internal object TokenEqualEqual : Token()
-  internal object TokenGreater : Token()
-  internal object TokenGreaterEqual : Token()
-  internal object TokenLess : Token()
-  internal object TokenLessEqual : Token()
-  internal object TokenAnd : Token()
-  internal object TokenOr : Token()
-  internal object TokenNot : Token()
+  object TokenLeftParentheses : Token()
+  object TokenRightParentheses : Token()
+  object TokenBangEqual : Token()
+  object TokenEqual : Token()
+  object TokenEqualEqual : Token()
+  object TokenGreater : Token()
+  object TokenGreaterEqual : Token()
+  object TokenLess : Token()
+  object TokenLessEqual : Token()
+  object TokenAnd : Token()
+  object TokenOr : Token()
+  object TokenNot : Token()
+  data class TokenInt(val value: Int) : Token()
+  data class TokenString(val value: String) : Token()
+  data class TokenKey(val value: String) : Token()
 
   companion object {
+    val identifiers = mapOf(
+      "AND" to TokenAnd,
+      "OR" to TokenOr,
+      "NOT" to TokenNot
+    )
+
     fun pretty(token: Token) =
       when (token) {
-        is TokenInt -> "Int(${token.value})"
-        is TokenString -> "String(${token.value})"
-        is TokenLeftParentheses -> "Symbol('(')"
-        is TokenRightParentheses -> "Symbol(')')"
-        is TokenBangEqual -> "Symbol(!=)"
-        is TokenEqual -> "Symbol(=)"
-        is TokenEqualEqual -> "Symbol(==)"
-        is TokenGreater -> "Symbol(>)"
-        is TokenGreaterEqual -> "Symbol(>=)"
-        is TokenLess -> "Symbol(<)"
-        is TokenLessEqual -> "Symbol(<=)"
+        is TokenLeftParentheses -> "("
+        is TokenRightParentheses -> ")"
+        is TokenBangEqual -> "!="
+        is TokenEqual -> "="
+        is TokenEqualEqual -> "=="
+        is TokenGreater -> ">"
+        is TokenGreaterEqual -> ">="
+        is TokenLess -> "<"
+        is TokenLessEqual -> "<="
         is TokenAnd -> "AND"
         is TokenOr -> "OR"
         is TokenNot -> "NOT"
+        is TokenInt -> "Int(${token.value})"
+        is TokenString -> "String(${token.value})"
+        is TokenKey -> "Key(${token.value})"
       }
   }
 }
@@ -82,6 +89,8 @@ equality       → comparison ( ( "!=" | "==" ) comparison )*
 comparison     → unary ( ( ">" | ">=" | "<" | "<=" ) unary )*
 unary          → ( "!" | "-" ) unary | primary
 primary        → NUMBER | STRING | "true" | "false" | "(" expression ")"
+
+---
 
 <b-expression> ::= <b-term> [OR <b-term>]*
 <b-term>       ::= <not-factor> [AND <not-factor>]*
@@ -117,19 +126,16 @@ comparison     → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
 true OR false AND true OR NOT false
 (((true OR false) AND true) OR (NOT false))
 
- */
-
-/**
- * expression   → literal
- *                | expression OR expression
- *                | expression AND expression
- *                | NOT expression
- * literal      → "true" | "false"
- */
+expression   → literal
+               | expression OR expression
+               | expression AND expression
+               | NOT expression
+literal      → "true" | "false"
+*/
 sealed class Expression {
-  class Binary(val left: Expression, val op: Token, val right: Expression) : Expression()
-  // class Grouping(val expression: Expr) : Expr()
-  // class Unary(val op: Token, val right: Expr) : Expr()
+  class Binary(val left: Expression, val token: Token, val right: Expression) : Expression()
+  class Grouping(val expression: Expression) : Expression()
+  class Unary(val token: Token, val right: Expression) : Expression()
   class Literal(val value: Value) : Expression()
 }
 

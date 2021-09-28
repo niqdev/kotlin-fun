@@ -7,7 +7,7 @@ class ExampleTest : WordSpec({
 
   "Example" should {
     "readFile" {
-      Lox.readFile("data/example.lox").isNotBlank() shouldBe true
+      Lox.readFile("data/example1.lox").isNotBlank() shouldBe true
     }
   }
 })

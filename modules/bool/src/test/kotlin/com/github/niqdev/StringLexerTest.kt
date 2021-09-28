@@ -2,7 +2,6 @@ package com.github.niqdev
 
 import com.github.niqdev.bool.StringLexer
 import com.github.niqdev.bool.Token
-import com.github.niqdev.bool.internal.InternalList
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
 
@@ -11,8 +10,33 @@ class StringLexerTest : WordSpec({
   "StringLexer" should {
 
     "tokenize" {
-      val expected = InternalList(Token.TokenInt(8), Token.TokenLess, Token.TokenInt(42))
-      StringLexer.tokenize("8 < 42") shouldBe expected
+      val input = "( ) != = == > >= < <= AND and && OR oR || NOT NOt ! 42 simple_key key.sub-nested \"a str@ing\" 8"
+      val result = listOf(
+        Token.TokenLeftParentheses,
+        Token.TokenRightParentheses,
+        Token.TokenBangEqual,
+        Token.TokenEqual,
+        Token.TokenEqualEqual,
+        Token.TokenGreater,
+        Token.TokenGreaterEqual,
+        Token.TokenLess,
+        Token.TokenLessEqual,
+        Token.TokenAnd,
+        Token.TokenAnd,
+        Token.TokenAnd,
+        Token.TokenOr,
+        Token.TokenOr,
+        Token.TokenOr,
+        Token.TokenNot,
+        Token.TokenNot,
+        Token.TokenNot,
+        Token.TokenInt(42),
+        Token.TokenKey("simple_key"),
+        Token.TokenKey("key.sub-nested"),
+        Token.TokenString("a str@ing"),
+        Token.TokenInt(8)
+      )
+      StringLexer.tokenize(input) shouldBe result
     }
   }
 })
