@@ -2,6 +2,7 @@ package com.github.niqdev
 
 import com.github.niqdev.bool.StringLexer
 import com.github.niqdev.bool.Token
+import com.github.niqdev.bool.internal.toList
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
 
@@ -36,7 +37,7 @@ class StringLexerTest : WordSpec({
         Token.TokenString("a str@ing"),
         Token.TokenInt(8)
       )
-      StringLexer.tokenize(input) shouldBe result
+      StringLexer.tokenize(input).toList() shouldBe result
     }
   }
 })

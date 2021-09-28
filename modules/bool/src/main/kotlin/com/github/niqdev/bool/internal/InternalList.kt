@@ -23,20 +23,26 @@ sealed class InternalList<out A> {
 
   companion object {
 
-    operator fun <A> invoke(vararg items: A): InternalList<A> {
+    operator fun <A> invoke(items: List<A>): InternalList<A> {
       // non-stack safe
       fun loop(result: List<A>): InternalList<A> =
         when {
           result.isEmpty() -> Nil
           else -> Cons(result[0], loop(result.drop(1)))
         }
-      return loop(items.asList())
+      return loop(items)
     }
+
+    operator fun <A> invoke(vararg items: A): InternalList<A> =
+      invoke(items.asList())
   }
 }
 
-fun <A> InternalList<A>.cons(): (A) -> InternalList<A> =
-  { head -> InternalList.Cons(head, this) }
+fun <A> InternalList<A>.cons(head: A): InternalList<A> =
+  InternalList.Cons(head, this)
+
+operator fun <A> InternalList<A>.plus(a: A): InternalList<A> =
+  this.cons(a)
 
 fun <A, B> InternalList<A>.foldLeft(): (B) -> (f: (B, A) -> B) -> B =
   { zero ->
@@ -50,8 +56,11 @@ fun <A, B> InternalList<A>.foldLeft(): (B) -> (f: (B, A) -> B) -> B =
     }
   }
 
+fun <A> InternalList<A>.toList(): List<A> =
+  this.foldLeft<A, List<A>>()(listOf())() { acc, i -> acc + i }
+
 fun <A> InternalList<A>.reverse(): InternalList<A> =
-  this.foldLeft<A, InternalList<A>>()(InternalList.Nil as InternalList<A>)() { acc, i -> acc.cons()(i) }
+  this.foldLeft<A, InternalList<A>>()(InternalList.Nil as InternalList<A>)() { acc, i -> acc.cons(i) }
 
 fun <A, B> InternalList<A>.map(f: (A) -> B): InternalList<B> =
-  this.foldLeft<A, InternalList<B>>()(InternalList())() { acc, i -> acc.cons()(f(i)) }.reverse()
+  this.foldLeft<A, InternalList<B>>()(InternalList())() { acc, i -> acc.cons(f(i)) }.reverse()

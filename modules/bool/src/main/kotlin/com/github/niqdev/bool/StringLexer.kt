@@ -1,17 +1,23 @@
 package com.github.niqdev.bool
 
+import com.github.niqdev.bool.internal.InternalList
+import com.github.niqdev.bool.internal.plus
+import com.github.niqdev.bool.internal.reverse
+
 object StringLexer {
 
   // TODO Validated<NonEmptyList<Error>, List<Token>>
-  fun tokenize(input: String): List<Token> {
+  fun tokenize(input: String): InternalList<Token> {
 
-    tailrec fun loop(index: Int, result: List<Token>): List<Token> =
+    tailrec fun loop(index: Int, result: InternalList<Token>): InternalList<Token> =
       when {
         index < input.length -> {
           when (val c = input[index]) {
+            // parentheses
             '(' -> loop(index + 1, result + Token.TokenLeftParentheses)
             ')' -> loop(index + 1, result + Token.TokenRightParentheses)
 
+            // comparison
             '=' ->
               when (input[index + 1]) {
                 '=' -> loop(index + 2, result + Token.TokenEqualEqual)
@@ -60,7 +66,7 @@ object StringLexer {
                   // safe: no NumberFormatException
                   loop(index + tokenString.length, result + Token.TokenInt(tokenString.toInt()))
                 }
-                // identifier or key
+                // identifier or key (cannot start with "._-")
                 c in 'a'..'z' || c in 'A'..'Z' -> {
                   val tokenString = scanKey()(input.substring(index))
                   // identifier is case insensitive
@@ -72,13 +78,13 @@ object StringLexer {
             }
           }
         }
-        else -> result
+        else -> result.reverse()
       }
 
-    return loop(0, listOf())
+    return loop(0, InternalList.Nil)
   }
 
-  fun scan(): ((Char) -> Boolean) -> (String) -> String =
+  private fun scan(): ((Char) -> Boolean) -> (String) -> String =
     { predicate ->
       { input ->
         tailrec fun loop(index: Int, result: String): String =
@@ -93,9 +99,9 @@ object StringLexer {
       }
     }
 
-  fun scanString(): (String) -> String = scan()() { it != '"' }
-  fun scanNumber(): (String) -> String = scan()(Char::isDigit)
-  fun scanKey(): (String) -> String = scan()(Char::isKey)
+  private fun scanString(): (String) -> String = scan()() { it != '"' }
+  private fun scanNumber(): (String) -> String = scan()(Char::isDigit)
+  private fun scanKey(): (String) -> String = scan()(Char::isKey)
 }
 
 private fun Char.isDigit(): Boolean = this in '0'..'9'

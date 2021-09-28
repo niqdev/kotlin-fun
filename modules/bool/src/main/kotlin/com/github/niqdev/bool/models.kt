@@ -1,29 +1,6 @@
 package com.github.niqdev.bool
 
-// TODO delete
-enum class TokenType {
-  // single-character tokens
-  LEFT_PAREN,
-  RIGHT_PAREN,
-
-  // one or two character tokens
-  BANG,
-  BANG_EQUAL,
-  EQUAL_EQUAL,
-  GREATER,
-  GREATER_EQUAL,
-  LESS,
-  LESS_EQUAL,
-
-  // literals
-  STRING,
-  NUMBER,
-
-  // keywords
-  AND,
-  OR
-}
-
+// TODO IN, MATCH
 sealed class Token {
   object TokenLeftParentheses : Token()
   object TokenRightParentheses : Token()
