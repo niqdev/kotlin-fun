@@ -1,59 +1,56 @@
 package com.github.niqdev.bool
 
-/*
-https://cs.au.dk/~danvy/dProgSprog16/Lecture-notes/lecture-notes_week-3.html
-https://xmonader.github.io/letsbuildacompiler-pretty/tutor06_booleanexpressions.html
-https://compilers.iecc.com/crenshaw/tutor6.txt
-https://www.cs.unb.ca/~wdu/cs4613/a2ans.htm
-https://docs.oracle.com/cd/E13203_01/tuxedo/tux80/atmi/fml0516.htm
-
-https://cs.wmich.edu/~gupta/teaching/cs4850/sumII06/The%20syntax%20of%20C%20in%20Backus-Naur%20form.htm
-https://www.cs.unc.edu/~plaisted/comp455/Algol60.pdf
- */
+import com.github.niqdev.bool.internal.InternalList
+import com.github.niqdev.bool.internal.cons
+import com.github.niqdev.bool.internal.reverse
 
 object StringLexer {
 
   // TODO Validated<NonEmptyList<Error>, List<Token>>
-  fun tokenize(input: String): List<Token> {
+  fun tokenize(input: String): InternalList<Token> {
 
-    tailrec fun loop(index: Int, result: List<Token>): List<Token> =
+    tailrec fun loop(index: Int, result: InternalList<Token>): InternalList<Token> =
       when {
         index < input.length -> {
           when (val c = input[index]) {
-            '(' -> TODO()
-            ')' -> TODO()
-            '!' -> TODO()
-            '=' -> TODO()
-            '<' -> {
-              val token = Token.TokenLess
-              loop(index + 1, result + token)
-            }
-            '>' -> TODO()
+            '(' -> loop(index + 1, result.cons()(Token.TokenLeftParentheses))
+            ')' -> loop(index + 1, result.cons()(Token.TokenRightParentheses))
+
+            // TODO 2 chars
+            '=' -> loop(index + 1, result.cons()(Token.TokenEqual))
+            '<' -> loop(index + 1, result.cons()(Token.TokenLess))
+            '>' -> loop(index + 1, result.cons()(Token.TokenGreater))
+
+            // TODO alias
             '&' -> TODO()
             '|' -> TODO()
+            '!' -> TODO()
+
             '"' -> TODO()
 
-            ' ', '\t', '\n', '\r', '\b' ->
-              loop(index + 1, result)
+            // ignore
+            ' ', '\t', '\n', '\r', '\b' -> loop(index + 1, result)
             else -> {
               when {
                 c.isDigit() -> {
                   val tokenString = scanNumber()(input.substring(index))
-                  loop(index + tokenString.length, result + Token.TokenInt(tokenString.toInt()))
+                  loop(index + tokenString.length, result.cons()(Token.TokenInt(tokenString.toInt())))
                 }
+                // TODO key instead of string
                 c.isAlpha() -> {
                   val tokenString = scanString()(input.substring(index))
-                  loop(index + tokenString.length, result + Token.TokenString(tokenString))
+                  loop(index + tokenString.length, result.cons()(Token.TokenString(tokenString)))
                 }
+                // TODO and, or, not
                 else -> error("invalid char $c at position $index")
               }
             }
           }
         }
-        else -> result
+        else -> result.reverse()
       }
 
-    return loop(0, listOf())
+    return loop(0, InternalList.Nil)
   }
 
   fun scan(): ((Char) -> Boolean) -> (String) -> String =
@@ -79,7 +76,3 @@ object StringLexer {
 
 private fun Char.isDigit(): Boolean = this in '0'..'9'
 private fun Char.isAlpha(): Boolean = this in 'a'..'z' || this in 'A'..'Z' || "._-".contains(this)
-
-fun main() {
-  println(StringLexer.tokenize("8 < 42 aaa.bbb 56").map { Token::pretty })
-}

@@ -9,6 +9,8 @@ repositories {
 }
 
 dependencies {
+  implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+
   testImplementation("io.kotest:kotest-runner-junit5:${Versions.kotest}")
   testImplementation("io.kotest:kotest-assertions-core:${Versions.kotest}")
 }
