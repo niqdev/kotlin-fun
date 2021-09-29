@@ -4,6 +4,7 @@ package com.github.niqdev.bool
 sealed class Token {
   object TokenLeftParentheses : Token()
   object TokenRightParentheses : Token()
+  object TokenMinus : Token()
   object TokenBangEqual : Token()
   object TokenEqual : Token()
   object TokenEqualEqual : Token()
@@ -11,15 +12,19 @@ sealed class Token {
   object TokenGreaterEqual : Token()
   object TokenLess : Token()
   object TokenLessEqual : Token()
+  object TokenTrue : Token()
+  object TokenFalse : Token()
   object TokenAnd : Token()
   object TokenOr : Token()
   object TokenNot : Token()
-  data class TokenInt(val value: Int) : Token()
+  data class TokenNumber(val value: Int) : Token()
   data class TokenString(val value: String) : Token()
   data class TokenKey(val value: String) : Token()
 
   companion object {
     val identifiers = mapOf(
+      "TRUE" to TokenTrue,
+      "FALSE" to TokenFalse,
       "AND" to TokenAnd,
       "OR" to TokenOr,
       "NOT" to TokenNot
@@ -29,6 +34,7 @@ sealed class Token {
       when (token) {
         is TokenLeftParentheses -> "("
         is TokenRightParentheses -> ")"
+        is TokenMinus -> "-"
         is TokenBangEqual -> "!="
         is TokenEqual -> "="
         is TokenEqualEqual -> "=="
@@ -36,10 +42,12 @@ sealed class Token {
         is TokenGreaterEqual -> ">="
         is TokenLess -> "<"
         is TokenLessEqual -> "<="
+        is TokenTrue -> "TRUE"
+        is TokenFalse -> "FALSE"
         is TokenAnd -> "AND"
         is TokenOr -> "OR"
         is TokenNot -> "NOT"
-        is TokenInt -> "Int(${token.value})"
+        is TokenNumber -> "Number(${token.value})"
         is TokenString -> "String(${token.value})"
         is TokenKey -> "Key(${token.value})"
       }
@@ -112,15 +120,44 @@ literal      → "true" | "false"
 sealed class Expression {
   class Binary(val left: Expression, val token: Token, val right: Expression) : Expression()
   class Grouping(val expression: Expression) : Expression()
+  // TODO should token be replaced by sealed class only for NOT and MINUS
   class Unary(val token: Token, val right: Expression) : Expression()
   class Literal(val value: Value) : Expression()
+
+  companion object {
+
+    fun pretty(expression: Expression): String =
+      when (expression) {
+        is Binary -> parenthesize(Token.pretty(expression.token), expression.left, expression.right)
+        is Grouping -> parenthesize("group", expression.expression)
+        is Literal -> Value.pretty(expression.value)
+        is Unary -> parenthesize(Token.pretty(expression.token), expression.right)
+      }
+
+    private fun parenthesize(name: String, vararg expressions: Expression): String {
+      val values = expressions.fold("", { result, expr -> "$result ${pretty(expr)}" })
+      return "($name$values)"
+    }
+  }
 }
 
 sealed class Value {
   internal object ValueTrue : Value()
   internal object ValueFalse : Value()
+  internal data class ValueNumber(val number: Int) : Value()
   internal data class ValueString(val string: String) : Value()
-  internal data class ValueNumber(val int: String) : Value()
   // e.g. json path
   internal data class ValueKey(val key: String) : Value()
+
+  companion object {
+
+    fun pretty(value: Value): String =
+      when (value) {
+        is ValueTrue -> ""
+        is ValueFalse -> ""
+        is ValueNumber -> "Number(${value.number})"
+        is ValueString -> "String(${value.string})"
+        is ValueKey -> "String(${value.key})"
+      }
+  }
 }

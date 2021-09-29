@@ -1,21 +1,18 @@
 package com.github.niqdev.bool
 
-import com.github.niqdev.bool.internal.InternalList
-import com.github.niqdev.bool.internal.plus
-import com.github.niqdev.bool.internal.reverse
-
 object StringLexer {
 
   // TODO Validated<NonEmptyList<Error>, List<Token>>
-  fun tokenize(input: String): InternalList<Token> {
+  fun tokenize(input: String): List<Token> {
 
-    tailrec fun loop(index: Int, result: InternalList<Token>): InternalList<Token> =
+    tailrec fun loop(index: Int, result: List<Token>): List<Token> =
       when {
         index < input.length -> {
           when (val c = input[index]) {
             // parentheses
             '(' -> loop(index + 1, result + Token.TokenLeftParentheses)
             ')' -> loop(index + 1, result + Token.TokenRightParentheses)
+            '-' -> loop(index + 1, result + Token.TokenMinus)
 
             // comparison
             '=' ->
@@ -64,7 +61,7 @@ object StringLexer {
                 c.isDigit() -> {
                   val tokenString = scanNumber()(input.substring(index))
                   // safe: no NumberFormatException
-                  loop(index + tokenString.length, result + Token.TokenInt(tokenString.toInt()))
+                  loop(index + tokenString.length, result + Token.TokenNumber(tokenString.toInt()))
                 }
                 // identifier or key (cannot start with "._-")
                 c in 'a'..'z' || c in 'A'..'Z' -> {
@@ -78,10 +75,10 @@ object StringLexer {
             }
           }
         }
-        else -> result.reverse()
+        else -> result
       }
 
-    return loop(0, InternalList.Nil)
+    return loop(0, listOf())
   }
 
   private fun scan(): ((Char) -> Boolean) -> (String) -> String =
