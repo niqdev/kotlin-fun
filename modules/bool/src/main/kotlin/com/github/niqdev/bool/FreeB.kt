@@ -1,13 +1,13 @@
 package com.github.niqdev.bool
 
 // TODO object True/False ???
-sealed class FreeB<T> {
-  data class Pure<T>(val value: T) : FreeB<T>()
-  class True<T> : FreeB<T>()
-  class False<T> : FreeB<T>()
-  data class And<T>(val left: FreeB<T>, val right: FreeB<T>) : FreeB<T>()
-  data class Or<T>(val left: FreeB<T>, val right: FreeB<T>) : FreeB<T>()
-  data class Not<T>(val fb: FreeB<T>) : FreeB<T>()
+sealed interface FreeB<T> {
+  data class Pure<T>(val value: T) : FreeB<T>
+  class True<T> : FreeB<T>
+  class False<T> : FreeB<T>
+  data class And<T>(val left: FreeB<T>, val right: FreeB<T>) : FreeB<T>
+  data class Or<T>(val left: FreeB<T>, val right: FreeB<T>) : FreeB<T>
+  data class Not<T>(val fb: FreeB<T>) : FreeB<T>
 }
 
 // free boolean algebra interpreter
@@ -24,9 +24,9 @@ fun <T> FreeB<T>.run(f: (T) -> Boolean): Boolean =
 
 // TODO minus ?
 // > >= < <= == != IN MATCH
-sealed class Predicate {
-  data class Greater(val left: Int, val right: Int) : Predicate()
-  data class Less(val left: Int, val right: Int) : Predicate()
+sealed interface Predicate {
+  data class Greater(val left: Int, val right: Int) : Predicate
+  data class Less(val left: Int, val right: Int) : Predicate
 
   companion object {
     val eval: (Predicate) -> Boolean =
@@ -40,10 +40,10 @@ sealed class Predicate {
 }
 
 // TODO Predicate<Version>
-sealed class Version {
-  data class DpkgVersion(val value: String) : Version()
-  data class ApkVersion(val value: String) : Version()
-  data class RpmVersion(val value: String) : Version()
+sealed interface Version {
+  data class DpkgVersion(val value: String) : Version
+  data class ApkVersion(val value: String) : Version
+  data class RpmVersion(val value: String) : Version
 }
 
 fun <V : Version> Version.compare(other: V): Int =

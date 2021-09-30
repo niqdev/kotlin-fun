@@ -2,6 +2,7 @@ package com.github.niqdev.bool
 
 // Abstract Syntax Tree
 // TODO parser combinator
+// https://www.toptal.com/scala/writing-an-interpreter
 object Parser {
 
   // TODO Validated<NonEmptyList<Error>, Expression>
@@ -12,23 +13,27 @@ object Parser {
   // unary
   // unary > unary
   // unary > unary > unary
-  private fun comparison(tokens: List<Token>): Expression =
-    when {
-      tokens.isEmpty() -> TODO()
-      else -> {
-        val (head, tail) = tokens.first() to tokens.drop(1)
+  private fun comparison(tokens: List<Token>): Expression {
 
-        when (tail.first()) {
-          is Token.TokenGreater, is Token.TokenGreaterEqual, is Token.TokenLess, is Token.TokenLessEqual ->
-            Expression.Binary(unary(head), head, comparison(tail))
-          else ->
-            comparison(tail)
+    fun loop(left: Expression, tmp: List<Token>): Expression =
+      when {
+        tmp.isEmpty() -> left
+        else -> {
+          val (h, t) = tmp.first() to tmp.drop(1)
+          when (h) {
+            is Token.TokenGreater, is Token.TokenGreaterEqual, is Token.TokenLess, is Token.TokenLessEqual ->
+              Expression.Binary(left, h, comparison(t))
+            else ->
+              left
+          }
         }
-
-        unary(head)
       }
-    }
 
+    val (head, tail) = tokens.first() to tokens.drop(1)
+    return loop(primary(head), tail)
+  }
+
+  /*
   // unary -> [ "!" | "-" ] primary | primary
   private fun unary(token: Token): Expression =
     when (token) {
@@ -36,12 +41,13 @@ object Parser {
         // TODO primary(nextToken)
         Expression.Unary(token, primary(token))
       else ->
-        primary(token)
+        Parser.primary(token)
     }
+   */
 
   // TODO missing expression
   // primary → "true" | "false" | NUMBER | STRING | KEY | "(" expression ")"
-  private fun primary(token: Token): Expression.Literal =
+  private fun primary(token: Token): Expression =
     when (token) {
       is Token.TokenTrue -> Expression.Literal(Value.TrueValue)
       is Token.TokenFalse -> Expression.Literal(Value.FalseValue)
@@ -51,4 +57,9 @@ object Parser {
       // is Token.TokenLeftParentheses -> Expression.Literal(Value.KeyValue(token.value))
       else -> error("invalid token: $token") // TODO Validated
     }
+}
+
+fun main() {
+  // 8 < 42 AND 6 > 3
+  println(Expression.pretty(Parser.parse(StringLexer.tokenize("8 < 42"))))
 }
