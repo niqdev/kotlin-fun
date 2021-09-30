@@ -1,6 +1,7 @@
 package com.github.niqdev.bool
 
 // Abstract Syntax Tree
+// TODO parser combinator
 object Parser {
 
   // TODO Validated<NonEmptyList<Error>, Expression>
