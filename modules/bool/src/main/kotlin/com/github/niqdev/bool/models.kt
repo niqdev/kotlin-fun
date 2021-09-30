@@ -121,7 +121,7 @@ sealed class Expression {
   class Binary(val left: Expression, val token: Token, val right: Expression) : Expression()
   class Grouping(val expression: Expression) : Expression()
   // TODO should token be replaced by sealed class only for NOT and MINUS
-  class Unary(val token: Token, val right: Expression) : Expression()
+  class Unary(val token: Token, val literal: Literal) : Expression()
   class Literal(val value: Value) : Expression()
 
   companion object {
@@ -131,7 +131,7 @@ sealed class Expression {
         is Binary -> parenthesize(Token.pretty(expression.token), expression.left, expression.right)
         is Grouping -> parenthesize("group", expression.expression)
         is Literal -> Value.pretty(expression.value)
-        is Unary -> parenthesize(Token.pretty(expression.token), expression.right)
+        is Unary -> parenthesize(Token.pretty(expression.token), expression.literal)
       }
 
     private fun parenthesize(name: String, vararg expressions: Expression): String {
@@ -142,22 +142,22 @@ sealed class Expression {
 }
 
 sealed class Value {
-  internal object ValueTrue : Value()
-  internal object ValueFalse : Value()
-  internal data class ValueNumber(val number: Int) : Value()
-  internal data class ValueString(val string: String) : Value()
+  internal object TrueValue : Value()
+  internal object FalseValue : Value()
+  internal data class NumberValue(val number: Int) : Value()
+  internal data class StringString(val string: String) : Value()
   // e.g. json path
-  internal data class ValueKey(val key: String) : Value()
+  internal data class KeyValue(val key: String) : Value()
 
   companion object {
 
     fun pretty(value: Value): String =
       when (value) {
-        is ValueTrue -> ""
-        is ValueFalse -> ""
-        is ValueNumber -> "Number(${value.number})"
-        is ValueString -> "String(${value.string})"
-        is ValueKey -> "String(${value.key})"
+        is TrueValue -> ""
+        is FalseValue -> ""
+        is NumberValue -> "Number(${value.number})"
+        is StringString -> "String(${value.string})"
+        is KeyValue -> "String(${value.key})"
       }
   }
 }
