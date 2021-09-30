@@ -6,25 +6,73 @@ package com.github.niqdev.bool
 object Parser {
 
   // TODO Validated<NonEmptyList<Error>, Expression>
-  fun parse(tokens: List<Token>): Expression =
-    comparison(tokens)
+  fun parse(tokens: List<Token>): Expression {
+    val (tmp, result) = and(tokens)
+    return result
+  }
+
+  private fun and(tokens: List<Token>): Pair<List<Token>, Expression> {
+
+    fun loop(left: Expression, tmp: List<Token>): Pair<List<Token>, Expression> =
+      when {
+        tmp.isEmpty() -> tmp to left
+        else -> {
+          val (h, t) = tmp.first() to tmp.drop(1)
+          when (h) {
+            is Token.TokenAnd -> {
+              val (newTmp, result) = and(t)
+              newTmp to Expression.Binary(left, h, result)
+            }
+
+            else ->
+              tmp to left
+          }
+        }
+      }
+    val (tmp, result) = equality(tokens)
+    return loop(result, tmp)
+  }
+
+  private fun equality(tokens: List<Token>): Pair<List<Token>, Expression> {
+
+    fun loop(left: Expression, tmp: List<Token>): Pair<List<Token>, Expression> =
+      when {
+        tmp.isEmpty() -> tmp to left
+        else -> {
+          val (h, t) = tmp.first() to tmp.drop(1)
+          when (h) {
+            is Token.TokenBangEqual, is Token.TokenEqualEqual -> {
+              val (newTmp, result) = equality(t)
+              newTmp to Expression.Binary(left, h, result)
+            }
+
+            else ->
+              tmp to left
+          }
+        }
+      }
+    val (tmp, result) = comparison(tokens)
+    return loop(result, tmp)
+  }
 
   // comparison -> unary [ ">" | ">=" | "<" | "<=" unary ]*
   // unary
   // unary > unary
   // unary > unary > unary
-  private fun comparison(tokens: List<Token>): Expression {
+  private fun comparison(tokens: List<Token>): Pair<List<Token>, Expression> {
 
-    fun loop(left: Expression, tmp: List<Token>): Expression =
+    fun loop(left: Expression, tmp: List<Token>): Pair<List<Token>, Expression> =
       when {
-        tmp.isEmpty() -> left
+        tmp.isEmpty() -> tmp to left
         else -> {
           val (h, t) = tmp.first() to tmp.drop(1)
           when (h) {
-            is Token.TokenGreater, is Token.TokenGreaterEqual, is Token.TokenLess, is Token.TokenLessEqual ->
-              Expression.Binary(left, h, comparison(t))
+            is Token.TokenGreater, is Token.TokenGreaterEqual, is Token.TokenLess, is Token.TokenLessEqual -> {
+              val (newTmp, result) = comparison(t)
+              newTmp to Expression.Binary(left, h, result)
+            }
             else ->
-              left
+              tmp to left
           }
         }
       }
@@ -61,5 +109,5 @@ object Parser {
 
 fun main() {
   // 8 < 42 AND 6 > 3
-  println(Expression.pretty(Parser.parse(StringLexer.tokenize("8 < 42"))))
+  println(Expression.pretty(Parser.parse(StringLexer.tokenize("8 < 42 == 6 > 3 AND 4 < 9"))))
 }
