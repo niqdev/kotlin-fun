@@ -3,58 +3,32 @@ package com.github.niqdev.bool
 // Abstract Syntax Tree
 // TODO parser combinator
 // https://www.toptal.com/scala/writing-an-interpreter
-object Parser {
-
-  private data class ExpressionResult(
-    val expression: Expression,
-    val tokens: List<Token> = listOf()
-  )
+object ParserOld {
 
   // TODO Validated<NonEmptyList<Error>, Expression>
   fun parse(tokens: List<Token>): Expression {
-    val (expression, _) = and(tokens)
-    return expression
+    val (tmp, result) = and(tokens)
+    return result
   }
 
-  // TODO
-  // private fun and0() = process(::and0, Token.TokenAnd): (List<Token>) -> ExpressionResult
+  private fun and(tokens: List<Token>): Pair<List<Token>, Expression> {
 
-  private fun process(nextParser: ((List<Token>) -> ExpressionResult), vararg matchingTokens: Token): (List<Token>) -> ExpressionResult =
-    { tokens ->
-
-      fun loop(left: Expression, tmp: List<Token>): ExpressionResult =
-        when {
-          tmp.isEmpty() -> ExpressionResult(left)
-          matchingTokens.contains(tmp.first()) -> {
-            val (h, t) = tmp.first() to tmp.drop(1)
-            val (right, newTmp) = nextParser(t)
-            ExpressionResult(Expression.Binary(left, h, right), newTmp)
-          }
-          else -> ExpressionResult(left, tmp)
-        }
-
-      val result = nextParser(tokens)
-      loop(result.expression, result.tokens)
-    }
-
-  private fun and(tokens: List<Token>): ExpressionResult {
-
-    fun loop(left: Expression, tmp: List<Token>): ExpressionResult =
+    fun loop(left: Expression, tmp: List<Token>): Pair<List<Token>, Expression> =
       when {
-        tmp.isEmpty() -> ExpressionResult(left)
+        tmp.isEmpty() -> tmp to left
         else -> {
           val (h, t) = tmp.first() to tmp.drop(1)
           when (h) {
             is Token.TokenAnd -> {
-              val (right, newTmp) = and(t)
-              ExpressionResult(Expression.Binary(left, h, right), newTmp)
+              val (newTmp, result) = and(t)
+              newTmp to Expression.Binary(left, h, result)
             }
 
-            else -> ExpressionResult(left, tmp)
+            else ->
+              tmp to left
           }
         }
       }
-
     val (tmp, result) = equality(tokens)
     return loop(result, tmp)
   }
@@ -135,5 +109,5 @@ object Parser {
 
 fun main() {
   // 8 < 42 AND 6 > 3
-  println(Expression.pretty(Parser.parse(StringLexer.tokenize("8 AND 42 == 6 > 3"))))
+  println(Expression.pretty(ParserOld.parse(StringLexer.tokenize("8 < 42 == 6 > 3 AND 4 < 9"))))
 }
