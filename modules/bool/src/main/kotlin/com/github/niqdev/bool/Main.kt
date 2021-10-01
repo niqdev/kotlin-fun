@@ -5,12 +5,11 @@ package com.github.niqdev.bool
 // interpreter: FreeB<Predicate> -> Boolean
 
 fun main() {
-  val tokens = StringLexer.tokenize("8 < -42")
+  val tokens = StringLexer.tokenize("8 < 42 AND 6 > 3")
   println(tokens.map { Token.pretty(it) })
-
-  // TODO fixme empty List
-  // val expression = Parser.parse(tokens)
-  // println(Expression.pretty(expression))
+  val expressionFreeB = Parser.parse(tokens)
+  val result = expressionFreeB.run(Predicate.eval())
+  println("RESULT: $result")
 
   // "8 > -42"
   val expression1 = Expression.Binary(

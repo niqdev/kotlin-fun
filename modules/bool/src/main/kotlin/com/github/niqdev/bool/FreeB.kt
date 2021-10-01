@@ -22,43 +22,64 @@ fun <T> FreeB<T>.run(f: (T) -> Boolean): Boolean =
     is FreeB.Not -> !this.fb.run(f)
   }
 
+// TODO Expression
 // TODO minus ?
 // > >= < <= == != IN MATCH
 sealed interface Predicate {
-  data class Greater(val left: Int, val right: Int) : Predicate
-  data class Less(val left: Int, val right: Int) : Predicate
+  data class NumberValue(val int: Int) : Predicate
+  data class StringValue(val string: String) : Predicate
+  data class Greater(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
+  data class GreaterEqual(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
+  data class Less(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
+  data class LessEqual(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
+  data class EqualEqual(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
+  data class BangEqual(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
 
   companion object {
-    val eval: (Predicate) -> Boolean =
+    fun eval(): (Predicate) -> Boolean =
       { predicate ->
         when (predicate) {
-          is Greater -> predicate.left > predicate.right
-          is Less -> predicate.left < predicate.right
+          is Greater ->
+            when {
+              predicate.left is FreeB.Pure &&
+                predicate.left.value is NumberValue &&
+                predicate.right is FreeB.Pure &&
+                predicate.right.value is NumberValue ->
+                predicate.left.value.int > predicate.right.value.int
+              else -> error("TODO String and Validated")
+            }
+          is GreaterEqual -> TODO()
+          is Less ->
+            when {
+              predicate.left is FreeB.Pure &&
+                predicate.left.value is NumberValue &&
+                predicate.right is FreeB.Pure &&
+                predicate.right.value is NumberValue ->
+                predicate.left.value.int < predicate.right.value.int
+              else -> error("TODO String and Validated")
+            }
+          is LessEqual -> TODO()
+          is EqualEqual -> TODO()
+          is BangEqual -> TODO()
+          is NumberValue -> TODO()
+          is StringValue -> TODO()
         }
       }
   }
 }
 
-// TODO Predicate<Version>
-sealed interface Version {
-  data class DpkgVersion(val value: String) : Version
-  data class ApkVersion(val value: String) : Version
-  data class RpmVersion(val value: String) : Version
+sealed interface MyValue {
+  data class NumberValue(val value: Int) : MyValue
+  data class StringValue(val value: String) : MyValue
+  // data class KeyValue(val value: String) : MyValue
 }
-
-fun <V : Version> Version.compare(other: V): Int =
-  when (this) {
-    is Version.DpkgVersion -> TODO()
-    is Version.ApkVersion -> TODO()
-    is Version.RpmVersion -> TODO()
-  }
 
 fun main() {
   val predicates: FreeB<Predicate> =
     FreeB.And(
-      left = FreeB.Pure(Predicate.Less(8, 42)),
-      right = FreeB.Pure(Predicate.Greater(6, 3))
+      left = FreeB.Pure(Predicate.Less(FreeB.Pure(Predicate.NumberValue(8)), FreeB.Pure(Predicate.NumberValue(42)))),
+      right = FreeB.Pure(Predicate.Greater(FreeB.Pure(Predicate.NumberValue(6)), FreeB.Pure(Predicate.NumberValue(3))))
     )
 
-  println(predicates.run(Predicate.eval))
+  println(predicates.run(Predicate.eval()))
 }
