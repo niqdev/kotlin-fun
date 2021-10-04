@@ -9,6 +9,6 @@ fun main() {
   println(tokens.map { Token.pretty(it) })
   val predicates = Parser.parse(tokens)
   println(predicates.pretty())
-  val result = predicates.run(Predicate.eval())
+  val result = predicates.run()
   println("bool: $result")
 }

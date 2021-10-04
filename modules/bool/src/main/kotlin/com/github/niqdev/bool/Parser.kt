@@ -1,5 +1,11 @@
 package com.github.niqdev.bool
 
+// TODO missing implementations:
+// - fix unary
+// - key: e.g. json path
+// - "IN a, b, b"
+// - "MATCH /aaa/"
+// - grouping e.g. "(" expression ")"
 object Parser {
 
   // TODO Validated<NonEmptyList<Error>, Expression>
@@ -20,7 +26,7 @@ object Parser {
         else -> {
           val (head, tail) = currentTokens.first() to currentTokens.drop(1)
           when (head) {
-            is Token.TokenOr -> {
+            is Token.Or -> {
               val (nextTokens, right) = or(tail)
               nextTokens to FreeB.Or(left, right)
             }
@@ -42,7 +48,7 @@ object Parser {
         else -> {
           val (head, tail) = currentTokens.first() to currentTokens.drop(1)
           when (head) {
-            is Token.TokenAnd -> {
+            is Token.And -> {
               val (nextTokens, right) = and(tail)
               nextTokens to FreeB.And(left, right)
             }
@@ -64,11 +70,11 @@ object Parser {
         else -> {
           val (head, tail) = currentTokens.first() to currentTokens.drop(1)
           when (head) {
-            is Token.TokenBangEqual -> {
+            is Token.BangEqual -> {
               val (nextTokens, right) = equality(tail)
               nextTokens to FreeB.Pure(Predicate.BangEqual(left, right))
             }
-            is Token.TokenEqualEqual -> {
+            is Token.EqualEqual -> {
               val (nextTokens, right) = equality(tail)
               nextTokens to FreeB.Pure(Predicate.EqualEqual(left, right))
             }
@@ -90,19 +96,19 @@ object Parser {
         else -> {
           val (head, tail) = currentTokens.first() to currentTokens.drop(1)
           when (head) {
-            is Token.TokenGreater -> {
+            is Token.Greater -> {
               val (nextTokens, right) = comparison(tail)
               nextTokens to FreeB.Pure(Predicate.Greater(left, right))
             }
-            is Token.TokenGreaterEqual -> {
+            is Token.GreaterEqual -> {
               val (nextTokens, right) = comparison(tail)
               nextTokens to FreeB.Pure(Predicate.GreaterEqual(left, right))
             }
-            is Token.TokenLess -> {
+            is Token.Less -> {
               val (nextTokens, right) = comparison(tail)
               nextTokens to FreeB.Pure(Predicate.Less(left, right))
             }
-            is Token.TokenLessEqual -> {
+            is Token.LessEqual -> {
               val (nextTokens, right) = comparison(tail)
               nextTokens to FreeB.Pure(Predicate.LessEqual(left, right))
             }
@@ -127,11 +133,11 @@ object Parser {
         else -> {
           val (head, tail) = currentTokens.first() to currentTokens.drop(1)
           when (head) {
-            is Token.TokenNot -> {
+            is Token.Not -> {
               val (nextTokens, right) = unary(tail)
               nextTokens to FreeB.Not(right)
             }
-            is Token.TokenMinus -> {
+            is Token.Minus -> {
               val (nextTokens, right) = unary(tail)
               nextTokens to FreeB.Pure(Predicate.Minus(right))
             }
@@ -144,16 +150,14 @@ object Parser {
     return loop(tail, primary(head))
   }
 
-  // TODO "(" expression ")"
   // primary -> "true" | "false" | NUMBER | STRING | KEY
   private fun primary(token: Token): FreeB<Predicate> =
     when (token) {
-      is Token.TokenTrue -> FreeB.True()
-      is Token.TokenFalse -> FreeB.False()
-      is Token.TokenNumber -> FreeB.Pure(Predicate.Identity(Value.NumberValue(token.value)))
-      is Token.TokenString -> FreeB.Pure(Predicate.Identity(Value.StringValue(token.value)))
-      is Token.TokenKey -> FreeB.Pure(Predicate.Identity(Value.KeyValue(token.value)))
-      // is Token.TokenLeftParentheses -> TODO()
+      is Token.True -> FreeB.True()
+      is Token.False -> FreeB.False()
+      is Token.Number -> FreeB.Pure(Predicate.Identity(Value.Number(token.int)))
+      is Token.String -> FreeB.Pure(Predicate.Identity(Value.String(token.string)))
+      is Token.TokenKey -> FreeB.Pure(Predicate.Identity(Value.Key(token.key)))
       else -> error("invalid token: $token") // TODO Validated
     }
 }

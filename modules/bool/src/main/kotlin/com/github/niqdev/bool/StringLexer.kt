@@ -10,48 +10,48 @@ object StringLexer {
         index < input.length -> {
           when (val c = input[index]) {
             // parentheses
-            '(' -> loop(index + 1, result + Token.TokenLeftParentheses)
-            ')' -> loop(index + 1, result + Token.TokenRightParentheses)
-            '-' -> loop(index + 1, result + Token.TokenMinus)
+            '(' -> loop(index + 1, result + Token.LeftParentheses)
+            ')' -> loop(index + 1, result + Token.RightParentheses)
+            '-' -> loop(index + 1, result + Token.Minus)
 
             // comparison
             '=' ->
               when (input[index + 1]) {
-                '=' -> loop(index + 2, result + Token.TokenEqualEqual)
-                else -> loop(index + 1, result + Token.TokenEqual)
+                '=' -> loop(index + 2, result + Token.EqualEqual)
+                else -> loop(index + 1, result + Token.Equal)
               }
             '<' ->
               when (input[index + 1]) {
-                '=' -> loop(index + 2, result + Token.TokenLessEqual)
-                else -> loop(index + 1, result + Token.TokenLess)
+                '=' -> loop(index + 2, result + Token.LessEqual)
+                else -> loop(index + 1, result + Token.Less)
               }
             '>' ->
               when (input[index + 1]) {
-                '=' -> loop(index + 2, result + Token.TokenGreaterEqual)
-                else -> loop(index + 1, result + Token.TokenGreater)
+                '=' -> loop(index + 2, result + Token.GreaterEqual)
+                else -> loop(index + 1, result + Token.Greater)
               }
 
             // aliases
             '&' ->
               when (input[index + 1]) {
-                '&' -> loop(index + 2, result + Token.TokenAnd)
+                '&' -> loop(index + 2, result + Token.And)
                 else -> error("invalid char $c at position $index") // TODO Validated
               }
             '|' ->
               when (input[index + 1]) {
-                '|' -> loop(index + 2, result + Token.TokenOr)
+                '|' -> loop(index + 2, result + Token.Or)
                 else -> error("invalid char $c at position $index") // TODO Validated
               }
             '!' ->
               when (input[index + 1]) {
-                '=' -> loop(index + 2, result + Token.TokenBangEqual)
-                else -> loop(index + 1, result + Token.TokenNot)
+                '=' -> loop(index + 2, result + Token.BangEqual)
+                else -> loop(index + 1, result + Token.Not)
               }
 
             '"' -> {
               val tokenString = scanString()(input.substring(index + 1))
               // skip 2 quotes
-              loop(index + tokenString.length + 2, result + Token.TokenString(tokenString))
+              loop(index + tokenString.length + 2, result + Token.String(tokenString))
             }
 
             // ignore
@@ -61,12 +61,12 @@ object StringLexer {
                 c.isDigit() -> {
                   val tokenString = scanNumber()(input.substring(index))
                   // safe: no NumberFormatException
-                  loop(index + tokenString.length, result + Token.TokenNumber(tokenString.toInt()))
+                  loop(index + tokenString.length, result + Token.Number(tokenString.toInt()))
                 }
                 // identifier or key (cannot start with "._-")
                 c in 'a'..'z' || c in 'A'..'Z' -> {
                   val tokenString = scanKey()(input.substring(index))
-                  // identifier is case insensitive
+                  // identifier is case-insensitive
                   val token = Token.identifiers.getOrDefault(tokenString.uppercase(), Token.TokenKey(tokenString))
                   loop(index + tokenString.length, result + token)
                 }

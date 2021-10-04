@@ -10,34 +10,36 @@ class StringLexerTest : WordSpec({
   "StringLexer" should {
 
     "tokenize" {
-      val input = "( ) - != = == > >= < <= tRue False AND and && OR oR || NOT NOt ! 42 simple_key key.sub-nested \"a str@ing\" 8"
+      val input = "( ) - != = == > >= < <= tRue False AND and && OR oR || NOT NOt ! IN MATCH 42 simple_key key.sub-nested \"a str@ing\" 8"
       val result = listOf(
-        Token.TokenLeftParentheses,
-        Token.TokenRightParentheses,
-        Token.TokenMinus,
-        Token.TokenBangEqual,
-        Token.TokenEqual,
-        Token.TokenEqualEqual,
-        Token.TokenGreater,
-        Token.TokenGreaterEqual,
-        Token.TokenLess,
-        Token.TokenLessEqual,
-        Token.TokenTrue,
-        Token.TokenFalse,
-        Token.TokenAnd,
-        Token.TokenAnd,
-        Token.TokenAnd,
-        Token.TokenOr,
-        Token.TokenOr,
-        Token.TokenOr,
-        Token.TokenNot,
-        Token.TokenNot,
-        Token.TokenNot,
-        Token.TokenNumber(42),
+        Token.LeftParentheses,
+        Token.RightParentheses,
+        Token.Minus,
+        Token.BangEqual,
+        Token.Equal,
+        Token.EqualEqual,
+        Token.Greater,
+        Token.GreaterEqual,
+        Token.Less,
+        Token.LessEqual,
+        Token.True,
+        Token.False,
+        Token.And,
+        Token.And,
+        Token.And,
+        Token.Or,
+        Token.Or,
+        Token.Or,
+        Token.Not,
+        Token.Not,
+        Token.Not,
+        Token.In,
+        Token.Match,
+        Token.Number(42),
         Token.TokenKey("simple_key"),
         Token.TokenKey("key.sub-nested"),
-        Token.TokenString("a str@ing"),
-        Token.TokenNumber(8)
+        Token.String("a str@ing"),
+        Token.Number(8)
       )
       StringLexer.tokenize(input) shouldBe result
     }

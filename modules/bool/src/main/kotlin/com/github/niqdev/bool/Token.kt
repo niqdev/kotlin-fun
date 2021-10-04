@@ -1,55 +1,61 @@
 package com.github.niqdev.bool
 
-// TODO "IN a, b, b" and "MATCH /aaa/"
-sealed class Token {
-  object TokenLeftParentheses : Token()
-  object TokenRightParentheses : Token()
-  object TokenMinus : Token()
-  object TokenBangEqual : Token()
-  object TokenEqual : Token()
-  object TokenEqualEqual : Token()
-  object TokenGreater : Token()
-  object TokenGreaterEqual : Token()
-  object TokenLess : Token()
-  object TokenLessEqual : Token()
-  object TokenTrue : Token()
-  object TokenFalse : Token()
-  object TokenAnd : Token()
-  object TokenOr : Token()
-  object TokenNot : Token()
-  data class TokenNumber(val value: Int) : Token()
-  data class TokenString(val value: String) : Token()
-  data class TokenKey(val value: String) : Token()
+// TODO alternative: Token(tokenType, index, line)
+sealed interface Token {
+  object LeftParentheses : Token
+  object RightParentheses : Token
+  object Minus : Token
+  object BangEqual : Token
+  object Equal : Token
+  object EqualEqual : Token
+  object Greater : Token
+  object GreaterEqual : Token
+  object Less : Token
+  object LessEqual : Token
+  object True : Token
+  object False : Token
+  object And : Token
+  object Or : Token
+  object Not : Token
+  object In : Token
+  object Match : Token
+  data class Number(val int: Int) : Token
+  data class String(val string: kotlin.String) : Token
+  data class TokenKey(val key: kotlin.String) : Token
 
   companion object {
     val identifiers = mapOf(
-      "TRUE" to TokenTrue,
-      "FALSE" to TokenFalse,
-      "AND" to TokenAnd,
-      "OR" to TokenOr,
-      "NOT" to TokenNot
+      "TRUE" to True,
+      "FALSE" to False,
+      "AND" to And,
+      "OR" to Or,
+      "NOT" to Not,
+      "IN" to In,
+      "MATCH" to Match
     )
 
     fun pretty(token: Token) =
       when (token) {
-        is TokenLeftParentheses -> "("
-        is TokenRightParentheses -> ")"
-        is TokenMinus -> "-"
-        is TokenBangEqual -> "!="
-        is TokenEqual -> "="
-        is TokenEqualEqual -> "=="
-        is TokenGreater -> ">"
-        is TokenGreaterEqual -> ">="
-        is TokenLess -> "<"
-        is TokenLessEqual -> "<="
-        is TokenTrue -> "TRUE"
-        is TokenFalse -> "FALSE"
-        is TokenAnd -> "AND"
-        is TokenOr -> "OR"
-        is TokenNot -> "NOT"
-        is TokenNumber -> "Number(${token.value})"
-        is TokenString -> "String(${token.value})"
-        is TokenKey -> "Key(${token.value})"
+        is LeftParentheses -> "("
+        is RightParentheses -> ")"
+        is Minus -> "-"
+        is BangEqual -> "!="
+        is Equal -> "="
+        is EqualEqual -> "=="
+        is Greater -> ">"
+        is GreaterEqual -> ">="
+        is Less -> "<"
+        is LessEqual -> "<="
+        is True -> "TRUE"
+        is False -> "FALSE"
+        is And -> "AND"
+        is Or -> "OR"
+        is Not -> "NOT"
+        is In -> "IN"
+        is Match -> "MATCH"
+        is Number -> "Number(${token.int})"
+        is String -> "String(${token.string})"
+        is TokenKey -> "Key(${token.key})"
       }
   }
 }

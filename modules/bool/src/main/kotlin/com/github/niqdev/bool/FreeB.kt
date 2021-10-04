@@ -21,9 +21,12 @@ fun <T> FreeB<T>.run(f: (T) -> Boolean): Boolean =
     is FreeB.Not -> !this.right.run(f)
   }
 
-fun <T> FreeB<T>.pretty(): String =
+fun FreeB<Predicate>.run(): Boolean =
+  run { evalPredicate()(it) }
+
+fun FreeB<Predicate>.pretty(): String =
   when (this) {
-    is FreeB.Pure -> "$value"
+    is FreeB.Pure -> value.pretty()
     is FreeB.True -> "true"
     is FreeB.False -> "false"
     is FreeB.And -> "(${left.pretty()} AND ${right.pretty()}"
@@ -43,63 +46,80 @@ sealed interface Predicate {
   data class Minus(val item: FreeB<Predicate>) : Predicate
   // class In(val left: FreeB<Predicate>, vararg items: Value) : Predicate
   // data class Match(val left: FreeB<Predicate>, val regex: String) : Predicate
+}
 
-  companion object {
-
-    // TODO incomplete
-    fun eval(): (Predicate) -> Boolean =
-      { predicate ->
-        when (predicate) {
-          is Greater ->
-            when {
-              predicate.left is FreeB.Pure &&
-                predicate.left.value is Identity &&
-                predicate.left.value.id is Value.NumberValue &&
-                predicate.right is FreeB.Pure &&
-                predicate.right.value is Identity &&
-                predicate.right.value.id is Value.NumberValue ->
-                predicate.left.value.id.int > predicate.right.value.id.int
-              else -> error("invalid predicate: $predicate")
-            }
-          is Less ->
-            when {
-              predicate.left is FreeB.Pure &&
-                predicate.left.value is Identity &&
-                predicate.left.value.id is Value.NumberValue &&
-                predicate.right is FreeB.Pure &&
-                predicate.right.value is Identity &&
-                predicate.right.value.id is Value.NumberValue ->
-                predicate.left.value.id.int < predicate.right.value.id.int
-              else -> error("invalid predicate: $predicate")
-            }
+// TODO incomplete
+fun evalPredicate(): (Predicate) -> Boolean =
+  { predicate ->
+    when (predicate) {
+      is Predicate.Greater ->
+        when {
+          predicate.left is FreeB.Pure &&
+            predicate.left.value is Predicate.Identity &&
+            predicate.left.value.id is Value.Number &&
+            predicate.right is FreeB.Pure &&
+            predicate.right.value is Predicate.Identity &&
+            predicate.right.value.id is Value.Number ->
+            predicate.left.value.id.int > predicate.right.value.id.int
           else -> error("invalid predicate: $predicate")
         }
-      }
+      is Predicate.Less ->
+        when {
+          predicate.left is FreeB.Pure &&
+            predicate.left.value is Predicate.Identity &&
+            predicate.left.value.id is Value.Number &&
+            predicate.right is FreeB.Pure &&
+            predicate.right.value is Predicate.Identity &&
+            predicate.right.value.id is Value.Number ->
+            predicate.left.value.id.int < predicate.right.value.id.int
+          else -> error("invalid predicate: $predicate")
+        }
+      else -> error("invalid predicate: $predicate")
+    }
   }
-}
+
+fun Predicate.pretty(): String =
+  when (this) {
+    is Predicate.Identity -> id.pretty()
+    is Predicate.Greater -> "(${left.pretty()} > ${right.pretty()})"
+    is Predicate.GreaterEqual -> "(${left.pretty()} >= ${right.pretty()})"
+    is Predicate.Less -> "(${left.pretty()} < ${right.pretty()})"
+    is Predicate.LessEqual -> "(${left.pretty()} <= ${right.pretty()})"
+    is Predicate.EqualEqual -> "(${left.pretty()} == ${right.pretty()})"
+    is Predicate.BangEqual -> "(${left.pretty()} != ${right.pretty()})"
+    is Predicate.Minus -> "(-${item.pretty()})"
+  }
 
 sealed interface Value {
-  data class NumberValue(val int: Int) : Value
-  data class StringValue(val string: String) : Value
-  data class KeyValue(val key: String) : Value
+  data class Number(val int: Int) : Value
+  data class String(val string: kotlin.String) : Value
+  data class Key(val key: kotlin.String) : Value
 }
+
+fun Value.pretty(): String =
+  when (this) {
+    is Value.Number -> "Number($int)"
+    is Value.String -> "String($string)"
+    is Value.Key -> "Key($key)"
+  }
 
 fun main() {
   val predicates: FreeB<Predicate> =
     FreeB.And(
       left = FreeB.Pure(
         Predicate.Less(
-          FreeB.Pure(Predicate.Identity(Value.NumberValue(8))),
-          FreeB.Pure(Predicate.Identity(Value.NumberValue(42)))
+          FreeB.Pure(Predicate.Identity(Value.Number(8))),
+          FreeB.Pure(Predicate.Identity(Value.Number(42)))
         )
       ),
       right = FreeB.Pure(
         Predicate.Greater(
-          FreeB.Pure(Predicate.Identity(Value.NumberValue(6))),
-          FreeB.Pure(Predicate.Identity(Value.NumberValue(3)))
+          FreeB.Pure(Predicate.Identity(Value.Number(6))),
+          FreeB.Pure(Predicate.Identity(Value.Number(3)))
         )
       )
     )
 
-  println(predicates.run(Predicate.eval()))
+  println(predicates.pretty())
+  println(predicates.run())
 }
