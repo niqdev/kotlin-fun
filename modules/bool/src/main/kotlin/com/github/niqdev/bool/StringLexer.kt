@@ -67,7 +67,7 @@ object StringLexer {
                 c in 'a'..'z' || c in 'A'..'Z' -> {
                   val tokenString = scanKey()(input.substring(index))
                   // identifier is case insensitive
-                  val token = Token.identifiers.getOrDefault(tokenString.toUpperCase(), Token.TokenKey(tokenString))
+                  val token = Token.identifiers.getOrDefault(tokenString.uppercase(), Token.TokenKey(tokenString))
                   loop(index + tokenString.length, result + token)
                 }
                 else -> error("invalid char $c at position $index") // TODO Validated

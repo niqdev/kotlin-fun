@@ -8,6 +8,7 @@ fun main() {
   val tokens = StringLexer.tokenize("8 < 42 AND 6 > 3")
   println(tokens.map { Token.pretty(it) })
   val predicates = Parser.parse(tokens)
+  println(predicates.pretty())
   val result = predicates.run(Predicate.eval())
-  println("RESULT: $result")
+  println("bool: $result")
 }

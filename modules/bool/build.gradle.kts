@@ -21,3 +21,10 @@ tasks.withType<Test> {
   // print to stdout
   testLogging.showStandardStreams = true
 }
+
+// fixes: 'compileJava' task (current target is 11) and 'compileKotlin' task (current target is 1.8) jvm target compatibility should be set to the same Java version
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+  kotlinOptions {
+    jvmTarget = "11"
+  }
+}

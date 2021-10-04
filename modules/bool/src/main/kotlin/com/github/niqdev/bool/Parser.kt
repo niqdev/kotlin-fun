@@ -150,9 +150,9 @@ object Parser {
     when (token) {
       is Token.TokenTrue -> FreeB.True()
       is Token.TokenFalse -> FreeB.False()
-      is Token.TokenNumber -> FreeB.Pure(Predicate.Identity(MyValue.NumberValue(token.value)))
-      is Token.TokenString -> FreeB.Pure(Predicate.Identity(MyValue.StringValue(token.value)))
-      is Token.TokenKey -> FreeB.Pure(Predicate.Identity(MyValue.KeyValue(token.value)))
+      is Token.TokenNumber -> FreeB.Pure(Predicate.Identity(Value.NumberValue(token.value)))
+      is Token.TokenString -> FreeB.Pure(Predicate.Identity(Value.StringValue(token.value)))
+      is Token.TokenKey -> FreeB.Pure(Predicate.Identity(Value.KeyValue(token.value)))
       // is Token.TokenLeftParentheses -> TODO()
       else -> error("invalid token: $token") // TODO Validated
     }
