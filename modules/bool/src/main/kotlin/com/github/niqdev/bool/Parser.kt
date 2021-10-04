@@ -1,15 +1,39 @@
 package com.github.niqdev.bool
 
-// Abstract Syntax Tree
-// TODO parser combinator
-// https://www.toptal.com/scala/writing-an-interpreter
 object Parser {
 
   // TODO Validated<NonEmptyList<Error>, Expression>
-  fun parse(tokens: List<Token>): FreeB<Predicate> = expression(tokens)
+  // recursive descent parser: given a valid sequence of tokens, produce a corresponding Abstract Syntax Tree
+  fun parse(tokens: List<Token>): FreeB<Predicate> =
+    expression(tokens)
 
-  private fun expression(tokens: List<Token>): FreeB<Predicate> = and(tokens).second
+  // expression -> or
+  private fun expression(tokens: List<Token>): FreeB<Predicate> =
+    or(tokens).second
 
+  // or -> and [ "OR and ]*
+  private fun or(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
+
+    fun loop(currentTokens: List<Token>, left: FreeB<Predicate>): Pair<List<Token>, FreeB<Predicate>> =
+      when {
+        currentTokens.isEmpty() -> emptyList<Token>() to left
+        else -> {
+          val (head, tail) = currentTokens.first() to currentTokens.drop(1)
+          when (head) {
+            is Token.TokenOr -> {
+              val (nextTokens, right) = or(tail)
+              nextTokens to FreeB.Or(left, right)
+            }
+            else -> currentTokens to left
+          }
+        }
+      }
+
+    val (currentTokens, result) = and(tokens)
+    return loop(currentTokens, result)
+  }
+
+  // and -> equality [ "AND" equality ]*
   private fun and(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
 
     fun loop(currentTokens: List<Token>, left: FreeB<Predicate>): Pair<List<Token>, FreeB<Predicate>> =
@@ -31,6 +55,7 @@ object Parser {
     return loop(currentTokens, result)
   }
 
+  // equality -> comparison [ "!=" | "==" comparison ]*
   private fun equality(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
 
     fun loop(currentTokens: List<Token>, left: FreeB<Predicate>): Pair<List<Token>, FreeB<Predicate>> =
@@ -56,6 +81,7 @@ object Parser {
     return loop(currentTokens, result)
   }
 
+  // comparison -> unary [ ">" | ">=" | "<" | "<=" unary ]*
   private fun comparison(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
 
     fun loop(currentTokens: List<Token>, left: FreeB<Predicate>): Pair<List<Token>, FreeB<Predicate>> =
@@ -87,43 +113,51 @@ object Parser {
 
     val (head, tail) = tokens.first() to tokens.drop(1)
     return loop(tail, primary(head))
+    // TODO debug unary
+    // val (currentTokens, result) = unary(tokens)
+    // return loop(currentTokens, result)
   }
 
+  // unary -> [ "!" | "-" ] primary | primary
+  private fun unary(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
+
+    fun loop(currentTokens: List<Token>, left: FreeB<Predicate>): Pair<List<Token>, FreeB<Predicate>> =
+      when {
+        currentTokens.isEmpty() -> emptyList<Token>() to left
+        else -> {
+          val (head, tail) = currentTokens.first() to currentTokens.drop(1)
+          when (head) {
+            is Token.TokenNot -> {
+              val (nextTokens, right) = unary(tail)
+              nextTokens to FreeB.Not(right)
+            }
+            is Token.TokenMinus -> {
+              val (nextTokens, right) = unary(tail)
+              nextTokens to FreeB.Pure(Predicate.Minus(right))
+            }
+            else -> currentTokens to left
+          }
+        }
+      }
+
+    val (head, tail) = tokens.first() to tokens.drop(1)
+    return loop(tail, primary(head))
+  }
+
+  // TODO "(" expression ")"
+  // primary -> "true" | "false" | NUMBER | STRING | KEY
   private fun primary(token: Token): FreeB<Predicate> =
     when (token) {
       is Token.TokenTrue -> FreeB.True()
       is Token.TokenFalse -> FreeB.False()
-      is Token.TokenNumber -> FreeB.Pure(Predicate.NumberValue(token.value))
-      is Token.TokenString -> FreeB.Pure(Predicate.StringValue(token.value))
-      // is Token.TokenKey -> Expression.Literal(Value.KeyValue(token.value))
-      // is Token.TokenLeftParentheses -> Expression.Literal(Value.KeyValue(token.value))
+      is Token.TokenNumber -> FreeB.Pure(Predicate.Identity(MyValue.NumberValue(token.value)))
+      is Token.TokenString -> FreeB.Pure(Predicate.Identity(MyValue.StringValue(token.value)))
+      is Token.TokenKey -> FreeB.Pure(Predicate.Identity(MyValue.KeyValue(token.value)))
+      // is Token.TokenLeftParentheses -> TODO()
       else -> error("invalid token: $token") // TODO Validated
     }
 }
 
-/*
-private data class ExpressionResult(
-    val expression: Expression,
-    val tokens: List<Token> = listOf()
-  )
-
-  // TODO
-  // private fun and0() = process(::and0, Token.TokenAnd): (List<Token>) -> ExpressionResult
-  private fun process(nextParser: ((List<Token>) -> ExpressionResult), vararg matchingTokens: Token): (List<Token>) -> ExpressionResult =
-    { tokens ->
-
-      fun loop(left: Expression, tmp: List<Token>): ExpressionResult =
-        when {
-          tmp.isEmpty() -> ExpressionResult(left)
-          matchingTokens.contains(tmp.first()) -> {
-            val (h, t) = tmp.first() to tmp.drop(1)
-            val (right, newTmp) = nextParser(t)
-            ExpressionResult(Expression.Binary(left, h, right), newTmp)
-          }
-          else -> ExpressionResult(left, tmp)
-        }
-
-      val result = nextParser(tokens)
-      loop(result.expression, result.tokens)
-    }
- */
+fun main() {
+  println(Parser.parse(StringLexer.tokenize("8 < 42 == 6 > 3 AND 4 < 9")).pretty())
+}
