@@ -4,7 +4,6 @@ package com.github.niqdev.bool
 // - key: e.g. json path
 // - "IN a, b, b"
 // - "MATCH /aaa/"
-// - grouping e.g. "(" expression ")"
 object Parser {
 
   // TODO Validated<NonEmptyList<Error>, FreeB<Predicate>>
@@ -38,7 +37,7 @@ object Parser {
     return loop(currentTokens, result)
   }
 
-  // and -> equality [ "AND" equality ]*
+  // and -> not [ "AND" not ]*
   private fun and(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
 
     fun loop(currentTokens: List<Token>, left: FreeB<Predicate>): Pair<List<Token>, FreeB<Predicate>> =
@@ -56,8 +55,25 @@ object Parser {
         }
       }
 
-    val (currentTokens, result) = equality(tokens)
+    val (currentTokens, result) = not(tokens)
     return loop(currentTokens, result)
+  }
+
+  // not -> "!" equality | equality
+  private fun not(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
+    val (head, tail) = tokens.first() to tokens.drop(1)
+
+    return when (head) {
+      is Token.Not -> {
+        val (nextTokens, right) = not(tail)
+        nextTokens to FreeB.Not(right)
+      }
+      else -> {
+        // continue with the same tokens
+        val (currentTokens, result) = equality(tokens)
+        currentTokens to result
+      }
+    }
   }
 
   // equality -> comparison [ "!=" | "==" comparison ]*
@@ -86,7 +102,7 @@ object Parser {
     return loop(currentTokens, result)
   }
 
-  // comparison -> unary [ ">" | ">=" | "<" | "<=" unary ]*
+  // comparison -> primary [ ">" | ">=" | "<" | "<=" primary ]*
   private fun comparison(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
 
     fun loop(currentTokens: List<Token>, left: FreeB<Predicate>): Pair<List<Token>, FreeB<Predicate>> =
@@ -116,34 +132,38 @@ object Parser {
         }
       }
 
-    val (currentTokens, result) = unary(tokens)
+    val (currentTokens, result) = primary(tokens)
     return loop(currentTokens, result)
   }
 
-  // unary -> [ "!" ] primary | primary
-  private fun unary(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
+  // primary -> "true" | "false" | NUMBER | STRING | KEY | "(" expression ")"
+  private fun primary(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
     val (head, tail) = tokens.first() to tokens.drop(1)
 
     return when (head) {
-      is Token.Not -> {
-        val (nextTokens, right) = unary(tail)
-        nextTokens to FreeB.Not(right)
-      }
-      else -> tail to primary(head)
+      is Token.True -> tail to FreeB.True()
+      is Token.False -> tail to FreeB.False()
+      is Token.Number -> tail to FreeB.Pure(Predicate.Identity(Value.Number(head.int)))
+      is Token.String -> tail to FreeB.Pure(Predicate.Identity(Value.String(head.string)))
+      is Token.TokenKey -> tail to FreeB.Pure(Predicate.Identity(Value.Key(head.key)))
+      is Token.LeftParentheses -> grouping(tail)
+      else -> error("invalid token: $head") // TODO Validated
     }
   }
 
-  // TODO grouping/expressions
-  // primary -> "true" | "false" | NUMBER | STRING | KEY
-  private fun primary(token: Token): FreeB<Predicate> =
-    when (token) {
-      is Token.True -> FreeB.True()
-      is Token.False -> FreeB.False()
-      is Token.Number -> FreeB.Pure(Predicate.Identity(Value.Number(token.int)))
-      is Token.String -> FreeB.Pure(Predicate.Identity(Value.String(token.string)))
-      is Token.TokenKey -> FreeB.Pure(Predicate.Identity(Value.Key(token.key)))
-      else -> error("invalid token: $token") // TODO Validated
-    }
+  // tries to match an expression between parentheses ONLY 1 level nested
+  private fun grouping(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
+    fun loop(tmp: List<Token>, expressionTokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> =
+      when {
+        tmp.isEmpty() ->
+          error("Expected ')' after expression") // TODO Validated
+        tmp.first() is Token.RightParentheses ->
+          tmp.drop(1) to expression(expressionTokens)
+        else ->
+          loop(tmp.drop(1), expressionTokens + tmp.first())
+      }
+    return loop(tokens, emptyList())
+  }
 }
 
 fun main() {

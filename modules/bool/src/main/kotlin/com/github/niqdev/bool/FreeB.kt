@@ -2,6 +2,7 @@ package com.github.niqdev.bool
 
 sealed interface FreeB<T> {
   data class Pure<T>(val value: T) : FreeB<T>
+  data class Grouping<T>(val fb: FreeB<T>) : FreeB<T>
   class True<T> : FreeB<T>
   class False<T> : FreeB<T>
   data class And<T>(val left: FreeB<T>, val right: FreeB<T>) : FreeB<T>
@@ -14,6 +15,7 @@ sealed interface FreeB<T> {
 fun <T> FreeB<T>.run(f: (T) -> Boolean): Boolean =
   when (this) {
     is FreeB.Pure -> f(this.value)
+    is FreeB.Grouping -> this.fb.run(f)
     is FreeB.True -> true
     is FreeB.False -> false
     is FreeB.And -> this.left.run(f) && this.right.run(f)
@@ -27,6 +29,7 @@ fun FreeB<Predicate>.run(): Boolean =
 fun FreeB<Predicate>.pretty(): String =
   when (this) {
     is FreeB.Pure -> value.pretty()
+    is FreeB.Grouping -> "($fb)"
     is FreeB.True -> "true"
     is FreeB.False -> "false"
     is FreeB.And -> "(${left.pretty()} AND ${right.pretty()}"
@@ -37,7 +40,6 @@ fun FreeB<Predicate>.pretty(): String =
 // TODO type class / higher-kinded - Predicate<T> and F<Predicate> ?
 sealed interface Predicate {
   data class Identity(val id: Value) : Predicate
-
   data class Greater(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
   data class GreaterEqual(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
   data class Less(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
@@ -72,6 +74,17 @@ fun evalPredicate(): (Predicate) -> Boolean =
             predicate.right.value is Predicate.Identity &&
             predicate.right.value.id is Value.Number ->
             predicate.left.value.id.int < predicate.right.value.id.int
+          else -> error("invalid predicate: $predicate")
+        }
+      is Predicate.EqualEqual ->
+        when {
+          predicate.left is FreeB.Pure &&
+            predicate.left.value is Predicate.Identity &&
+            predicate.left.value.id is Value.Number &&
+            predicate.right is FreeB.Pure &&
+            predicate.right.value is Predicate.Identity &&
+            predicate.right.value.id is Value.Number ->
+            predicate.left.value.id.int == predicate.right.value.id.int
           else -> error("invalid predicate: $predicate")
         }
       else -> error("invalid predicate: $predicate")
