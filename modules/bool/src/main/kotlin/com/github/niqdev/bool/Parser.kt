@@ -151,14 +151,15 @@ object Parser {
     }
   }
 
-  // tries to match an expression between parentheses ONLY 1 level nested
+  // it tries to match an expression between parentheses of ONLY 1 nested level
+  // TODO keep counts of other open parentheses to parse multiple nesting level e.g. context (index, line, nestedCount)
   private fun grouping(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
     fun loop(tmp: List<Token>, expressionTokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> =
       when {
         tmp.isEmpty() ->
           error("Expected ')' after expression") // TODO Validated
         tmp.first() is Token.RightParentheses ->
-          tmp.drop(1) to expression(expressionTokens)
+          tmp.drop(1) to FreeB.Grouping(expression(expressionTokens))
         else ->
           loop(tmp.drop(1), expressionTokens + tmp.first())
       }

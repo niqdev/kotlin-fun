@@ -29,7 +29,7 @@ fun FreeB<Predicate>.run(): Boolean =
 fun FreeB<Predicate>.pretty(): String =
   when (this) {
     is FreeB.Pure -> value.pretty()
-    is FreeB.Grouping -> "($fb)"
+    is FreeB.Grouping -> "(${fb.pretty()})"
     is FreeB.True -> "true"
     is FreeB.False -> "false"
     is FreeB.And -> "(${left.pretty()} AND ${right.pretty()}"
