@@ -31,19 +31,19 @@ fun FreeB<Predicate>.pretty(): String =
     is FreeB.False -> "false"
     is FreeB.And -> "(${left.pretty()} AND ${right.pretty()}"
     is FreeB.Or -> "(${left.pretty()} OR ${right.pretty()}"
-    is FreeB.Not -> "(NOT ${right.pretty()}"
+    is FreeB.Not -> "(NOT ${right.pretty()})"
   }
 
 // TODO type class / higher-kinded - Predicate<T> and F<Predicate> ?
 sealed interface Predicate {
   data class Identity(val id: Value) : Predicate
+
   data class Greater(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
   data class GreaterEqual(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
   data class Less(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
   data class LessEqual(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
   data class EqualEqual(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
   data class BangEqual(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
-  data class Minus(val item: FreeB<Predicate>) : Predicate
   // class In(val left: FreeB<Predicate>, vararg items: Value) : Predicate
   // data class Match(val left: FreeB<Predicate>, val regex: String) : Predicate
 }
@@ -87,7 +87,6 @@ fun Predicate.pretty(): String =
     is Predicate.LessEqual -> "(${left.pretty()} <= ${right.pretty()})"
     is Predicate.EqualEqual -> "(${left.pretty()} == ${right.pretty()})"
     is Predicate.BangEqual -> "(${left.pretty()} != ${right.pretty()})"
-    is Predicate.Minus -> "(-${item.pretty()})"
   }
 
 sealed interface Value {

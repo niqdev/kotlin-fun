@@ -4,7 +4,6 @@ package com.github.niqdev.bool
 sealed interface Token {
   object LeftParentheses : Token
   object RightParentheses : Token
-  object Minus : Token
   object BangEqual : Token
   object Equal : Token
   object EqualEqual : Token
@@ -38,7 +37,6 @@ sealed interface Token {
       when (token) {
         is LeftParentheses -> "("
         is RightParentheses -> ")"
-        is Minus -> "-"
         is BangEqual -> "!="
         is Equal -> "="
         is EqualEqual -> "=="

@@ -12,7 +12,6 @@ object StringLexer {
             // parentheses
             '(' -> loop(index + 1, result + Token.LeftParentheses)
             ')' -> loop(index + 1, result + Token.RightParentheses)
-            '-' -> loop(index + 1, result + Token.Minus)
 
             // comparison
             '=' ->
@@ -58,6 +57,7 @@ object StringLexer {
             ' ', '\t', '\n', '\r', '\b' -> loop(index + 1, result)
             else -> {
               when {
+                // negative (`-`) and decimal (`-` or `,`) numbers are not supported
                 c.isDigit() -> {
                   val tokenString = scanNumber()(input.substring(index))
                   // safe: no NumberFormatException
@@ -96,8 +96,11 @@ object StringLexer {
       }
     }
 
+  // TODO validate max length
   private fun scanString(): (String) -> String = scan()() { it != '"' }
+  // TODO validate Int.MAX_VALUE and Int.MIN_VALUE
   private fun scanNumber(): (String) -> String = scan()(Char::isDigit)
+  // TODO validate max length
   private fun scanKey(): (String) -> String = scan()(Char::isKey)
 }
 

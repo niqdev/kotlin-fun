@@ -5,7 +5,7 @@ package com.github.niqdev.bool
 // interpreter: FreeB<Predicate> -> Boolean
 
 fun main() {
-  val tokens = StringLexer.tokenize("8 < 42 AND 6 > 3")
+  val tokens = StringLexer.tokenize("8 < 42 AND 6 > 3 AND !false")
   println(tokens.map { Token.pretty(it) })
   val predicates = Parser.parse(tokens)
   println(predicates.pretty())

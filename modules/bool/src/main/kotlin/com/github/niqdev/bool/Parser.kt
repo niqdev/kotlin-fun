@@ -1,14 +1,13 @@
 package com.github.niqdev.bool
 
 // TODO missing implementations:
-// - fix unary
 // - key: e.g. json path
 // - "IN a, b, b"
 // - "MATCH /aaa/"
 // - grouping e.g. "(" expression ")"
 object Parser {
 
-  // TODO Validated<NonEmptyList<Error>, Expression>
+  // TODO Validated<NonEmptyList<Error>, FreeB<Predicate>>
   // recursive descent parser: given a valid sequence of tokens, produce a corresponding Abstract Syntax Tree
   fun parse(tokens: List<Token>): FreeB<Predicate> =
     expression(tokens)
@@ -117,39 +116,24 @@ object Parser {
         }
       }
 
-    val (head, tail) = tokens.first() to tokens.drop(1)
-    return loop(tail, primary(head))
-    // TODO debug unary
-    // val (currentTokens, result) = unary(tokens)
-    // return loop(currentTokens, result)
+    val (currentTokens, result) = unary(tokens)
+    return loop(currentTokens, result)
   }
 
-  // unary -> [ "!" | "-" ] primary | primary
+  // unary -> [ "!" ] primary | primary
   private fun unary(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
-
-    fun loop(currentTokens: List<Token>, left: FreeB<Predicate>): Pair<List<Token>, FreeB<Predicate>> =
-      when {
-        currentTokens.isEmpty() -> emptyList<Token>() to left
-        else -> {
-          val (head, tail) = currentTokens.first() to currentTokens.drop(1)
-          when (head) {
-            is Token.Not -> {
-              val (nextTokens, right) = unary(tail)
-              nextTokens to FreeB.Not(right)
-            }
-            is Token.Minus -> {
-              val (nextTokens, right) = unary(tail)
-              nextTokens to FreeB.Pure(Predicate.Minus(right))
-            }
-            else -> currentTokens to left
-          }
-        }
-      }
-
     val (head, tail) = tokens.first() to tokens.drop(1)
-    return loop(tail, primary(head))
+
+    return when (head) {
+      is Token.Not -> {
+        val (nextTokens, right) = unary(tail)
+        nextTokens to FreeB.Not(right)
+      }
+      else -> tail to primary(head)
+    }
   }
 
+  // TODO grouping/expressions
   // primary -> "true" | "false" | NUMBER | STRING | KEY
   private fun primary(token: Token): FreeB<Predicate> =
     when (token) {

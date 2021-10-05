@@ -10,11 +10,10 @@ class StringLexerTest : WordSpec({
   "StringLexer" should {
 
     "tokenize" {
-      val input = "( ) - != = == > >= < <= tRue False AND and && OR oR || NOT NOt ! IN MATCH 42 simple_key key.sub-nested \"a str@ing\" 8"
+      val input = "( ) != = == > >= < <= tRue False AND and && OR oR || NOT NOt ! IN MATCH 42 simple_key key.sub-nested \"a str@ing\" 8"
       val result = listOf(
         Token.LeftParentheses,
         Token.RightParentheses,
-        Token.Minus,
         Token.BangEqual,
         Token.Equal,
         Token.EqualEqual,
