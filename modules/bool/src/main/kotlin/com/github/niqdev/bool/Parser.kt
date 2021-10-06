@@ -4,6 +4,7 @@ package com.github.niqdev.bool
 // - key: e.g. json path
 // - "IN a, b, b"
 // - "MATCH /aaa/"
+// - change signature: loop(Pair)
 object Parser {
 
   // TODO Validated<NonEmptyList<Error>, FreeB<Predicate>>
@@ -15,7 +16,7 @@ object Parser {
   private fun expression(tokens: List<Token>): FreeB<Predicate> =
     or(tokens).second
 
-  // or -> and [ "OR and ]*
+  // or -> and [ "OR" and ]*
   private fun or(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
 
     fun loop(currentTokens: List<Token>, left: FreeB<Predicate>): Pair<List<Token>, FreeB<Predicate>> =
@@ -59,22 +60,21 @@ object Parser {
     return loop(currentTokens, result)
   }
 
-  // not -> "!" equality | equality
-  private fun not(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
-    val (head, tail) = tokens.first() to tokens.drop(1)
-
-    return when (head) {
-      is Token.Not -> {
-        val (nextTokens, right) = not(tail)
-        nextTokens to FreeB.Not(right)
-      }
+  // not -> [ "NOT" ] equality
+  private fun not(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> =
+    when {
+      tokens.isEmpty() -> equality(tokens)
       else -> {
-        // continue with the same tokens
-        val (currentTokens, result) = equality(tokens)
-        currentTokens to result
+        val (head, tail) = tokens.first() to tokens.drop(1)
+        when (head) {
+          is Token.Not -> {
+            val (nextTokens, right) = not(tail)
+            nextTokens to FreeB.Not(right)
+          }
+          else -> equality(tokens)
+        }
       }
     }
-  }
 
   // equality -> comparison [ "!=" | "==" comparison ]*
   private fun equality(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {

@@ -57,10 +57,10 @@ object StringLexer {
             ' ', '\t', '\n', '\r', '\b' -> loop(index + 1, result)
             else -> {
               when {
-                // negative (`-`) and decimal (`-` or `,`) numbers are not supported
+                // negative (`-`) and decimal (`.` or `,`) numbers are not supported
                 c.isDigit() -> {
                   val tokenString = scanNumber()(input.substring(index))
-                  // safe: no NumberFormatException
+                  // safe NumberFormatException
                   loop(index + tokenString.length, result + Token.Number(tokenString.toInt()))
                 }
                 // identifier or key (cannot start with "._-")
