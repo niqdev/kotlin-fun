@@ -163,7 +163,7 @@ object Parser {
     fun loop(tmp: List<Token>, expressionTokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> =
       when {
         tmp.isEmpty() ->
-          error("Expected ')' after expression") // TODO Validated
+          error("expected ')' after expression") // TODO Validated
         tmp.first() is Token.RightParentheses ->
           tmp.drop(1) to FreeB.Grouping(expression(expressionTokens))
         else ->

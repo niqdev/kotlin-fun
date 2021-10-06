@@ -47,7 +47,7 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
 * Crafting Interpreters [ [book](https://craftinginterpreters.com) | [lox](modules/lox) ]
 * [aws-local](modules/aws-local/README.md)
 * [examples](modules/app/src/main/kotlin/com/github/niqdev)
-* [bool](modules/bool)
+* [bool](modules/bool): Free Boolean Algebra interpreter
 
 <!--
 

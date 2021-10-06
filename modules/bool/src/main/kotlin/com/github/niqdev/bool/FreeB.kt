@@ -1,5 +1,7 @@
 package com.github.niqdev.bool
 
+// free boolean algebra interpreter
+// see https://github.com/niqdev/scala-fp/blob/master/modules/fp/src/main/scala/com/github/niqdev/free/FreeB.scala
 sealed interface FreeB<T> {
   data class Pure<T>(val value: T) : FreeB<T>
   data class Grouping<T>(val fb: FreeB<T>) : FreeB<T>
@@ -11,8 +13,7 @@ sealed interface FreeB<T> {
 }
 
 // TODO Validated<NonEmptyList<Error>, Boolean>
-// free boolean algebra interpreter
-fun <T> FreeB<T>.run(f: (T) -> Boolean): Boolean =
+private fun <T> FreeB<T>.run(f: (T) -> Boolean): Boolean =
   when (this) {
     is FreeB.Pure -> f(value)
     is FreeB.Grouping -> fb.run(f)
@@ -50,45 +51,35 @@ sealed interface Predicate {
   // data class Match(val left: FreeB<Predicate>, val regex: String) : Predicate
 }
 
-// TODO incomplete
-fun evalPredicate(): (Predicate) -> Boolean =
+// TODO incomplete: chain evaluation Number and String
+private fun evalPredicate(): (Predicate) -> Boolean =
   { predicate ->
     when (predicate) {
       is Predicate.Greater ->
-        when {
-          predicate.left is FreeB.Pure &&
-            predicate.left.value is Predicate.Identity &&
-            predicate.left.value.id is Value.Number &&
-            predicate.right is FreeB.Pure &&
-            predicate.right.value is Predicate.Identity &&
-            predicate.right.value.id is Value.Number ->
-            predicate.left.value.id.int > predicate.right.value.id.int
-          else -> error("invalid predicate: $predicate")
-        }
+        evalNumber(predicate.left, predicate.right)() { l, r -> l.int > r.int }
       is Predicate.Less ->
-        when {
-          predicate.left is FreeB.Pure &&
-            predicate.left.value is Predicate.Identity &&
-            predicate.left.value.id is Value.Number &&
-            predicate.right is FreeB.Pure &&
-            predicate.right.value is Predicate.Identity &&
-            predicate.right.value.id is Value.Number ->
-            predicate.left.value.id.int < predicate.right.value.id.int
-          else -> error("invalid predicate: $predicate")
-        }
+        evalNumber(predicate.left, predicate.right)() { l, r -> l.int < r.int }
       is Predicate.EqualEqual ->
-        when {
-          predicate.left is FreeB.Pure &&
-            predicate.left.value is Predicate.Identity &&
-            predicate.left.value.id is Value.Number &&
-            predicate.right is FreeB.Pure &&
-            predicate.right.value is Predicate.Identity &&
-            predicate.right.value.id is Value.Number ->
-            predicate.left.value.id.int == predicate.right.value.id.int
-          else -> error("invalid predicate: $predicate")
-        }
+        evalNumber(predicate.left, predicate.right)() { l, r -> l.int == r.int }
       else -> error("invalid predicate: $predicate")
     }
+  }
+
+// TODO Option/Either/Validated
+private fun FreeB<Predicate>.toNumber(): Value.Number? =
+  when {
+    this is FreeB.Pure && value is Predicate.Identity && value.id is Value.Number -> value.id
+    else -> null
+  }
+
+private fun evalNumber(left: FreeB<Predicate>, right: FreeB<Predicate>): ((Value.Number, Value.Number) -> Boolean) -> Boolean =
+  { compare ->
+    val l = left.toNumber()
+    val r = right.toNumber()
+
+    // TODO flatMap
+    if (l != null && r != null) compare(l, r)
+    else error("invalid predicate: [left=$left][right=$right]")
   }
 
 fun Predicate.pretty(): String =
