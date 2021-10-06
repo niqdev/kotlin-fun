@@ -5,10 +5,15 @@ package com.github.niqdev.bool
 // interpreter: FreeB<Predicate> -> Boolean
 
 fun main() {
-  val tokens = StringLexer.tokenize("(8 > 42 AND !6 < 3) OR !!!1==2")
+  // e.g. json path
+  val keys = mapOf("my.number-key" to Token.Number(42))
+
+  val tokens = StringLexer.tokenize("(8 > my.number-key AND !6 < 3) OR !!!1==2")
   println(tokens.map { Token.pretty(it) })
-  val predicates = Parser.parse(tokens)
+
+  val predicates = Parser.parse(tokens, keys)
   println(predicates.pretty())
+
   val result = predicates.run()
   println("bool: $result")
 }

@@ -14,13 +14,13 @@ sealed interface FreeB<T> {
 // free boolean algebra interpreter
 fun <T> FreeB<T>.run(f: (T) -> Boolean): Boolean =
   when (this) {
-    is FreeB.Pure -> f(this.value)
-    is FreeB.Grouping -> this.fb.run(f)
+    is FreeB.Pure -> f(value)
+    is FreeB.Grouping -> fb.run(f)
     is FreeB.True -> true
     is FreeB.False -> false
-    is FreeB.And -> this.left.run(f) && this.right.run(f)
-    is FreeB.Or -> this.left.run(f) || this.right.run(f)
-    is FreeB.Not -> !this.right.run(f)
+    is FreeB.And -> left.run(f) && right.run(f)
+    is FreeB.Or -> left.run(f) || right.run(f)
+    is FreeB.Not -> !right.run(f)
   }
 
 fun FreeB<Predicate>.run(): Boolean =
@@ -105,14 +105,12 @@ fun Predicate.pretty(): String =
 sealed interface Value {
   data class Number(val int: Int) : Value
   data class String(val string: kotlin.String) : Value
-  data class Key(val key: kotlin.String) : Value
 }
 
 fun Value.pretty(): String =
   when (this) {
     is Value.Number -> "Number($int)"
     is Value.String -> "String($string)"
-    is Value.Key -> "Key($key)"
   }
 
 fun main() {

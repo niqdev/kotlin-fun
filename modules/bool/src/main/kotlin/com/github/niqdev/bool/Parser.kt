@@ -1,7 +1,6 @@
 package com.github.niqdev.bool
 
 // TODO missing implementations:
-// - key: e.g. json path
 // - "IN a, b, b"
 // - "MATCH /aaa/"
 // - change signature: loop(Pair)
@@ -9,8 +8,16 @@ object Parser {
 
   // TODO Validated<NonEmptyList<Error>, FreeB<Predicate>>
   // recursive descent parser: given a valid sequence of tokens, produce a corresponding Abstract Syntax Tree
-  fun parse(tokens: List<Token>): FreeB<Predicate> =
-    expression(tokens)
+  fun parse(tokens: List<Token>, keys: Map<String, Token> = emptyMap()): FreeB<Predicate> =
+    expression(resolveKeys(tokens, keys))
+
+  private fun resolveKeys(tokens: List<Token>, keys: Map<String, Token>): List<Token> =
+    tokens.map {
+      when (it) {
+        is Token.TokenKey -> keys.getOrDefault(it.key, it) // TODO Validated
+        else -> it
+      }
+    }
 
   // expression -> or
   private fun expression(tokens: List<Token>): FreeB<Predicate> =
@@ -145,7 +152,6 @@ object Parser {
       is Token.False -> tail to FreeB.False()
       is Token.Number -> tail to FreeB.Pure(Predicate.Identity(Value.Number(head.int)))
       is Token.String -> tail to FreeB.Pure(Predicate.Identity(Value.String(head.string)))
-      is Token.TokenKey -> tail to FreeB.Pure(Predicate.Identity(Value.Key(head.key)))
       is Token.LeftParentheses -> grouping(tail)
       else -> error("invalid token: $head") // TODO Validated
     }
