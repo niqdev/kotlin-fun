@@ -1,9 +1,9 @@
 package com.github.niqdev.bool
 
+// TODO change loop signature i.e. `loop(Pair)` or replace with fold
 // TODO missing implementations:
 // - "IN a, b, b"
 // - "MATCH /aaa/"
-// - change signature: loop(Pair)
 object Parser {
 
   // TODO Validated<NonEmptyList<Error>, FreeB<Predicate>>

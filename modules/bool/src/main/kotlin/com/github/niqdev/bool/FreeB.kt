@@ -1,6 +1,5 @@
 package com.github.niqdev.bool
 
-// free boolean algebra interpreter
 // see https://github.com/niqdev/scala-fp/blob/master/modules/fp/src/main/scala/com/github/niqdev/free/FreeB.scala
 sealed interface FreeB<T> {
   data class Pure<T>(val value: T) : FreeB<T>
@@ -12,6 +11,7 @@ sealed interface FreeB<T> {
   data class Not<T>(val right: FreeB<T>) : FreeB<T>
 }
 
+// free boolean algebra interpreter
 // TODO Validated<NonEmptyList<Error>, Boolean>
 private fun <T> FreeB<T>.run(f: (T) -> Boolean): Boolean =
   when (this) {

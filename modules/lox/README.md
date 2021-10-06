@@ -1,6 +1,6 @@
 # lox
 
-> TODO non-fp: hard to follow, completely mutable and no test
+> WARNING: mutability and side effects
 
 ## Development
 
