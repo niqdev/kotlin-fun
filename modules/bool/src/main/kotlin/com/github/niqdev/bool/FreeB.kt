@@ -39,6 +39,8 @@ fun FreeB<Predicate>.pretty(): String =
   }
 
 // TODO type class / higher-kinded - Predicate<T> and F<Predicate> ?
+// TODO should i move "is FreeB.Pure && is Predicate.Identity" in parser to have cleaner "Predicate.Greater(Predicate, Predicate)"
+// TODO investigate "Fix[F]" https://github.com/precog/matryoshka and https://github.com/higherkindness/droste
 sealed interface Predicate {
   data class Identity(val id: Value) : Predicate
   data class Greater(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
