@@ -1,5 +1,6 @@
 package com.github.niqdev.bool.internal
 
+// TODO not used
 sealed class InternalList<out A> {
 
   abstract fun isEmpty(): Boolean
