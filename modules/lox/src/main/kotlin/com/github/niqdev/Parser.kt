@@ -1,7 +1,5 @@
 package com.github.niqdev
 
-import java.lang.IllegalStateException
-
 // >>> (5)
 
 /**
@@ -14,13 +12,6 @@ import java.lang.IllegalStateException
 class Parser(private val tokens: List<Token>) {
   private var current = 0
 
-  fun parse0(): Expr =
-    try {
-      expression()
-    } catch (error: ParseError) {
-      throw IllegalStateException("TODO null")
-    }
-
   fun parse(): List<Stmt> {
     val statements = mutableListOf<Stmt>()
     while (!isAtEnd()) {
@@ -28,6 +19,20 @@ class Parser(private val tokens: List<Token>) {
     }
     return statements
   }
+
+  private fun declaration(): Stmt =
+    try {
+      when {
+        match(TokenType.VAR) -> varDeclaration()
+        else -> statement()
+      }
+    } catch (error: ParseError) {
+      synchronize()
+      Stmt.Empty
+    }
+
+  private fun varDeclaration(): Stmt = TODO()
+  private fun synchronize(): Stmt = TODO()
 
   private fun statement(): Stmt =
     when {

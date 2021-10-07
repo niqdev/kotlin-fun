@@ -5,16 +5,6 @@ class LoxRuntimeError(val token: Token, message: String) : RuntimeException(mess
 // tree-walk interpreter
 class Interpreter {
 
-  // TODO Either
-  fun interpret0(expression: Expr): Unit =
-    try {
-      println(Expr.pretty(expression))
-      val value = evaluate(expression)
-      println(stringify(value))
-    } catch (e: LoxRuntimeError) {
-      Lox.reportRuntimeError(e)
-    }
-
   fun interpret(statements: List<Stmt>): Unit =
     try {
       statements.forEach(::execute)
@@ -26,11 +16,13 @@ class Interpreter {
     when (statement) {
       is Stmt.Expression -> {
         val expression = statement.expression
-        println("EXPR: ${Expr.pretty(expression)}")
+        println("EXPR: ${expression.pretty()}")
         val value = evaluate(expression)
         println("RESULT: ${stringify(value)}")
       }
       is Stmt.Print -> println(stringify(evaluate(statement.expression)))
+      is Stmt.Var -> TODO()
+      is Stmt.Empty -> TODO()
     }
 
   private fun evaluate(expression: Expr): Any? =
@@ -39,6 +31,7 @@ class Interpreter {
       is Expr.Grouping -> evaluate(expression.expression)
       is Expr.Literal -> expression.value
       is Expr.Unary -> evaluateUnary(expression)
+      is Expr.Variable -> TODO()
     }
 
   private fun evaluateBinary(expression: Expr.Binary): Any {

@@ -8,10 +8,9 @@ data class Token(
   val lexeme: String,
   val literal: Any?,
   val line: Int
-) {
-  override fun toString(): String =
-    "type: $type | lexeme: $lexeme | literal: $literal | line: $line"
-}
+)
+
+fun Token.pretty(): String = "type: $type | lexeme: $lexeme | literal: $literal | line: $line"
 
 enum class TokenType {
   // single-character tokens
