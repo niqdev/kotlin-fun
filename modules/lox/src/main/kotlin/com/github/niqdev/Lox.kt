@@ -18,11 +18,16 @@ object Lox {
   @JvmStatic
   fun main(args: Array<String>) {
     println("Current working directory: ${System.getProperty("user.dir")}")
-    println(">>> ${args[0]}")
 
     when (args.size) {
-      1 -> run(readFile(args[0]))
-      0 -> println("runPrompt")
+      1 -> {
+        println(">>> ${args[0]}")
+        run(readFile(args[0]))
+      }
+      0 -> {
+        //println("runPrompt")
+        run(readFile("modules/lox/data/example2.lox"))
+      }
       // https://www.freebsd.org/cgi/man.cgi?query=sysexits
       else -> {
         val errorCode =

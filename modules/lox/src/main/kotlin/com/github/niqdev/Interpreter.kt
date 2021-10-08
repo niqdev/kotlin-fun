@@ -5,6 +5,8 @@ class LoxRuntimeError(val token: Token, message: String) : RuntimeException(mess
 // tree-walk interpreter
 class Interpreter {
 
+  private val environment = Environment()
+
   fun interpret(statements: List<Stmt>): Unit =
     try {
       statements.forEach(::execute)
@@ -12,7 +14,7 @@ class Interpreter {
       Lox.reportRuntimeError(e)
     }
 
-  private fun execute(statement: Stmt): Any? =
+  private fun execute(statement: Stmt): Any =
     when (statement) {
       is Stmt.Expression -> {
         val expression = statement.expression
@@ -21,7 +23,7 @@ class Interpreter {
         println("RESULT: ${stringify(value)}")
       }
       is Stmt.Print -> println(stringify(evaluate(statement.expression)))
-      is Stmt.Var -> TODO()
+      is Stmt.Var -> evaluateVarStmt(statement)
       is Stmt.Empty -> TODO()
     }
 
@@ -31,8 +33,15 @@ class Interpreter {
       is Expr.Grouping -> evaluate(expression.expression)
       is Expr.Literal -> expression.value
       is Expr.Unary -> evaluateUnary(expression)
-      is Expr.Variable -> TODO()
+      is Expr.Variable -> evaluateVariableExpr(expression)
+      is Expr.Empty -> TODO()
     }
+
+  private fun evaluateVarStmt(statement: Stmt.Var): Unit =
+    environment.define(statement.name.lexeme, evaluate(statement.initializer))
+
+  private fun evaluateVariableExpr(expression: Expr.Variable): Any? =
+    environment.get(expression.name)
 
   private fun evaluateBinary(expression: Expr.Binary): Any {
     val left = evaluate(expression.left)
@@ -72,9 +81,9 @@ class Interpreter {
         when {
           left is Double && right is Double -> left + right
           left is String && right is String -> "$left$right"
-          else -> throw LoxRuntimeError(expression.op, "Unsupported binary operation") // TODO
+          else -> throw LoxRuntimeError(expression.op, "Unsupported binary operation")
         }
-      else -> throw LoxRuntimeError(expression.op, "Unsupported binary expression") // TODO
+      else -> throw LoxRuntimeError(expression.op, "Unsupported binary expression")
     }
   }
 
@@ -87,14 +96,14 @@ class Interpreter {
       TokenType.MINUS ->
         when (right) {
           is Double -> -right
-          else -> throw LoxRuntimeError(expression.op, "Expected number") // TODO
+          else -> throw LoxRuntimeError(expression.op, "Expected number")
         }
       TokenType.BANG ->
         when (right) {
           is Double -> !isTruthy(right)
-          else -> throw LoxRuntimeError(expression.op, "Expected number") // TODO
+          else -> throw LoxRuntimeError(expression.op, "Expected number")
         }
-      else -> throw LoxRuntimeError(expression.op, "Unsupported unary expression") // TODO
+      else -> throw LoxRuntimeError(expression.op, "Unsupported unary expression")
     }
   }
 

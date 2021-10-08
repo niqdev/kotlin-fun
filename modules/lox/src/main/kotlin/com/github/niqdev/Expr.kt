@@ -38,9 +38,11 @@ package com.github.niqdev
 sealed interface Expr {
   data class Binary(val left: Expr, val op: Token, val right: Expr) : Expr
   data class Grouping(val expression: Expr) : Expr
+  // TODO use Value instead of Any?
   data class Literal(val value: Any?) : Expr
   data class Unary(val op: Token, val right: Expr) : Expr
   data class Variable(val name: Token) : Expr
+  object Empty : Expr
 }
 
 fun Expr.pretty(): String =
@@ -50,6 +52,24 @@ fun Expr.pretty(): String =
     is Expr.Literal -> value.toString()
     is Expr.Unary -> "(${op.lexeme}${right.pretty()})"
     is Expr.Variable -> name.pretty()
+    is Expr.Empty -> "EMPTY"
+  }
+
+sealed interface Value {
+  object True: Value
+  object False: Value
+  object Null: Value
+  data class String(val string: kotlin.String): Value
+  data class Number(val double: Double): Value
+}
+
+fun Value.pretty(): String =
+  when (this) {
+    is Value.True -> "true"
+    is Value.False -> "false"
+    is Value.Null -> "null"
+    is Value.String -> "\"$string\""
+    is Value.Number -> "$double"
   }
 
 fun main(args: Array<String>) {
@@ -57,9 +77,9 @@ fun main(args: Array<String>) {
     Expr.Binary(
       Expr.Unary(Token(TokenType.MINUS, "-", null, 1), Expr.Literal(123)),
       Token(TokenType.STAR, "*", null, 1),
-      Expr.Grouping(Expr.Literal(45.67))
+      Expr.Literal(45.67)
     )
 
-  // (* (- 123) (group 45.67))
+  // ((-123.0) * 45.67)
   println(expr.pretty())
 }

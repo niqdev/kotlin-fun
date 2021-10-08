@@ -6,6 +6,7 @@ data class Token(
   val type: TokenType,
   // raw substrings of the source code
   val lexeme: String,
+  // TODO Value
   val literal: Any?,
   val line: Int
 )

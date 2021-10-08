@@ -15,7 +15,7 @@ class Parser(private val tokens: List<Token>) {
   fun parse(): List<Stmt> {
     val statements = mutableListOf<Stmt>()
     while (!isAtEnd()) {
-      statements.add(statement())
+      statements.add(declaration())
     }
     return statements
   }
@@ -31,7 +31,15 @@ class Parser(private val tokens: List<Token>) {
       Stmt.Empty
     }
 
-  private fun varDeclaration(): Stmt = TODO()
+  private fun varDeclaration(): Stmt {
+    val name = consume(TokenType.IDENTIFIER, "Expected variable name")
+    var initializer: Expr = Expr.Empty
+    if (match(TokenType.EQUAL)) {
+      initializer = expression()
+    }
+    consume(TokenType.SEMICOLON, "Expected ';' after variable declaration")
+    return Stmt.Var(name, initializer)
+  }
   private fun synchronize(): Stmt = TODO()
 
   private fun statement(): Stmt =
@@ -124,6 +132,7 @@ class Parser(private val tokens: List<Token>) {
         consume(TokenType.RIGHT_PAREN, "Expected ')' after expression")
         Expr.Grouping(expr)
       }
+      match(TokenType.IDENTIFIER) -> Expr.Variable(previous())
       else -> throw error(peek(), "Expected expression")
     }
 
