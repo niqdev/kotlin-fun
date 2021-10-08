@@ -1,0 +1,31 @@
+# boolean expressions
+https://sheabunge.github.io/boolcalc/
+https://craftinginterpreters.com/appendix-i.html#expressions
+https://cs.au.dk/~danvy/dProgSprog16/Lecture-notes/lecture-notes_week-3.html
+https://xmonader.github.io/letsbuildacompiler-pretty/tutor06_booleanexpressions.html
+https://compilers.iecc.com/crenshaw/tutor6.txt
+https://www.cs.unb.ca/~wdu/cs4613/a2ans.htm
+https://docs.oracle.com/cd/E13203_01/tuxedo/tux80/atmi/fml0516.htm
+https://stackoverflow.com/questions/63493679/backus-naur-form-with-boolean-algebra-problem-with-brackets-and-parse-tree
+
+# BNG grammar examples
+https://cs.wmich.edu/~gupta/teaching/cs4850/sumII06/The%20syntax%20of%20C%20in%20Backus-Naur%20form.htm
+https://www.cs.unc.edu/~plaisted/comp455/Algol60.pdf
+
+# json parsers / parser combinators
+https://notes.eatonphil.com/writing-a-simple-json-parser.html
+https://1oo1.github.io/2019/12/20/Write-a-json-parser
+https://stackoverflow.com/questions/17063690/how-to-write-a-basic-json-parsing-class
+https://github.com/mhewedy/eureka-klient/blob/master/src/main/kotlin/helpers/json/Deserializer.kt
+
+# scala
+https://www.toptal.com/scala/writing-an-interpreter
+https://matt.might.net/articles/parsing-s-expressions-scala
+
+# libs
+https://github.com/sirthias/parboiled/wiki
+https://tpolecat.github.io/atto
+
+# examples
+https://github.com/h2database/h2database/blob/master/h2/src/main/org/h2/command/Parser.java
+https://gist.github.com/DmitrySoshnikov/2a434dda67019a4a7c37

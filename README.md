@@ -44,10 +44,10 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
 * The Joy of Kotlin [ [book](https://www.manning.com/books/the-joy-of-kotlin) | [notes](modules/jok/src/main/kotlin/com/github/niqdev) ]
 * Functional Programming in Kotlin [ [book](https://www.manning.com/books/functional-programming-in-kotlin) | TODO ]
 * Category Theory for Programmers [ [book](https://github.com/hmemcpy/milewski-ctfp-pdf) | TODO ]
-* Crafting Interpreters [ [book](https://craftinginterpreters.com) | [lox](modules/lox) ]
-* [aws-local](modules/aws-local/README.md)
-* [examples](modules/app/src/main/kotlin/com/github/niqdev)
+* Crafting Interpreters [ [book](https://craftinginterpreters.com/contents.html) | [lox](modules/lox) ]
 * [bool](modules/bool): Free Boolean Algebra interpreter
+* [aws-local](modules/aws-local)
+* [examples](modules/app/src/main/kotlin/com/github/niqdev)
 
 <!--
 
@@ -58,7 +58,7 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
 * [x] Gradle multi-project: [doc](https://docs.gradle.org/current/userguide/multi_project_builds.html)
 * [x] Gradle `buildSrc`
 * [ ] github action
-    * [ ] CI/CD
+    * [x] CI/CD
     * [ ] release management (git commit/tag)
 * [ ] markdown documentation: [dokka](https://kotlin.github.io/dokka) vs [docusaurus](https://docusaurus.io)
 * [x] property based tests with [Kotest](https://kotest.io)
