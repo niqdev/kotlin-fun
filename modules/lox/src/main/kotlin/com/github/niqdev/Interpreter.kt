@@ -5,7 +5,7 @@ class LoxRuntimeError(val token: Token, message: String) : RuntimeException(mess
 // tree-walk interpreter
 class Interpreter {
 
-  private val environment = Environment()
+  private var environment = Environment()
 
   fun interpret(statements: List<Stmt>): Unit =
     try {
@@ -18,30 +18,51 @@ class Interpreter {
     when (statement) {
       is Stmt.Expression -> {
         val expression = statement.expression
-        println("EXPR: ${expression.pretty()}")
+        // println("EXPR: ${expression.pretty()}")
         val value = evaluate(expression)
-        println("RESULT: ${stringify(value)}")
+        // println("RESULT: ${stringify(value)}")
       }
       is Stmt.Print -> println(stringify(evaluate(statement.expression)))
       is Stmt.Var -> evaluateVarStmt(statement)
+      is Stmt.Block -> evaluateBlockStmt(statement)
       is Stmt.Empty -> TODO()
     }
 
   private fun evaluate(expression: Expr): Any? =
     when (expression) {
+      is Expr.Assign -> evaluateAssign(expression)
       is Expr.Binary -> evaluateBinary(expression)
       is Expr.Grouping -> evaluate(expression.expression)
       is Expr.Literal -> expression.value
       is Expr.Unary -> evaluateUnary(expression)
-      is Expr.Variable -> evaluateVariableExpr(expression)
+      is Expr.Variable -> evaluateVariable(expression)
       is Expr.Empty -> TODO()
     }
 
   private fun evaluateVarStmt(statement: Stmt.Var): Unit =
     environment.define(statement.name.lexeme, evaluate(statement.initializer))
 
-  private fun evaluateVariableExpr(expression: Expr.Variable): Any? =
+  private fun evaluateBlockStmt(statement: Stmt.Block): Unit =
+    executeBlock(statement.statements, Environment(environment))
+
+  private fun evaluateAssign(expression: Expr.Assign): Any =
+    environment.assign(expression.name, evaluate(expression.value))
+
+  private fun evaluateVariable(expression: Expr.Variable): Any? =
     environment.get(expression.name)
+
+  private fun executeBlock(statements: List<Stmt>, environment: Environment) {
+    val previous = this.environment
+    try {
+      // current innermost scope
+      this.environment = environment
+      for (statement in statements) {
+        execute(statement)
+      }
+    } finally {
+      this.environment = previous
+    }
+  }
 
   private fun evaluateBinary(expression: Expr.Binary): Any {
     val left = evaluate(expression.left)

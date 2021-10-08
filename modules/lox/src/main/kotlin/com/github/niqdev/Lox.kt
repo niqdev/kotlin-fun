@@ -25,7 +25,7 @@ object Lox {
         run(readFile(args[0]))
       }
       0 -> {
-        //println("runPrompt")
+        // println("runPrompt")
         run(readFile("modules/lox/data/example2.lox"))
       }
       // https://www.freebsd.org/cgi/man.cgi?query=sysexits

@@ -3,5 +3,27 @@ print true;
 print 2 + 1;
 
 var a = 40;
-var b = 2;
+var b = 8;
+b = 2;
 print a + b;
+
+// verify environment
+var a = "global a";
+var b = "global b";
+var c = "global c";
+{
+  var a = "outer a";
+  var b = "outer b";
+  {
+    var a = "inner a";
+    print a;
+    print b;
+    print c;
+  }
+  print a;
+  print b;
+  print c;
+}
+print a;
+print b;
+print c;

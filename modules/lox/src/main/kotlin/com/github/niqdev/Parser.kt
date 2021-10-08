@@ -45,6 +45,7 @@ class Parser(private val tokens: List<Token>) {
   private fun statement(): Stmt =
     when {
       match(TokenType.PRINT) -> printStatement()
+      match(TokenType.LEFT_BRACE) -> blockStatement()
       else -> expressionStatement()
     }
 
@@ -54,13 +55,37 @@ class Parser(private val tokens: List<Token>) {
     return Stmt.Print(expr)
   }
 
+  private fun blockStatement(): Stmt {
+    val statements = mutableListOf<Stmt>()
+    while (!check(TokenType.RIGHT_BRACE) && !isAtEnd()) {
+      statements.add(declaration())
+    }
+    consume(TokenType.RIGHT_BRACE, "Expected '}' after block")
+    return Stmt.Block(statements)
+  }
+
   private fun expressionStatement(): Stmt {
     val expr = expression()
     consume(TokenType.SEMICOLON, "Expected ';' after expression")
     return Stmt.Expression(expr)
   }
 
-  private fun expression(): Expr = equality()
+  private fun expression(): Expr = assignment()
+
+  private fun assignment(): Expr {
+    val expr = equality()
+
+    if (match(TokenType.EQUAL)) {
+      val equals = previous()
+      val value = assignment()
+
+      when (expr) {
+        is Expr.Variable -> return Expr.Assign(expr.name, value)
+        else -> throw error(equals, "Invalid assignment target")
+      }
+    }
+    return expr
+  }
 
   private fun equality(): Expr {
     var expr: Expr = comparison()
@@ -140,6 +165,7 @@ class Parser(private val tokens: List<Token>) {
   private fun match(vararg types: TokenType): Boolean {
     for (type in types) {
       if (check(type)) {
+        // lookahead
         advance()
         return true
       }

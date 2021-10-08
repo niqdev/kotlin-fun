@@ -33,9 +33,13 @@ package com.github.niqdev
  * printStmt      → "print" expression ";" ;
  * primary        → ... | IDENTIFIER ;
  *
+ * expression     → assignment ;
+ * assignment     → IDENTIFIER "=" assignment
+ *                  | equality ;
  * the grammar is recursive the data structure forms a tree: abstract syntax tree (AST)
  */
 sealed interface Expr {
+  data class Assign(val name: Token, val value: Expr) : Expr
   data class Binary(val left: Expr, val op: Token, val right: Expr) : Expr
   data class Grouping(val expression: Expr) : Expr
   // TODO use Value instead of Any?
@@ -47,6 +51,7 @@ sealed interface Expr {
 
 fun Expr.pretty(): String =
   when (this) {
+    is Expr.Assign -> "(${name.pretty()} ${value.pretty()})"
     is Expr.Binary -> "(${left.pretty()} ${op.lexeme} ${right.pretty()})"
     is Expr.Grouping -> "(${expression.pretty()})"
     is Expr.Literal -> value.toString()
@@ -56,11 +61,11 @@ fun Expr.pretty(): String =
   }
 
 sealed interface Value {
-  object True: Value
-  object False: Value
-  object Null: Value
-  data class String(val string: kotlin.String): Value
-  data class Number(val double: Double): Value
+  object True : Value
+  object False : Value
+  object Null : Value
+  data class String(val string: kotlin.String) : Value
+  data class Number(val double: Double) : Value
 }
 
 fun Value.pretty(): String =
