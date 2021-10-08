@@ -1,0 +1,6 @@
+var tmp = 3;
+if (tmp > 2) {
+  print "bigger";
+} else {
+  print "smaller";
+}

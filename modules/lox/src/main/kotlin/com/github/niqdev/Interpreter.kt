@@ -14,18 +14,14 @@ class Interpreter {
       Lox.reportRuntimeError(e)
     }
 
-  private fun execute(statement: Stmt): Any =
+  private fun execute(statement: Stmt): Any? =
     when (statement) {
-      is Stmt.Expression -> {
-        val expression = statement.expression
-        // println("EXPR: ${expression.pretty()}")
-        val value = evaluate(expression)
-        // println("RESULT: ${stringify(value)}")
-      }
+      is Stmt.Block -> evaluateBlockStmt(statement)
+      is Stmt.Expression -> evaluate(statement.expression)
+      is Stmt.If -> evaluateIfStmt(statement)
       is Stmt.Print -> println(stringify(evaluate(statement.expression)))
       is Stmt.Var -> evaluateVarStmt(statement)
-      is Stmt.Block -> evaluateBlockStmt(statement)
-      is Stmt.Empty -> TODO()
+      is Stmt.Empty -> println("TODO no statement")
     }
 
   private fun evaluate(expression: Expr): Any? =
@@ -36,14 +32,18 @@ class Interpreter {
       is Expr.Literal -> expression.value
       is Expr.Unary -> evaluateUnary(expression)
       is Expr.Variable -> evaluateVariable(expression)
-      is Expr.Empty -> TODO()
+      is Expr.Empty -> println("TODO no expression")
     }
-
-  private fun evaluateVarStmt(statement: Stmt.Var): Unit =
-    environment.define(statement.name.lexeme, evaluate(statement.initializer))
 
   private fun evaluateBlockStmt(statement: Stmt.Block): Unit =
     executeBlock(statement.statements, Environment(environment))
+
+  private fun evaluateIfStmt(statement: Stmt.If): Any? =
+    if (isTruthy(evaluate(statement.condition))) execute(statement.thenBranch)
+    else execute(statement.elseBranch)
+
+  private fun evaluateVarStmt(statement: Stmt.Var): Unit =
+    environment.define(statement.name.lexeme, evaluate(statement.initializer))
 
   private fun evaluateAssign(expression: Expr.Assign): Any =
     environment.assign(expression.name, evaluate(expression.value))

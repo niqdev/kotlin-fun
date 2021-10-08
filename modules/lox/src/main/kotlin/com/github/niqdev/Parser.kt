@@ -23,10 +23,13 @@ class Parser(private val tokens: List<Token>) {
   private fun declaration(): Stmt =
     try {
       when {
-        match(TokenType.VAR) -> varDeclaration()
-        else -> statement()
+        match(TokenType.VAR) ->
+          varDeclaration()
+        else ->
+          statement()
       }
     } catch (error: ParseError) {
+      println(">>> declaration: ${error.message}")
       synchronize()
       Stmt.Empty
     }
@@ -44,10 +47,29 @@ class Parser(private val tokens: List<Token>) {
 
   private fun statement(): Stmt =
     when {
-      match(TokenType.PRINT) -> printStatement()
-      match(TokenType.LEFT_BRACE) -> blockStatement()
+      match(TokenType.IF) ->
+        ifStatement()
+      match(TokenType.PRINT) ->
+        printStatement()
+      match(TokenType.LEFT_BRACE) ->
+        blockStatement()
       else -> expressionStatement()
     }
+
+  private fun ifStatement(): Stmt {
+    consume(TokenType.LEFT_PAREN, "Expected '(' after 'if'")
+    val condition = expression()
+    consume(TokenType.RIGHT_PAREN, "Expected ')' after if condition'")
+
+    val thenBranch = statement()
+    // the `else` is bound to the nearest `if` that precedes it
+    return when {
+      match(TokenType.ELSE) ->
+        Stmt.If(condition, thenBranch, statement())
+      else ->
+        Stmt.If(condition, thenBranch, Stmt.Empty)
+    }
+  }
 
   private fun printStatement(): Stmt {
     val expr = expression()
