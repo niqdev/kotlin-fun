@@ -3,7 +3,9 @@ package com.github.niqdev
 // >>> (4)
 
 /**
- * example: 1 - (2 * 3) < 4 == false
+ * The grammar is a recursive data structure that forms a tree: abstract syntax tree (AST)
+ *
+ * Complete grammar: https://craftinginterpreters.com/appendix-i.html
  *
  * // simple but ambiguous
  * expression     → literal | unary | binary | grouping ;
@@ -21,26 +23,11 @@ package com.github.niqdev
  * factor         → unary ( ( "/" | "*" ) unary )* ; // rule recurse to match the left operand: left-associative
  * unary          → ( "!" | "-" ) unary | primary ;
  * primary        → NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")" ;
- *
- * // add statements
- * program        → declaration* EOF ;
- * declaration    → varDecl
- *                  | statement ;
- * varDecl        → "var" IDENTIFIER ( "=" expression )? ";" ;
- * statement      → exprStmt
- *                  | printStmt ;
- * exprStmt       → expression ";" ;
- * printStmt      → "print" expression ";" ;
- * primary        → ... | IDENTIFIER ;
- *
- * expression     → assignment ;
- * assignment     → IDENTIFIER "=" assignment
- *                  | equality ;
- * the grammar is recursive the data structure forms a tree: abstract syntax tree (AST)
  */
 sealed interface Expr {
   data class Assign(val name: Token, val value: Expr) : Expr
   data class Binary(val left: Expr, val op: Token, val right: Expr) : Expr
+  data class Call(val callee: Expr, val paren: Token, val arguments: List<Expr>) : Expr
   data class Grouping(val expression: Expr) : Expr
   // TODO use Value instead of Any?
   data class Literal(val value: Any?) : Expr
@@ -54,6 +41,7 @@ fun Expr.pretty(): String =
   when (this) {
     is Expr.Assign -> "(${name.pretty()} ${value.pretty()})"
     is Expr.Binary -> "(${left.pretty()} ${op.lexeme} ${right.pretty()})"
+    is Expr.Call -> "TODO $this"
     is Expr.Grouping -> "(${expression.pretty()})"
     is Expr.Literal -> value.toString()
     is Expr.Logical -> "(${left.pretty()} ${op.lexeme} ${right.pretty()})"

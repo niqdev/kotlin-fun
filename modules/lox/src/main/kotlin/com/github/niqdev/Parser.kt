@@ -34,16 +34,17 @@ class Parser(private val tokens: List<Token>) {
 
   private fun varDeclaration(): Stmt {
     val name = consume(TokenType.IDENTIFIER, "Expected variable name")
-    var initializer: Expr = Expr.Empty
-    if (match(TokenType.EQUAL)) {
-      initializer = expression()
-    }
+
+    val initializer =
+      if (match(TokenType.EQUAL)) expression()
+      else Expr.Empty
+
     consume(TokenType.SEMICOLON, "Expected ';' after variable declaration")
     return Stmt.Var(name, initializer)
   }
+
   private fun synchronize(): Stmt = TODO()
 
-  // ordered by chapters
   private fun statement(): Stmt =
     when {
       match(TokenType.FOR) -> forStatement()
@@ -54,19 +55,6 @@ class Parser(private val tokens: List<Token>) {
       else -> expressionStatement()
     }
 
-  /**
-   * for (var i = 0; i < 10; i = i + 1) print i;
-   *
-   * is syntactic sugar for
-   *
-   * {
-   *   var i = 0;
-   *   while (i < 10) {
-   *     print i;
-   *     i = i + 1;
-   *   }
-   * }
-   */
   private fun forStatement(): Stmt {
     consume(TokenType.LEFT_PAREN, "Expected '(' after 'for'")
 
@@ -88,7 +76,7 @@ class Parser(private val tokens: List<Token>) {
 
     consume(TokenType.RIGHT_PAREN, "Expected ')' after for clauses")
 
-    // equivalent to
+    // return block is equivalent to
     /*
     var body = statement()
 
@@ -101,6 +89,19 @@ class Parser(private val tokens: List<Token>) {
     else body
     */
 
+  /*
+   * for (var i = 0; i < 10; i = i + 1) print i;
+   *
+   * is syntactic sugar for
+   *
+   * {
+   *   var i = 0;
+   *   while (i < 10) {
+   *     print i;
+   *     i = i + 1;
+   *   }
+   * }
+   */
     return Stmt.Block(
       listOf(
         initializer,
@@ -141,6 +142,7 @@ class Parser(private val tokens: List<Token>) {
     while (!check(TokenType.RIGHT_BRACE) && !isAtEnd()) {
       statements.add(declaration())
     }
+
     consume(TokenType.RIGHT_BRACE, "Expected '}' after block")
     return Stmt.Block(statements)
   }
@@ -206,6 +208,7 @@ class Parser(private val tokens: List<Token>) {
 
     // if the parser never encounters an equality operator, then it never enters the loop
     // in that way, this method matches an equality operator or anything of higher precedence
+    // lookahead: `match` consumes next token (increment/advance index) and peek to previous one
     while (match(TokenType.BANG_EQUAL, TokenType.EQUAL_EQUAL)) {
       val operator: Token = previous()
       val right: Expr = comparison()
@@ -257,7 +260,40 @@ class Parser(private val tokens: List<Token>) {
       val right: Expr = unary()
       return Expr.Unary(operator, right)
     }
-    return primary()
+    return call()
+  }
+
+  private fun call(): Expr {
+    var expr = primary()
+
+    while (true) {
+      if (match(TokenType.LEFT_PAREN)) {
+        expr = finishCall(expr)
+      } else {
+        break
+      }
+    }
+
+    return expr
+  }
+
+  // builds arguments list: zero or more
+  private fun finishCall(callee: Expr): Expr {
+    val arguments = mutableListOf<Expr>()
+    if (!check(TokenType.RIGHT_PAREN)) {
+      do {
+        // maximum argument counts:
+        // - the C standard says a conforming implementation has to support at least 127 arguments to a function, but no upper limit
+        // - the Java specification says a method can accept no more than 255 arguments
+        // The limit is 254 arguments if the method is an instance method,  because `this` - the receiver of the method - works like an argument that is implicitly passed to the method
+        if (arguments.size >= 255) {
+          error(peek(), "Can't have more than 255 arguments")
+        }
+        arguments.add(expression())
+      } while (match(TokenType.COMMA))
+    }
+    val paren = consume(TokenType.RIGHT_PAREN, "Expected ')' after arguments")
+    return Expr.Call(callee, paren, arguments)
   }
 
   private fun primary(): Expr =
@@ -279,7 +315,6 @@ class Parser(private val tokens: List<Token>) {
   private fun match(vararg types: TokenType): Boolean {
     for (type in types) {
       if (check(type)) {
-        // lookahead
         advance()
         return true
       }
@@ -288,10 +323,9 @@ class Parser(private val tokens: List<Token>) {
   }
 
   // returns if the current token is of the given type
-  private fun check(type: TokenType): Boolean {
-    if (isAtEnd()) return false
-    return peek().type == type
-  }
+  private fun check(type: TokenType): Boolean =
+    if (isAtEnd()) false
+    else peek().type == type
 
   // consumes the current token and returns it
   private fun advance(): Token {
@@ -307,10 +341,9 @@ class Parser(private val tokens: List<Token>) {
   // returns the most recently consumed token
   private fun previous(): Token = tokens[current - 1]
 
-  private fun consume(type: TokenType, message: String): Token {
-    if (check(type)) return advance()
-    throw error(peek(), message)
-  }
+  private fun consume(type: TokenType, message: String): Token =
+    if (check(type)) advance()
+    else throw error(peek(), message)
 
   private class ParseError : RuntimeException()
 

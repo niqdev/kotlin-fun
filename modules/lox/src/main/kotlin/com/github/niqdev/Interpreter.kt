@@ -31,6 +31,7 @@ class Interpreter {
     when (expression) {
       is Expr.Assign -> evaluateAssign(expression)
       is Expr.Binary -> evaluateBinary(expression)
+      is Expr.Call -> evaluateCall(expression)
       is Expr.Grouping -> evaluate(expression.expression)
       is Expr.Literal -> expression.value
       is Expr.Logical -> evaluateLogical(expression)
@@ -73,6 +74,28 @@ class Interpreter {
     } finally {
       this.environment = previous
     }
+  }
+
+  // arity: number of arguments a function or operation expects i.e. number of parameters it declares
+  interface LoxCallable {
+    fun call(interpreter: Interpreter, arguments: List<Any?>): Any
+    fun arity(): Int
+  }
+  private fun evaluateCall(expression: Expr.Call): Any {
+    val callee = evaluate(expression.callee)
+
+    val arguments = expression.arguments.fold(listOf<Any?>()) {
+      list, argument ->
+      list + evaluate(argument)
+    }
+
+    val function = when {
+      callee !is LoxCallable -> LoxRuntimeError(expression.paren, "Can only call functions and classes")
+      arguments.size != callee.arity() -> LoxRuntimeError(expression.paren, "Expected ${callee.arity()} arguments but got ${arguments.size}")
+      else -> callee.call(this, arguments)
+    }
+
+    return function
   }
 
   private fun evaluateLogical(expression: Expr.Logical): Any? {
