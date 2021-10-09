@@ -32,6 +32,7 @@ class Interpreter {
       is Expr.Binary -> evaluateBinary(expression)
       is Expr.Grouping -> evaluate(expression.expression)
       is Expr.Literal -> expression.value
+      is Expr.Logical -> evaluateLogical(expression)
       is Expr.Unary -> evaluateUnary(expression)
       is Expr.Variable -> evaluateVariable(expression)
       is Expr.Empty -> println("TODO no expression")
@@ -64,6 +65,18 @@ class Interpreter {
     } finally {
       this.environment = previous
     }
+  }
+
+  private fun evaluateLogical(expression: Expr.Logical): Any? {
+    val left = evaluate(expression.left)
+
+    if (expression.op.type == TokenType.OR) {
+      if (isTruthy(left)) return left
+    } else {
+      if (!isTruthy(left)) return left
+    }
+
+    return evaluate(expression.right)
   }
 
   private fun evaluateBinary(expression: Expr.Binary): Any {
