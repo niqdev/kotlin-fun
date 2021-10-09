@@ -1,5 +1,7 @@
 package com.github.niqdev
 
+// >>> (6)
+
 sealed interface Stmt {
   data class Block(val statements: List<Stmt>) : Stmt
   data class Expression(val expression: Expr) : Stmt

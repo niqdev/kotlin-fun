@@ -1,5 +1,7 @@
 package com.github.niqdev
 
+// >>> (8)
+
 // TODO State Monad ?
 // variables are lexically scoped
 // when a local variable has the same name as a variable in an enclosing scope, it shadows the outer one

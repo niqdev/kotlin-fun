@@ -2,6 +2,8 @@ package com.github.niqdev
 
 class LoxRuntimeError(val token: Token, message: String) : RuntimeException(message)
 
+// >>> (7)
+
 // tree-walk interpreter
 class Interpreter {
 

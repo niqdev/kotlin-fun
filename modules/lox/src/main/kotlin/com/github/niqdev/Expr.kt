@@ -44,6 +44,7 @@ sealed interface Expr {
   data class Grouping(val expression: Expr) : Expr
   // TODO use Value instead of Any?
   data class Literal(val value: Any?) : Expr
+  data class Logical(val left: Expr, val op: Token, val right: Expr) : Expr
   data class Unary(val op: Token, val right: Expr) : Expr
   data class Variable(val name: Token) : Expr
   object Empty : Expr
@@ -55,6 +56,7 @@ fun Expr.pretty(): String =
     is Expr.Binary -> "(${left.pretty()} ${op.lexeme} ${right.pretty()})"
     is Expr.Grouping -> "(${expression.pretty()})"
     is Expr.Literal -> value.toString()
+    is Expr.Logical -> "(${left.pretty()} ${op.lexeme} ${right.pretty()})"
     is Expr.Unary -> "(${op.lexeme}${right.pretty()})"
     is Expr.Variable -> name.pretty()
     is Expr.Empty -> "EMPTY"
