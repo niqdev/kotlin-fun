@@ -39,11 +39,14 @@ fun FreeB<Predicate>.pretty(): String =
   }
 
 // TODO type class / higher-kinded - Predicate<T> and F<Predicate> ?
-// TODO should i move "is FreeB.Pure && is Predicate.Identity" in parser to have cleaner "Predicate.Greater(Predicate, Predicate)"
 // TODO investigate "Fix[F]" https://github.com/precog/matryoshka and https://github.com/higherkindness/droste
 sealed interface Predicate {
+  // TODO potentially add an extra layer i.e. evaluate expressions - "3 > (3 + 2)"
   data class Identity(val id: Value) : Predicate
-  data class Greater(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
+  // TODO should i move "is FreeB.Pure && is Predicate.Identity" in parser to have cleaner model e.g. Predicate.Greater(Predicate, Predicate)
+  // TODO should i enforce type? advanced kotlin pattern matching on generics sucks! e.g. Greater<T>(left: T, right: T) or Greater<T>(Value<T>, Value<T>)
+  data class Greater(val left: Identity, val right: Identity) : Predicate
+  // TODO this is semantically wrong: you can't have "3 > (3 == 2)" i.e. right cannot be a FreeB<Predicate>
   data class GreaterEqual(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
   data class Less(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
   data class LessEqual(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
@@ -53,12 +56,20 @@ sealed interface Predicate {
   // data class Match(val left: FreeB<Predicate>, val regex: String) : Predicate
 }
 
-// TODO incomplete: chain evaluation Number and String
+// TODO incomplete: chain evaluation Number / String / Version
 private fun evalPredicate(): (Predicate) -> Boolean =
   { predicate ->
     when (predicate) {
       is Predicate.Greater ->
-        evalNumber(predicate.left, predicate.right)() { l, r -> l.int > r.int }
+        // evalNumber(predicate.left, predicate.right)() { l, r -> l.int > r.int }
+        when {
+          predicate.left.id is Value.Number && predicate.right.id is Value.Number ->
+            predicate.left.id.int > predicate.right.id.int
+          // TODO custom comparison logic e.g. ADT VERSION
+          predicate.left.id is Value.String && predicate.right.id is Value.String ->
+            predicate.left.id.string > predicate.right.id.string
+          else -> error("invalid predicate operands: [left=${predicate.left}][right=${predicate.right}]")
+        }
       is Predicate.Less ->
         evalNumber(predicate.left, predicate.right)() { l, r -> l.int < r.int }
       is Predicate.EqualEqual ->
@@ -81,7 +92,7 @@ private fun evalNumber(left: FreeB<Predicate>, right: FreeB<Predicate>): ((Value
 
     // TODO flatMap
     if (l != null && r != null) compare(l, r)
-    else error("invalid predicate: [left=$left][right=$right]")
+    else error("invalid predicate operands: [left=$left][right=$right]")
   }
 
 fun Predicate.pretty(): String =
@@ -116,9 +127,10 @@ fun main() {
         )
       ),
       right = FreeB.Pure(
+        // TODO example without nested FreeB.Pure
         Predicate.Greater(
-          FreeB.Pure(Predicate.Identity(Value.Number(6))),
-          FreeB.Pure(Predicate.Identity(Value.Number(3)))
+          Predicate.Identity(Value.Number(6)),
+          Predicate.Identity(Value.Number(3))
         )
       )
     )

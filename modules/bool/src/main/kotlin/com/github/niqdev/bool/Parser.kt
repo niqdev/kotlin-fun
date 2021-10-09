@@ -11,6 +11,7 @@ object Parser {
   fun parse(tokens: List<Token>, keys: Map<String, Token> = emptyMap()): FreeB<Predicate> =
     expression(resolveKeys(tokens, keys))
 
+  // TODO this is a hack, in reality keys should be resolved at runtime i.e. in the interpreter
   private fun resolveKeys(tokens: List<Token>, keys: Map<String, Token>): List<Token> =
     tokens.map {
       when (it) {
@@ -120,7 +121,13 @@ object Parser {
           when (head) {
             is Token.Greater -> {
               val (nextTokens, right) = comparison(tail)
-              nextTokens to FreeB.Pure(Predicate.Greater(left, right))
+              // TODO should this logic be implemented in the parser? e.g. how to custom VERSION parser
+              when {
+                left is FreeB.Pure && left.value is Predicate.Identity &&
+                  right is FreeB.Pure && right.value is Predicate.Identity ->
+                  nextTokens to FreeB.Pure(Predicate.Greater(left.value, right.value))
+                else -> error("unexpected predicate in comparison: [left=$left][right=$right]")
+              }
             }
             is Token.GreaterEqual -> {
               val (nextTokens, right) = comparison(tail)
