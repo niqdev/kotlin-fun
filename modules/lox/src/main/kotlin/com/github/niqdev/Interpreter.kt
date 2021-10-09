@@ -23,6 +23,7 @@ class Interpreter {
       is Stmt.If -> evaluateIfStmt(statement)
       is Stmt.Print -> println(stringify(evaluate(statement.expression)))
       is Stmt.Var -> evaluateVarStmt(statement)
+      is Stmt.While -> evaluateWhileStmt(statement)
       is Stmt.Empty -> println("TODO no statement")
     }
 
@@ -47,6 +48,13 @@ class Interpreter {
 
   private fun evaluateVarStmt(statement: Stmt.Var): Unit =
     environment.define(statement.name.lexeme, evaluate(statement.initializer))
+
+  private fun evaluateWhileStmt(statement: Stmt.While) {
+    while (isTruthy(evaluate(statement.condition))) {
+      execute(statement.body)
+    }
+    return
+  }
 
   private fun evaluateAssign(expression: Expr.Assign): Any =
     environment.assign(expression.name, evaluate(expression.value))

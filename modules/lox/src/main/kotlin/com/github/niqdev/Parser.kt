@@ -23,10 +23,8 @@ class Parser(private val tokens: List<Token>) {
   private fun declaration(): Stmt =
     try {
       when {
-        match(TokenType.VAR) ->
-          varDeclaration()
-        else ->
-          statement()
+        match(TokenType.VAR) -> varDeclaration()
+        else -> statement()
       }
     } catch (error: ParseError) {
       println(">>> declaration: ${error.message}")
@@ -45,16 +43,79 @@ class Parser(private val tokens: List<Token>) {
   }
   private fun synchronize(): Stmt = TODO()
 
+  // ordered by chapters
   private fun statement(): Stmt =
     when {
-      match(TokenType.IF) ->
-        ifStatement()
-      match(TokenType.PRINT) ->
-        printStatement()
-      match(TokenType.LEFT_BRACE) ->
-        blockStatement()
+      match(TokenType.FOR) -> forStatement()
+      match(TokenType.IF) -> ifStatement()
+      match(TokenType.LEFT_BRACE) -> blockStatement()
+      match(TokenType.PRINT) -> printStatement()
+      match(TokenType.WHILE) -> whileStatement()
       else -> expressionStatement()
     }
+
+  /**
+   * for (var i = 0; i < 10; i = i + 1) print i;
+   *
+   * is syntactic sugar for
+   *
+   * {
+   *   var i = 0;
+   *   while (i < 10) {
+   *     print i;
+   *     i = i + 1;
+   *   }
+   * }
+   */
+  private fun forStatement(): Stmt {
+    consume(TokenType.LEFT_PAREN, "Expected '(' after 'for'")
+
+    val initializer = when {
+      match(TokenType.SEMICOLON) -> Stmt.Empty
+      match(TokenType.VAR) -> varDeclaration()
+      else -> expressionStatement()
+    }
+
+    val condition =
+      if (check(TokenType.SEMICOLON)) Expr.Literal(true)
+      else expression()
+
+    consume(TokenType.SEMICOLON, "Expected ';' after loop condition")
+
+    val increment =
+      if (check(TokenType.RIGHT_PAREN)) Expr.Empty
+      else expression()
+
+    consume(TokenType.RIGHT_PAREN, "Expected ')' after for clauses")
+
+    // equivalent to
+    /*
+    var body = statement()
+
+    if (increment != null) {
+        body = Statement.Block(listOf(body, Statement.Expression(increment)))
+    }
+    body = Statement.While(condition, body)
+
+    return if (initializer != null) Statement.Block(listOf(initializer, body))
+    else body
+    */
+
+    return Stmt.Block(
+      listOf(
+        initializer,
+        Stmt.While(
+          condition,
+          Stmt.Block(
+            listOf(
+              statement(), // body
+              Stmt.Expression(increment)
+            )
+          )
+        )
+      )
+    )
+  }
 
   private fun ifStatement(): Stmt {
     consume(TokenType.LEFT_PAREN, "Expected '(' after 'if'")
@@ -64,10 +125,8 @@ class Parser(private val tokens: List<Token>) {
     val thenBranch = statement()
     // the `else` is bound to the nearest `if` that precedes it
     return when {
-      match(TokenType.ELSE) ->
-        Stmt.If(condition, thenBranch, statement())
-      else ->
-        Stmt.If(condition, thenBranch, Stmt.Empty)
+      match(TokenType.ELSE) -> Stmt.If(condition, thenBranch, statement())
+      else -> Stmt.If(condition, thenBranch, Stmt.Empty)
     }
   }
 
@@ -84,6 +143,15 @@ class Parser(private val tokens: List<Token>) {
     }
     consume(TokenType.RIGHT_BRACE, "Expected '}' after block")
     return Stmt.Block(statements)
+  }
+
+  private fun whileStatement(): Stmt {
+    consume(TokenType.LEFT_PAREN, "Expected '(' after 'while'")
+    val condition = expression()
+    consume(TokenType.RIGHT_PAREN, "Expected ')' after while condition'")
+
+    val body = statement()
+    return Stmt.While(condition, body)
   }
 
   private fun expressionStatement(): Stmt {
@@ -234,10 +302,10 @@ class Parser(private val tokens: List<Token>) {
   private fun isAtEnd(): Boolean = peek().type == TokenType.EOF
 
   // returns the current token we have yet to consume
-  private fun peek(): Token = tokens.get(current)
+  private fun peek(): Token = tokens[current]
 
   // returns the most recently consumed token
-  private fun previous(): Token = tokens.get(current - 1)
+  private fun previous(): Token = tokens[current - 1]
 
   private fun consume(type: TokenType, message: String): Token {
     if (check(type)) return advance()
