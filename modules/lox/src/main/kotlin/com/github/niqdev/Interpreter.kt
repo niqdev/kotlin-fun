@@ -9,6 +9,7 @@ class Interpreter {
 
   val globals = Environment()
   private var environment = globals
+
   init {
     // "Lisp-1" means functions and variables occupy the same namespace
     globals.define("time", LoxCallable.nativeTime)
@@ -24,54 +25,19 @@ class Interpreter {
 
   private fun execute(statement: Stmt): Any? =
     when (statement) {
-      is Stmt.Block -> evaluateBlockStmt(statement)
+      is Stmt.Block -> executeBlock(statement)
       is Stmt.Expression -> evaluate(statement.expression)
-      is Stmt.Function -> evaluateFunctionStmt(statement)
-      is Stmt.If -> evaluateIfStmt(statement)
-      is Stmt.Print -> println(stringify(evaluate(statement.expression)))
-      is Stmt.Var -> evaluateVarStmt(statement)
-      is Stmt.While -> evaluateWhileStmt(statement)
+      is Stmt.Function -> executeFunction(statement)
+      is Stmt.If -> executeIf(statement)
+      is Stmt.Print -> executePrint(statement)
+      is Stmt.Return -> executeReturn(statement)
+      is Stmt.Var -> executeVar(statement)
+      is Stmt.While -> executeWhile(statement)
       is Stmt.Empty -> println("TODO no statement")
     }
 
-  private fun evaluate(expression: Expr): Any? =
-    when (expression) {
-      is Expr.Assign -> evaluateAssign(expression)
-      is Expr.Binary -> evaluateBinary(expression)
-      is Expr.Call -> evaluateCall(expression)
-      is Expr.Grouping -> evaluate(expression.expression)
-      is Expr.Literal -> expression.value
-      is Expr.Logical -> evaluateLogical(expression)
-      is Expr.Unary -> evaluateUnary(expression)
-      is Expr.Variable -> evaluateVariable(expression)
-      is Expr.Empty -> println("TODO no expression")
-    }
-
-  private fun evaluateBlockStmt(statement: Stmt.Block): Unit =
+  private fun executeBlock(statement: Stmt.Block): Unit =
     executeBlock(statement.statements, Environment(environment))
-
-  private fun evaluateFunctionStmt(statement: Stmt.Function): Unit =
-    environment.define(statement.name.lexeme, LoxFunction(statement))
-
-  private fun evaluateIfStmt(statement: Stmt.If): Any? =
-    if (isTruthy(evaluate(statement.condition))) execute(statement.thenBranch)
-    else execute(statement.elseBranch)
-
-  private fun evaluateVarStmt(statement: Stmt.Var): Unit =
-    environment.define(statement.name.lexeme, evaluate(statement.initializer))
-
-  private fun evaluateWhileStmt(statement: Stmt.While) {
-    while (isTruthy(evaluate(statement.condition))) {
-      execute(statement.body)
-    }
-    return
-  }
-
-  private fun evaluateAssign(expression: Expr.Assign): Any =
-    environment.assign(expression.name, evaluate(expression.value))
-
-  private fun evaluateVariable(expression: Expr.Variable): Any? =
-    environment.get(expression.name)
 
   fun executeBlock(statements: List<Stmt>, environment: Environment) {
     val previous = this.environment
@@ -86,17 +52,70 @@ class Interpreter {
     }
   }
 
+  private fun executeFunction(statement: Stmt.Function): Unit =
+    environment.define(statement.name.lexeme, LoxFunction(statement))
+
+  private fun executeIf(statement: Stmt.If): Any? =
+    if (isTruthy(evaluate(statement.condition))) execute(statement.thenBranch)
+    else execute(statement.elseBranch)
+
+  private fun executePrint(statement: Stmt.Print): Any? =
+    LoxCallable.nativePrintLine.call(this, listOf(evaluate(statement.expression)))
+
+  private fun executeReturn(statement: Stmt.Return): ReturnFunction {
+    val value =
+      if (statement.value is Expr.Empty) Stmt.Empty
+      else evaluate(statement.value)
+
+    // ??? using exception class for control flow and not actual error handling
+    // When we execute a return statement, we'll use an exception to unwind the interpreter
+    // past the visit methods of all of the containing statements back to the code that began executing the body
+    throw ReturnFunction(value)
+  }
+  class ReturnFunction(val value: Any?) : RuntimeException(null, null, false, false)
+
+  private fun executeVar(statement: Stmt.Var): Unit =
+    environment.define(statement.name.lexeme, evaluate(statement.initializer))
+
+  // returns unit
+  private fun executeWhile(statement: Stmt.While) {
+    while (isTruthy(evaluate(statement.condition))) {
+      execute(statement.body)
+    }
+  }
+
+  private fun evaluate(expression: Expr): Any? =
+    when (expression) {
+      is Expr.Assign -> evaluateAssign(expression)
+      is Expr.Binary -> evaluateBinary(expression)
+      is Expr.Call -> evaluateCall(expression)
+      is Expr.Grouping -> evaluate(expression.expression)
+      is Expr.Literal -> expression.value
+      is Expr.Logical -> evaluateLogical(expression)
+      is Expr.Unary -> evaluateUnary(expression)
+      is Expr.Variable -> evaluateVariable(expression)
+      is Expr.Empty -> println("TODO no expression")
+    }
+
+  private fun evaluateAssign(expression: Expr.Assign): Any =
+    environment.assign(expression.name, evaluate(expression.value))
+
+  private fun evaluateVariable(expression: Expr.Variable): Any? =
+    environment.get(expression.name)
+
   private fun evaluateCall(expression: Expr.Call): Any? {
     val callee = evaluate(expression.callee)
 
-    val arguments = expression.arguments.fold(listOf<Any?>()) {
-      list, argument ->
+    val arguments = expression.arguments.fold(listOf<Any?>()) { list, argument ->
       list + evaluate(argument)
     }
 
     val function = when {
       callee !is LoxCallable -> LoxRuntimeError(expression.paren, "Can only call functions and classes")
-      arguments.size != callee.arity() -> LoxRuntimeError(expression.paren, "Expected ${callee.arity()} arguments but got ${arguments.size}")
+      arguments.size != callee.arity() -> LoxRuntimeError(
+        expression.paren,
+        "Expected ${callee.arity()} arguments but got ${arguments.size}"
+      )
       else -> callee.call(this, arguments)
     }
 

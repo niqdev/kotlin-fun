@@ -72,6 +72,7 @@ class Parser(private val tokens: List<Token>) {
       match(TokenType.IF) -> ifStatement()
       match(TokenType.LEFT_BRACE) -> blockStatement()
       match(TokenType.PRINT) -> printStatement()
+      match(TokenType.RETURN) -> returnStatement()
       match(TokenType.WHILE) -> whileStatement()
       else -> expressionStatement()
     }
@@ -152,12 +153,6 @@ class Parser(private val tokens: List<Token>) {
     }
   }
 
-  private fun printStatement(): Stmt {
-    val expr = expression()
-    consume(TokenType.SEMICOLON, "Expected ';' after value")
-    return Stmt.Print(expr)
-  }
-
   private fun blockStatements(): List<Stmt> {
     val statements = mutableListOf<Stmt>()
     while (!check(TokenType.RIGHT_BRACE) && !isAtEnd()) {
@@ -168,6 +163,22 @@ class Parser(private val tokens: List<Token>) {
     return statements
   }
   private fun blockStatement(): Stmt = Stmt.Block(blockStatements())
+
+  private fun printStatement(): Stmt {
+    val expr = expression()
+    consume(TokenType.SEMICOLON, "Expected ';' after value")
+    return Stmt.Print(expr)
+  }
+
+  private fun returnStatement(): Stmt {
+    val keyword = previous()
+    val value =
+      if (!check(TokenType.SEMICOLON)) expression()
+      else Expr.Empty
+
+    consume(TokenType.SEMICOLON, "Expected ';' after return value")
+    return Stmt.Return(keyword, value)
+  }
 
   private fun whileStatement(): Stmt {
     consume(TokenType.LEFT_PAREN, "Expected '(' after 'while'")

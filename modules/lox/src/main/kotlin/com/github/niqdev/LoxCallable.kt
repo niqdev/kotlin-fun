@@ -1,7 +1,9 @@
 package com.github.niqdev
 
-// arity: number of arguments a function or operation expects i.e. number of parameters it declares
+// >>> (9)
+
 interface LoxCallable {
+  // arity: number of arguments a function or operation expects i.e. number of parameters it declares
   fun arity(): Int
   fun call(interpreter: Interpreter, arguments: List<Any?>): Any?
 
@@ -22,7 +24,7 @@ interface LoxCallable {
   }
 }
 
-class LoxFunction(val declaration: Stmt.Function) : LoxCallable {
+class LoxFunction(private val declaration: Stmt.Function) : LoxCallable {
 
   override fun arity(): Int = declaration.params.size
 
@@ -33,8 +35,12 @@ class LoxFunction(val declaration: Stmt.Function) : LoxCallable {
     declaration.params.forEachIndexed { index, token ->
       environment.define(token.lexeme, arguments[index])
     }
-    interpreter.executeBlock(declaration.body, environment)
-    // null ???
+    try {
+      interpreter.executeBlock(declaration.body, environment)
+    } catch (returnValue: Interpreter.ReturnFunction) {
+      return returnValue.value
+    }
+    // body without return statement
     return null
   }
 
