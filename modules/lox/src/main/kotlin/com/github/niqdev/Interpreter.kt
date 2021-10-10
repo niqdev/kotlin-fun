@@ -43,6 +43,7 @@ class Interpreter {
     when (statement) {
       is Stmt.Block -> evaluateBlockStmt(statement)
       is Stmt.Expression -> evaluate(statement.expression)
+      is Stmt.Function -> TODO()
       is Stmt.If -> evaluateIfStmt(statement)
       is Stmt.Print -> println(stringify(evaluate(statement.expression)))
       is Stmt.Var -> evaluateVarStmt(statement)
