@@ -7,29 +7,12 @@ class LoxRuntimeError(val token: Token, message: String) : RuntimeException(mess
 // tree-walk interpreter
 class Interpreter {
 
-  private val globals = Environment()
+  val globals = Environment()
   private var environment = globals
   init {
     // "Lisp-1" means functions and variables occupy the same namespace
-    globals.define(
-      "time",
-      object : LoxCallable {
-        override fun arity(): Int = 0
-        override fun call(interpreter: Interpreter, arguments: List<Any?>): Any =
-          System.currentTimeMillis().toDouble() / 1000.0
-        override fun toString(): String = "<native fn>"
-      }
-    )
-
-    globals.define(
-      "printLine",
-      object : LoxCallable {
-        override fun arity(): Int = 1
-        override fun call(interpreter: Interpreter, arguments: List<Any?>): Any =
-          println(stringify(arguments[0]))
-        override fun toString(): String = "<native fn>"
-      }
-    )
+    globals.define("time", LoxCallable.nativeTime)
+    globals.define("printLine", LoxCallable.nativePrintLine)
   }
 
   fun interpret(statements: List<Stmt>): Unit =
@@ -43,7 +26,7 @@ class Interpreter {
     when (statement) {
       is Stmt.Block -> evaluateBlockStmt(statement)
       is Stmt.Expression -> evaluate(statement.expression)
-      is Stmt.Function -> TODO()
+      is Stmt.Function -> evaluateFunctionStmt(statement)
       is Stmt.If -> evaluateIfStmt(statement)
       is Stmt.Print -> println(stringify(evaluate(statement.expression)))
       is Stmt.Var -> evaluateVarStmt(statement)
@@ -67,6 +50,9 @@ class Interpreter {
   private fun evaluateBlockStmt(statement: Stmt.Block): Unit =
     executeBlock(statement.statements, Environment(environment))
 
+  private fun evaluateFunctionStmt(statement: Stmt.Function): Unit =
+    environment.define(statement.name.lexeme, LoxFunction(statement))
+
   private fun evaluateIfStmt(statement: Stmt.If): Any? =
     if (isTruthy(evaluate(statement.condition))) execute(statement.thenBranch)
     else execute(statement.elseBranch)
@@ -87,7 +73,7 @@ class Interpreter {
   private fun evaluateVariable(expression: Expr.Variable): Any? =
     environment.get(expression.name)
 
-  private fun executeBlock(statements: List<Stmt>, environment: Environment) {
+  fun executeBlock(statements: List<Stmt>, environment: Environment) {
     val previous = this.environment
     try {
       // current innermost scope
@@ -100,12 +86,7 @@ class Interpreter {
     }
   }
 
-  // arity: number of arguments a function or operation expects i.e. number of parameters it declares
-  interface LoxCallable {
-    fun call(interpreter: Interpreter, arguments: List<Any?>): Any
-    fun arity(): Int
-  }
-  private fun evaluateCall(expression: Expr.Call): Any {
+  private fun evaluateCall(expression: Expr.Call): Any? {
     val callee = evaluate(expression.callee)
 
     val arguments = expression.arguments.fold(listOf<Any?>()) {
@@ -216,16 +197,18 @@ class Interpreter {
     throw LoxRuntimeError(operator, "Operands must be numbers")
   }
 
-  private fun stringify(obj: Any?): String =
-    when (obj) {
-      null -> "nil"
-      is Double -> {
-        val text = obj.toString()
-        if (text.endsWith(".0")) {
-          text.substring(0, text.length - 2)
+  companion object {
+    fun stringify(obj: Any?): String =
+      when (obj) {
+        null -> "nil"
+        is Double -> {
+          val text = obj.toString()
+          if (text.endsWith(".0")) {
+            text.substring(0, text.length - 2)
+          }
+          text
         }
-        text
+        else -> obj.toString()
       }
-      else -> obj.toString()
-    }
+  }
 }
