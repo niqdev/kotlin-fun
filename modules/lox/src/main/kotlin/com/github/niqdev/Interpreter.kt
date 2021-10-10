@@ -7,7 +7,30 @@ class LoxRuntimeError(val token: Token, message: String) : RuntimeException(mess
 // tree-walk interpreter
 class Interpreter {
 
-  private var environment = Environment()
+  private val globals = Environment()
+  private var environment = globals
+  init {
+    // "Lisp-1" means functions and variables occupy the same namespace
+    globals.define(
+      "time",
+      object : LoxCallable {
+        override fun arity(): Int = 0
+        override fun call(interpreter: Interpreter, arguments: List<Any?>): Any =
+          System.currentTimeMillis().toDouble() / 1000.0
+        override fun toString(): String = "<native fn>"
+      }
+    )
+
+    globals.define(
+      "printLine",
+      object : LoxCallable {
+        override fun arity(): Int = 1
+        override fun call(interpreter: Interpreter, arguments: List<Any?>): Any =
+          println(stringify(arguments[0]))
+        override fun toString(): String = "<native fn>"
+      }
+    )
+  }
 
   fun interpret(statements: List<Stmt>): Unit =
     try {

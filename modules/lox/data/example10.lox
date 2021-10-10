@@ -1,0 +1,3 @@
+printLine("native hello");
+print time;
+print time();
