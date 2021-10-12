@@ -26,7 +26,7 @@ object Lox {
       }
       0 -> {
         // println("runPrompt")
-        run(readFile("modules/lox/data/example10.lox"))
+        run(readFile("modules/lox/data/example10-6.lox"))
       }
       // https://www.freebsd.org/cgi/man.cgi?query=sysexits
       else -> {

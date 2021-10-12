@@ -7,7 +7,7 @@ class LoxRuntimeError(val token: Token, message: String) : RuntimeException(mess
 // tree-walk interpreter
 class Interpreter {
 
-  val globals = Environment()
+  private val globals = Environment()
   private var environment = globals
 
   init {
@@ -53,7 +53,7 @@ class Interpreter {
   }
 
   private fun executeFunction(statement: Stmt.Function): Unit =
-    environment.define(statement.name.lexeme, LoxFunction(statement))
+    environment.define(statement.name.lexeme, LoxFunction(statement, environment))
 
   private fun executeIf(statement: Stmt.If): Any? =
     if (isTruthy(evaluate(statement.condition))) execute(statement.thenBranch)
