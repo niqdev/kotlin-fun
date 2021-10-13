@@ -6,5 +6,6 @@ include(
   "modules:bool",
   "modules:jok",
   "modules:kia",
-  "modules:lox"
+  "modules:lox",
+  "modules:rekursion"
 )

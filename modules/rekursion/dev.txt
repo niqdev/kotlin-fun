@@ -1,0 +1,9 @@
+goals
+  - recursion schema in kotlin
+  - markdown to json converter
+
+# scala
+https://github.com/niqdev/scala-fp/blob/master/docs/fp-ecosystem.md?plain=1#L166
+https://github.com/niqdev/scala-fp/tree/master/modules/ecosystem/src/main/scala/com/github/niqdev/droste
+
+https://www.47deg.com/blog/recursion-schemes-introduction
