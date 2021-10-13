@@ -25,6 +25,10 @@ class Environment(private val enclosing: Environment? = null) {
       else -> throw LoxRuntimeError(name, "Undefined variable: ${name.lexeme}")
     }
 
+  fun assignAt(distance: Int, name: Token, value: Any?) {
+    ancestor(distance)!!.values[name.lexeme] = value
+  }
+
   fun get(name: Token): Any? =
     when {
       // verify inner scope first
@@ -33,4 +37,16 @@ class Environment(private val enclosing: Environment? = null) {
       enclosing != null -> enclosing.get(name)
       else -> throw LoxRuntimeError(name, "Undefined variable: ${name.lexeme}")
     }
+
+  fun getAt(distance: Int, name: String?): Any? {
+    return ancestor(distance)!!.values[name]
+  }
+
+  private fun ancestor(distance: Int): Environment? {
+    var environment: Environment? = this
+    for (i in 0 until distance) {
+      environment = environment!!.enclosing
+    }
+    return environment
+  }
 }

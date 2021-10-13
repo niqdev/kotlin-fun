@@ -9,6 +9,7 @@ class Interpreter {
 
   private val globals = Environment()
   private var environment = globals
+  private val locals = mutableMapOf<Expr, Int>()
 
   init {
     // "Lisp-1" means functions and variables occupy the same namespace
@@ -22,6 +23,10 @@ class Interpreter {
     } catch (e: LoxRuntimeError) {
       Lox.reportRuntimeError(e)
     }
+
+  fun resolve(expression: Expr, depth: Int) {
+    locals[expression] = depth
+  }
 
   private fun execute(statement: Stmt): Any? =
     when (statement) {
@@ -97,11 +102,28 @@ class Interpreter {
       is Expr.Empty -> println("TODO no expression")
     }
 
-  private fun evaluateAssign(expression: Expr.Assign): Any =
-    environment.assign(expression.name, evaluate(expression.value))
+  private fun evaluateAssign(expression: Expr.Assign): Any {
+    val value = evaluate(expression.value)
+    val distance = locals[expression]
+    return if (distance != null) {
+      environment.assignAt(distance, expression.name, value)
+    } else {
+      globals.assign(expression.name, value)
+    }
+  }
 
   private fun evaluateVariable(expression: Expr.Variable): Any? =
-    environment.get(expression.name)
+    lookUpVariable(expression.name, expression)
+
+  private fun lookUpVariable(name: Token, expression: Expr): Any? {
+    val distance = locals[expression]
+    // if we don't find a distance in the map, it must be global
+    return if (distance != null) {
+      environment.getAt(distance, name.lexeme)
+    } else {
+      globals.get(name)
+    }
+  }
 
   private fun evaluateCall(expression: Expr.Call): Any? {
     val callee = evaluate(expression.callee)

@@ -26,7 +26,7 @@ object Lox {
       }
       0 -> {
         // println("runPrompt")
-        run(readFile("modules/lox/data/example10-6.lox"))
+        run(readFile("modules/lox/data/example10-5.lox"))
       }
       // https://www.freebsd.org/cgi/man.cgi?query=sysexits
       else -> {
@@ -61,6 +61,8 @@ object Lox {
   private fun run(source: String) {
     val tokens = Scanner(source).scanTokens()
     val statements = Parser(tokens).parse()
+    val interpreter = Interpreter()
+    Resolver(interpreter).resolve(statements)
 
     if (error) return
 
