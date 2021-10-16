@@ -2,7 +2,9 @@
 
 > WARNING: mutability and side effects
 
-* tag [lox-chapther-07](TODO)
+* tag [lox-chapter-07](TODO)
+* continue on branch [lox-chapter-11](TODO) on semantic analysis `FIXME`
+* TODO part 3
 
 ## Development
 
@@ -35,6 +37,11 @@
         - BNF [Backus–Naur form](https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form) is a metasyntax notation for context-free grammars
 
 <!--
+https://finch.stuffwithstuff.com
+https://wren.io
+https://magpie-lang.org
+https://gameprogrammingpatterns.com
+
 https://stackoverflow.com/questions/39435225/how-convert-the-context-free-grammar-of-json-to-state-machine
 https://stackoverflow.com/questions/2245962/is-there-an-alternative-for-flex-bison-that-is-usable-on-8-bit-embedded-systems
 https://stackoverflow.com/questions/25049751/constructing-an-abstract-syntax-tree-with-a-list-of-tokens
