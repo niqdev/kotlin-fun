@@ -7,5 +7,5 @@ include(
   "modules:jok",
   "modules:kia",
   "modules:lox",
-  "modules:rekursion"
+  "modules:rekursive"
 )
