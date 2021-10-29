@@ -2,9 +2,9 @@
 
 > WARNING: mutability and side effects
 
-* tag [lox-chapter-07](TODO)
-* continue on branch [lox-chapter-11](TODO) on semantic analysis `FIXME`
-* TODO part 3
+* tag [lox-chapter-07](https://github.com/niqdev/kotlin-fun/tree/lox-chapther-07)
+* continue on branch [lox-chapter-11](https://github.com/niqdev/kotlin-fun/tree/lox-chapter-11) on semantic analysis `FIXME`
+* TODO [part-3](https://craftinginterpreters.com/a-bytecode-virtual-machine.html)
 
 ## Development
 
