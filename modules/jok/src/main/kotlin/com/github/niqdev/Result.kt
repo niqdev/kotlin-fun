@@ -5,17 +5,17 @@ import java.lang.IllegalStateException
 import java.lang.NullPointerException
 import java.lang.RuntimeException
 
-sealed class Result<out A> : Serializable {
+sealed interface Result<out A> : Serializable {
 
-  internal class Failure<out A>(internal val exception: RuntimeException) : Result<A>() {
+  class Failure<out A>(internal val exception: RuntimeException) : Result<A> {
     override fun toString(): String = "Failure(${exception.message})"
   }
 
-  internal class Success<out A>(internal val value: A) : Result<A>() {
+  class Success<out A>(internal val value: A) : Result<A> {
     override fun toString(): String = "Success($value)"
   }
 
-  internal object Empty : Result<Nothing>() {
+  object Empty : Result<Nothing> {
     override fun toString(): String = "Empty"
   }
 
