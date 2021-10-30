@@ -3,9 +3,10 @@ plugins {
   id("org.jmailen.kotlinter") version Versions.kotlinter
 }
 
+// config shared with all the modules
 allprojects {
 
-  // avoid to re-define them in all the sub-modules: without `apply` the sub-modules won't see the plugins
+  // without `apply` the sub-modules won't see the plugins
   apply(plugin = "org.jetbrains.kotlin.jvm")
   apply(plugin = "org.jmailen.kotlinter")
 
@@ -18,6 +19,7 @@ allprojects {
   tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     kotlinOptions {
       jvmTarget = "11"
+      // fails compilation if there is a warning e.g. Deprecated
       //allWarningsAsErrors = true
     }
   }
