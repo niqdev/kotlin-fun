@@ -1,22 +1,14 @@
 plugins {
-  kotlin("jvm") version Versions.kotlin
-  kotlin("plugin.serialization") version Versions.kotlin
-  id("org.jmailen.kotlinter") version Versions.kotlinter
-  id("com.adarshr.test-logger") version Versions.testLogger
   // https://kotlinlang.org/docs/kapt.html
-  kotlin("kapt") version Versions.kapt
+  kotlin("kapt")
+  kotlin("plugin.serialization") version Versions.kotlin
+  id("com.adarshr.test-logger") version Versions.testLogger
+
   application
   // https://docs.gradle.org/current/userguide/idea_plugin.html
   idea
 }
 
-repositories {
-  mavenLocal()
-  mavenCentral()
-  maven(url = "https://dl.bintray.com/arrow-kt/arrow-kt/")
-}
-
-// TODO remove multiple dependency versions e.g. kotlin-stdlib
 dependencies {
   implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
   implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutines}")
@@ -67,9 +59,6 @@ tasks.named<JavaExec>("run") {
   jvmArgs = listOf("-Dkotlinx.coroutines.debug")
   // TODO (verify) this should allow to pass any "-Dconfig.key=value" property
   systemProperties(System.getProperties().mapKeys { it.key.toString() }.toMap())
-}
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-  kotlinOptions.jvmTarget = "11"
 }
 
 task("runReactorExample", JavaExec::class) {

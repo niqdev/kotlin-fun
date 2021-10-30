@@ -1,12 +1,7 @@
 plugins {
-  kotlin("jvm") version Versions.kotlin
-  id("org.jmailen.kotlinter") version Versions.kotlinter
+  id("com.adarshr.test-logger") version Versions.testLogger
   id("com.github.johnrengelman.shadow") version Versions.shadow
   application
-}
-
-repositories {
-  mavenCentral()
 }
 
 dependencies {
@@ -34,10 +29,6 @@ application {
   mainClass.set(name)
   // required by ShadowJar
   mainClassName = name
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-  kotlinOptions.jvmTarget = "11"
 }
 
 tasks.withType<Test> {
