@@ -121,7 +121,7 @@ fun main() {
   val abs: (Double) -> Double = { d -> if (d > 0) d else -d }
   println(lift(abs)(Option(1.0)))
   println(lift(abs)(Option.None))
-  println(lift(String::toUpperCase)(Option("example")))
+  println(lift(String::uppercase)(Option("example")))
   println(abs.liftOption()(Option(1.0)))
 
   println(Option(42).map2<Int, Int, String>()(Option(8))() { a, b -> "$a | $b" })

@@ -61,8 +61,8 @@ fun <A, B> Either<A, B>.orElse(): (() -> Either<A, B>) -> Either<A, B> =
   { default -> default().map<A, B, B>()() { this.getOrElse()() { it } } }
 
 fun main() {
-  println(Either.right<String, String>("hello").map<String, String, String>()(String::toUpperCase))
-  println(Either.left<String, Int>("error").mapLeft<String, Int, String>()(String::toUpperCase))
+  println(Either.right<String, String>("hello").map<String, String, String>()(String::uppercase))
+  println(Either.left<String, Int>("error").mapLeft<String, Int, String>()(String::uppercase))
   println(Either.left<String, Int>("error").getOrElse()() { -> 42 })
   println(Either.left<String, Int>("error").orElse()() { Either.left("new-error") })
 }
