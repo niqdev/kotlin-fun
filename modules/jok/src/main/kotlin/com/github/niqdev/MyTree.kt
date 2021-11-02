@@ -42,14 +42,19 @@ sealed class MyTree<out T : Comparable<@UnsafeVariance T>> {
 // ---------- 10.1 ----------
 
 operator fun <T : Comparable<T>> MyTree<T>.plus(element: @UnsafeVariance T): MyTree<T> =
-  when (this) {
-    is MyTree.MyEmpty -> MyTree.MyLeaf(MyTree.MyEmpty, element, MyTree.MyEmpty)
-    is MyTree.MyLeaf ->
-      when {
-        element < this.value -> MyTree.MyLeaf(left + element, this.value, this.right)
-        element > this.value -> MyTree.MyLeaf(this.left, this.value, right + element)
-        else -> MyTree.MyLeaf(left, element, this.right)
-      }
+  this.add()(element)
+
+fun <T : Comparable<T>> MyTree<T>.add(): (T) -> MyTree<T> =
+  { element ->
+    when (this) {
+      is MyTree.MyEmpty -> MyTree.MyLeaf(MyTree.MyEmpty, element, MyTree.MyEmpty)
+      is MyTree.MyLeaf ->
+        when {
+          element < this.value -> MyTree.MyLeaf(left + element, this.value, this.right)
+          element > this.value -> MyTree.MyLeaf(this.left, this.value, right + element)
+          else -> MyTree.MyLeaf(left, element, this.right)
+        }
+    }
   }
 
 // ---------- 10.3 ----------
@@ -102,6 +107,9 @@ fun <T : Comparable<T>> MyTree<T>.min(): Result<T> =
 
 // ---------- 10.6 ----------
 
+operator fun <T : Comparable<T>> MyTree<T>.minus(element: T): MyTree<T> =
+  this.remove()(element)
+
 private fun <T : Comparable<T>> removeMerge(ltree: MyTree<T>, rtree: MyTree<T>, element: T): MyTree<T> =
   when (ltree) {
     is MyTree.MyEmpty -> rtree
@@ -120,17 +128,19 @@ private fun <T : Comparable<T>> removeMerge(ltree: MyTree<T>, rtree: MyTree<T>, 
       }
   }
 
-fun <T : Comparable<T>> MyTree<T>.remove(element: T): MyTree<T> =
-  when (this) {
-    is MyTree.MyEmpty -> this
-    is MyTree.MyLeaf ->
-      // while iterating, keep the tree without without the removed element
-      when {
-        element < value -> MyTree.MyLeaf(left.remove(element), value, right)
-        element > value -> MyTree.MyLeaf(left, value, right.remove(element))
-        // found
-        else -> removeMerge(left, right, element)
-      }
+fun <T : Comparable<T>> MyTree<T>.remove(): (T) -> MyTree<T> =
+  { element ->
+    when (this) {
+      is MyTree.MyEmpty -> this
+      is MyTree.MyLeaf ->
+        // while iterating, keep the tree without without the removed element
+        when {
+          element < value -> MyTree.MyLeaf(left - element, value, right)
+          element > value -> MyTree.MyLeaf(left, value, right - element)
+          // found
+          else -> removeMerge(left, right, element)
+        }
+    }
   }
 
 // ---------- 10.7 ----------
@@ -185,6 +195,15 @@ fun <A : Comparable<A>, B> MyTree<A>.foldInOrder(): (B) -> ((B) -> (A) -> (B) ->
       when (this) {
         is MyTree.MyEmpty -> identity
         is MyTree.MyLeaf -> f(left.foldInOrder<A, B>()(identity)(f))(value)(right.foldInOrder<A, B>()(identity)(f))
+      }
+    }
+  }
+fun <A : Comparable<A>, B> MyTree<A>.foldInReverseOrder(): (B) -> ((B) -> (A) -> (B) -> B) -> B =
+  { identity ->
+    { f ->
+      when (this) {
+        is MyTree.MyEmpty -> identity
+        is MyTree.MyLeaf -> f(right.foldInReverseOrder<A, B>()(identity)(f))(value)(left.foldInReverseOrder<A, B>()(identity)(f))
       }
     }
   }
@@ -268,6 +287,19 @@ fun <A : Comparable<A>> MyTree<A>.balance(): MyTree<A> = TODO()
 
 // big unbalanced trees can overflow the stack: use auto-balancing on insertions, merges, and removals
 
+// ---------- 11.2 ----------
+
+operator fun <T : Comparable<T>> MyTree<T>.get(element: T): Result<T> =
+  when (this) {
+    is MyTree.MyEmpty -> Result.Empty
+    is MyTree.MyLeaf ->
+      when {
+        element < value -> left[element]
+        element > value -> right[element]
+        else -> Result(value)
+      }
+  }
+
 fun main() {
   val myTree: MyTree<Int> =
     MyTree.MyLeaf(
@@ -284,7 +316,7 @@ fun main() {
   println(myTree.height())
   println(MyTree.from(MyList(1, 2, 3, 4, 5)).max())
   println(MyTree.from(MyList(1, 2, 3, 4, 5)).min())
-  println(MyTree.from(MyList(1, 2, 3, 4, 5)).remove(4))
+  println(MyTree.from(MyList(1, 2, 3, 4, 5)).remove()(4))
 
   val exampleTree: MyTree<Int> =
     MyTree.MyLeaf(
@@ -297,10 +329,11 @@ fun main() {
       )
     )
   println(exampleTree)
-  println(exampleTree.remove(3))
-  println(exampleTree.remove(8))
+  println(exampleTree - 3)
+  println(exampleTree - 8)
   println(MyTree.from(MyList(1, 2, 3)).merge(MyTree.from(MyList(4, 5, 6))))
   println(exampleTree.foldLeft<Int, MyList<Int>>()(MyList())() { ints -> { a -> ints.cons()(a) } }() { x -> { y -> y.concat()(x) } })
+  println(exampleTree.foldInReverseOrder<Int, MyList<Int>>()(MyList())() { tmpResult -> { item -> { result -> result.concat()(tmpResult.cons()(item)) } } })
 
   // In-order: 1234567
   // Pre-order: 4213657

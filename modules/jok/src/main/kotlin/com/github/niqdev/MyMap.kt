@@ -35,14 +35,20 @@ class MyMapEntry<K : Comparable<K>, V> private constructor(
 
 // binary search trees are used for maps, also called dictionaries or associative arrays
 class MyMap<K : Comparable<K>, V> private constructor(
-  private val tree: RedBlackTree<MyMapEntry<K, V>> = RedBlackTree.Empty
+  // TODO use RedBlackTree instead
+  private val tree: MyTree<MyMapEntry<K, V>> = MyTree.MyEmpty
+
+  // ---------- 11.4 ----------
+
+  // how to handle collisions with NON-Comparable values: see issue in 11.3
+  // private val tree0: RedBlackTree<MyMapEntry<K, MyList<Pair<K, V>>>> = RedBlackTree.Empty
 ) {
 
   operator fun plus(entry: Pair<K, V>): MyMap<K, V> =
     MyMap(this.tree + MyMapEntry(entry))
 
-  operator fun minus(key: K): MyMap<K, V> = TODO()
-  // MyMap(this.tree - MyMapEntry(key))
+  operator fun minus(key: K): MyMap<K, V> =
+    MyMap(this.tree - MyMapEntry(key))
 
   operator fun get(key: K): Result<MyMapEntry<K, V>> =
     tree[MyMapEntry(key)]
@@ -55,6 +61,12 @@ class MyMap<K : Comparable<K>, V> private constructor(
 
   fun size(): Int =
     tree.size()
+
+  // ---------- 11.3 ----------
+
+  // TODO compile issue due to Comparable V ???
+  fun values(): MyList<V> = TODO()
+  // tree.foldInReverseOrder<Result<V>, MyList<Result<V>>>()(MyList())() { tmpResult -> { item -> { result -> result.concat()(tmpResult.cons()(item)) } } }
 
   override fun toString() =
     tree.toString()

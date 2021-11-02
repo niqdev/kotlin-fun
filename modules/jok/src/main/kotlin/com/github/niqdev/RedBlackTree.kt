@@ -263,6 +263,11 @@ private fun <T : Comparable<T>> RedBlackTree<T>.add(): (T) -> RedBlackTree<T> =
     }
   }
 
+operator fun <T : Comparable<T>> RedBlackTree<T>.plus(element: T): RedBlackTree<T> =
+  this.add()(element).blacken()
+
+// ------------------------------
+
 private fun <T : Comparable<T>> RedBlackTree<T>.bubble(
   color: RedBlackTree.Color,
   left: RedBlackTree<T>,
@@ -286,22 +291,10 @@ private fun <T : Comparable<T>> RedBlackTree<T>.delete(): (T) -> RedBlackTree<T>
     }
   }
 
-operator fun <T : Comparable<T>> RedBlackTree<T>.plus(element: T): RedBlackTree<T> =
-  this.add()(element).blacken()
-
 operator fun <T : Comparable<T>> RedBlackTree<T>.minus(element: T): RedBlackTree<T> =
   this.delete()(element).blacken()
 
-operator fun <T : Comparable<T>> RedBlackTree<T>.get(element: T): Result<T> =
-  when (this) {
-    is RedBlackTree.Empty -> Result.Empty
-    is RedBlackTree.Leaf ->
-      when {
-        element < value -> left[element]
-        element > value -> right[element]
-        else -> Result(value)
-      }
-  }
+// ------------------------------
 
 fun <T : Comparable<T>> RedBlackTree<T>.pretty(): String {
 
@@ -346,6 +339,8 @@ fun <T : Comparable<T>> RedBlackTree<T>.pretty(): String {
   }
   return sb.toString()
 }
+
+// ------------------------------
 
 fun main() {
   println((RedBlackTree.Empty + 3 + 2 + 1).pretty())
