@@ -22,7 +22,10 @@
 //   use case: reordering elements after asynchronous parallel processing
 
 // leftist heap as a heap-ordered tree with an additional leftist property
-// - a heap-ordered tree is a tree in which each branch of an element is greater than or equal to the element itself. This guarantees that the lowest element in the tree is always the root element, making access to the lowest value instantaneous
+// - a heap-ordered tree is a tree in which each branch of an element is greater than or equal to the element itself.
+//   This guarantees that the lowest element in the tree is always the root element, making access to the lowest value instantaneous
 // - with the leftist property, for each element, the left branch rank is greater than or equal to the right branch rank
-// - the rank of an element is the length of the right path (also called the right spine) to an empty element. The leftist property guarantees that the shortest path from any element to an empty element is the right path. A consequence of this is that elements are always found in ascending order along any descending path
+// - the rank of an element is the length of the right path (also called the right spine) to an empty element.
+//   The leftist property guarantees that the shortest path from any element to an empty element is the right path.
+//   A consequence of this is that elements are always found in ascending order along any descending path
 // - retrieving the highest priority element is possible in constant time because it'll always be the root of the tree
