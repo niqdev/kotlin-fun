@@ -1,17 +1,14 @@
 package com.github.niqdev
 
 sealed class Option<out A> {
-  abstract fun isEmpty(): Boolean
 
   internal object None : Option<Nothing>() {
-    override fun isEmpty(): Boolean = true
     override fun toString(): String = "None"
     // override fun equals(other: Any?): Boolean = other === None
     // override fun hashCode(): Int = 0
   }
 
   internal data class Some<out A>(internal val value: A) : Option<A>() {
-    override fun isEmpty(): Boolean = false
     override fun toString(): String = "Some($value)"
   }
 
@@ -23,6 +20,12 @@ sealed class Option<out A> {
       }
   }
 }
+
+fun <A> Option<A>.isEmpty(): Boolean =
+  when (this) {
+    is Option.None -> true
+    is Option.Some -> false
+  }
 
 fun List<Int>.maxOption(): Option<Int> = Option(this.maxOrNull())
 

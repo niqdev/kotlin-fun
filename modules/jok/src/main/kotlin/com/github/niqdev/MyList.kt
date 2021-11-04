@@ -5,18 +5,14 @@ package com.github.niqdev
 // covariant in A
 sealed class MyList<out A> {
 
-  abstract fun isEmpty(): Boolean
-
   // empty list
   internal object MyNil : MyList<Nothing>() {
-    override fun isEmpty(): Boolean = true
     override fun toString(): String = "Nil"
   }
 
   // non-empty list: "Cons" means "construct"
   // parameters are declared `internal` so that they won't be visible from outside the file or the module in which the List class is declared
   internal class MyCons<A>(val head: A, val tail: MyList<A>) : MyList<A>() {
-    override fun isEmpty(): Boolean = false
     override fun toString(): String {
       tailrec fun loop(tmp: MyList<A>, result: String): String =
         when (tmp) {
@@ -43,6 +39,12 @@ sealed class MyList<out A> {
     }
   }
 }
+
+fun <T> MyList<T>.isEmpty(): Boolean =
+  when (this) {
+    is MyList.MyNil -> true
+    is MyList.MyCons -> false
+  }
 
 fun <T> MyList<T>.unsafeHead(): T? =
   when (this) {

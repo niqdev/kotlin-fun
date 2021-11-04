@@ -3,10 +3,7 @@ package com.github.niqdev
 // Comparable is contravariant on T
 sealed class MyTree<out T : Comparable<@UnsafeVariance T>> {
 
-  abstract fun isEmpty(): Boolean
-
   internal object MyEmpty : MyTree<Nothing>() {
-    override fun isEmpty(): Boolean = true
     override fun toString(): String = "Empty"
   }
 
@@ -15,7 +12,6 @@ sealed class MyTree<out T : Comparable<@UnsafeVariance T>> {
     val value: T,
     val right: MyTree<T>
   ) : MyTree<T>() {
-    override fun isEmpty(): Boolean = false
     override fun toString(): String = "Leaf($left, $value, $right)"
   }
 
@@ -38,6 +34,12 @@ sealed class MyTree<out T : Comparable<@UnsafeVariance T>> {
       MyLeaf(MyEmpty, value, MyEmpty)
   }
 }
+
+fun <T : Comparable<T>> MyTree<T>.isEmpty(): Boolean =
+  when (this) {
+    is MyTree.MyEmpty -> true
+    is MyTree.MyLeaf -> false
+  }
 
 // ---------- 10.1 ----------
 
