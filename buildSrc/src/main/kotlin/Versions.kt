@@ -12,6 +12,7 @@ object Versions {
   val arrow = "1.0.0"
   val clikt = "3.3.0"
   val hoplite = "1.4.9"
+  val kondor = "1.7.0"
   val kotlinxCoroutines = "1.5.2"
   val logback = "1.3.0-alpha10"
   val reactor = "3.4.11"

@@ -25,6 +25,10 @@ dependencies {
   // cli
   implementation("com.github.ajalt.clikt:clikt:${Versions.clikt}")
 
+  // json
+  implementation("com.ubertob.kondor:kondor-core:${Versions.kondor}")
+  testImplementation("com.ubertob.kondor:kondor-tools:${Versions.kondor}")
+
   // reactor
   implementation("io.projectreactor:reactor-core:${Versions.reactor}")
   implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:${Versions.reactorKotlin}")
