@@ -95,16 +95,16 @@ fun <T : Comparable<T>> MyTree<T>.height(): Int =
 
 // ---------- 10.5 ----------
 
-fun <T : Comparable<T>> MyTree<T>.max(): Result<T> =
+fun <T : Comparable<T>> MyTree<T>.max(): MyResult<T> =
   when (this) {
-    is MyTree.MyEmpty -> Result.Empty
-    is MyTree.MyLeaf -> right.max().orElse()() { Result(value) }
+    is MyTree.MyEmpty -> MyResult.Empty
+    is MyTree.MyLeaf -> right.max().orElse()() { MyResult(value) }
   }
 
-fun <T : Comparable<T>> MyTree<T>.min(): Result<T> =
+fun <T : Comparable<T>> MyTree<T>.min(): MyResult<T> =
   when (this) {
-    is MyTree.MyEmpty -> Result.Empty
-    is MyTree.MyLeaf -> left.max().orElse()() { Result(value) }
+    is MyTree.MyEmpty -> MyResult.Empty
+    is MyTree.MyLeaf -> left.max().orElse()() { MyResult(value) }
   }
 
 // ---------- 10.6 ----------
@@ -291,14 +291,14 @@ fun <A : Comparable<A>> MyTree<A>.balance(): MyTree<A> = TODO()
 
 // ---------- 11.2 ----------
 
-operator fun <T : Comparable<T>> MyTree<T>.get(element: T): Result<T> =
+operator fun <T : Comparable<T>> MyTree<T>.get(element: T): MyResult<T> =
   when (this) {
-    is MyTree.MyEmpty -> Result.Empty
+    is MyTree.MyEmpty -> MyResult.Empty
     is MyTree.MyLeaf ->
       when {
         element < value -> left[element]
         element > value -> right[element]
-        else -> Result(value)
+        else -> MyResult(value)
       }
   }
 

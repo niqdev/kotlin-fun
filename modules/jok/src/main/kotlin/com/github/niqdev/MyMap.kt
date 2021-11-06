@@ -2,7 +2,7 @@ package com.github.niqdev
 
 class MyMapEntry<K : Comparable<K>, V> private constructor(
   private val key: K,
-  private val value: Result<V>
+  private val value: MyResult<V>
 ) : Comparable<MyMapEntry<K, V>> {
 
   override fun compareTo(other: MyMapEntry<K, V>): Int =
@@ -23,13 +23,13 @@ class MyMapEntry<K : Comparable<K>, V> private constructor(
   companion object {
 
     operator fun <K : Comparable<K>, V> invoke(pair: Pair<K, V>): MyMapEntry<K, V> =
-      MyMapEntry(pair.first, Result(pair.second))
+      MyMapEntry(pair.first, MyResult(pair.second))
 
     operator fun <K : Comparable<K>, V> invoke(key: K): MyMapEntry<K, V> =
-      MyMapEntry(key, Result.Empty)
+      MyMapEntry(key, MyResult.Empty)
 
     fun <K : Comparable<K>, V> of(key: K, value: V): MyMapEntry<K, V> =
-      MyMapEntry(key, Result(value))
+      MyMapEntry(key, MyResult(value))
   }
 }
 
@@ -50,7 +50,7 @@ class MyMap<K : Comparable<K>, V> private constructor(
   operator fun minus(key: K): MyMap<K, V> =
     MyMap(this.tree - MyMapEntry(key))
 
-  operator fun get(key: K): Result<MyMapEntry<K, V>> =
+  operator fun get(key: K): MyResult<MyMapEntry<K, V>> =
     tree[MyMapEntry(key)]
 
   fun contains(): (K) -> Boolean =

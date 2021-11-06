@@ -25,7 +25,7 @@ sealed class MyStream<out A> {
     // ---------- 9.29 ----------
 
     fun fromWithUnfold(i: Int): MyStream<Int> =
-      unfold<Int, Int>()(i)() { a -> Result(a to a + 1) }
+      unfold<Int, Int>()(i)() { a -> MyResult(a to a + 1) }
 
     // ---------- 9.16 ----------
 
@@ -37,10 +37,10 @@ sealed class MyStream<out A> {
   }
 }
 
-fun <A> MyStream<A>.head(): Result<A> =
+fun <A> MyStream<A>.head(): MyResult<A> =
   when (this) {
-    is MyStream.Empty -> Result()
-    is MyStream.Cons -> Result.of(this.head)
+    is MyStream.Empty -> MyResult()
+    is MyStream.Cons -> MyResult.of(this.head)
   }
 
 fun <A> MyStream<A>.unsafeHead(): A =
@@ -49,10 +49,10 @@ fun <A> MyStream<A>.unsafeHead(): A =
     is MyStream.Cons -> this.head()
   }
 
-fun <A> MyStream<A>.tail(): Result<MyStream<A>> =
+fun <A> MyStream<A>.tail(): MyResult<MyStream<A>> =
   when (this) {
-    is MyStream.Empty -> Result()
-    is MyStream.Cons -> Result.of(this.tail)
+    is MyStream.Empty -> MyResult()
+    is MyStream.Cons -> MyResult.of(this.tail)
   }
 
 fun <A> MyStream<A>.unsafeTail(): MyStream<A> =
@@ -108,11 +108,11 @@ fun <A> MyStream<A>.toList(): MyList<A> {
       is MyStream.Empty -> result
       is MyStream.Cons -> {
         val headList = when (val maybeHead = stream.head()) {
-          is Result.Success -> MyList(maybeHead.value)
+          is MyResult.Success -> MyList(maybeHead.value)
           else -> MyList.MyNil
         }
         val tailStream = when (val maybeTail = stream.tail()) {
-          is Result.Success -> maybeTail.value
+          is MyResult.Success -> maybeTail.value
           else -> MyStream.Empty
         }
         // println("$headList | $tailStream | $result")
@@ -200,8 +200,8 @@ fun <A> MyStream<A>.takeWhileWithFoldRight(): ((A) -> Boolean) -> MyStream<A> =
 
 // ---------- 9.22 ----------
 
-fun <A> MyStream<A>.headSafe(): Result<A> =
-  this.foldRight<A, Result<A>>()(MyLazy { Result.Empty })() { a -> { Result.of { a } } }
+fun <A> MyStream<A>.headSafe(): MyResult<A> =
+  this.foldRight<A, MyResult<A>>()(MyLazy { MyResult.Empty })() { a -> { MyResult.of { a } } }
 
 // ---------- 9.23 ----------
 
@@ -225,7 +225,7 @@ fun <A, B> MyStream<A>.flatMap(): ((A) -> MyStream<B>) -> MyStream<B> =
 
 // ---------- 9.27 ----------
 
-fun <A> MyStream<A>.find(): ((A) -> Boolean) -> Result<A> =
+fun <A> MyStream<A>.find(): ((A) -> Boolean) -> MyResult<A> =
   { p -> this.filter()(p).headSafe() }
 
 // ---------- 9.28 ----------
@@ -235,11 +235,11 @@ fun fibonacci(): MyStream<Int> =
 
 // ---------- 9.29 ----------
 
-fun <A, S> unfold(): (S) -> ((S) -> Result<Pair<A, S>>) -> MyStream<A> =
+fun <A, S> unfold(): (S) -> ((S) -> MyResult<Pair<A, S>>) -> MyStream<A> =
   { zero -> { f -> f(zero).map<Pair<A, S>, MyStream<A>>()() { (a, s) -> MyStream.cons(MyLazy { a }, MyLazy { unfold<A, S>()(s)(f) }) }.getOrElse()() { MyStream.Empty } } }
 
 fun fibonacciWithUnfold(): MyStream<Int> =
-  unfold<Int, Pair<Int, Int>>()(1 to 1)() { (a, b) -> Result(a to Pair(b, a + b)) }
+  unfold<Int, Pair<Int, Int>>()(1 to 1)() { (a, b) -> MyResult(a to Pair(b, a + b)) }
 
 // ---------- 9.30 ----------
 

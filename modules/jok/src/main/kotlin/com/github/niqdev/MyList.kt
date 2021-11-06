@@ -54,23 +54,23 @@ fun <T> MyList<T>.unsafeHead(): T? =
 
 // ---------- 8.2 ----------
 
-fun <T> MyList<T>.head(): Result<T> =
+fun <T> MyList<T>.head(): MyResult<T> =
   when (this) {
-    is MyList.MyNil -> Result.Empty
-    is MyList.MyCons -> Result(head)
+    is MyList.MyNil -> MyResult.Empty
+    is MyList.MyCons -> MyResult(head)
   }
 
 // ---------- 8.4 ----------
 
 // keep always the first value
-fun <T> MyList<T>.headWithFold(): Result<T> =
-  this.foldLeft<T, Result<T>>()(Result.Empty)() { result, t -> if (result is Result.Empty) Result(t) else result }
+fun <T> MyList<T>.headWithFold(): MyResult<T> =
+  this.foldLeft<T, MyResult<T>>()(MyResult.Empty)() { result, t -> if (result is MyResult.Empty) MyResult(t) else result }
 
 // ---------- 8.3 ----------
 
 // keep always the last value
-fun <T> MyList<T>.last(): Result<T> =
-  this.foldLeft<T, Result<T>>()(Result.Empty)() { _, t -> Result(t) }
+fun <T> MyList<T>.last(): MyResult<T> =
+  this.foldLeft<T, MyResult<T>>()(MyResult.Empty)() { _, t -> MyResult(t) }
 
 // ------------------------------
 
@@ -284,17 +284,17 @@ fun <A : Comparable<A>> MyList<A>.maxEither(): Either<String, A> =
 
 // ---------- 8.5 ----------
 
-fun <A> MyList<Result<A>>.flattenSuccessWithFilter(): MyList<A> =
-  this.filter { it is Result.Success }.map { it.getOrElse()() { throw IllegalStateException("impossible") } }
+fun <A> MyList<MyResult<A>>.flattenSuccessWithFilter(): MyList<A> =
+  this.filter { it is MyResult.Success }.map { it.getOrElse()() { throw IllegalStateException("impossible") } }
 
-fun <A> MyList<Result<A>>.flattenSuccess(): MyList<A> =
+fun <A> MyList<MyResult<A>>.flattenSuccess(): MyList<A> =
   this.flatMap { result -> result.map<A, MyList<A>>()() { MyList(it) }.getOrElse()() { MyList.MyNil } }
 
 // ---------- 8.6 ----------
 
 // what about higher-kinded types constructor ?
-fun <A> MyList<Result<A>>.sequence(): Result<MyList<A>> =
-  this.foldLeft<Result<A>, Result<MyList<A>>>()(Result(MyList()))() { result, item ->
+fun <A> MyList<MyResult<A>>.sequence(): MyResult<MyList<A>> =
+  this.foldLeft<MyResult<A>, MyResult<MyList<A>>>()(MyResult(MyList()))() { result, item ->
     result.map2<MyList<A>, A, MyList<A>>()(item)() { list ->
       { a ->
         list.cons()(a)
@@ -304,9 +304,9 @@ fun <A> MyList<Result<A>>.sequence(): Result<MyList<A>> =
 
 // ---------- 8.7 ----------
 
-fun <A, B> MyList<A>.traverseResult(): ((A) -> Result<B>) -> Result<MyList<B>> =
+fun <A, B> MyList<A>.traverseResult(): ((A) -> MyResult<B>) -> MyResult<MyList<B>> =
   { f ->
-    this.foldRight<A, Result<MyList<B>>>()(Result(MyList()))() { a ->
+    this.foldRight<A, MyResult<MyList<B>>>()(MyResult(MyList()))() { a ->
       {
         it.map2<MyList<B>, B, MyList<B>>()(f(a))() {
           it.cons()::invoke
@@ -370,13 +370,13 @@ fun <A, A1, A2> MyList<A>.unzip(): ((A) -> Pair<A1, A2>) -> Pair<MyList<A1>, MyL
 // ---------- 8.12 ----------
 // ---------- 8.13 ----------
 
-fun <A> MyList<A>.getAt(): (Int) -> Result<A> =
+fun <A> MyList<A>.getAt(): (Int) -> MyResult<A> =
   { index ->
-    this.foldRight<A, Pair<Int, Result<A>>>()(0 to Result.Empty)() { item ->
+    this.foldRight<A, Pair<Int, MyResult<A>>>()(0 to MyResult.Empty)() { item ->
       { result ->
         when {
           (result.first + 1) != index -> result.first + 1 to result.second
-          else -> index to Result(item)
+          else -> index to MyResult(item)
         }
       }
     }.second
@@ -494,7 +494,7 @@ fun <A> MyList<A>.divideByTwo(): MyList<MyList<A>> =
 // ---------- 8.24 ----------
 
 // see https://github.com/pysaumont/fpinkotlin/blob/master/fpinkotlin-parent/fpinkotlin-advancedlisthandling-solutions/src/main/kotlin/com/fpinkotlin/advancedlisthandling/exercise23/List.kt
-fun <A, B> MyList<A>.parFoldLeft(es: java.util.concurrent.ExecutorService): (B) -> ((B, A) -> B) -> ((B, B) -> B) -> Result<B> = TODO()
+fun <A, B> MyList<A>.parFoldLeft(es: java.util.concurrent.ExecutorService): (B) -> ((B, A) -> B) -> ((B, B) -> B) -> MyResult<B> = TODO()
 
 // ---------- 9.8 ----------
 
@@ -503,8 +503,8 @@ fun <A> MyList<MyLazy<A>>.sequence(): MyLazy<MyList<A>> =
 
 // ---------- 9.9 ----------
 
-fun <A> MyList<MyLazy<A>>.sequenceResult(): MyLazy<Result<MyList<A>>> =
-  MyLazy { this.map { Result.of(it) }.sequence() }
+fun <A> MyList<MyLazy<A>>.sequenceResult(): MyLazy<MyResult<MyList<A>>> =
+  MyLazy { this.map { MyResult.of(it) }.sequence() }
 
 // ------------------------------
 
@@ -562,11 +562,11 @@ fun main() {
   println(MyList<Int>().head())
   println(MyList(1, 2, 3, 4, 5).last())
   println(MyList(1, 2, 3, 4, 5).headWithFold())
-  println(MyList(Result(1), Result.failure("error"), Result(2)).flattenSuccessWithFilter())
-  println(MyList(Result(1), Result.failure("error"), Result(2)).flattenSuccess())
-  println(MyList(Result.failure<Int>("error")).flattenSuccess())
-  println(MyList(Result(1), Result(2), Result(3)).sequence())
-  println(MyList(Result(1), Result.failure("error"), Result(2)).sequence())
+  println(MyList(MyResult(1), MyResult.failure("error"), MyResult(2)).flattenSuccessWithFilter())
+  println(MyList(MyResult(1), MyResult.failure("error"), MyResult(2)).flattenSuccess())
+  println(MyList(MyResult.failure<Int>("error")).flattenSuccess())
+  println(MyList(MyResult(1), MyResult(2), MyResult(3)).sequence())
+  println(MyList(MyResult(1), MyResult.failure("error"), MyResult(2)).sequence())
   println(MyList(1, 1, 1).zipWith<Int, String, Pair<Int, String>>()(MyList("a", "b", "c", "d"))() { int -> { string -> int to string } })
   println(1.repeat()(5))
   println(MyList("a", "b", "c").productString()(MyList("1", "2", "3")))

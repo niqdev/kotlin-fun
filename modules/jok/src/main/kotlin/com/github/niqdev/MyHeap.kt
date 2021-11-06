@@ -34,22 +34,22 @@ fun <T : Comparable<T>> MyHeap<T>.isEmpty(): Boolean =
     is MyHeap.MyHead -> false
   }
 
-fun <T : Comparable<T>> MyHeap<T>.left(): Result<MyHeap<T>> =
+fun <T : Comparable<T>> MyHeap<T>.left(): MyResult<MyHeap<T>> =
   when (this) {
-    is MyHeap.MyEmpty -> Result(MyHeap.MyEmpty)
-    is MyHeap.MyHead -> Result(left)
+    is MyHeap.MyEmpty -> MyResult(MyHeap.MyEmpty)
+    is MyHeap.MyHead -> MyResult(left)
   }
 
-fun <T : Comparable<T>> MyHeap<T>.right(): Result<MyHeap<T>> =
+fun <T : Comparable<T>> MyHeap<T>.right(): MyResult<MyHeap<T>> =
   when (this) {
-    is MyHeap.MyEmpty -> Result(MyHeap.MyEmpty)
-    is MyHeap.MyHead -> Result(right)
+    is MyHeap.MyEmpty -> MyResult(MyHeap.MyEmpty)
+    is MyHeap.MyHead -> MyResult(right)
   }
 
-fun <T : Comparable<T>> MyHeap<T>.head(): Result<T> =
+fun <T : Comparable<T>> MyHeap<T>.head(): MyResult<T> =
   when (this) {
-    is MyHeap.MyEmpty -> Result.failure("head() called on empty heap")
-    is MyHeap.MyHead -> Result(head)
+    is MyHeap.MyEmpty -> MyResult.failure("head() called on empty heap")
+    is MyHeap.MyHead -> MyResult(head)
   }
 
 fun <T : Comparable<T>> MyHeap<T>.rank(): Int =
@@ -105,21 +105,21 @@ operator fun <T : Comparable<T>> MyHeap<T>.plus(element: T): MyHeap<T> =
 
 // ---------- 11.6 ----------
 
-fun <T : Comparable<T>> MyHeap<T>.tail(): Result<MyHeap<T>> =
+fun <T : Comparable<T>> MyHeap<T>.tail(): MyResult<MyHeap<T>> =
   when (this) {
-    is MyHeap.MyEmpty -> Result.failure("tail() called on empty heap")
-    is MyHeap.MyHead -> Result(merge(left, right))
+    is MyHeap.MyEmpty -> MyResult.failure("tail() called on empty heap")
+    is MyHeap.MyHead -> MyResult(merge(left, right))
   }
 
 // ---------- 11.7 ----------
 
-fun <T : Comparable<T>> MyHeap<T>.get(): (Int) -> Result<T> =
+fun <T : Comparable<T>> MyHeap<T>.get(): (Int) -> MyResult<T> =
   { index ->
     when (this) {
-      is MyHeap.MyEmpty -> Result.failure("Index out of bounds")
+      is MyHeap.MyEmpty -> MyResult.failure("Index out of bounds")
       is MyHeap.MyHead ->
         when (index) {
-          0 -> Result(head)
+          0 -> MyResult(head)
           else -> tail().flatMap<MyHeap<T>, T>()() { it.get()(index - 1) }
         }
     }
