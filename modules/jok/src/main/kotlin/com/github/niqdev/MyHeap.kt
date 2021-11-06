@@ -136,6 +136,32 @@ fun <T : Comparable<T>> MyHeap<T>.pop(): Option<Pair<T, MyHeap<T>>> =
 fun <T : Comparable<T>> MyHeap<T>.toList(): MyList<T> =
   MyList<T>().unfold<T, MyHeap<T>>()(this)() { it.pop() }
 
+// ---------- 11.9 ----------
+
+fun <A : Comparable<A>, B, Z> MyHeap<A>.unfold(identity: B, f: (B) -> (A) -> B): (Z) -> ((Z) -> Option<Pair<A, Z>>) -> B =
+  { zero ->
+    { getNext ->
+      tailrec fun loop(z: Z, result: B): B =
+        when (val next = getNext(z)) {
+          is Option.None -> result
+          is Option.Some ->
+            loop(next.value.second, f(result)(next.value.first))
+        }
+      loop(zero, identity)
+    }
+  }
+
+fun <A : Comparable<A>, B> MyHeap<A>.foldLeft(): (B) -> ((B) -> (A) -> B) -> B =
+  { identity -> { f -> this.unfold<A, B, MyHeap<A>>(identity, f)(this)() { it.pop() } } }
+
+fun <T : Comparable<T>> MyHeap<T>.toListWithUnfold(): MyList<T> =
+  this.foldLeft<T, MyList<T>>()(MyList.MyNil)(MyList<T>::cons).reverse()
+
+// ---------- 11.10 ----------
+
+// TODO
+sealed interface MyHeapNotComparable<out T>
+
 // ------------------------------
 
 fun main() {
@@ -146,4 +172,5 @@ fun main() {
   println(heap.get()(1))
   println(heap.get()(10))
   println(heap.toList())
+  println(heap.toListWithUnfold())
 }

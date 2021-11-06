@@ -29,5 +29,3 @@
 //   The leftist property guarantees that the shortest path from any element to an empty element is the right path.
 //   A consequence of this is that elements are always found in ascending order along any descending path
 // - retrieving the highest priority element is possible in constant time because it'll always be the root of the tree
-
-// TODO pag 318
