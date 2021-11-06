@@ -46,6 +46,13 @@ class ConsoleReader(reader: java.io.BufferedReader) : AbstractReader(reader) {
   }
 }
 
+class FileReader(reader: java.io.BufferedReader) : AbstractReader(reader), AutoCloseable {
+  companion object {
+    operator fun invoke(path: String): MyResult<MyInput> =
+      try { MyResult(FileReader(java.io.File(path).bufferedReader())) } catch (e: Exception) { MyResult.failure(e) }
+  }
+}
+
 // ---------- 12.2 ----------
 
 data class Person(val id: Int, val firstName: String, val lastName: String)
@@ -62,6 +69,14 @@ private fun person(input: MyInput): MyResult<Pair<Person, MyInput>> =
       }
     }
   }
+
+// ---------- 12.3 ----------
+
+// closing the resources with `use`
+
+// TODO
+private fun readPersonsFromFile(path: String): MyResult<MyList<Person>> =
+  FileReader(path).map<MyInput, MyList<Person>>()() { it.use { input -> MyStream<Person>().unfold<Person, MyInput>()(input)(::person).toList() } }
 
 // ------------------------------
 
