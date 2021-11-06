@@ -25,7 +25,7 @@ sealed interface MyHeap<out T : Comparable<@UnsafeVariance T>> {
 fun <T : Comparable<T>> MyHeap<T>.pretty(): String =
   when (this) {
     is MyHeap.MyEmpty -> "Empty"
-    is MyHeap.MyHead -> "Head($left, $head, $right)"
+    is MyHeap.MyHead -> "Heap(${left.pretty()}, $head, ${right.pretty()})"
   }
 
 fun <T : Comparable<T>> MyHeap<T>.isEmpty(): Boolean =
@@ -48,7 +48,7 @@ fun <T : Comparable<T>> MyHeap<T>.right(): Result<MyHeap<T>> =
 
 fun <T : Comparable<T>> MyHeap<T>.head(): Result<T> =
   when (this) {
-    is MyHeap.MyEmpty -> Result.failure("head called on empty heap")
+    is MyHeap.MyEmpty -> Result.failure("head() called on empty heap")
     is MyHeap.MyHead -> Result(head)
   }
 
@@ -102,3 +102,48 @@ private fun <T : Comparable<T>> MyHeap<T>.add(): (T) -> MyHeap<T> =
 
 operator fun <T : Comparable<T>> MyHeap<T>.plus(element: T): MyHeap<T> =
   this.add()(element)
+
+// ---------- 11.6 ----------
+
+fun <T : Comparable<T>> MyHeap<T>.tail(): Result<MyHeap<T>> =
+  when (this) {
+    is MyHeap.MyEmpty -> Result.failure("tail() called on empty heap")
+    is MyHeap.MyHead -> Result(merge(left, right))
+  }
+
+// ---------- 11.7 ----------
+
+fun <T : Comparable<T>> MyHeap<T>.get(): (Int) -> Result<T> =
+  { index ->
+    when (this) {
+      is MyHeap.MyEmpty -> Result.failure("Index out of bounds")
+      is MyHeap.MyHead ->
+        when (index) {
+          0 -> Result(head)
+          else -> tail().flatMap<MyHeap<T>, T>()() { it.get()(index - 1) }
+        }
+    }
+  }
+
+// ---------- 11.8 ----------
+
+fun <T : Comparable<T>> MyHeap<T>.pop(): Option<Pair<T, MyHeap<T>>> =
+  when (this) {
+    is MyHeap.MyEmpty -> Option.None
+    is MyHeap.MyHead -> tail().map<MyHeap<T>, Pair<T, MyHeap<T>>>()() { head to it }.toOption()
+  }
+
+fun <T : Comparable<T>> MyHeap<T>.toList(): MyList<T> =
+  MyList<T>().unfold<T, MyHeap<T>>()(this)() { it.pop() }
+
+// ------------------------------
+
+fun main() {
+  val heap = MyHeap<Int>() + 1 + 2 + 3 + 4 + 5
+  println(heap.pretty())
+  println((heap + 6).pretty())
+  println((heap.tail().getOrElse()() { MyHeap.MyEmpty }).pretty())
+  println(heap.get()(1))
+  println(heap.get()(10))
+  println(heap.toList())
+}

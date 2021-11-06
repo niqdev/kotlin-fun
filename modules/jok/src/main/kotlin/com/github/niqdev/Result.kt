@@ -166,6 +166,17 @@ fun <A, B, C, D> ((A) -> (B) -> (C) -> D).lift3Result(): (Result<A>) -> (Result<
 fun <A, B, C> Result<A>.map2(): (Result<B>) -> ((A) -> (B) -> C) -> Result<C> =
   { resultB -> { f -> f.lift2Result()(this)(resultB) } }
 
+// ------------------------------
+
+fun <A> Result<A>.toOption(): Option<A> =
+  when (this) {
+    is Result.Empty -> Option.None
+    is Result.Failure -> Option.None
+    is Result.Success -> Option(value)
+  }
+
+// ------------------------------
+
 // specify the types because of the limited type inference capacity of Kotlin
 // use comprehension pattern to compose: N flatMap + map
 fun main() {

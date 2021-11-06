@@ -506,6 +506,23 @@ fun <A> MyList<MyLazy<A>>.sequence(): MyLazy<MyList<A>> =
 fun <A> MyList<MyLazy<A>>.sequenceResult(): MyLazy<Result<MyList<A>>> =
   MyLazy { this.map { Result.of(it) }.sequence() }
 
+// ------------------------------
+
+fun <A, Z> MyList<A>.unfold(): (Z) -> ((Z) -> Option<Pair<A, Z>>) -> MyList<A> =
+  { zero ->
+    { getNext ->
+      tailrec fun loop(z: Z, result: MyList<A>): MyList<A> =
+        when (val next = getNext(z)) {
+          is Option.None -> result
+          is Option.Some ->
+            loop(next.value.second, result.cons()(next.value.first))
+        }
+      loop(zero, MyList.MyNil).reverse()
+    }
+  }
+
+// ------------------------------
+
 fun main() {
   val list: MyList<Int> = MyList(1, 2, 3)
   println(list)
