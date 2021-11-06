@@ -238,6 +238,8 @@ fun fibonacci(): MyStream<Int> =
 fun <A, S> unfold(): (S) -> ((S) -> MyResult<Pair<A, S>>) -> MyStream<A> =
   { zero -> { f -> f(zero).map<Pair<A, S>, MyStream<A>>()() { (a, s) -> MyStream.cons(MyLazy { a }, MyLazy { unfold<A, S>()(s)(f) }) }.getOrElse()() { MyStream.Empty } } }
 
+fun <A, S> MyStream<A>.unfold(): (S) -> ((S) -> MyResult<Pair<A, S>>) -> MyStream<A> = unfold()
+
 fun fibonacciWithUnfold(): MyStream<Int> =
   unfold<Int, Pair<Int, Int>>()(1 to 1)() { (a, b) -> MyResult(a to Pair(b, a + b)) }
 

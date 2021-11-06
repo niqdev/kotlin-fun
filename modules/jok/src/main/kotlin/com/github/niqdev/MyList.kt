@@ -521,6 +521,25 @@ fun <A, Z> MyList<A>.unfold(): (Z) -> ((Z) -> Option<Pair<A, Z>>) -> MyList<A> =
     }
   }
 
+fun <A, Z> MyList<A>.unfoldResult(): (Z) -> ((Z) -> MyResult<Pair<A, Z>>) -> MyResult<MyList<A>> =
+  { zero ->
+    { getNext ->
+      tailrec fun loop(z: Z, result: MyList<A>): MyResult<MyList<A>> =
+        when (val next = getNext(z)) {
+          is MyResult.Empty -> MyResult(result)
+          is MyResult.Failure -> MyResult.failure(next.exception)
+          is MyResult.Success ->
+            loop(next.value.second, result.cons()(next.value.first))
+        }
+      loop(zero, MyList.MyNil).map<MyList<A>, MyList<A>>()(MyList<A>::reverse)
+    }
+  }
+
+// ---------- 12.1 ----------
+
+fun <A> MyList<A>.forEach(): ((A) -> Unit) -> Unit =
+  { effect -> this.map(effect) }
+
 // ------------------------------
 
 fun main() {
@@ -592,4 +611,5 @@ fun main() {
   println(MyList(1, 2).divideByTwo())
   println(MyList(MyLazy { 1 }, MyLazy { 2 }, MyLazy { 3 }).sequence().invoke())
   println(MyList(MyLazy { 1 }, MyLazy { 2 }, MyLazy { throw IllegalArgumentException() }).sequenceResult().invoke())
+  MyList(1, 2, 3).map { "-> [${it * 3}]" }.forEach()(::println)
 }
