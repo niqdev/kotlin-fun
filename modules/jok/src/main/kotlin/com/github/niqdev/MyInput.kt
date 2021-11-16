@@ -49,7 +49,51 @@ class ConsoleReader(reader: java.io.BufferedReader) : AbstractReader(reader) {
 class FileReader(reader: java.io.BufferedReader) : AbstractReader(reader), AutoCloseable {
   companion object {
     operator fun invoke(path: String): MyResult<MyInput> =
-      try { MyResult(FileReader(java.io.File(path).bufferedReader())) } catch (e: Exception) { MyResult.failure(e) }
+      try {
+        MyResult(FileReader(java.io.File(path).bufferedReader()))
+      } catch (e: Exception) {
+        MyResult.failure(e)
+      }
+  }
+}
+
+class ScriptReader private constructor(private val commands: MyList<String>) : MyInput {
+
+  override fun readString(message: String): MyResult<Pair<String, MyInput>> =
+    when {
+      commands.isEmpty() -> MyResult.failure("Not enough entries in script")
+      else -> MyResult(
+        Pair(
+          commands.head().getOrElse()() { "" },
+          ScriptReader(commands.drop()(1))
+        )
+      )
+    }
+
+  override fun readInt(message: String): MyResult<Pair<Int, MyInput>> =
+    when {
+      commands.isEmpty() -> MyResult.failure("Not enough entries in script")
+      else ->
+        runCatching {
+          Integer.parseInt(commands.head().getOrElse()() { "" })
+        }.map {
+          when {
+            it >= 0 ->
+              MyResult(it to ScriptReader(commands.drop()(1)))
+            else ->
+              MyResult()
+          }
+        }.getOrDefault(MyResult())
+    }
+
+  override fun close() {}
+
+  companion object {
+    operator fun invoke(commands: MyList<String>) =
+      ScriptReader(commands)
+
+    operator fun invoke(vararg commands: String) =
+      ScriptReader(MyList(*commands))
   }
 }
 
@@ -94,7 +138,7 @@ private fun exampleInt(): Unit =
     .map<Int, String>()() { "You look younger than $it" }
     .unsafeForEachOrElse()(::println)() { println("error: $it") }() { println("empty") }
 
-// TODO StackOverflowError
+// TODO unfold StackOverflowError
 private fun examplePerson(): MyList<Person> =
   MyStream<Person>().unfold<Person, MyInput>()(ConsoleReader())(::person).toList()
 
@@ -102,9 +146,14 @@ private fun examplePerson(): MyList<Person> =
 private fun examplePersonList(): MyResult<MyList<Person>> =
   MyList<Person>().unfoldResult<Person, MyInput>()(ConsoleReader())(::person)
 
+// TODO unfold StackOverflowError
+private fun readPersonsFromScript(vararg commands: String): MyList<Person> =
+  MyStream<Person>().unfold<Person, MyInput>()(ScriptReader(*commands))(::person).toList()
+
 fun main() {
-  // exampleString()
-  // exampleInt()
-  examplePerson().forEach()(::println)
-  println(examplePersonList())
+  exampleString()
+  exampleInt()
+  // examplePerson().forEach()(::println)
+  // println(examplePersonList())
+  // readPersonsFromScript("1", "Mickey", "Mouse", "2", "Minnie", "Mouse", "3", "Donald", "Duck").forEach()(::println)
 }
