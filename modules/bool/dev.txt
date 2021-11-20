@@ -29,3 +29,6 @@ https://tpolecat.github.io/atto
 # examples
 https://github.com/h2database/h2database/blob/master/h2/src/main/org/h2/command/Parser.java
 https://gist.github.com/DmitrySoshnikov/2a434dda67019a4a7c37
+
+# other languages
+https://kdl.dev
