@@ -255,6 +255,19 @@ fun <A> MyStream<A>.filterWithDropWhile(): ((A) -> Boolean) -> MyStream<A> =
     }
   }
 
+// ------------------------------
+
+fun <A> MyStream<A>.fill(count: Int, item: MyLazy<A>): MyStream<A> {
+  tailrec fun loop(i: Int, result: MyStream<A>): MyStream<A> =
+    when {
+      i <= 0 -> result
+      else -> loop(i - 1, MyStream.Cons(item, MyLazy { result }))
+    }
+  return loop(count, MyStream.Empty)
+}
+
+// ------------------------------
+
 fun main() {
   println(MyStream.from(3).head())
   println(({ 42 }).repeat().takeAtMost()(5).toList())

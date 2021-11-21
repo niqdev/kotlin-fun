@@ -62,8 +62,20 @@ object MyConsole {
 fun <A, B> IO<A>.map(): ((A) -> B) -> IO<B> =
   { f -> IO { f(this()) } }
 
+// ---------- 12.7 ----------
+
 fun <A, B> IO<A>.flatMap(): ((A) -> IO<B>) -> IO<B> =
   { f -> f(this.invoke()) }
+
+// ---------- 12.8 ----------
+
+fun <A, B, C> IO<A>.map2(iob: IO<B>): ((A) -> (B) -> C) -> IO<C> =
+  { f -> this.flatMap<A, C>()() { a -> iob.map<B, C>()() { b -> f(a)(b) } } }
+
+fun <A> IO<A>.repeat(n: Int): IO<MyList<A>> =
+  MyStream<IO<A>>()
+    .fill(n, MyLazy { this })
+    .foldRight<IO<A>, IO<MyList<A>>>()(MyLazy { IO { MyList() } })() { ioA -> { lazyIoListA -> ioA.map2<A, MyList<A>, MyList<A>>(lazyIoListA())() { a -> { la -> la.cons()(a) } } } }
 
 // ------------------------------
 
@@ -104,4 +116,7 @@ fun main() {
   val helloProgramFlatMap = sayHelloFlatMap()
   helloProgramMap()
   helloProgramFlatMap()
+
+  // lazy evaluation
+  IO { println("repeat 3 times") }.repeat(3)
 }
