@@ -3,7 +3,7 @@ plugins {
   id("org.jmailen.kotlinter") version Versions.kotlinter
 }
 
-// config shared with all the modules
+// configurations shared with all the modules, except `buildSrc`
 allprojects {
 
   // without `apply` the sub-modules won't see the plugins
