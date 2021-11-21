@@ -77,6 +77,15 @@ fun <A> IO<A>.repeat(n: Int): IO<MyList<A>> =
     .fill(n, MyLazy { this })
     .foldRight<IO<A>, IO<MyList<A>>>()(MyLazy { IO { MyList() } })() { ioA -> { lazyIoListA -> ioA.map2<A, MyList<A>, MyList<A>>(lazyIoListA())() { a -> { la -> la.cons()(a) } } } }
 
+// The repeat function, overflows the stack if the number of repetitions is too high.
+// How much is too high depends on the stack size and how full it is when the program returned by the function runs.
+// >>> The repeat function won't blow the stack. Only running the program it returns might do so!
+
+// ---------- 12.9 ----------
+
+// TODO IO stack-safe with trampolining
+// https://github.com/pysaumont/fpinkotlin/blob/master/fpinkotlin-parent/fpinkotlin-effects-solutions/src/main/kotlin/com/fpinkotlin/effects/listing08/IO.kt
+
 // ------------------------------
 
 fun main() {
