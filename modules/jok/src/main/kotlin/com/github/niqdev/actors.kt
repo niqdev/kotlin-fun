@@ -82,7 +82,6 @@ abstract class AbstractActor<T>(protected val id: String) : Actor<T> {
 
 // ------------------------------
 
-// PING-PONG hello world
 private class Player(id: String, private val referee: Actor<Int>) : AbstractActor<Int>(id) {
   override fun onReceive(message: Int, sender: MyResult<Actor<Int>>) {
     println("[$id] message: $message")
@@ -100,28 +99,40 @@ private class Player(id: String, private val referee: Actor<Int>) : AbstractActo
   }
 }
 
-fun main() {
-  // without this, the main application thread terminates as soon as the game is started
-  val semaphore = java.util.concurrent.Semaphore(1)
+// PING-PONG hello world
+object PingPong {
+  fun run() {
+    // without this, the main application thread terminates as soon as the game is started
+    val semaphore = java.util.concurrent.Semaphore(1)
 
-  // translates to `arbitro`
-  val referee = object : AbstractActor<Int>("Referee") {
-    override fun onReceive(message: Int, sender: MyResult<Actor<Int>>) {
-      println("Game ended after $message shots")
-      // allows the main thread to resume
-      semaphore.release()
+    // translates to `arbitro`
+    val referee = object : AbstractActor<Int>("Referee") {
+      override fun onReceive(message: Int, sender: MyResult<Actor<Int>>) {
+        println("Game ended after $message shots")
+        // allows the main thread to resume
+        semaphore.release()
+      }
     }
+
+    val playerPing = Player("PING", referee)
+    val playerPong = Player("PONG", referee)
+
+    // the single available permit is acquired by the current thread, and the game is started
+    semaphore.acquire()
+
+    playerPing.tell(1, MyResult(playerPong))
+
+    // the main thread tries to acquire a new permit: as none are available, it blocks until the semaphore is released
+    semaphore.acquire()
+    // after `release()` is invoked, when resuming, the main thread terminates: all actor threads are daemons, so they also stop automatically
   }
+}
 
-  val playerPing = Player("PING", referee)
-  val playerPong = Player("PONG", referee)
+// ------------------------------
 
-  // the single available permit is acquired by the current thread, and the game is started
-  semaphore.acquire()
+// TODO more examples
+// https://github.com/pysaumont/fpinkotlin/tree/master/fpinkotlin-parent/fpinkotlin-actors/src/main/kotlin/com/fpinkotlin/actors
 
-  playerPing.tell(1, MyResult(playerPong))
-
-  // the main thread tries to acquire a new permit: as none are available, it blocks until the semaphore is released
-  semaphore.acquire()
-  // after `release()` is invoked, when resuming, the main thread terminates: all actor threads are daemons, so they also stop automatically
+fun main() {
+  PingPong.run()
 }

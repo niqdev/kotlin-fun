@@ -1,6 +1,6 @@
 package com.github.niqdev
 
-// a heap-ordered leftist tree
+// a heap-ordered leftist tree: used to implement priority queues
 sealed interface MyHeap<out T : Comparable<@UnsafeVariance T>> {
 
   object MyEmpty : MyHeap<Nothing>
