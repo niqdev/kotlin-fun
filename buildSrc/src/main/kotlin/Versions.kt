@@ -2,7 +2,7 @@ object Versions {
   // plugins
   val kotlin = "1.6.0"
   val kotlinxSerialization = "1.3.1"
-  val kotlinter = "3.6.0"
+  val kotlinter = "3.7.0"
   val shadow = "7.1.0"
   val testLogger = "3.1.0"
 
@@ -11,7 +11,7 @@ object Versions {
   val awsLambdaEvents = "3.10.0"
   val arrow = "1.0.0"
   val clikt = "3.3.0"
-  val hoplite = "1.4.14"
+  val hoplite = "1.4.15"
   val kondor = "1.7.1"
   val kotlinxCoroutines = "1.5.2"
   val logback = "1.3.0-alpha10"
