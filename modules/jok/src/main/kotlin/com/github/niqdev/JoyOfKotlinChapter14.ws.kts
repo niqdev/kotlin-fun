@@ -1,4 +1,8 @@
-import com.github.niqdev.*
+import com.github.niqdev.MyResult
+import com.github.niqdev.flatMap
+import com.github.niqdev.map
+import com.github.niqdev.orElse
+import com.github.niqdev.unsafeForEachOrElse
 
 object assertions {
   fun <T> assertCondition(
