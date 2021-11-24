@@ -66,3 +66,10 @@ retry<String, String>(::unsafeShow, 10, 100)("hello world")
 // ------------------------------
 
 // see PropertyReader
+// see xml
+
+// value types
+// https://cr.openjdk.java.net/~jrose/values/values-0.html
+
+// property-based test examples
+// https://github.com/pysaumont/fpinkotlin/tree/master/examples/kotlingradle/MyMultipleProject/common/src/test/kotlin/com/mydomain/mymultipleproject/common
