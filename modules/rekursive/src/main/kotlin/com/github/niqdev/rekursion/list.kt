@@ -52,7 +52,7 @@ fun <A> MyList<A>.cons(head: A): MyList<A> =
 operator fun <A> MyList<A>.plus(a: A): MyList<A> =
   this.cons(a)
 
-fun <A, B> MyList<A>.foldLeft(zero: B): (f: (B, A) -> B) -> B =
+fun <A, B> MyList<A>.foldLeft(zero: B): ((B, A) -> B) -> B =
   { f ->
     tailrec fun loop(tmp: MyList<A>, result: B): B =
       when (tmp) {
@@ -61,6 +61,11 @@ fun <A, B> MyList<A>.foldLeft(zero: B): (f: (B, A) -> B) -> B =
       }
     loop(this, zero)
   }
+
+fun <A, B> MyList<A>.foldRight(zero: B): ((A, B) -> B) -> B =
+  { f -> this.foldLeft(zero)() { a, b -> f(b, a) } }
+
+fun <A, B> MyList<A>.unfold(init: B): ((B) -> MyOption<Pair<A, B>>) -> MyList<A> = TODO()
 
 fun <A> MyList<A>.toList(): List<A> =
   this.foldLeft<A, List<A>>(listOf())() { acc, i -> acc + i }
