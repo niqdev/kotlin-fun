@@ -1,6 +1,7 @@
 package com.github.niqdev.rekursion
 
 // https://www.47deg.com/blog/recursion-schemes-introduction
+// https://github.com/arrow-kt/arrow-incubator/blob/main/arrow-recursion-data/src/main/kotlin/arrow/recursion/data/Fix.kt
 
 fun <E, B> foldRight(): (MyList<E>) -> (B) -> ((E, B) -> B) -> B =
   { init ->

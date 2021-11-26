@@ -7,3 +7,22 @@ https://github.com/niqdev/scala-fp/blob/master/docs/fp-ecosystem.md?plain=1#L166
 https://github.com/niqdev/scala-fp/tree/master/modules/ecosystem/src/main/scala/com/github/niqdev/droste
 
 https://www.47deg.com/blog/recursion-schemes-introduction
+
+# scala.bythebay.io: Greg Pfeil, This programmer modeled his code after wooden nesting dolls
+https://www.youtube.com/watch?v=lQdpXqD7Uic
+# Going bananas with recursion schemes for fixed point data types - Pawel Szulc
+https://www.youtube.com/watch?v=I-5yvVp74Vk
+# Peeling the Banana: Recursion Schemes from First Principles - Zainab Ali
+https://www.youtube.com/watch?v=XZ9nPZbaYfE
+# Pure Functional Database Programming with Fixpoint Types—Rob Norris
+https://www.youtube.com/watch?v=7xSfLPD6tiQ
+
+# A Pragmatic Introduction to Category Theory—Daniela Sfregola
+https://www.youtube.com/watch?v=Ss149MsZluI
+https://github.com/DanielaSfregola/tutorial-cat
+
+# A Crash Course in Category Theory - Bartosz Milewski
+https://www.youtube.com/watch?v=JH_Ou17_zyU
+
+morphism -> arrow -> composition -> functions
+types -> set of values -> object
