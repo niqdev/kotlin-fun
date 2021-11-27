@@ -23,6 +23,17 @@ https://github.com/DanielaSfregola/tutorial-cat
 
 # A Crash Course in Category Theory - Bartosz Milewski
 https://www.youtube.com/watch?v=JH_Ou17_zyU
+# Category Theory for the Working Hacker by Philip Wadler
+https://www.youtube.com/watch?v=V10hzjgoklA
+# "Propositions as Types" by Philip Wadler
+https://www.youtube.com/watch?v=IOiZatlZtGU
+# "A Little Taste of Dependent Types" by David Christiansen
+https://www.youtube.com/watch?v=VxINoKFm-S4
 
+category are objects and arrow
 morphism -> arrow -> composition -> functions
 types -> set of values -> object
+endofunctor: mapping/arrow inside the same category: mapping between set (same types) i.e. int to list[int], type constructor F[_]
+functor: mapping between arrows
+
+Adjunction of functor: an object that represents "type of function", the actual mapping between [A => B] : currying
