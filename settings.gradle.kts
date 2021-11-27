@@ -4,6 +4,7 @@ include(
   "modules:app",
   "modules:aws-local",
   "modules:bool",
+  "modules:fpk",
   "modules:jok",
   "modules:kia",
   "modules:lox",
