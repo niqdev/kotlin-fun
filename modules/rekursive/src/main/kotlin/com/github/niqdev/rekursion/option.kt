@@ -1,6 +1,27 @@
 package com.github.niqdev.rekursion
 
-sealed interface MyOption<out A> {
+class ForMyOption private constructor() {
+  // TODO ???
+  companion object
+}
+
+typealias MyOptionOf<A> = Kind<ForMyOption, A>
+
+// TODO UNCHECKED_CAST ???
+@Suppress("UNCHECKED_CAST", "NOTHING_TO_INLINE")
+inline fun <A> MyOptionOf<A>.fix(): MyOption<A> = this as MyOption<A>
+
+object MyOptionFunctor : Functor<ForMyOption> {
+  override fun <A, B> map(fa: MyOptionOf<A>): ((A) -> B) -> MyOptionOf<B> =
+    { f ->
+      when (val a = fa.fix()) {
+        is MyOption.None -> MyOption.None
+        is MyOption.Some -> MyOption(f(a.value))
+      }
+    }
+}
+
+sealed interface MyOption<out A> : MyOptionOf<A> {
 
   object None : MyOption<Nothing> {
     override fun toString(): String = this.show()
