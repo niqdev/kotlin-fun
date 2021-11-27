@@ -1,5 +1,8 @@
 package com.github.niqdev
 
+// example
+// https://github.com/arrow-kt/arrow/blob/0.12.1/arrow-libs/core/arrow-core-data/src/main/kotlin/arrow/typeclasses/Monoid.kt
+
 // type constructor
 // interface Foldable<F<A>> {
 //  //some abstract methods
