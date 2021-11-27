@@ -84,6 +84,9 @@ private fun <E, B> foldRightStep4(): ((MyOption<Pair<E, B>>) -> B) -> (MyList<E>
 
 // ------------------------------
 
+// typealias F<E, P> = MyOption<Pair<E, P>>
+// typealias S<E> = MyList<E>
+
 private fun <E, B> foldRightStep5(): ((MyOption<Pair<E, B>>) -> B) -> (MyList<E>) -> B =
   { f ->
     { init ->
@@ -152,7 +155,8 @@ private fun <E, B> foldRightStep6(): ((MyOption<Pair<E, B>>) -> B) -> (MyList<E>
   }
 
 // type ListF[A, B] = Option[(A, B)]
-typealias MyListF<A, B> = MyOption<Pair<A, B>>
+// TODO MyOptionOf vs MyOption
+typealias MyListF<A, B> = MyOptionOf<Pair<A, B>>
 
 private fun <E> projectList(): (MyList<E>) -> MyListF<E, MyList<E>> =
   { list ->
@@ -171,6 +175,13 @@ private fun <F, S, B> foldRightStep7(
     fun kernel(init: S): B = f(ff.map<S, B>(project(init))(::kernel))
     kernel(s)
   }
+
+// ------------------------------
+
+typealias Algebra<F, A> = (Kind<F, A>) -> A
+typealias CoAlgebra<F, A> = (A) -> Kind<F, A>
+
+// TODO continue
 
 // ------------------------------
 
@@ -202,15 +213,17 @@ object Steps {
   }
 
   fun step7() {
+    // equivalent to Kind<ForMyOption, Pair<Int, Int>>
+    // expected Kind<ForMyOption, Int>
     val prodListF: (MyListF<Int, Int>) -> Int =
       { option ->
-        when (option) {
+        when (val optionOfPair = option.fix()) {
           is MyOption.None -> 1
-          is MyOption.Some -> option.value.first * option.value.second
+          is MyOption.Some -> optionOfPair.value.first * optionOfPair.value.second
         }
       }
     // FIXME
-    // println(foldRightStep7(prodListF, projectList<Int>(), MyOptionFunctor)(MyList(1, 10, 20)))
+    // println(foldRightStep7<ForMyOption, MyList<Int>, Int>(prodListF, projectList(), MyOptionFunctor)(MyList(1, 10, 20)))
   }
 }
 
