@@ -1,15 +1,15 @@
 package com.github.niqdev.rekursion
 
-class ForMyOption private constructor() {
-  // TODO ???
-  companion object
-}
+// similar to the definition of `Nothing`
+// it defines a type, but it prevents the creation of instances
+sealed class ForMyOption private constructor()
 
 typealias MyOptionOf<A> = Kind<ForMyOption, A>
 
 // TODO UNCHECKED_CAST ???
 @Suppress("UNCHECKED_CAST", "NOTHING_TO_INLINE")
-inline fun <A> MyOptionOf<A>.fix(): MyOption<A> = this as MyOption<A>
+inline fun <A> MyOptionOf<A>.fix(): MyOption<A> =
+  this as MyOption<A>
 
 object MyOptionFunctor : Functor<ForMyOption> {
   override fun <A, B> map(fa: MyOptionOf<A>): ((A) -> B) -> MyOptionOf<B> =

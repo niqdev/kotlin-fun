@@ -43,6 +43,11 @@ https://github.com/47degrees/ArrowInPractice
 # recursion schema
 https://github.com/aedans/Katalyst
 
+https://github.com/JcMinarro/kategory
+# higher-kind
+https://slides.yowconference.com/yowlambdajam2018/Bass-HigherKindedTypes.pdf
+https://www.raywenderlich.com/324105-functional-programming-with-kotlin-and-arrow-part-2-categories-and-functors
+
 # fp
 https://github.com/lucapiccinelli/konad
 # refined
