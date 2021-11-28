@@ -1,13 +1,10 @@
 package com.github.niqdev.rekursion
 
-// similar to the definition of `Nothing`
-// it defines a type, but it prevents the creation of instances
 sealed class ForMyOption private constructor()
 
 typealias MyOptionOf<A> = Kind<ForMyOption, A>
 
-// TODO UNCHECKED_CAST ???
-@Suppress("UNCHECKED_CAST", "NOTHING_TO_INLINE")
+@Suppress("NOTHING_TO_INLINE")
 inline fun <A> MyOptionOf<A>.fix(): MyOption<A> =
   this as MyOption<A>
 
