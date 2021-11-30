@@ -1,7 +1,11 @@
 package com.github.niqdev.rekursion
 
+// Generalization of `foldRight` to `Catamorphism` and `unfold` to `Anamorphism`
 // https://www.47deg.com/blog/recursion-schemes-introduction
-// https://github.com/arrow-kt/arrow-incubator/blob/main/arrow-recursion-data/src/main/kotlin/arrow/recursion/data/Fix.kt
+
+// ------------------------------
+
+// definitions: `foldRight` is the dual of `unfold`
 
 private fun <E, B> foldRightStep1(): (MyList<E>) -> (B) -> ((E, B) -> B) -> B =
   { init ->
@@ -27,11 +31,31 @@ private fun <E, A> unfoldStep1(): (A) -> ((A) -> MyOption<Pair<E, A>>) -> MyList
 
 // ------------------------------
 
+// think of `init`, which gives us a value of type `B`, as a function from `Unit` to `B`
+// init ----------> B
+// () ---- init ----> B
+
+// `f` also return a value of `B`
+// (E, B) -> B
+
+// we could combine them together, taking a `Unit` or a `Pair<E, B>`
+
+// we could use `Either` (no right biased)
+// Either<Unit, Pair<E, B>> ----f----> B
+
+// we could use `Option` and encode Unit as None
+// Option<Pair<E, B>> ----f----> B
+
+// later replace MyOptionOf<Pair<A, B>> with MyListF<A, B> and encode Unit as Nil
+
 private fun <E, B> foldRightStep2(): (MyList<E>) -> ((MyOption<Pair<E, B>>) -> B) -> B =
   { init ->
     { f ->
       when (init) {
         is MyList.Nil -> f(MyOption.None)
+        // in next step
+        // * try to avoid passing initial values and f at every step
+        // * remove curried parameter for better readability
         is MyList.Cons -> f(MyOption(init.head to foldRightStep2<E, B>()(init.tail)(f)))
       }
     }
@@ -39,43 +63,65 @@ private fun <E, B> foldRightStep2(): (MyList<E>) -> ((MyOption<Pair<E, B>>) -> B
 
 // ------------------------------
 
-private fun <E, B> foldRightStep3(): ((MyOption<Pair<E, B>>) -> B) -> (MyList<E>) -> B =
+// return a function instead of a value
+// introduce nested function
+// no more recursive on foldRight and unfold
+
+private fun <E, B> foldRightStep3a(): ((MyOption<Pair<E, B>>) -> B) -> (MyList<E>) -> B =
   { f ->
-    { init ->
-      // lazy val ???
-      fun kernel(): (MyList<E>) -> B = { list ->
-        when (list) {
-          is MyList.Nil -> f(MyOption.None)
-          is MyList.Cons -> f(MyOption(list.head to kernel()(list.tail)))
-        }
+    // lazy val ???
+    fun kernel(): (MyList<E>) -> B = { list ->
+      when (list) {
+        is MyList.Nil -> f(MyOption.None)
+        is MyList.Cons -> f(MyOption(list.head to kernel()(list.tail)))
       }
-      kernel()(init)
     }
+    kernel()
+  }
+
+private fun <E, B> foldRightStep3b(): ((MyOption<Pair<E, B>>) -> B) -> (MyList<E>) -> B =
+  { f ->
+    fun kernel(list: MyList<E>): B =
+      when (list) {
+        is MyList.Nil -> f(MyOption.None)
+        is MyList.Cons -> f(MyOption(list.head to kernel(list.tail)))
+      }
+    ::kernel
+  }
+
+private fun <E, B> foldRightStep3c(f: (MyOption<Pair<E, B>>) -> B): (MyList<E>) -> B =
+  {
+    fun kernel(list: MyList<E>): B =
+      when (list) {
+        is MyList.Nil -> f(MyOption.None)
+        is MyList.Cons -> f(MyOption(list.head to kernel(list.tail)))
+      }
+    kernel(it)
   }
 
 private fun <E, A> unfoldStep3(): ((A) -> MyOption<Pair<E, A>>) -> (A) -> MyList<E> =
   { f ->
-    { init ->
-      // lazy val ???
-      fun kernel(): (A) -> MyList<E> = { a ->
-        when (val pair = f(a)) {
-          is MyOption.None -> MyList.Nil
-          is MyOption.Some -> MyList.Cons(pair.value.first, kernel()(pair.value.second))
-        }
+    fun kernel(): (A) -> MyList<E> = { a ->
+      when (val pair = f(a)) {
+        is MyOption.None -> MyList.Nil
+        is MyOption.Some -> MyList.Cons(pair.value.first, kernel()(pair.value.second))
       }
-      kernel()(init)
     }
+    kernel()
   }
 
 // ------------------------------
 
+// factor out the data structure: introduce functions one for each step
+
 private fun <E, B> foldRightStep4(): ((MyOption<Pair<E, B>>) -> B) -> (MyList<E>) -> B =
   { f ->
     { init ->
+      // pattern matching on the list: unpacking or projecting a data structure
       fun unpack(): (MyList<E>) -> MyOption<Pair<E, MyList<E>>> = TODO()
+      // recursive call in the case the list is not empty with `kernel`
       fun recurse(): (MyOption<Pair<E, MyList<E>>>) -> MyOption<Pair<E, B>> = TODO()
-
-      // this is `f`
+      // computing the result using `f`
       fun compute(): (MyOption<Pair<E, B>>) -> B = TODO()
 
       compute()(recurse()(unpack()(init)))
@@ -84,39 +130,33 @@ private fun <E, B> foldRightStep4(): ((MyOption<Pair<E, B>>) -> B) -> (MyList<E>
 
 // ------------------------------
 
-// typealias F<E, P> = MyOption<Pair<E, P>>
-// typealias S<E> = MyList<E>
-
 private fun <E, B> foldRightStep5(): ((MyOption<Pair<E, B>>) -> B) -> (MyList<E>) -> B =
   { f ->
-    { init ->
-      // type aliases are top-level only
-      // typealias F<P> = MyOption<Pair<E, P>>
-      // typealias S = MyList<E>
+    // type aliases can be top-level only
+    // typealias F<P> = MyOption<Pair<E, P>>
+    // typealias S = MyList<E>
 
-      fun kernel(): (MyList<E>) -> B = { list ->
-        // S => F[S]
-        fun unpack(): (MyList<E>) -> MyOption<Pair<E, MyList<E>>> =
-          { xs ->
-            when (xs) {
-              is MyList.Nil -> MyOption.None
-              is MyList.Cons -> MyOption.Some(xs.head to xs.tail)
-            }
-          }
-
-        // F[S] => F[B]
-        fun recurse(): (MyOption<Pair<E, MyList<E>>>) -> MyOption<Pair<E, B>> =
-          { option ->
-            when (option) {
-              is MyOption.None -> MyOption.None
-              is MyOption.Some -> MyOption(option.value.first to kernel()(option.value.second))
-            }
-          }
-
-        f(recurse()(unpack()(list)))
+    // (S) -> B
+    fun kernel(): (MyList<E>) -> B = { init ->
+      // (S) -> F<S>
+      fun unpack(): (MyList<E>) -> MyOption<Pair<E, MyList<E>>> = {
+        when (it) {
+          is MyList.Nil -> MyOption.None
+          is MyList.Cons -> MyOption.Some(it.head to it.tail)
+        }
       }
-      kernel()(init)
+      // (F<S>) -> F<B>
+      fun recurse(): (MyOption<Pair<E, MyList<E>>>) -> MyOption<Pair<E, B>> = {
+        when (it) {
+          is MyOption.None -> MyOption.None
+          is MyOption.Some -> MyOption(it.value.first to kernel()(it.value.second))
+        }
+      }
+      // f: (F<P>) -> B
+      f(recurse()(unpack()(init)))
     }
+
+    kernel()
   }
 
 // ------------------------------
@@ -353,8 +393,6 @@ object Steps {
   }
 
   fun step7() {
-    // equivalent to Kind<ForMyOption, Pair<Int, Int>>
-    // expected Kind<ForMyOption, Int>
     val prodListF: (TodoMyListFOf<Int, Int>) -> Int =
       { option ->
         when (val optionOfPair = option.fix()) {
@@ -362,7 +400,7 @@ object Steps {
           is TodoMyListF.TodoMyCons -> optionOfPair.head * optionOfPair.tail
         }
       }
-    // FIXME
+    // <TodoMyListFPartialOf<Int>, MyList<Int>, Int>
     println(foldRightStep7(prodListF, projectTodoList(), todo.intTodoMyListFFunctor)(MyList(1, 10, 20)))
   }
 }

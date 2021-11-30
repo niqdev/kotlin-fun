@@ -1,14 +1,20 @@
-goals
-  - recursion schema in kotlin
-  - markdown to json converter
+title (?): "recursion schema for mortals in kotlin"
 
-# scala
+examples
+- bool
+- expressions
+- markdown to json converter
+
+# old scala links
 https://github.com/niqdev/scala-fp/blob/master/docs/fp-ecosystem.md?plain=1#L166
 https://github.com/niqdev/scala-fp/tree/master/modules/ecosystem/src/main/scala/com/github/niqdev/droste
 
-https://www.47deg.com/blog/recursion-schemes-introduction
-https://github.com/BeniVF/practical-droste
-https://free.cofree.io/2017/11/13/recursion/
+resources
+- https://www.47deg.com/blog/recursion-schemes-introduction
+- https://github.com/BeniVF/practical-droste (TODO see links)
+
+https://github.com/arrow-kt/arrow-incubator/blob/main/arrow-recursion-data/src/main/kotlin/arrow/recursion/data/Fix.kt
+https://free.cofree.io/2017/11/13/recursion
 https://www.lambdadays.org/static/upload/media/1519663154528176valentinkasasthese10000classesineverwrote.pdf
 
 # scala.bythebay.io: Greg Pfeil, This programmer modeled his code after wooden nesting dolls
