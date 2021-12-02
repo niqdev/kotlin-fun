@@ -1,5 +1,11 @@
 title (?): "recursion schema for mortals in kotlin"
 
+# Generic programming with fixed points for mutually recursive datatypes
+http://webdoc.sub.gwdg.de/ebook/serien/ah/UU-CS/2008-019.pdf
+
+# Recursion Patterns as Hylomorphisms
+https://wiki.di.uminho.pt/twiki/pub/Research/PURe/PURePublications/PUReTR031101.pdf
+
 examples
 - bool
 - expressions
@@ -12,6 +18,7 @@ https://github.com/niqdev/scala-fp/tree/master/modules/ecosystem/src/main/scala/
 resources
 - https://www.47deg.com/blog/recursion-schemes-introduction
 - https://github.com/BeniVF/practical-droste (TODO see links)
+- https://nrinaudo.github.io/recschemes
 
 https://github.com/arrow-kt/arrow-incubator/blob/main/arrow-recursion-data/src/main/kotlin/arrow/recursion/data/Fix.kt
 https://free.cofree.io/2017/11/13/recursion
