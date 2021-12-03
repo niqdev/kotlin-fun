@@ -163,14 +163,6 @@ private fun <E, B> foldRightStep5(): ((MyOption<Pair<E, B>>) -> B) -> (MyList<E>
 
 // ------------------------------
 
-private fun <E> projectList(): (MyList<E>) -> ListF<E, MyList<E>> =
-  { list ->
-    when (list) {
-      is MyList.Nil -> ListF.Nil
-      is MyList.Cons -> ListF.Cons(list.head, list.tail)
-    }
-  }
-
 private fun <F, S, B> foldRightStep6(
   f: (Kind<F, B>) -> B,
   project: (S) -> Kind<F, S>,
@@ -197,45 +189,6 @@ private fun <F, A, B> cata(
   fun loop(init: B): A = algebra(project(init).map(::loop))
   return ::loop
 }
-
-// ------------------------------
-
-// TODO continue
-
-/*
-val productOpA: Algebra[ListF[Int, ?], Int] = {
-  case None => 1
-  case Some((x, y)) => x * y
-}
-val rangeOpC: Coalgebra[ListF[Int, ?], Int] =
-  n => if (n <= 0) None else Some((n, n - 1))
-
-
-def cata[F[_]: Functor, S, B](algebra: Algebra[F, B])(project: Coalgebra[F, S]): S => B =
-  new (S => B) { kernel =>
-    def apply(input: S): B =
-      algebra(project(input).fmap(kernel))
-  }
-
-def ana[F[_]: Functor, S, A](coalgebra: Coalgebra[F, A])(embed: Algebra[F, S]): A => S =
-  new (A => S) { kernel =>
-    def apply(init: A): S =
-      embed(coalgebra(init).fmap(kernel))
-  }
-
-def projectListC[A]: Coalgebra[ListF[A, ?], List[A]] = {
-  case Nil => None
-  case head :: tail => Some((head, tail))
-}
-
-def embedListA[A]: Algebra[ListF[A, ?], List[A]] = {
-  case None => Nil
-  case Some((head, tail)) => head :: tail
-}
-
-cata(productOpA)(projectListC).apply(1 :: 10 :: 20 :: Nil) // 200: Int
-ana(rangeOpC)(embedListA).apply(10) // List(10, 9, 8, 7, 6, 5, 4, 3, 2, 1): List[Int]
- */
 
 // ------------------------------
 
@@ -267,7 +220,19 @@ object Steps {
   }
 
   fun step6() {
+    fun <E> projectList(): (MyList<E>) -> ListF<E, MyList<E>> =
+      { list ->
+        when (list) {
+          is MyList.Nil -> ListF.Nil
+          is MyList.Cons -> ListF.Cons(list.head, list.tail)
+        }
+      }
+
+    // ----------
+
     val intListFFunctor: ListFFunctor<Int> = object : ListFFunctor<Int> {}
+
+    // these are also Monoids!
 
     val productOpA: Algebra<ListFPartialOf<Int>, Int> = {
       when (val state = it.fix()) {
@@ -276,7 +241,16 @@ object Steps {
       }
     }
 
+    val sumOpA: Algebra<ListFPartialOf<Int>, Int> = {
+      when (val state = it.fix()) {
+        is ListF.Nil -> 0
+        is ListF.Cons -> state.head + state.tail
+      }
+    }
+
+    // cata
     println(foldRightStep6(productOpA, projectList(), intListFFunctor)(MyList(1, 10, 20)))
+    println(foldRightStep6(sumOpA, projectList(), intListFFunctor)(MyList(1, 10, 20)))
   }
 }
 
