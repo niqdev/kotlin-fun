@@ -10,19 +10,29 @@ examples
 - bool
 - expressions
 - markdown to json converter
+- TODO update bool (dependsOn this module): fix FreeB
 
-# old scala links
+# TODO update old scala links
 https://github.com/niqdev/scala-fp/blob/master/docs/fp-ecosystem.md?plain=1#L166
 https://github.com/niqdev/scala-fp/tree/master/modules/ecosystem/src/main/scala/com/github/niqdev/droste
 
 resources
 - https://www.47deg.com/blog/recursion-schemes-introduction
-- https://github.com/BeniVF/practical-droste (TODO see links)
+- https://github.com/BeniVF/practical-droste (TODO see links) https://www.youtube.com/watch?v=YBEc0Upntjg
 - https://nrinaudo.github.io/recschemes
 
-https://github.com/arrow-kt/arrow-incubator/blob/main/arrow-recursion-data/src/main/kotlin/arrow/recursion/data/Fix.kt
 https://free.cofree.io/2017/11/13/recursion
+https://kubuszok.com/2019/ast-playground-recursion-schemes-and-recursive-data
 https://www.lambdadays.org/static/upload/media/1519663154528176valentinkasasthese10000classesineverwrote.pdf
+https://slides.yowconference.com/yowlambdajam2018/Bass-HigherKindedTypes.pdf
+
+# code examples
+https://github.com/arrow-kt/arrow-incubator/blob/main/arrow-recursion-data/src/main/kotlin/arrow/recursion/data/Fix.kt
+https://github.com/arrow-kt/arrow-incubator/blob/main/arrow-recursion-data/src/main/kotlin/arrow/recursion/typeclasses/Recursive.kt
+https://github.com/arrow-kt/arrow-incubator/blob/main/arrow-recursion-data/src/main/kotlin/arrow/recursion/pattern/ListF.kt
+https://github.com/JcMinarro/kategory/tree/master/kategory-annotations/src/main/java/kategory
+# initial commit
+https://github.com/aedans/Katalyst/commit/99af4ed0bf1f4a8937e6243389d311190e871f3d
 
 # scala.bythebay.io: Greg Pfeil, This programmer modeled his code after wooden nesting dolls
 https://www.youtube.com/watch?v=lQdpXqD7Uic
@@ -33,6 +43,7 @@ https://www.youtube.com/watch?v=XZ9nPZbaYfE
 # Pure Functional Database Programming with Fixpoint Types—Rob Norris
 https://www.youtube.com/watch?v=7xSfLPD6tiQ
 
+# TODO finish
 # A Pragmatic Introduction to Category Theory—Daniela Sfregola
 https://www.youtube.com/watch?v=Ss149MsZluI
 https://github.com/DanielaSfregola/tutorial-cat
@@ -46,6 +57,8 @@ https://www.youtube.com/watch?v=IOiZatlZtGU
 # "A Little Taste of Dependent Types" by David Christiansen
 https://www.youtube.com/watch?v=VxINoKFm-S4
 
+
+# TODO definitions
 category are objects and arrow
 morphism -> arrow -> composition -> functions
 types -> set of values -> object

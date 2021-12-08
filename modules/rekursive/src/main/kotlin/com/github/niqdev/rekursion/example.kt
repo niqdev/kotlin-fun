@@ -181,7 +181,7 @@ private fun <F, S, B> foldRightStep6(
 typealias Algebra<F, A> = (Kind<F, A>) -> A
 typealias CoAlgebra<F, A> = (A) -> Kind<F, A>
 
-// TODO instance of Functor
+// TODO instance of Functor: map is an extension without implementation
 private fun <F, A, B> cata(
   algebra: (Kind<F, A>) -> A,
   project: (B) -> Kind<F, B>
@@ -189,6 +189,33 @@ private fun <F, A, B> cata(
   fun loop(init: B): A = algebra(project(init).map(::loop))
   return ::loop
 }
+
+// ------------------------------
+
+// FIXME (continue)
+// https://nrinaudo.github.io/recschemes/fix.html
+
+/*
+
+private fun <F, A> cataFix1(
+  algebra: (Kind<F, A>) -> A,
+  project: (Fix<F>) -> Kind<F, FixOf<A>>,
+  ff: Functor<F>
+): (Fix<F>) -> A {
+  fun loop(state: Fix<F>): A = algebra(ff.map<A, Fix<F>>(project(state))(::loop))
+  return ::loop
+}
+
+def cataFix[F[_]: Functor, A](
+  algebra: F[A] => A,
+  project: Fix[F] => F[Fix[F]]
+): Fix[F] => A = {
+  def loop(state: Fix[F]): A =
+    algebra(map(project(state), loop))
+  loop
+}
+
+*/
 
 // ------------------------------
 
