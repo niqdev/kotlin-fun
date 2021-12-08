@@ -45,8 +45,8 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
 * Functional Programming in Kotlin [ [book](https://www.manning.com/books/functional-programming-in-kotlin) | TODO ]
 * Category Theory for Programmers [ [book](https://github.com/hmemcpy/milewski-ctfp-pdf) | TODO ]
 * Crafting Interpreters [ [book](https://craftinginterpreters.com/contents.html) | [lox](modules/lox) ]
-* [bool](modules/bool): Free Boolean Algebra interpreter
 * [rekursive](modules/rekursive): Recursion schemes
+* [bool](modules/bool): Free Boolean Algebra interpreter
 * [aws-local](modules/aws-local)
 * [examples](modules/app/src/main/kotlin/com/github/niqdev)
 

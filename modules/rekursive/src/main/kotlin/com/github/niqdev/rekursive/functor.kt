@@ -1,4 +1,4 @@
-package com.github.niqdev.rekursion
+package com.github.niqdev.rekursive
 
 /*
  * Type classes and ad hoc polymorphism

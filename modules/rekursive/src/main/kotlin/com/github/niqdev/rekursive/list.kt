@@ -1,4 +1,4 @@
-package com.github.niqdev.rekursion
+package com.github.niqdev.rekursive
 
 sealed interface MyList<out A> {
 

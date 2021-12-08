@@ -1,4 +1,4 @@
-package com.github.niqdev.rekursion
+package com.github.niqdev.rekursive
 
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe

@@ -1,4 +1,4 @@
-package com.github.niqdev.rekursion
+package com.github.niqdev.rekursive
 
 /**
  * Higher-Kinded Types are NOT supported directly by Kotlin.

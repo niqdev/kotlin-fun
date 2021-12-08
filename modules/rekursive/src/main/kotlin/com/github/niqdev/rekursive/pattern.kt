@@ -1,4 +1,4 @@
-package com.github.niqdev.rekursion
+package com.github.niqdev.rekursive
 
 /**
  * ForListF is a `surrogate type`: similar to the definition of Nothing.

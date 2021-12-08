@@ -1,4 +1,4 @@
-package com.github.niqdev.rekursion
+package com.github.niqdev.rekursive
 
 // Generalization of `foldRight` to `Catamorphism` and `unfold` to `Anamorphism`
 // https://www.47deg.com/blog/recursion-schemes-introduction
