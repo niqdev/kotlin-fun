@@ -38,7 +38,7 @@ dependencies {
   implementation("io.arrow-kt:arrow-core")
   implementation("io.arrow-kt:arrow-fx-coroutines")
   implementation("io.arrow-kt:arrow-optics")
-  kapt("io.arrow-kt:arrow-meta:${Versions.arrow}")
+  kapt("io.arrow-kt:arrow-meta:${Versions.arrowMeta}")
 
   // tests
   testImplementation("io.kotest:kotest-runner-junit5:${Versions.kotest}")

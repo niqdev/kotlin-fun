@@ -50,7 +50,7 @@ Get more help with your project: https://docs.gradle.org/6.8/samples/sample_buil
 ---
 
 # upgrade gradle
-gradle wrapper --gradle-version 7.3
+./gradlew wrapper --gradle-version 7.4.2
 
 ---
 
