@@ -1,7 +1,6 @@
-### aws-local
+## aws-local
 
 * [LocalStack](https://localstack.cloud)
-* [AWS SDK for Kotlin](https://github.com/awslabs/aws-sdk-kotlin)
 
 ```bash
 java -jar modules/aws-local/build/libs/aws-local-all.jar
