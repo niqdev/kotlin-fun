@@ -14,6 +14,7 @@ sealed class Either<out A, out B> {
   companion object {
     // represent error
     fun <A, B> left(value: A): Either<A, B> = Left(value)
+
     // represent success
     fun <A, B> right(value: B): Either<A, B> = Right(value)
   }

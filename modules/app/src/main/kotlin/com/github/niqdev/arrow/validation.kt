@@ -50,7 +50,7 @@ object ValidateExample {
     validateName().toValidatedNel().zip(
       Semigroup.nonEmptyList(),
       validateAge().toValidatedNel(),
-      validateEmail().toValidatedNel(),
+      validateEmail().toValidatedNel()
     ) { name, age, email ->
       ExampleForm(name, age, email)
     }

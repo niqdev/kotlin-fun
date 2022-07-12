@@ -14,6 +14,7 @@ interface Focusable {
 class Button : Clickable, Focusable {
   // unlike Java, using the override modifier is mandatory in Kotlin
   override fun click() = println("I was clicked")
+
   // >>> DIAMOND problem: if 2 interfaces have a method with the same name
   // you get a compiler error and must provide your own implementation
   override fun showOff() {
@@ -34,8 +35,10 @@ Button().click()
 open class RichButton : Clickable {
   // This function is final: you can't override it in a subclass
   fun disable() {}
+
   // This function is open: you may override it in a subclass
   open fun animate() {}
+
   // This function overrides an open function and is open as well
   override fun click() {}
 
@@ -52,6 +55,7 @@ open class RichButton : Clickable {
 abstract class Animated {
   // This function is abstract: it doesn't have an implementation and must be overridden in subclasses
   abstract fun animate()
+
   //  Non-abstract functions in abstract classes aren't open by default but can be marked as open
   open fun stopAnimating() {}
   fun animateTwice() {}
@@ -102,6 +106,7 @@ sealed class Expr {
 // The underscore in the constructor parameter _name serves to distinguish the name of the property from the name of the constructor parameter
 class UserVerbose0 constructor(_name: String) {
   val name: String
+
   // initializer block
   // contains initialization code that's executed when the class is created,
   // and are intended to be used together with primary constructors
@@ -145,6 +150,7 @@ open class View {
 class MyButton : View {
   // invokes View constructor
   constructor(ctx: String) : super(ctx)
+
   // invokes MyButton constructor
   constructor(ctx: String, attr: String) : this(ctx)
 }
@@ -158,6 +164,7 @@ class MyButton : View {
 
 // Universal object methods: toString, equals, and hashCode
 data class ClientData(val name: String, val postalCode: Int)
+
 // equivalent to
 class Client(val name: String, val postalCode: Int) {
   override fun toString() = "Client(name=$name, postalCode=$postalCode)"
@@ -167,11 +174,13 @@ class Client(val name: String, val postalCode: Int) {
   // In Kotlin, the == operator is the default way to compare two objects: it compares their values by calling equals under the hood
   // For reference comparison, you can use the === operator
   override fun equals(other: Any?): Boolean {
-    if (other == null || other !is Client)
+    if (other == null || other !is Client) {
       return false
+    }
     return name == other.name &&
       postalCode == other.postalCode
   }
+
   // The hashCode method should be always overridden together with equals
   // e.g. hashSetOf + .contains will return wrong value otherwise
   override fun hashCode(): Int = name.hashCode() * 31 + postalCode

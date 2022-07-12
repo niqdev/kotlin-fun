@@ -297,7 +297,6 @@ operator fun <T : Comparable<T>> RedBlackTree<T>.minus(element: T): RedBlackTree
 // ------------------------------
 
 fun <T : Comparable<T>> RedBlackTree<T>.pretty(): String {
-
   fun makeCell(string: String): String =
     when (string.length) {
       1 -> " $string  "

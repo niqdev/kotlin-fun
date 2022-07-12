@@ -14,7 +14,6 @@ import java.nio.file.StandardOpenOption
  * ./gradlew runReactorExample
  */
 fun main() {
-
   val inputPath = Path.of("../../README.md")
   val outputPath = Path.of("../../test.txt")
   val buffer = Files.newBufferedWriter(outputPath, StandardOpenOption.CREATE, StandardOpenOption.APPEND)

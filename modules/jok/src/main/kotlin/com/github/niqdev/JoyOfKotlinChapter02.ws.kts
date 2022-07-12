@@ -26,19 +26,23 @@ mutableName = getValue()
 // a Kotlin class is `final` by default: to make a Kotlin class non-final, use the open modifier
 class Person0 constructor(name: String) {
   val name: String
+
   // constructor implementation with access to constructor parameters
   init {
     this.name = name
   }
 }
+
 // equivalent to
 class Person1 constructor(name: String) {
   // no `init` block: one-liner constructor
   val name: String = name
 }
+
 // equivalent to (combine the constructor declaration, the property declaration, and the property initialization)
 // added `val`
 class Person2 constructor(val name: String) // with {} (formatKotlin removed it)
+
 // equivalent to (because the block {} is empty, it can be removed and also the word `constructor`)
 class Person3(val name: String)
 
@@ -51,6 +55,7 @@ open class Person4(val name: String) : java.io.Serializable, Comparable<Person4>
   override fun compareTo(other: Person4): Int =
     TODO("Not yet implemented")
 }
+
 // NO `val`
 class Member(name: String, val age: Int) : Person4(name)
 // use the constructor as a function to create a new instance
@@ -132,7 +137,6 @@ mutableList.addAll(mutableListOf(42))
 // ------------------------------
 
 fun myClosure(limit: Int): Int {
-
   val seq = listOf(1, 2, 3)
 
   // local inner function
@@ -168,6 +172,7 @@ listOf(1, 2, 3).myLength()
 
 // lambdas are included between curly braces
 fun triple(list: List<Int>): List<Int> = list.map({ a -> a * 3 })
+
 // when the lambda is the last argument of a function, it can be put outside of the parentheses
 fun product(list: List<Int>): Int = list.fold(1) { acc: Int, value: Int -> acc * value }
 

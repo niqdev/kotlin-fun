@@ -9,7 +9,7 @@ sealed interface MyHeap<out T : Comparable<@UnsafeVariance T>> {
     val rank: Int,
     val left: MyHeap<T>,
     val head: T,
-    val right: MyHeap<T>,
+    val right: MyHeap<T>
   ) : MyHeap<T>
 
   companion object {

@@ -125,7 +125,6 @@ val cosValue: Double = cos1(2.0)
 // ------------------------------
 
 fun cos2(arg: Double): Double {
-
   // local functions
   fun f(x: Double): Double = Math.PI / 2 - x
   fun sin(x: Double): Double = Math.sin(x)

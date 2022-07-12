@@ -24,7 +24,6 @@ Hello
 fun main() =
   // runs a new coroutine and blocks the current thread until its completion
   runBlocking {
-
     // ------------------------------
 
     // launch a new coroutine and continue - depends on CoroutineScope

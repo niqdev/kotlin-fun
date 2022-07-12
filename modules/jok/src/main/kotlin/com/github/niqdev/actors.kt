@@ -3,6 +3,7 @@ package com.github.niqdev
 interface Actor<T> {
   val context: ActorContext<T>
   fun self(): MyResult<Actor<T>> = MyResult(this)
+
   // messages shouldn't be sent to actors, but to actor references i.e. proxies, or some other substitute to transparently send messages to remote actors
   fun tell(message: T, sender: MyResult<Actor<T>> = self())
   fun tell(message: T, sender: Actor<T>) = tell(message, MyResult(sender))
@@ -15,6 +16,7 @@ interface Actor<T> {
 
 interface ActorContext<T> {
   fun behavior(): MessageProcessor<T>
+
   // allows an actor to change its behavior, meaning the way it processes messages
   // During the life of the application, the behavior of each actor is allowed to change.
   // Generally this change of behavior is caused by a modification to the state of the actor, replacing the original behavior with a new one.

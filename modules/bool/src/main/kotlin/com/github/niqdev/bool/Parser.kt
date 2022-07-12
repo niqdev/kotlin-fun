@@ -26,7 +26,6 @@ object Parser {
 
   // or -> and [ "OR" and ]*
   private fun or(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
-
     fun loop(currentTokens: List<Token>, left: FreeB<Predicate>): Pair<List<Token>, FreeB<Predicate>> =
       when {
         currentTokens.isEmpty() -> emptyList<Token>() to left
@@ -48,7 +47,6 @@ object Parser {
 
   // and -> not [ "AND" not ]*
   private fun and(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
-
     fun loop(currentTokens: List<Token>, left: FreeB<Predicate>): Pair<List<Token>, FreeB<Predicate>> =
       when {
         currentTokens.isEmpty() -> emptyList<Token>() to left
@@ -86,7 +84,6 @@ object Parser {
 
   // equality -> comparison [ "!=" | "==" comparison ]*
   private fun equality(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
-
     fun loop(currentTokens: List<Token>, left: FreeB<Predicate>): Pair<List<Token>, FreeB<Predicate>> =
       when {
         currentTokens.isEmpty() -> emptyList<Token>() to left
@@ -112,7 +109,6 @@ object Parser {
 
   // comparison -> primary [ ">" | ">=" | "<" | "<=" primary ]*
   private fun comparison(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
-
     fun loop(currentTokens: List<Token>, left: FreeB<Predicate>): Pair<List<Token>, FreeB<Predicate>> =
       when {
         currentTokens.isEmpty() -> emptyList<Token>() to left

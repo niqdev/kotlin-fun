@@ -4,7 +4,6 @@ object StringLexer {
 
   // TODO Validated<NonEmptyList<Error>, List<Token>>
   fun tokenize(input: String): List<Token> {
-
     tailrec fun loop(index: Int, result: List<Token>): List<Token> =
       when {
         index < input.length -> {
@@ -98,8 +97,10 @@ object StringLexer {
 
   // TODO validate max length
   private fun scanString(): (String) -> String = scan()() { it != '"' }
+
   // TODO validate Int.MAX_VALUE and Int.MIN_VALUE
   private fun scanNumber(): (String) -> String = scan()(Char::isDigit)
+
   // TODO validate max length
   private fun scanKey(): (String) -> String = scan()(Char::isKey)
 }

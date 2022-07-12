@@ -120,8 +120,10 @@ private fun <E, B> foldRightStep4(): ((MyOption<Pair<E, B>>) -> B) -> (MyList<E>
     { init ->
       // pattern matching on the list: unpacking or projecting a data structure
       fun unpack(): (MyList<E>) -> MyOption<Pair<E, MyList<E>>> = TODO()
+
       // recursive call in the case the list is not empty with `kernel`
       fun recurse(): (MyOption<Pair<E, MyList<E>>>) -> MyOption<Pair<E, B>> = TODO()
+
       // computing the result using `f`
       fun compute(): (MyOption<Pair<E, B>>) -> B = TODO()
 
@@ -146,6 +148,7 @@ private fun <E, B> foldRightStep5(): ((MyOption<Pair<E, B>>) -> B) -> (MyList<E>
           is MyList.Cons -> MyOption.Some(it.head to it.tail)
         }
       }
+
       // this implementation can be replaced with a Functor
       // (F<S>) -> F<B>
       fun recurse(): (MyOption<Pair<E, MyList<E>>>) -> MyOption<Pair<E, B>> = {

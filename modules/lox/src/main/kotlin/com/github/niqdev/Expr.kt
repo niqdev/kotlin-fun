@@ -29,6 +29,7 @@ sealed interface Expr {
   data class Binary(val left: Expr, val op: Token, val right: Expr) : Expr
   data class Call(val callee: Expr, val paren: Token, val arguments: List<Expr>) : Expr
   data class Grouping(val expression: Expr) : Expr
+
   // TODO use Value instead of Any?
   data class Literal(val value: Any?) : Expr
   data class Logical(val left: Expr, val op: Token, val right: Expr) : Expr

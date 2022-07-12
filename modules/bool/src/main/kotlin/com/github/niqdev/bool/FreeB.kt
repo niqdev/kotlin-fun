@@ -43,9 +43,11 @@ fun FreeB<Predicate>.pretty(): String =
 sealed interface Predicate {
   // TODO potentially add an extra layer i.e. evaluate expressions - "3 > (3 + 2)"
   data class Identity(val id: Value) : Predicate
+
   // TODO should i move "is FreeB.Pure && is Predicate.Identity" in parser to have cleaner model e.g. Predicate.Greater(Predicate, Predicate)
   // TODO should i enforce type? advanced kotlin pattern matching on generics sucks! e.g. Greater<T>(left: T, right: T) or Greater<T>(Value<T>, Value<T>)
   data class Greater(val left: Identity, val right: Identity) : Predicate
+
   // TODO this is semantically wrong: you can't have "3 > (3 == 2)" i.e. right cannot be a FreeB<Predicate>
   data class GreaterEqual(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate
   data class Less(val left: FreeB<Predicate>, val right: FreeB<Predicate>) : Predicate

@@ -19,7 +19,6 @@
 
 // corecursion
 fun appendCharsToString(init: List<Char>): String {
-
   // fun append(s: String, c: Char): String = "$s$c"
   val append = { s: String, c: Char -> "$s$c" }
 
@@ -263,7 +262,7 @@ fun rangeImperative(start: Int, end: Int): List<Int> {
   val result = mutableListOf<Int>()
   while (index < end) {
     result.add(index)
-    index ++
+    index++
   }
   return result
 }
@@ -338,7 +337,6 @@ fibonacciNaiveMemoization(100)
 // ---------- 4.15 ----------
 
 fun fibonacciCoRecursiveMemoization(n: Int): List<java.math.BigInteger> {
-
   fun loop(
     index: java.math.BigInteger,
     fibonacci1: java.math.BigInteger,
