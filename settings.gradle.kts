@@ -2,8 +2,8 @@ rootProject.name = "kotlin-fun"
 
 include(
   "modules:app",
+  "modules:aws-kotlin",
   "modules:aws-local",
-  "modules:aws-sdk-serverless",
   "modules:bool",
   "modules:fpk",
   "modules:jok",

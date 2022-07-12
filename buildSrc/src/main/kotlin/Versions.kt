@@ -2,11 +2,12 @@ object Versions {
   // plugins
   val kotlin = "1.7.10"
   val kotlinxSerialization = "1.3.3"
-  val kotlinter = "3.11.1"
+  val kotlinter = "3.10.0" // FIXME 3.11.1
   val shadow = "7.1.2"
   val testLogger = "3.2.0"
 
   val aws = "2.17.228"
+  val awsKotlin = "0.16.7-beta"
   val awsLambdaCore = "1.2.1"
   val awsLambdaEvents = "3.11.0"
   val arrow = "1.1.2"
