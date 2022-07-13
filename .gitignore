@@ -9,6 +9,6 @@ build
 
 .localstack
 .serverless
-# TODO
+# TODO remove in aws-serverless
 package*.json
 node_modules

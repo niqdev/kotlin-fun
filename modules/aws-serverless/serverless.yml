@@ -10,7 +10,6 @@ custom:
     debug: true
     stages:
       - local
-    #endpointFile: ../../local/localstack_endpoints.json
 
 provider:
   name: aws
@@ -28,7 +27,6 @@ functions:
   fn-aws-serverless:
     name: fn-aws-serverless
     description: TODO
-    # TODO revert Kt
     handler: com.github.niqdev.aws.serverless.Handler::handleRequest
     events:
       # httpApi supported only in v2
