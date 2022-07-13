@@ -20,7 +20,7 @@ curl http://localhost:4566/health
 # cleanup
 docker-compose -f local/docker-compose-serverless.yml down -v
 rm -fr local/.localstack
-rm .serverless
+rm -fr .serverless
 ```
 
 Lambda
