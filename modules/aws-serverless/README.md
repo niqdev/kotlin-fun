@@ -6,6 +6,16 @@
 * [LocalStack with Serverless Framework](https://docs.localstack.cloud/integrations/serverless-framework)
 * [LocalStack](https://docs.localstack.cloud)
 
+Examples
+* https://onexlab-io.medium.com/serverless-localstack-lambda-53fd8d46983
+* https://github.com/serverless/examples/tree/v3/aws-java-simple-http-endpoint
+* https://github.com/localstack/serverless-examples/tree/master/aws-java-simple-http-endpoint
+* https://github.com/localstack/localstack-pro-samples
+* https://github.com/aws-samples/serverless-kotlin-demo
+* https://github.com/aws-samples/lambda-kotlin-groovy-example
+* https://github.com/vikie1/aws-lambda-localstack-example
+* https://github.com/mattmurr/kotlin-cdk-apigw-lambda
+
 ### Development
 
 Localstack
@@ -78,13 +88,3 @@ cd modules/aws-serverless
 serverless deploy --config serverless.yml --stage local
 serverless invoke --config serverless.yml --stage local --function fn-aws-serverless
 ```
-
-Examples
-* https://onexlab-io.medium.com/serverless-localstack-lambda-53fd8d46983
-* https://github.com/serverless/examples/tree/v3/aws-java-simple-http-endpoint
-* https://github.com/localstack/serverless-examples/tree/master/aws-java-simple-http-endpoint
-* https://github.com/localstack/localstack-pro-samples
-* https://github.com/aws-samples/serverless-kotlin-demo
-* https://github.com/aws-samples/lambda-kotlin-groovy-example
-* https://github.com/vikie1/aws-lambda-localstack-example
-* https://github.com/mattmurr/kotlin-cdk-apigw-lambda
