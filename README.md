@@ -48,7 +48,7 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
 * [rekursive](modules/rekursive): Recursion schemes
 * [bool](modules/bool): Free Boolean Algebra interpreter
 * [aws-local](modules/aws-local)
-* [aws-sdk-serverless](modules/aws-sdk-serverless)
+* [aws-serverless](modules/aws-serverless): AWS Lambda with Serverless and Localstack
 * [examples](modules/app/src/main/kotlin/com/github/niqdev)
 
 <!--
