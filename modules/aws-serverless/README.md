@@ -4,7 +4,7 @@
 * [Serverless.yml Reference](https://www.serverless.com/framework/docs/providers/aws/guide/serverless.yml)
 * [Serverless Localstack](https://www.serverless.com/plugins/serverless-localstack)
 * [LocalStack with Serverless Framework](https://docs.localstack.cloud/integrations/serverless-framework)
-* [LocalStack](https://localstack.cloud)
+* [LocalStack](https://docs.localstack.cloud)
 
 ### Development
 
@@ -20,7 +20,7 @@ curl http://localhost:4566/health
 # cleanup
 docker-compose -f local/docker-compose-serverless.yml down -v
 rm -fr local/.localstack
-rm -fr .serverless
+rm -fr modules/aws-serverless/.serverless
 ```
 
 Lambda
@@ -47,10 +47,14 @@ aws lambda update-function-code \
   --zip-file fileb://modules/aws-serverless/build/distributions/aws-serverless-0.1.0.zip
 
 # verify
-aws --endpoint-url=http://localhost:4566 lambda get-function --function-name fn-aws-serverless
+aws lambda get-function \
+  --endpoint-url=http://localhost:4566 \
+  --function-name fn-aws-serverless
 
 # invoke
-aws --endpoint-url=http://localhost:4566 lambda invoke --function-name fn-aws-serverless output.json
+aws lambda invoke \
+  --endpoint-url=http://localhost:4566 \
+  --function-name fn-aws-serverless local/.localstack/logs/aws-serverless-output.json
 ```
 
 ### Serverless
