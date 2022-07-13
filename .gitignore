@@ -8,3 +8,7 @@
 build
 
 .localstack
+.serverless
+# TODO
+package*.json
+node_modules

@@ -1,0 +1,25 @@
+version: "3"
+
+services:
+
+  localstack:
+    container_name: local-localstack
+    image: localstack/localstack:0.14.5
+    ports:
+      - "127.0.0.1:4566:4566"
+      - "127.0.0.1:4510-4559:4510-4559"
+    # https://docs.localstack.cloud/localstack/configuration
+    # TODO https://docs.localstack.cloud/tools/lambda-tools/hot-swapping
+    environment:
+      # https://docs.aws.amazon.com/cli/latest/reference/#available-services
+      - SERVICES=lambda,s3,cloudformation,sts,iam,apigateway
+      - DEFAULT_REGION=us-east-1
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      #- HOST_TMP_FOLDER=".localstack" <<< DOT is an issue
+      - DOCKER_SOCK=unix:///var/run/docker.sock
+      - LAMBDA_EXECUTOR=docker
+      - LAMBDA_REMOTE_DOCKER=false
+    volumes:
+      - ".localstack:/tmp/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"

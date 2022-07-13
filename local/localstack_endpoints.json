@@ -1,0 +1,7 @@
+{
+  "CloudFormation" : "http://localstack:4566",
+  "CloudWatch" : "http://localstack:4566",
+  "Lambda" : "http://localstack:4566",
+  "S3" : "http://localstack:4566",
+  "STS" : "http://localstack:4566"
+}

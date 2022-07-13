@@ -1,0 +1,38 @@
+service: fn-aws-serverless
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-localstack
+
+custom:
+  localstack:
+    debug: true
+    stages:
+      - local
+    #endpointFile: ../../local/localstack_endpoints.json
+
+provider:
+  name: aws
+  runtime: java11
+  region: us-east-1
+  memorySize: 512
+  timeout: 60
+  tracing:
+    lambda: true
+
+package:
+  artifact: build/distributions/aws-serverless-0.1.0.zip
+
+functions:
+  fn-aws-serverless:
+    name: fn-aws-serverless
+    description: TODO
+    # TODO revert Kt
+    handler: com.github.niqdev.aws.serverless.Handler::handleRequest
+    events:
+      # httpApi supported only in v2
+      # https://stackoverflow.com/questions/62814212/cant-use-httpapi-while-deploying-lambda-functions-to-localstack-using-serverless
+      - http:
+          path: /hello
+          method: get
