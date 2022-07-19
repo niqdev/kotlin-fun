@@ -1,0 +1,33 @@
+service: fn-aws-serverless
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-localstack
+
+custom:
+  localstack:
+    debug: true
+    stages:
+      - local
+    host: http://localstack
+
+provider:
+  name: aws
+  runtime: java11
+  region: us-east-1
+
+package:
+  artifact: aws-serverless.zip
+
+functions:
+  fn-aws-serverless:
+    name: fn-aws-serverless
+    description: TODO
+    handler: com.github.niqdev.aws.serverless.Handler::handleRequest
+    environment:
+      NAME: "fn-aws-serverless"
+    events:
+      - http:
+          path: /hello
+          method: get

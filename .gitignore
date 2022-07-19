@@ -7,8 +7,10 @@
 .gradle
 build
 
+# see aws-serverless
 .localstack
 .serverless
-# TODO remove in aws-serverless
+*.zip
+# see aws-serverless without docker
 package*.json
 node_modules

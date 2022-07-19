@@ -21,14 +21,14 @@ Examples
 Localstack
 ```bash
 # start
-docker-compose -f local/docker-compose-serverless.yml up
-docker-compose -f local/docker-compose-serverless.yml logs --follow
+docker-compose -f local/docker-compose-localstack.yml up
+docker-compose -f local/docker-compose-localstack.yml logs --follow
 
 # verify
 curl http://localhost:4566/health
 
 # cleanup
-docker-compose -f local/docker-compose-serverless.yml down -v
+docker-compose -f local/docker-compose-localstack.yml down -v
 rm -fr local/.localstack
 rm -fr modules/aws-serverless/.serverless
 ```
@@ -87,4 +87,43 @@ Serverless
 cd modules/aws-serverless
 serverless deploy --config serverless.yml --stage local
 serverless invoke --config serverless.yml --stage local --function fn-aws-serverless
+
+# test endpoint
+curl -v http://localhost:4566/restapis/<RANDOM_VALUE>/local/_user_request_/hello
+http http://localhost:4566/restapis/<RANDOM_VALUE>/local/_user_request_/hello
+```
+
+### Serverless Docker
+
+```bash
+# local-up
+docker-compose -f local/docker-compose-serverless.yml up
+
+# local-down
+docker-compose -f local/docker-compose-serverless.yml down -v
+rm -fr ./local/.localstack
+rm -fr ./local/data/.serverless
+rm -fr ./local/data/*.zip
+
+# build
+./gradlew :modules:aws-serverless:clean :modules:aws-serverless:build
+
+# verify status
+docker exec -it local-serverless-dev curl http://localstack:4566/health | jq
+
+# --workdir /usr/src/app/data
+# serverless.yml MUST be in the root path
+
+# local-deploy
+cp modules/aws-serverless/build/distributions/aws-serverless-*.zip local/data/aws-serverless.zip
+docker exec -it --workdir /usr/src/app/data local-serverless-dev \
+  serverless deploy --config serverless.yml --stage local
+
+# local-invoke
+docker exec -it --workdir /usr/src/app/data local-serverless-dev \
+  serverless invoke --config serverless.yml --stage local --function fn-aws-serverless --path event-example.json
+
+# test endpoint
+docker exec -it local-serverless-dev bash
+curl -v http://localstack:4566/restapis/mm90aislcg/local/_user_request_/hello
 ```
