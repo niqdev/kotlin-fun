@@ -110,6 +110,8 @@ rm -fr ./local/data/*.zip
 
 # verify status
 docker exec -it local-serverless-dev curl http://localstack:4566/health | jq
+docker exec -it local-serverless-dev aws --endpoint-url=http://localstack:4566 s3api create-bucket --bucket example
+docker exec -it local-serverless-dev aws --endpoint-url=http://localstack:4566 s3 ls
 
 # --workdir /usr/src/app/data
 # serverless.yml MUST be in the root path
