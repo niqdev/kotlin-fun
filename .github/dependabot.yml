@@ -2,6 +2,8 @@
 # https://github.blog/2020-06-01-keep-all-your-packages-up-to-date-with-dependabot
 # https://github.com/dependabot/dependabot-core/issues/2180
 
+# alternative https://github.com/renovatebot/renovate/issues/5480
+
 version: 2
 updates:
   - package-ecosystem: "github-actions"

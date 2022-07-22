@@ -109,6 +109,7 @@ rm -fr ./local/data/*.zip
 ./gradlew :modules:aws-serverless:clean :modules:aws-serverless:build
 
 # verify status
+curl http://localhost:4566/health | jq
 docker exec -it local-serverless-dev curl http://localstack:4566/health | jq
 docker exec -it local-serverless-dev aws --endpoint-url=http://localstack:4566 s3api create-bucket --bucket example
 docker exec -it local-serverless-dev aws --endpoint-url=http://localstack:4566 s3 ls
