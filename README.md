@@ -47,6 +47,7 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
 * Crafting Interpreters [ [book](https://craftinginterpreters.com/contents.html) | [lox](modules/lox) ]
 * [rekursive](modules/rekursive): Recursion schemes
 * [bool](modules/bool): Free Boolean Algebra interpreter
+* [json-schema](modules/json-schema): JSON Schema validation
 * [aws-local](modules/aws-local)
 * [aws-serverless](modules/aws-serverless): AWS Lambda with Serverless and Localstack
 * [examples](modules/app/src/main/kotlin/com/github/niqdev)

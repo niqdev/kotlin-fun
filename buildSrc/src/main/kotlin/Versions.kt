@@ -13,6 +13,7 @@ object Versions {
   val arrow = "1.1.2"
   val arrowMeta = "1.6.1-alpha.5"
   val clikt = "3.5.0"
+  val everit = "1.14.1"
   val hoplite = "2.3.1"
   val jdom = "2.0.6.1"
   val kondor = "1.7.7"

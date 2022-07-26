@@ -8,6 +8,7 @@ include(
   "modules:bool",
   "modules:fpk",
   "modules:jok",
+  "modules:json-schema",
   "modules:kia",
   "modules:lox",
   "modules:rekursive"

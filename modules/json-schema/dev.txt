@@ -1,0 +1,5 @@
+https://json-schema.org
+https://github.com/circe/circe-json-schema
+https://github.com/everit-org/json-schema
+https://github.com/sksamuel/hoplite/tree/master/hoplite-core/src/main/kotlin/com/sksamuel/hoplite/fp
+https://github.com/uberto/kondor-json
