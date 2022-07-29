@@ -19,6 +19,7 @@ object Versions {
   val kondor = "1.7.7"
   val kotlinxCoroutines = "1.6.3"
   val logback = "1.3.0-alpha16"
+  val pwall = "0.36"
   val reactor = "3.4.19"
   val reactorKotlin = "1.1.6"
   val slf4j = "2.0.0-alpha7"

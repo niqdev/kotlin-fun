@@ -1,13 +1,10 @@
 {
   "id": 7,
   "name": "John Doe",
-  "age": 22,
+  "age": 13,
   "hobbies": {
     "indoor": [
       "Chess"
-    ],
-    "outdoor": [
-      "Basketball"
     ]
   }
 }
