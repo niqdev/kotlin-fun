@@ -8,8 +8,10 @@
         </Lambda>
     </Appenders>
     <Loggers>
-        <Root level="error">
+        <Root level="INFO">
             <AppenderRef ref="Lambda" />
         </Root>
+        <!-- <Logger name="software.amazon.awssdk" level="WARN" />-->
+        <!-- <Logger name="software.amazon.awssdk.request" level="DEBUG" />-->
     </Loggers>
 </Configuration>

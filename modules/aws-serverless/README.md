@@ -101,9 +101,7 @@ docker-compose -f local/docker-compose-serverless.yml up
 
 # local-down
 docker-compose -f local/docker-compose-serverless.yml down -v
-rm -fr ./local/.localstack
-rm -fr ./local/data/.serverless
-rm -fr ./local/data/*.zip
+rm -frv ./local/.localstack ./local/data/.serverless ./local/data/*.zip ./local/data/*.log
 
 # build
 ./gradlew :modules:aws-serverless:clean :modules:aws-serverless:build
@@ -122,9 +120,13 @@ cp modules/aws-serverless/build/distributions/aws-serverless-*.zip local/data/aw
 docker exec -it --workdir /usr/src/app/data local-serverless-dev \
   serverless deploy --config serverless.yml --stage local
 
-# local-invoke
+# local-invoke with serverless
 docker exec -it --workdir /usr/src/app/data local-serverless-dev \
   serverless invoke --config serverless.yml --stage local --function fn-aws-serverless --path event-example.json
+
+# local-invoke with cli
+docker exec -it --workdir /usr/src/app/data local-serverless-dev \
+  aws --endpoint-url=http://localstack:4566 lambda invoke --function-name fn-aws-serverless --payload file://event-example.json event.log
 
 # test endpoint
 docker exec -it local-serverless-dev bash

@@ -1,3 +1,7 @@
 {
-  "hello": "world"
+  "path": "/hello",
+  "httpMethod": "GET",
+  "pathParameters": {},
+  "headers": {},
+  "body": "TODO"
 }

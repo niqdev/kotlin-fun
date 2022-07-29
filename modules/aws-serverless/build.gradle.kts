@@ -7,6 +7,11 @@ version = "0.1.0"
 dependencies {
   implementation("com.amazonaws:aws-lambda-java-core:${Versions.awsLambdaCore}")
   implementation("com.amazonaws:aws-lambda-java-events:${Versions.awsLambdaEvents}")
+
+  // https://docs.aws.amazon.com/lambda/latest/dg/java-logging.html#java-logging-log4j2
+  implementation("org.apache.logging.log4j:log4j-api:2.18.0")
+  implementation("org.apache.logging.log4j:log4j-core:2.18.0")
+  implementation("org.apache.logging.log4j:log4j-slf4j18-impl:2.18.0")
   runtimeOnly("com.amazonaws:aws-lambda-java-log4j2:1.5.1")
 }
 

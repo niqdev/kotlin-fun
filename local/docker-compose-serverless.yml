@@ -18,7 +18,7 @@ services:
 
   localstack:
     container_name: local-serverless-localstack
-    image: localstack/localstack:1.0.0
+    image: localstack/localstack:1.0.1
     ports:
       - "4566:4566"
       - "4510-4559:4510-4559"
