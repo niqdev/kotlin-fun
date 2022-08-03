@@ -12,6 +12,7 @@ dependencies {
   implementation("net.pwall.json:json-kotlin-schema:${Versions.pwall}")
 
   // json-schema compatibility
+  implementation("io.confluent:kafka-json-schema-provider:${Versions.confluent}")
   testImplementation("io.confluent:kafka-schema-registry:${Versions.confluent}")
   testImplementation("io.kotest.extensions:kotest-extensions-embedded-kafka:${Versions.kotestKafka}")
 

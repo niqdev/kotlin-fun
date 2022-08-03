@@ -5,9 +5,9 @@ import io.confluent.kafka.schemaregistry.json.JsonSchema
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
 
-class SchemaCompatibilityTest : WordSpec({
+class SchemaRegistryCompatibilityTest : WordSpec({
 
-  "SchemaCompatibility" should {
+  "SchemaRegistryCompatibility" should {
 
     "verify removed field" {
       val previousSchema = "/employee.schema.json".jsonToString()

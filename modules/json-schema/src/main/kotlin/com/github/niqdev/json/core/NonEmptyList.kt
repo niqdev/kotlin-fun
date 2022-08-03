@@ -1,8 +1,8 @@
 package com.github.niqdev.json.core
 
 class NonEmptyList<out A> internal constructor(
-  val head: A,
-  val tail: List<A>
+  private val head: A,
+  private val tail: List<A>
 ) {
   override fun toString(): String =
     "NonEmptyList(${listOf(head) + tail})"
@@ -19,7 +19,7 @@ class NonEmptyList<out A> internal constructor(
 
 fun <A> List<A>.toNel(): Either<Throwable, NonEmptyList<A>> =
   when {
-    isEmpty() -> IllegalArgumentException("empty").left()
+    isEmpty() -> IllegalArgumentException("list is empty").left()
     size == 1 -> NonEmptyList.of(first()).right()
     else -> NonEmptyList(first(), drop(1)).right()
   }
