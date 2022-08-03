@@ -1,0 +1,18 @@
+# online
+https://extendsclass.com/json-schema-validator.html
+
+# json-schema with schema-registry
+https://docs.confluent.io/platform/current/schema-registry/serdes-develop/serdes-json.html
+https://github.com/confluentinc/schema-registry/blob/master/client/src/main/java/io/confluent/kafka/schemaregistry/client/CachedSchemaRegistryClient.java
+https://github.com/confluentinc/schema-registry/blob/master/core/src/main/java/io/confluent/kafka/schemaregistry/rest/SchemaRegistryRestApplication.java
+https://github.com/confluentinc/schema-registry/blob/master/client/src/main/java/io/confluent/kafka/schemaregistry/testutil/MockSchemaRegistry.java
+https://github.com/confluentinc/schema-registry/blob/master/core/src/test/java/io/confluent/kafka/schemaregistry/rest/json/RestApiTest.java
+# uses org.everit.json.schema.loader.SchemaLoader
+https://github.com/confluentinc/schema-registry/blob/master/json-schema-provider/src/main/java/io/confluent/kafka/schemaregistry/json/JsonSchema.java
+
+# in-memory
+https://github.com/embeddedkafka/embedded-kafka-schema-registry
+
+# Testcontainers
+https://www.testcontainers.org
+https://github.com/kotest/kotest-extensions-embedded-kafka

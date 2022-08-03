@@ -12,6 +12,7 @@ object Versions {
   val arrow = "1.1.2"
   val arrowMeta = "1.6.1-alpha.5"
   val clikt = "3.5.0"
+  val confluent = "7.2.1"
   val everit = "1.14.1"
   val hoplite = "2.4.0"
   val jdom = "2.0.6.1"
@@ -26,4 +27,5 @@ object Versions {
 
   // tests
   val kotest = "5.4.1"
+  val kotestKafka = "1.0.6"
 }
