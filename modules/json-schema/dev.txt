@@ -1,4 +1,7 @@
-# online
+https://json-schema.org
+https://json-schema.org/understanding-json-schema
+
+# online JSON Schema Validator and Generator
 https://extendsclass.com/json-schema-validator.html
 
 # json-schema with schema-registry
