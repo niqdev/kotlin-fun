@@ -91,3 +91,8 @@ tasks.withType<Test> {
   // print to stdout
   testLogging.showStandardStreams = true
 }
+
+apply<GreetingPlugin>()
+tasks.build {
+  dependsOn("hello")
+}
