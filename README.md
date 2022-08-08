@@ -36,6 +36,9 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
 # dependency tree
 ./gradlew :modules:app:dependencies
 ./gradlew -q modules:app:dependencyInsight --dependency arrow-core
+
+# custom plugin
+./gradlew hello
 ```
 
 ## Modules
