@@ -1,0 +1,49 @@
+service: fn-aws-serverless
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-localstack
+
+custom:
+  localstack:
+    debug: true
+    stages:
+      - local
+    host: http://localstack
+
+provider:
+  name: aws
+  runtime: java11
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - sqs:SendMessage
+      Resource:
+        - Fn::GetAtt: [ MyQueue, Arn ]
+
+package:
+  artifact: aws-serverless-sqs.zip
+
+functions:
+  fn-aws-serverless-sqs:
+    name: fn-aws-serverless-sqs
+    description: TODO
+    handler: com.github.niqdev.aws.sqs.Handler::handleRequest
+    environment:
+      NAME: "fn-aws-serverless-sqs"
+    # https://www.serverless.com/framework/docs/providers/aws/events/sqs/
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - MyQueue
+              - Arn
+
+resources:
+  Resources:
+    myQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: MyQueue
