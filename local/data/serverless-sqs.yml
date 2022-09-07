@@ -1,4 +1,4 @@
-service: fn-aws-serverless
+service: fn-aws-serverless-sqs
 
 frameworkVersion: '3'
 
