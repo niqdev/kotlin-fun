@@ -25,7 +25,7 @@ class SchemaRegistryTest : WordSpec({
       app.start()
 
       val client = MockSchemaRegistry.getClientForScope("testClient")
-      val schemaString = "/employee.schema.json".jsonToString()
+      val schemaString = "/employee.schema.json".readFromResource()
       val jsonSchema = JsonSchema(schemaString)
 
       // validate should throw if invalid

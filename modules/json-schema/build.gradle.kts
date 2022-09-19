@@ -16,10 +16,6 @@ dependencies {
   testImplementation("io.confluent:kafka-schema-registry:${Versions.confluent}")
   testImplementation("io.kotest.extensions:kotest-extensions-embedded-kafka:${Versions.kotestKafka}")
 
-  // TODO json
-  implementation("com.ubertob.kondor:kondor-core:${Versions.kondor}")
-  testImplementation("com.ubertob.kondor:kondor-tools:${Versions.kondor}")
-
   // testing
   testImplementation("io.kotest:kotest-runner-junit5:${Versions.kotest}")
   testImplementation("io.kotest:kotest-assertions-core:${Versions.kotest}")
