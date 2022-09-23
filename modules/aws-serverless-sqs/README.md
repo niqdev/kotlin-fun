@@ -35,7 +35,7 @@ aws iam create-role \
 aws lambda create-function \
   --endpoint-url=http://localhost:4566 \
   --function-name fn-aws-serverless-sqs \
-  --runtime java8 \
+  --runtime java11 \
   --handler com.github.niqdev.aws.sqs.Handler::handleRequest \
   --role arn:aws:iam::000000000000:role/localstack-role \
   --zip-file fileb://modules/aws-serverless-sqs/build/distributions/aws-serverless-sqs-0.1.0.zip
