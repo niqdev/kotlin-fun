@@ -1,7 +1,7 @@
 plugins {
   // https://kotlinlang.org/docs/kapt.html
   kotlin("kapt")
-  kotlin("plugin.serialization") version Versions.kotlin
+  kotlin("plugin.serialization") version 1.7.10
   id("com.adarshr.test-logger") version Versions.testLogger
 
   application
