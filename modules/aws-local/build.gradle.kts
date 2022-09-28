@@ -1,6 +1,6 @@
 plugins {
   id("com.adarshr.test-logger") version Versions.testLogger
-  id("com.github.johnrengelman.shadow") version Versions.shadow
+  id("com.github.johnrengelman.shadow") version 7.1.2
   application
 }
 
