@@ -2,7 +2,7 @@ plugins {
   // https://kotlinlang.org/docs/kapt.html
   kotlin("kapt")
   kotlin("plugin.serialization") version Versions.kotlin
-  id("com.adarshr.test-logger") version Versions.testLogger
+  id("com.adarshr.test-logger") version 3.2.0
 
   application
   // https://docs.gradle.org/current/userguide/idea_plugin.html

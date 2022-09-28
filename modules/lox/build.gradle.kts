@@ -1,5 +1,5 @@
 plugins {
-  id("com.adarshr.test-logger") version Versions.testLogger
+  id("com.adarshr.test-logger") version 3.2.0
 }
 
 dependencies {
