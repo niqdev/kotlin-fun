@@ -10,8 +10,8 @@ class SchemaRegistryCompatibilityTest : WordSpec({
   "SchemaRegistryCompatibility" should {
 
     "verify removed field" {
-      val previousSchema = "/employee.schema.json".jsonToString()
-      val latestSchema = "/employee-remove.schema.json".jsonToString()
+      val previousSchema = "/employee.schema.json".readFromResource()
+      val latestSchema = "/employee-remove.schema.json".readFromResource()
 
       // previousSchemas – full schema history in chronological order
       JsonSchema(latestSchema).isCompatible(CompatibilityLevel.BACKWARD, listOf(JsonSchema(previousSchema))) shouldBe emptyList()
@@ -21,8 +21,8 @@ class SchemaRegistryCompatibilityTest : WordSpec({
     }
 
     "verify renamed field" {
-      val previousSchema = "/employee.schema.json".jsonToString()
-      val latestSchema = "/employee-rename.schema.json".jsonToString()
+      val previousSchema = "/employee.schema.json".readFromResource()
+      val latestSchema = "/employee-rename.schema.json".readFromResource()
 
       JsonSchema(latestSchema).isCompatible(CompatibilityLevel.BACKWARD, listOf(JsonSchema(previousSchema))) shouldBe listOf(
         "Found incompatible change: Difference{jsonPath='#/properties/name', type=PROPERTY_REMOVED_FROM_CLOSED_CONTENT_MODEL}"

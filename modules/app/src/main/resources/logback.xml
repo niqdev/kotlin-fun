@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
+    <!-- %X prints the complete MDC context -->
     <property name="PATTERN"
-              value="[%date{ISO8601}][%highlight(%-5level)][%green(%thread)][%cyan(%logger{36})] %msg%n"/>
+              value="[%date{ISO8601}][%magenta(%-5level)][%green(%thread)][%cyan(%logger{36})][%yellow(%X)] %msg%n"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>

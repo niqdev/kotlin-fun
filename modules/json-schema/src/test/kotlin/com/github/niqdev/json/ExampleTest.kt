@@ -26,8 +26,8 @@ class ExampleTest : WordSpec({
     // https://github.com/circe/circe-json-schema
     "validate net.pwall" {
       // https://www.mongodb.com/basics/json-schema-examples
-      val schema = "/employee.schema.json".jsonToString()
-      val example = "/employee-invalid.json".jsonToString()
+      val schema = "/employee.schema.json".readFromResource()
+      val example = "/employee-invalid.json".readFromResource()
 
       val jsonSchema = JSONSchema.parse(schema)
       jsonSchema.validateBasic(example).errors?.forEach {
@@ -38,8 +38,8 @@ class ExampleTest : WordSpec({
 
     // https://github.com/pwall567/json-kotlin-schema
     "validate org.everit" {
-      val schema = "/employee.schema.json".jsonToString()
-      val example = "/employee-invalid.json".jsonToString()
+      val schema = "/employee.schema.json".readFromResource()
+      val example = "/employee-invalid.json".readFromResource()
 
       val everitSchema = loadFromString(schema)
 

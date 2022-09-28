@@ -6,18 +6,18 @@ import io.kotest.matchers.shouldBe
 
 class SchemaTest : WordSpec({
 
-  val schemaJson = "/employee.schema.json".jsonToString()
+  val schemaJson = "/employee.schema.json".readFromResource()
   val schema = Schema.load(schemaJson).getOrNull()
 
   "Schema" should {
 
     "verify valid" {
-      val example = "/employee.json".jsonToString()
+      val example = "/employee.json".readFromResource()
       schema?.validate(example)?.isValid() shouldBe true
     }
 
     "verify invalid" {
-      val example = "/employee-invalid.json".jsonToString()
+      val example = "/employee-invalid.json".readFromResource()
       val expected = NonEmptyList.of(
         ValidationError("#/hobbies: required key [outdoor] not found"),
         ValidationError("#/age: 13 is not greater or equal to 16")
@@ -30,7 +30,7 @@ class SchemaTest : WordSpec({
     }
 
     "verify compatibility: remove" {
-      val latestJsonSchema = "/employee-remove.schema.json".jsonToString()
+      val latestJsonSchema = "/employee-remove.schema.json".readFromResource()
       val latestSchema = Schema.load(latestJsonSchema).getOrNull()
 
       latestSchema?.isBackwardCompatible(schemaJson)?.isValid() shouldBe true
@@ -41,7 +41,7 @@ class SchemaTest : WordSpec({
     }
 
     "verify compatibility: rename" {
-      val latestJsonSchema = "/employee-rename.schema.json".jsonToString()
+      val latestJsonSchema = "/employee-rename.schema.json".readFromResource()
       val latestSchema = Schema.load(latestJsonSchema).getOrNull()
 
       latestSchema?.isBackwardCompatible(schemaJson)?.isValid() shouldBe false
