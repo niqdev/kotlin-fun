@@ -1,7 +1,7 @@
 FROM node:alpine3.16
 
 # https://github.com/serverless/serverless/releases
-ARG SERVERLESS_VERSION="3.21.0"
+ARG SERVERLESS_VERSION="3.22.0"
 # https://github.com/localstack/serverless-localstack#change-log
 ARG SERVERLESS_LOCALSTACK_VERSION="1.0.0"
 
