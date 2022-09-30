@@ -1,5 +1,5 @@
 plugins {
-  kotlin("jvm") version Versions.kotlin
+  kotlin("jvm") version 1.7.20
   id("org.jmailen.kotlinter") version Versions.kotlinter
 }
 
