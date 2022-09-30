@@ -1,6 +1,6 @@
 object Versions {
   // plugins
-  val kotlin = "1.7.10"
+  val kotlin = "1.7.20"
   val kotlinter = "3.10.0" // FIXME 3.12.0
   val shadow = "7.1.2"
   val testLogger = "3.2.0"
