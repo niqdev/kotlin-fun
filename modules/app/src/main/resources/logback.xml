@@ -8,7 +8,10 @@
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- filters out ANSI escape sequences if the underlying terminal is not compatible e.g. CloudWatch -->
-        <withJansi>true</withJansi>
+        <!-- https://github.com/qos-ch/logback/blob/master/logback-examples/src/main/resources/chapters/layouts/highlighted.xml -->
+        <!-- TODO java.lang.ClassNotFoundException: org.fusesource.jansi.AnsiConsole -->
+        <!-- with TRUE requires runtimeOnly("org.fusesource.jansi:jansi:1.18") -->
+        <!-- <withJansi>false</withJansi> -->
         <encoder>
             <pattern>${PATTERN}</pattern>
         </encoder>
