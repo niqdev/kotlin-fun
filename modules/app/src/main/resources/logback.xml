@@ -2,10 +2,16 @@
 <configuration>
 
     <!-- %X prints the complete MDC context -->
+    <!-- %highlight(%-5level) alternative to level -->
     <property name="PATTERN"
               value="[%date{ISO8601}][%magenta(%-5level)][%green(%thread)][%cyan(%logger{36})][%yellow(%X)] %msg%n"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- filters out ANSI escape sequences if the underlying terminal is not compatible e.g. CloudWatch -->
+        <!-- https://github.com/qos-ch/logback/blob/master/logback-examples/src/main/resources/chapters/layouts/highlighted.xml -->
+        <!-- TODO java.lang.ClassNotFoundException: org.fusesource.jansi.AnsiConsole -->
+        <!-- with TRUE requires runtimeOnly("org.fusesource.jansi:jansi:1.18") -->
+        <!-- <withJansi>false</withJansi> -->
         <encoder>
             <pattern>${PATTERN}</pattern>
         </encoder>

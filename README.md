@@ -10,6 +10,9 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
 * Kotlin [docs](https://kotlinlang.org/docs/home.html)
 
 ```bash
+# use LTS e.g. 8/11/17
+sdk install java 17-open
+
 ./gradlew tasks
 ./gradlew :modules:jok:tasks
 

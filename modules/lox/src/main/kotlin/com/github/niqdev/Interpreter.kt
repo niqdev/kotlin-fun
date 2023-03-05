@@ -201,7 +201,7 @@ class Interpreter {
   // Ruby's simple rule: false and nil are falsey, and everything else is truthy
   private fun isTruthy(any: Any?): Boolean =
     when (any) {
-      any == null -> false
+      (any == null) -> false
       is Boolean -> any
       else -> true
     }
