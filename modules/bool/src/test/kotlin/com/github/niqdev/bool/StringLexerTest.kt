@@ -1,7 +1,5 @@
-package com.github.niqdev
+package com.github.niqdev.bool
 
-import com.github.niqdev.bool.StringLexer
-import com.github.niqdev.bool.Token
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
 
