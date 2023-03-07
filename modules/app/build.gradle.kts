@@ -66,16 +66,16 @@ tasks.named<JavaExec>("run") {
 }
 
 task("runReactorExample", JavaExec::class) {
-  main = "com.github.niqdev.reactor.ReactorExampleKt"
+  mainClass.set("com.github.niqdev.reactor.ReactorExampleKt")
   classpath = sourceSets["main"].runtimeClasspath
 }
 task("runCliktExample", JavaExec::class) {
-  main = "com.github.niqdev.clikt.CliktExampleKt"
+  mainClass.set("com.github.niqdev.clikt.CliktExampleKt")
   classpath = sourceSets["main"].runtimeClasspath
   args = listOf((project.properties.getOrElse("myArgs", { "--help" }) as String))
 }
 task("runJsonExample", JavaExec::class) {
-  main = "com.github.niqdev.serialization.JsonExampleKt"
+  mainClass.set("com.github.niqdev.serialization.JsonExampleKt")
   classpath = sourceSets["main"].runtimeClasspath
 }
 

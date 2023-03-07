@@ -10,11 +10,11 @@ dependencies {
 // https://stackoverflow.com/questions/57875930/gradle-application-plugin-with-kotlin-dsl-with-multiple-main-classes
 
 task("runMyStream", JavaExec::class) {
-  main = "com.github.niqdev.MyStreamKt"
+  mainClass.set("com.github.niqdev.MyStreamKt")
   classpath = sourceSets["main"].runtimeClasspath
 }
 
 task("runMyList", JavaExec::class) {
-  main = "com.github.niqdev.MyListKt"
+  mainClass.set("com.github.niqdev.MyListKt")
   classpath = sourceSets["main"].runtimeClasspath
 }
