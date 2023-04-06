@@ -20,7 +20,6 @@ sdk install java 17-open
 ./gradlew test
 ./gradlew :modules:app:test --tests *AppTest
 ./gradlew run
-./gradlew :modules:aws-local:run
 
 # custom main tasks
 ./gradlew runReactorExample
@@ -28,6 +27,8 @@ sdk install java 17-open
 ./gradlew runJsonExample
 ./gradlew runMyStream
 ./gradlew runMyList --debug-jvm
+./gradlew -Dkotlinx.coroutines.debug runCoroutineComparison
+./gradlew :modules:aws-local:run
 
 # format code
 ./gradlew lintKotlin

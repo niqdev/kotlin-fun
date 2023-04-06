@@ -59,8 +59,6 @@ application {
   mainClass.set("com.github.niqdev.AppKt")
 }
 tasks.named<JavaExec>("run") {
-  // TODO how to set JVM options for all ???
-  jvmArgs = listOf("-Dkotlinx.coroutines.debug")
   // TODO (verify) this should allow to pass any "-Dconfig.key=value" property
   systemProperties(System.getProperties().mapKeys { it.key.toString() }.toMap())
 }
@@ -77,6 +75,13 @@ task("runCliktExample", JavaExec::class) {
 task("runJsonExample", JavaExec::class) {
   mainClass.set("com.github.niqdev.serialization.JsonExampleKt")
   classpath = sourceSets["main"].runtimeClasspath
+}
+task("runCoroutineComparison", JavaExec::class) {
+  mainClass.set("com.github.niqdev.coroutine.CoroutineComparisonKt")
+  classpath = sourceSets["main"].runtimeClasspath
+
+  // adds extra info in logs
+  jvmArgs = listOf("-Dkotlinx.coroutines.debug")
 }
 
 // the task has precedence over .editorconfig
