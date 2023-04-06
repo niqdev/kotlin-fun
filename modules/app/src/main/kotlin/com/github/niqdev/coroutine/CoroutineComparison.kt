@@ -32,24 +32,37 @@ object CoroutineComparison {
         fastRequest()
       }
 
-      val result = fastResponse.await()
-      logger.info("fastResult=$result")
-
       launch(Dispatchers.Default) {
         // call await multiple times to get the result
-        compare(fastResponse.await(), slowRequest())
+        val result = compare(fastResponse.await(), slowRequest())
+        logger.info("result=$result")
       }
 
-      // TODO return as soon as it finish and run comparison in background
-      result
+      val response = fastResponse.await()
+      logger.info("response=$response")
+      response
     }
 }
 
-// see -Dkotlinx.coroutines.debug
+/*
+ * returns as soon as runBlocking finishes and kills the background job if it takes longer without waiting
+ *
+ * see -Dkotlinx.coroutines.debug
+ */
 fun main() {
+  // alternative fire and forget: "delicate api" risk of memory leaks
+  // GlobalScope.launch {}
+
+  // fire and forget i.e. daemon thread
+  CoroutineScope(Dispatchers.IO).launch {
+    logger.debug("before background")
+    delay(10.toDuration(DurationUnit.SECONDS))
+    logger.debug("after background")
+  }
+
   runBlocking {
-    logger.info("started")
+    logger.info("before blocking")
     val result = CoroutineComparison.run()
-    logger.info("finished=$result")
+    logger.info("after blocking: $result")
   }
 }
