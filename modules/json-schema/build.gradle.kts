@@ -16,6 +16,10 @@ dependencies {
   testImplementation("io.confluent:kafka-schema-registry:${Versions.confluent}")
   testImplementation("io.kotest.extensions:kotest-extensions-embedded-kafka:${Versions.kotestKafka}")
 
+  // json diff
+  implementation("com.flipkart.zjsonpatch:zjsonpatch:${Versions.zjsonpatch}")
+  implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${Versions.jackson}")
+
   // testing
   testImplementation("io.kotest:kotest-runner-junit5:${Versions.kotest}")
   testImplementation("io.kotest:kotest-assertions-core:${Versions.kotest}")

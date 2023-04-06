@@ -15,6 +15,7 @@ object Versions {
   const val confluent = "7.3.3"
   const val everit = "1.14.2"
   const val hoplite = "2.7.3"
+  const val jackson = "2.14.2"
   const val jdom = "2.0.6.1"
   const val kondor = "1.7.7" // FIXME 1.8.0
   const val kotlinxCoroutines = "1.6.4"
@@ -24,6 +25,7 @@ object Versions {
   const val reactor = "3.5.4"
   const val reactorKotlin = "1.2.2"
   const val slf4j = "2.0.7"
+  const val zjsonpatch = "0.4.14"
 
   // tests
   const val kotest = "5.5.5"
