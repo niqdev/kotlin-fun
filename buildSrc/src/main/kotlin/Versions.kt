@@ -20,6 +20,7 @@ object Versions {
   const val kondor = "1.7.7" // FIXME 1.8.0
   const val kotlinxCoroutines = "1.6.4"
   const val kotlinxSerialization = "1.5.0"
+  const val ktor = "2.2.4"
   const val logback = "1.4.6"
   const val pwall = "0.39"
   const val reactor = "3.5.4"
@@ -30,4 +31,5 @@ object Versions {
   // tests
   const val kotest = "5.5.5"
   const val kotestKafka = "1.0.6"
+  const val kotestKtor = "2.0.0"
 }

@@ -7,6 +7,7 @@ include(
   "modules:aws-serverless",
   "modules:bool",
   "modules:fpk",
+  "modules:http",
   "modules:jok",
   "modules:json-schema",
   "modules:kia",

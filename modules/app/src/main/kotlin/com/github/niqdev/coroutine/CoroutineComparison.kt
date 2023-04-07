@@ -26,6 +26,7 @@ object CoroutineComparison {
   private fun compare(a: String, b: String): Boolean =
     a.split("-").first() == b.split("-").first()
 
+  // "launch" blocks the scope and prevents to return
   suspend fun run(): String =
     coroutineScope {
       val fastResponse = async {
@@ -33,7 +34,7 @@ object CoroutineComparison {
       }
 
       launch(Dispatchers.Default) {
-        // call await multiple times to get the result
+        // call await multiple times to get the same result
         val result = compare(fastResponse.await(), slowRequest())
         logger.info("result=$result")
       }
@@ -56,6 +57,7 @@ fun main() {
   // fire and forget i.e. daemon thread
   CoroutineScope(Dispatchers.IO).launch {
     logger.debug("before background")
+    // change this delay to test the background job
     delay(10.toDuration(DurationUnit.SECONDS))
     logger.debug("after background")
   }
