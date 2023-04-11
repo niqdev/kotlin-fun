@@ -14,3 +14,5 @@ fun main() {
 fun Application.module() {
   configureRouting()
 }
+
+// TODO json + client + docker + chart

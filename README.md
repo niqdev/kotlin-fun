@@ -77,8 +77,8 @@ sdk install java 17-open
 * [x] http with [Ktor](https://ktor.io)
     * [x] logging
     * [x] config with [hoplite](https://github.com/sksamuel/hoplite)
-    * [x] server
-    * [x] client
+    * [ ] server
+    * [ ] client
 * [ ] postgres
 * [ ] kafka
 

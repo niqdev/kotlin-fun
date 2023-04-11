@@ -1,7 +1,13 @@
 package com.github.niqdev.coroutine
 
 import com.github.niqdev.coroutine.CoroutineComparison.logger
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.time.DurationUnit
@@ -68,3 +74,6 @@ fun main() {
     logger.info("after blocking: $result")
   }
 }
+
+// TODO see withContext and context https://blog.jetbrains.com/kotlin/2022/02/kotlin-1-6-20-m1-released
+// TODO see also asCompletableFuture().thenAcceptAsync{}.exceptionlly{}
