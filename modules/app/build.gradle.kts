@@ -59,24 +59,29 @@ application {
   mainClass.set("com.github.niqdev.AppKt")
 }
 tasks.named<JavaExec>("run") {
-  // TODO how to set JVM options for all ???
-  jvmArgs = listOf("-Dkotlinx.coroutines.debug")
   // TODO (verify) this should allow to pass any "-Dconfig.key=value" property
   systemProperties(System.getProperties().mapKeys { it.key.toString() }.toMap())
 }
 
 task("runReactorExample", JavaExec::class) {
-  main = "com.github.niqdev.reactor.ReactorExampleKt"
+  mainClass.set("com.github.niqdev.reactor.ReactorExampleKt")
   classpath = sourceSets["main"].runtimeClasspath
 }
 task("runCliktExample", JavaExec::class) {
-  main = "com.github.niqdev.clikt.CliktExampleKt"
+  mainClass.set("com.github.niqdev.clikt.CliktExampleKt")
   classpath = sourceSets["main"].runtimeClasspath
   args = listOf((project.properties.getOrElse("myArgs", { "--help" }) as String))
 }
 task("runJsonExample", JavaExec::class) {
-  main = "com.github.niqdev.serialization.JsonExampleKt"
+  mainClass.set("com.github.niqdev.serialization.JsonExampleKt")
   classpath = sourceSets["main"].runtimeClasspath
+}
+task("runCoroutineComparison", JavaExec::class) {
+  mainClass.set("com.github.niqdev.coroutine.CoroutineComparisonKt")
+  classpath = sourceSets["main"].runtimeClasspath
+
+  // adds extra info in logs
+  jvmArgs = listOf("-Dkotlinx.coroutines.debug")
 }
 
 // the task has precedence over .editorconfig

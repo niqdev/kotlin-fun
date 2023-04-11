@@ -20,7 +20,6 @@ sdk install java 17-open
 ./gradlew test
 ./gradlew :modules:app:test --tests *AppTest
 ./gradlew run
-./gradlew :modules:aws-local:run
 
 # custom main tasks
 ./gradlew runReactorExample
@@ -28,6 +27,8 @@ sdk install java 17-open
 ./gradlew runJsonExample
 ./gradlew runMyStream
 ./gradlew runMyList --debug-jvm
+./gradlew -Dkotlinx.coroutines.debug runCoroutineComparison
+./gradlew :modules:aws-local:run
 
 # format code
 ./gradlew lintKotlin
@@ -56,6 +57,7 @@ sdk install java 17-open
 * [json-schema](modules/json-schema): JSON Schema validation
 * [aws-local](modules/aws-local)
 * [aws-serverless](modules/aws-serverless): AWS Lambda with Serverless and Localstack
+* [http](modules/http): HTTP client and server
 * [examples](modules/app/src/main/kotlin/com/github/niqdev)
 
 <!--
@@ -71,7 +73,7 @@ sdk install java 17-open
     * [ ] release management (git commit/tag)
 * [ ] markdown documentation: [dokka](https://kotlin.github.io/dokka) vs [docusaurus](https://docusaurus.io)
 * [x] property based tests with [Kotest](https://kotest.io)
-* [ ] http with [Ktor](https://ktor.io)
+* [x] http with [Ktor](https://ktor.io)
     * [x] logging
     * [x] config with [hoplite](https://github.com/sksamuel/hoplite)
     * [ ] server
