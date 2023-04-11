@@ -27,8 +27,8 @@ dependencies {
 application {
   val name = "com.github.niqdev.HandlerKt"
   mainClass.set(name)
-  // required by ShadowJar
-  mainClassName = name
+  // required by ShadowJar (deprecated)
+  //mainClassName = name
 }
 
 tasks.withType<Test> {

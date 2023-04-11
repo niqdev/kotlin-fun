@@ -50,7 +50,8 @@ Get more help with your project: https://docs.gradle.org/6.8/samples/sample_buil
 ---
 
 # upgrade gradle
-./gradlew wrapper --gradle-version 7.4.2
+# https://gradle.org/releases
+./gradlew wrapper --gradle-version 8.0.2 --gradle-distribution-sha256-sum ff7bf6a86f09b9b2c40bb8f48b25fc19cf2b2664fd1d220cd7ab833ec758d0d7
 
 ---
 
