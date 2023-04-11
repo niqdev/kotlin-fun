@@ -32,7 +32,8 @@ object CoroutineComparison {
   private fun compare(a: String, b: String): Boolean =
     a.split("-").first() == b.split("-").first()
 
-  // "launch" blocks the scope and prevents to return
+  // "launch{}" blocks the scope and prevents to return
+  // replace with "CoroutineScope(Dispatchers.???).launch{}" to fire and forget
   suspend fun run(): String =
     coroutineScope {
       val fastResponse = async {

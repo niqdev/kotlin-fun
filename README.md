@@ -29,7 +29,6 @@ sdk install java 17-open
 ./gradlew runMyList --debug-jvm
 ./gradlew -Dkotlinx.coroutines.debug runCoroutineComparison
 ./gradlew :modules:aws-local:run
-./gradlew :modules:http:run
 
 # format code
 ./gradlew lintKotlin
