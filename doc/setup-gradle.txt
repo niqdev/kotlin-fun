@@ -49,9 +49,9 @@ Get more help with your project: https://docs.gradle.org/6.8/samples/sample_buil
 
 ---
 
-# upgrade gradle
+# upgrade gradle with "Binary-only (-bin) ZIP Checksum"
 # https://gradle.org/releases
-./gradlew wrapper --gradle-version 8.0.2 --gradle-distribution-sha256-sum ff7bf6a86f09b9b2c40bb8f48b25fc19cf2b2664fd1d220cd7ab833ec758d0d7
+./gradlew wrapper --gradle-version 8.2.1 --gradle-distribution-sha256-sum 03ec176d388f2aa99defcadc3ac6adf8dd2bce5145a129659537c0874dea5ad1
 
 ---
 
