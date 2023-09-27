@@ -17,7 +17,7 @@ object Versions {
   const val hoplite = "2.7.5"
   const val jackson = "2.15.2"
   const val jdom = "2.0.6.1"
-  const val kondor = "1.7.7" // FIXME 2.0.0
+  const val kondor = "2.1.1"
   const val kotlinxCoroutines = "1.7.3"
   const val kotlinxSerialization = "1.6.0"
   const val ktor = "2.3.4"
