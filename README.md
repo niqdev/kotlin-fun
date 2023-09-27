@@ -43,6 +43,10 @@ sdk install java 21-open
 
 # custom plugin
 ./gradlew hello
+
+# generate binary
+make app-bin
+./kfun
 ```
 
 ## Modules
