@@ -1,7 +1,7 @@
 package com.github.niqdev.kondor
 
-import com.ubertob.kondortools.generateConverterFileFor
+import com.ubertob.kondortools.kondorGenerator
 
 fun main() {
-  println(generateConverterFileFor(Person::class))
+  println(kondorGenerator(Person::class))
 }

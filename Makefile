@@ -39,3 +39,11 @@ local-stack-delete: require-aws check-param-env ## TODO
 .PHONY: local-stack-clean
 local-stack-clean: ## TODO
 	rm -frv local/.localstack
+
+##############################
+
+.PHONY: app-bin
+app-bin: ## Build distribution
+	./gradlew clean build installDist
+	rm -fr ./kfun
+	ln -s ./modules/app/build/install/app/bin/app ./kfun
