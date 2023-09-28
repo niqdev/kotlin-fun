@@ -11,7 +11,7 @@ Personal notes about Kotlin. The project's name was inspired by [this](https://w
 
 ```bash
 # use LTS e.g. 8/11/17/21
-sdk install java 21-open
+sdk install java 17-open
 
 ./gradlew tasks
 ./gradlew :modules:jok:tasks
