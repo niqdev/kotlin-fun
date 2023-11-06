@@ -55,10 +55,16 @@ Get more help with your project: https://docs.gradle.org/6.8/samples/sample_buil
 
 ---
 
-# buildSrc
+# buildSrc (deprecated)
 https://proandroiddev.com/gradle-dependency-management-with-kotlin-94eed4df9a28
 https://handstandsam.com/2018/02/11/kotlin-buildsrc-for-better-gradle-dependency-management
 https://quickbirdstudios.com/blog/gradle-kotlin-buildsrc-plugin-android
 
 mkdir -p buildSrc/src/main/kotlin
 touch buildSrc/src/main/kotlin/Versions.kt
+
+---
+
+# catalog
+https://developer.android.com/build/migrate-to-catalogs
+https://docs.gradle.org/current/userguide/platforms.html
