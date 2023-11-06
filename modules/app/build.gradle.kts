@@ -41,7 +41,7 @@ dependencies {
   //kapt("io.arrow-kt:arrow-meta:1.6.2")
 
   // tests
-  testImplementation("io.kotest:kotest-runner-junit5:5.7.2")
+  testImplementation("io.kotest:kotest-runner-junit5:5.8.0")
   testImplementation("io.kotest:kotest-assertions-core:5.7.2")
   testImplementation("io.kotest:kotest-assertions-json:5.7.2")
   testImplementation("io.kotest:kotest-property:5.7.2")

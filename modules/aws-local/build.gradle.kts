@@ -21,7 +21,7 @@ dependencies {
   implementation("com.amazonaws:aws-lambda-java-events:3.11.3")
 
   // tests
-  testImplementation("io.kotest:kotest-runner-junit5:5.7.2")
+  testImplementation("io.kotest:kotest-runner-junit5:5.8.0")
 }
 
 application {
