@@ -12,7 +12,7 @@ dependencies {
   implementation("net.pwall.json:json-kotlin-schema:0.42")
 
   // json-schema compatibility
-  implementation("io.confluent:kafka-json-schema-provider:7.3.3") // FIXME 7.4.0
+  implementation("io.confluent:kafka-json-schema-provider:7.5.1") // FIXME 7.4.0
   testImplementation("io.confluent:kafka-schema-registry:7.3.3")
   testImplementation("io.kotest.extensions:kotest-extensions-embedded-kafka:2.0.0") // deprecated, see testcontainers
 
