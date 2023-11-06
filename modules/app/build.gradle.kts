@@ -44,7 +44,7 @@ dependencies {
   testImplementation("io.kotest:kotest-runner-junit5:5.7.2")
   testImplementation("io.kotest:kotest-assertions-core:5.7.2")
   testImplementation("io.kotest:kotest-assertions-json:5.7.2")
-  testImplementation("io.kotest:kotest-property:5.7.2")
+  testImplementation("io.kotest:kotest-property:5.8.0")
   // TODO fix conflict
   //testImplementation("org.jetbrains.kotlin:kotlin-test")
   //testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
