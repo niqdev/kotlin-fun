@@ -1,6 +1,6 @@
 plugins {
-  kotlin("jvm") version Versions.kotlin
-  id("org.jmailen.kotlinter") version Versions.kotlinter
+  alias(libs.plugins.kotlin)
+  alias(libs.plugins.kotlinter)
 }
 
 // configurations shared with all the modules, except `buildSrc`

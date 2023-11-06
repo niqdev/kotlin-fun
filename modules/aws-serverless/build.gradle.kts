@@ -1,12 +1,12 @@
 plugins {
-  id("com.adarshr.test-logger") version Versions.testLogger
+  alias(libs.plugins.test.logger)
 }
 
 version = "0.1.0"
 
 dependencies {
-  implementation("com.amazonaws:aws-lambda-java-core:${Versions.awsLambdaCore}")
-  implementation("com.amazonaws:aws-lambda-java-events:${Versions.awsLambdaEvents}")
+  implementation("com.amazonaws:aws-lambda-java-core:1.2.3")
+  implementation("com.amazonaws:aws-lambda-java-events:3.11.3")
 
   // https://docs.aws.amazon.com/lambda/latest/dg/java-logging.html#java-logging-log4j2
   implementation("org.apache.logging.log4j:log4j-api:2.19.0")
