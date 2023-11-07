@@ -1,7 +1,7 @@
 dependencies {
   implementation(kotlin("script-runtime"))
 
-  implementation("org.jdom:jdom2:2.0.6.1")
+  implementation(libs.jdom)
 }
 
 // ------------------------------

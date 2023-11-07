@@ -1,27 +1,27 @@
 plugins {
   alias(libs.plugins.test.logger)
-  id("com.github.johnrengelman.shadow") version "8.1.1"
+  alias(libs.plugins.shadow)
   application
 }
 
 dependencies {
   // kotlin
-  implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-  implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+  implementation(platform(libs.kotlin.bom))
+  implementation(libs.kotlin.stdlib.jdk8)
 
-  implementation("org.slf4j:slf4j-api:2.0.9")
-  runtimeOnly("ch.qos.logback:logback-classic:1.4.11")
+  implementation(libs.slf4j.api)
+  runtimeOnly(libs.logback.classic)
 
   // aws
-  implementation(platform("software.amazon.awssdk:bom:2.20.153"))
-  implementation("software.amazon.awssdk:lambda")
-  implementation("software.amazon.awssdk:s3")
-  implementation("software.amazon.awssdk:sqs")
-  implementation("com.amazonaws:aws-lambda-java-core:1.2.3")
-  implementation("com.amazonaws:aws-lambda-java-events:3.11.3")
+  implementation(platform(libs.aws.v2.bom))
+  implementation(libs.aws.v2.lambda)
+  implementation(libs.aws.v2.s3)
+  implementation(libs.aws.v2.sqs)
+  implementation(libs.aws.lambda.core)
+  implementation(libs.aws.lambda.events)
 
   // tests
-  testImplementation("io.kotest:kotest-runner-junit5:5.7.2")
+  testImplementation(libs.kotest.runner.junit5)
 }
 
 application {

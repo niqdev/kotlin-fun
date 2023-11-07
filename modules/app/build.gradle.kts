@@ -1,8 +1,6 @@
 plugins {
-  // https://kotlinlang.org/docs/kapt.html
-  //kotlin("kapt")
-  kotlin("plugin.serialization") version "1.9.20"
   alias(libs.plugins.test.logger)
+  alias(libs.plugins.kotlin.serialization)
 
   application
   // https://docs.gradle.org/current/userguide/idea_plugin.html
@@ -10,41 +8,37 @@ plugins {
 }
 
 dependencies {
-  implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+  implementation(platform(libs.kotlin.bom))
+  implementation(libs.kotlinx.coroutines)
+  implementation(libs.kotlinx.serialization)
 
   // logging
-  implementation("org.slf4j:slf4j-api:2.0.9")
-  runtimeOnly("ch.qos.logback:logback-classic:1.4.11")
+  implementation(libs.slf4j.api)
+  runtimeOnly(libs.logback.classic)
 
   // config
-  implementation("com.sksamuel.hoplite:hoplite-core:2.7.5")
-  implementation("com.sksamuel.hoplite:hoplite-yaml:2.7.5")
+  implementation(libs.bundles.hoplite)
 
   // cli
-  implementation("com.github.ajalt.clikt:clikt:4.2.0")
+  implementation(libs.clikt)
 
   // json
-  implementation("com.ubertob.kondor:kondor-core:2.1.1")
-  testImplementation("com.ubertob.kondor:kondor-tools:2.1.1")
+  implementation(libs.kondor.core)
+  testImplementation(libs.kondor.tools)
 
   // reactor
-  implementation("io.projectreactor:reactor-core:3.5.10")
-  implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:1.2.2")
+  implementation(libs.reactor.core)
+  implementation(libs.reactor.kotlin)
 
   // arrow
-  implementation(platform("io.arrow-kt:arrow-stack:1.2.1"))
-  implementation("io.arrow-kt:arrow-core")
-  implementation("io.arrow-kt:arrow-fx-coroutines")
-  implementation("io.arrow-kt:arrow-optics")
-  //kapt("io.arrow-kt:arrow-meta:1.6.2")
+  implementation(platform(libs.arrow.stack))
+  implementation(libs.arrow.core)
 
   // tests
-  testImplementation("io.kotest:kotest-runner-junit5:5.7.2")
-  testImplementation("io.kotest:kotest-assertions-core:5.7.2")
-  testImplementation("io.kotest:kotest-assertions-json:5.7.2")
-  testImplementation("io.kotest:kotest-property:5.7.2")
+  testImplementation(libs.kotest.runner.junit5)
+  testImplementation(libs.kotest.assertions.core)
+  testImplementation(libs.kotest.assertions.json)
+  testImplementation(libs.kotest.property)
   // TODO fix conflict
   //testImplementation("org.jetbrains.kotlin:kotlin-test")
   //testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
