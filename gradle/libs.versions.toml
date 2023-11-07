@@ -6,7 +6,7 @@ kondor = "2.1.1"
 confluent = "7.3.3" # FIXME 7.4.0
 log4j = "2.21.1"
 # tests
-kotest = "5.7.2"
+kotest = "5.8.0"
 
 [libraries]
 kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin" }
