@@ -54,7 +54,7 @@ aws-v2-sqs = { module = "software.amazon.awssdk:sqs" }
 aws-lambda-core = { module = "com.amazonaws:aws-lambda-java-core", version = "1.2.3" }
 aws-lambda-events = { module = "com.amazonaws:aws-lambda-java-events", version = "3.11.3" }
 aws-lambda-log4j2 = { module = "com.amazonaws:aws-lambda-java-log4j2", version = "1.5.1" }
-aws-kotlin-lambda = { module = "aws.sdk.kotlin:lambda", version = "0.34.0-beta" }
+aws-kotlin-lambda = { module = "aws.sdk.kotlin:lambda", version = "0.34.4-beta" }
 
 # server
 ktor-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
