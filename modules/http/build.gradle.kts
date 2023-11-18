@@ -6,16 +6,16 @@ plugins {
 }
 
 dependencies {
-  // server
-  implementation(libs.ktor.core)
-  implementation(libs.ktor.netty)
+  // http
+  implementation(libs.bundles.ktor.server)
+  implementation(libs.ktor.jackson)
 
   // logging
   implementation(libs.slf4j.api)
   runtimeOnly(libs.logback.classic)
 
   // testing
-  testImplementation(libs.ktor.tests)
+  testImplementation(libs.ktor.server.tests)
   testImplementation(libs.kotlin.test.junit)
 }
 

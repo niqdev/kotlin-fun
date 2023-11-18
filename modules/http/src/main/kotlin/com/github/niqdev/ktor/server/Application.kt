@@ -1,16 +1,44 @@
 package com.github.niqdev.ktor.server
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies
+import com.fasterxml.jackson.databind.SerializationFeature
 import com.github.niqdev.ktor.server.routes.statusRoutes
+import com.github.niqdev.ktor.server.routes.userRoutes
+import com.github.niqdev.ktor.server.services.UserServiceImpl
+import io.ktor.serialization.jackson.jackson
 import io.ktor.server.application.Application
+import io.ktor.server.application.install
+import io.ktor.server.application.log
+import io.ktor.server.plugins.callloging.CallLogging
+import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.routing.routing
 
-// https://youtrack.jetbrains.com/issue/KTOR-6481/ktor-server-header-validation
+// DI https://insert-koin.io/docs/reference/koin-ktor/ktor
+// HEADER https://youtrack.jetbrains.com/issue/KTOR-6481/ktor-server-header-validation
 
-// https://github.com/ktorio/ktor-documentation/tree/main/codeSnippets/snippets/tutorial-server-get-started
+// https://github.com/ktorio/ktor-documentation/tree/main/codeSnippets
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
+fun Application.commonModule() {
+  log.debug("Loading common plugins")
+  install(CallLogging)
+
+  // serialization
+  install(ContentNegotiation) {
+    jackson {
+      configure(SerializationFeature.INDENT_OUTPUT, true)
+      setPropertyNamingStrategy(PropertyNamingStrategies.SnakeCaseStrategy.INSTANCE)
+    }
+  }
+}
+
 fun Application.mainModule() {
+  log.debug("Loading dependency graph")
+  val userService = UserServiceImpl()
+
+  log.debug("Loading route plugins")
   routing {
     statusRoutes()
+    userRoutes(userService)
   }
 }
