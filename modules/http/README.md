@@ -2,12 +2,25 @@
 
 * [Ktor](https://ktor.io/docs)
 
-> TODO json + client + docker + chart
+TODO
+* test routes
+* repositories (SQLite)
+* test repositories with https://testcontainers.com
+* local docker-compose db
+* config
+* client
+* docker
+* chart
 
 ```bash
 # starts server
 ./gradlew :modules:http:run
 
 curl http://localhost:8080/status
-curl -v http://localhost:8080/user -H 'Content-Type: application/json' --data '{"name":"foo"}'
+# list
+curl -sS http://localhost:8080/user | jq
+# get
+curl -sS http://localhost:8080/user/e5c931fd-2ed0-4af7-bf17-a53d2d3daa66 | jq
+# add
+curl -v http://localhost:8080/user -H 'Content-Type: application/json' --data '{"name":"foo","age":42}'
 ```

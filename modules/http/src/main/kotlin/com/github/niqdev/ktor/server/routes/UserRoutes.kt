@@ -5,6 +5,7 @@ import com.github.niqdev.ktor.server.services.UserService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
+import io.ktor.server.response.*
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
@@ -21,8 +22,19 @@ sealed interface UserResponseError {
 fun Route.userRoutes(userService: UserService) {
   route("/user") {
     get {
+      call.respond(userService.list())
     }
     get("/{id}") {
+      val idParameter = call.parameters["id"].orEmpty()
+      UserId.unsafeFrom(idParameter)
+        .onFailure {
+          val errorMessage = "Invalid id"
+          call.application.environment.log.error(errorMessage, it)
+          call.response.status(HttpStatusCode(HttpStatusCode.BadRequest.value, errorMessage))
+        }
+        .onSuccess {
+          call.respond(userService.get(it))
+        }
     }
     post {
       val userRequest = call.receive<UserRequest>()
