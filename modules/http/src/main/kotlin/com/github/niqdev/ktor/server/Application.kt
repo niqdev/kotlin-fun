@@ -33,6 +33,10 @@ fun Application.commonModule() {
 }
 
 fun Application.mainModule() {
+  log.debug("Loading configs")
+  val config = loadConfigOrThrow()
+  log.info("\n$config")
+
   log.debug("Loading dependency graph")
   val userService = UserServiceImpl()
 
@@ -43,3 +47,6 @@ fun Application.mainModule() {
     versionRoutes()
   }
 }
+
+private fun Application.loadConfigOrThrow(): ServerConfig =
+  ServerConfig.load(environment.config.config("server").toMap()).getOrThrow()

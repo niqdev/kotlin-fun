@@ -6,7 +6,6 @@ TODO
 * repositories (SQLite)
 * test repositories with https://testcontainers.com
 * local docker-compose db
-* config
 * client
 * docker
 * chart
