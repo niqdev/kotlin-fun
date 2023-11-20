@@ -17,6 +17,8 @@ TODO
 ./gradlew :modules:http:run
 
 curl http://localhost:8080/status
+# version
+curl -H 'X-My-Version: foo' http://localhost:8080/version
 # list
 curl -sS http://localhost:8080/user | jq
 # get

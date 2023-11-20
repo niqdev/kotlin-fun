@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.github.niqdev.ktor.server.routes.statusRoutes
 import com.github.niqdev.ktor.server.routes.userRoutes
+import com.github.niqdev.ktor.server.routes.versionRoutes
 import com.github.niqdev.ktor.server.services.UserServiceImpl
 import io.ktor.serialization.jackson.jackson
 import io.ktor.server.application.Application
@@ -39,5 +40,6 @@ fun Application.mainModule() {
   routing {
     statusRoutes()
     userRoutes(userService)
+    versionRoutes()
   }
 }
