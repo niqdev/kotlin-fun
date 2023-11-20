@@ -1,5 +1,5 @@
 plugins {
-  id("com.adarshr.test-logger") version Versions.testLogger
+  alias(libs.plugins.test.logger)
 }
 
 repositories {
@@ -8,21 +8,21 @@ repositories {
 
 dependencies {
   // json schema
-  implementation("com.github.erosb:everit-json-schema:${Versions.everit}")
-  implementation("net.pwall.json:json-kotlin-schema:${Versions.pwall}")
+  implementation(libs.everit.json.schema)
+  implementation(libs.json.kotlin.schema)
 
   // json-schema compatibility
-  implementation("io.confluent:kafka-json-schema-provider:${Versions.confluent}")
-  testImplementation("io.confluent:kafka-schema-registry:${Versions.confluent}")
-  testImplementation("io.kotest.extensions:kotest-extensions-embedded-kafka:${Versions.kotestKafka}")
+  implementation(libs.kafka.schema.provider)
+  implementation(libs.kafka.schema.registry)
+  testImplementation(libs.kotest.kafka) // deprecated, see testcontainers
 
   // json diff
-  implementation("com.flipkart.zjsonpatch:zjsonpatch:${Versions.zjsonpatch}")
-  implementation("com.fasterxml.jackson.module:jackson-module-kotlin:${Versions.jackson}")
+  implementation(libs.zjsonpatch)
+  implementation(libs.jackson.module)
 
   // testing
-  testImplementation("io.kotest:kotest-runner-junit5:${Versions.kotest}")
-  testImplementation("io.kotest:kotest-assertions-core:${Versions.kotest}")
+  testImplementation(libs.kotest.runner.junit5)
+  testImplementation(libs.kotest.assertions.core)
 }
 
 tasks.withType<Test> {

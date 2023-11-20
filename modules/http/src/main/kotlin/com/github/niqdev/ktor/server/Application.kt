@@ -1,16 +1,52 @@
 package com.github.niqdev.ktor.server
 
-import com.github.niqdev.ktor.server.plugins.configureRouting
-import io.ktor.server.application.*
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
+import com.fasterxml.jackson.databind.PropertyNamingStrategies
+import com.fasterxml.jackson.databind.SerializationFeature
+import com.github.niqdev.ktor.server.routes.statusRoutes
+import com.github.niqdev.ktor.server.routes.userRoutes
+import com.github.niqdev.ktor.server.routes.versionRoutes
+import com.github.niqdev.ktor.server.services.UserServiceImpl
+import io.ktor.serialization.jackson.jackson
+import io.ktor.server.application.Application
+import io.ktor.server.application.install
+import io.ktor.server.application.log
+import io.ktor.server.plugins.callloging.CallLogging
+import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.server.routing.routing
 
-// https://github.com/ktorio/ktor-documentation/tree/main/codeSnippets/snippets/tutorial-server-get-started
-fun main() {
-  embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
-    .start(wait = true)
+// DI https://insert-koin.io/docs/reference/koin-ktor/ktor
+
+// https://github.com/ktorio/ktor-documentation/tree/main/codeSnippets
+fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+
+fun Application.commonModule() {
+  log.debug("Loading common plugins")
+  install(CallLogging)
+
+  // serialization
+  install(ContentNegotiation) {
+    jackson {
+      configure(SerializationFeature.INDENT_OUTPUT, true)
+      setPropertyNamingStrategy(PropertyNamingStrategies.SnakeCaseStrategy.INSTANCE)
+    }
+  }
 }
 
-fun Application.module() {
-  configureRouting()
+fun Application.mainModule() {
+  log.debug("Loading configs")
+  val config = loadConfigOrThrow()
+  log.info("\n$config")
+
+  log.debug("Loading dependency graph")
+  val userService = UserServiceImpl()
+
+  log.debug("Loading route plugins")
+  routing {
+    statusRoutes()
+    userRoutes(userService)
+    versionRoutes()
+  }
 }
+
+private fun Application.loadConfigOrThrow(): ServerConfig =
+  ServerConfig.load(environment.config.config("server").toMap()).getOrThrow()

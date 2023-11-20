@@ -1,5 +1,6 @@
 dependencies {
-  implementation("aws.sdk.kotlin:lambda:${Versions.awsKotlin}")
-  implementation("org.slf4j:slf4j-api:${Versions.slf4j}")
-  runtimeOnly("ch.qos.logback:logback-classic:${Versions.logback}")
+  implementation(libs.aws.kotlin.lambda)
+
+  implementation(libs.slf4j.api)
+  runtimeOnly(libs.logback.classic)
 }
