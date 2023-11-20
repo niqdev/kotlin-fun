@@ -22,41 +22,24 @@ sealed interface UserResponseError {
 fun Route.userRoutes(userService: UserService) {
   route("/user") {
     get {
-      val onFailure: (Throwable) -> Unit = { error ->
-        val errorMessage = "Failed to fetch users"
-        call.application.environment.log.error(errorMessage, error)
-        call.response.status(HttpStatusCode(HttpStatusCode.InternalServerError.value, errorMessage))
-      }
-      userService.list().fold({ call.respond(it) }, onFailure)
+      userService.list().fold({ call.respond(it) }, onHttpFailure("Failed to fetch users"))
     }
     get("/{id}") {
       val idParameter = call.parameters["id"].orEmpty()
       UserId.fromString(idParameter)
-        .onFailure {
-          val errorMessage = "Invalid id format"
-          call.application.environment.log.error(errorMessage, it)
-          call.response.status(HttpStatusCode(HttpStatusCode.BadRequest.value, errorMessage))
-        }
         .onSuccess {
-          val onFailure: (Throwable) -> Unit = { error ->
-            val errorMessage = "Failed to fetch user"
-            call.application.environment.log.error(errorMessage, error)
-            call.response.status(HttpStatusCode(HttpStatusCode.InternalServerError.value, errorMessage))
-          }
-          userService.fetch(it).fold({ user -> call.respond(user) }, onFailure)
+          userService.fetch(it).fold({ user -> call.respond(user) }, onHttpFailure("Failed to fetch user"))
         }
+        .onFailure(
+          onHttpFailure("Invalid id format", HttpStatusCode.BadRequest)
+        )
     }
     post {
       val userRequest = call.receive<UserRequest>()
       val onSuccess: (UserId) -> Unit = {
         call.response.status(HttpStatusCode(HttpStatusCode.Created.value, it.uuid.toString()))
       }
-      val onFailure: (Throwable) -> Unit = {
-        val errorMessage = "Failed to create user"
-        call.application.environment.log.error(errorMessage, it)
-        call.response.status(HttpStatusCode(HttpStatusCode.InternalServerError.value, errorMessage))
-      }
-      userService.add(userRequest).fold(onSuccess, onFailure)
+      userService.add(userRequest).fold(onSuccess, onHttpFailure("Failed to create user"))
     }
   }
 }
