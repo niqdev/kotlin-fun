@@ -1,10 +1,10 @@
 plugins {
-  id("com.adarshr.test-logger") version Versions.testLogger
+  alias(libs.plugins.test.logger)
 }
 
 dependencies {
-  testImplementation("io.kotest:kotest-runner-junit5:${Versions.kotest}")
-  testImplementation("io.kotest:kotest-assertions-core:${Versions.kotest}")
+  testImplementation(libs.kotest.runner.junit5)
+  testImplementation(libs.kotest.assertions.core)
 }
 
 tasks.withType<Test> {

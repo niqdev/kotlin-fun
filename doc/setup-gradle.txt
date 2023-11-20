@@ -49,16 +49,22 @@ Get more help with your project: https://docs.gradle.org/6.8/samples/sample_buil
 
 ---
 
-# upgrade gradle
+# upgrade gradle with "Binary-only (-bin) ZIP Checksum"
 # https://gradle.org/releases
-./gradlew wrapper --gradle-version 8.0.2 --gradle-distribution-sha256-sum ff7bf6a86f09b9b2c40bb8f48b25fc19cf2b2664fd1d220cd7ab833ec758d0d7
+./gradlew wrapper --gradle-version 8.4 --gradle-distribution-sha256-sum 3e1af3ae886920c3ac87f7a91f816c0c7c436f276a6eefdb3da152100fef72ae
 
 ---
 
-# buildSrc
+# buildSrc (deprecated)
 https://proandroiddev.com/gradle-dependency-management-with-kotlin-94eed4df9a28
 https://handstandsam.com/2018/02/11/kotlin-buildsrc-for-better-gradle-dependency-management
 https://quickbirdstudios.com/blog/gradle-kotlin-buildsrc-plugin-android
 
 mkdir -p buildSrc/src/main/kotlin
 touch buildSrc/src/main/kotlin/Versions.kt
+
+---
+
+# catalog
+https://developer.android.com/build/migrate-to-catalogs
+https://docs.gradle.org/current/userguide/platforms.html

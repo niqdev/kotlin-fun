@@ -1,23 +1,24 @@
 plugins {
-  id("com.adarshr.test-logger") version Versions.testLogger
+  alias(libs.plugins.test.logger)
 
   application
-  // TODO is this used?
-  id("io.ktor.plugin") version Versions.ktor
+  alias(libs.plugins.ktor)
 }
 
 dependencies {
-  // server
-  implementation("io.ktor:ktor-server-core-jvm:${Versions.ktor}")
-  implementation("io.ktor:ktor-server-netty-jvm:${Versions.ktor}")
+  // http
+  implementation(libs.bundles.ktor.server)
+  implementation(libs.ktor.client.content)
+  implementation(libs.ktor.jackson)
 
   // logging
-  implementation("org.slf4j:slf4j-api:${Versions.slf4j}")
-  runtimeOnly("ch.qos.logback:logback-classic:${Versions.logback}")
+  implementation(libs.slf4j.api)
+  runtimeOnly(libs.logback.classic)
 
   // testing
-  testImplementation("io.ktor:ktor-server-tests-jvm:${Versions.ktor}")
-  testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${Versions.kotlin}")
+  testImplementation(libs.ktor.server.tests)
+  testImplementation(libs.kotlin.test.junit)
+  testImplementation(libs.mockk)
 }
 
 application {

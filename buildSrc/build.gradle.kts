@@ -6,6 +6,7 @@ repositories {
   mavenCentral()
 }
 
+// alternative to kotlin.jvmToolchain
 tasks.withType<JavaCompile> {
   targetCompatibility = JavaVersion.VERSION_17.majorVersion
   sourceCompatibility = JavaVersion.VERSION_17.majorVersion

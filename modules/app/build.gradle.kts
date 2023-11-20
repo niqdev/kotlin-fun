@@ -1,8 +1,6 @@
 plugins {
-  // https://kotlinlang.org/docs/kapt.html
-  kotlin("kapt")
-  kotlin("plugin.serialization") version Versions.kotlin
-  id("com.adarshr.test-logger") version Versions.testLogger
+  alias(libs.plugins.test.logger)
+  alias(libs.plugins.kotlin.serialization)
 
   application
   // https://docs.gradle.org/current/userguide/idea_plugin.html
@@ -10,41 +8,37 @@ plugins {
 }
 
 dependencies {
-  implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:${Versions.kotlinxCoroutines}")
-  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${Versions.kotlinxSerialization}")
+  implementation(platform(libs.kotlin.bom))
+  implementation(libs.kotlinx.coroutines)
+  implementation(libs.kotlinx.serialization)
 
   // logging
-  implementation("org.slf4j:slf4j-api:${Versions.slf4j}")
-  runtimeOnly("ch.qos.logback:logback-classic:${Versions.logback}")
+  implementation(libs.slf4j.api)
+  runtimeOnly(libs.logback.classic)
 
   // config
-  implementation("com.sksamuel.hoplite:hoplite-core:${Versions.hoplite}")
-  implementation("com.sksamuel.hoplite:hoplite-yaml:${Versions.hoplite}")
+  implementation(libs.bundles.hoplite)
 
   // cli
-  implementation("com.github.ajalt.clikt:clikt:${Versions.clikt}")
+  implementation(libs.clikt)
 
   // json
-  implementation("com.ubertob.kondor:kondor-core:${Versions.kondor}")
-  testImplementation("com.ubertob.kondor:kondor-tools:${Versions.kondor}")
+  implementation(libs.kondor.core)
+  testImplementation(libs.kondor.tools)
 
   // reactor
-  implementation("io.projectreactor:reactor-core:${Versions.reactor}")
-  implementation("io.projectreactor.kotlin:reactor-kotlin-extensions:${Versions.reactorKotlin}")
+  implementation(libs.reactor.core)
+  implementation(libs.reactor.kotlin)
 
   // arrow
-  implementation(platform("io.arrow-kt:arrow-stack:${Versions.arrow}"))
-  implementation("io.arrow-kt:arrow-core")
-  implementation("io.arrow-kt:arrow-fx-coroutines")
-  implementation("io.arrow-kt:arrow-optics")
-  kapt("io.arrow-kt:arrow-meta:${Versions.arrowMeta}")
+  implementation(platform(libs.arrow.stack))
+  implementation(libs.arrow.core)
 
   // tests
-  testImplementation("io.kotest:kotest-runner-junit5:${Versions.kotest}")
-  testImplementation("io.kotest:kotest-assertions-core:${Versions.kotest}")
-  testImplementation("io.kotest:kotest-assertions-json:${Versions.kotest}")
-  testImplementation("io.kotest:kotest-property:${Versions.kotest}")
+  testImplementation(libs.kotest.runner.junit5)
+  testImplementation(libs.kotest.assertions.core)
+  testImplementation(libs.kotest.assertions.json)
+  testImplementation(libs.kotest.property)
   // TODO fix conflict
   //testImplementation("org.jetbrains.kotlin:kotlin-test")
   //testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
