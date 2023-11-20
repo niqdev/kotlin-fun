@@ -22,18 +22,28 @@ sealed interface UserResponseError {
 fun Route.userRoutes(userService: UserService) {
   route("/user") {
     get {
-      call.respond(userService.list())
+      val onFailure: (Throwable) -> Unit = { error ->
+        val errorMessage = "Failed to fetch users"
+        call.application.environment.log.error(errorMessage, error)
+        call.response.status(HttpStatusCode(HttpStatusCode.InternalServerError.value, errorMessage))
+      }
+      userService.list().fold({ call.respond(it) }, onFailure)
     }
     get("/{id}") {
       val idParameter = call.parameters["id"].orEmpty()
       UserId.fromString(idParameter)
         .onFailure {
-          val errorMessage = "Invalid id"
+          val errorMessage = "Invalid id format"
           call.application.environment.log.error(errorMessage, it)
           call.response.status(HttpStatusCode(HttpStatusCode.BadRequest.value, errorMessage))
         }
         .onSuccess {
-          call.respond(userService.get(it))
+          val onFailure: (Throwable) -> Unit = { error ->
+            val errorMessage = "Failed to fetch user"
+            call.application.environment.log.error(errorMessage, error)
+            call.response.status(HttpStatusCode(HttpStatusCode.InternalServerError.value, errorMessage))
+          }
+          userService.fetch(it).fold({ user -> call.respond(user) }, onFailure)
         }
     }
     post {

@@ -8,6 +8,7 @@ plugins {
 dependencies {
   // http
   implementation(libs.bundles.ktor.server)
+  implementation(libs.ktor.client.content)
   implementation(libs.ktor.jackson)
 
   // logging

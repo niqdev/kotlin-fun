@@ -6,7 +6,7 @@ import com.github.niqdev.ktor.server.routes.UserRequest
 
 interface UserService {
   fun list(): Result<List<User>>
-  fun get(id: UserId): Result<User>
+  fun fetch(id: UserId): Result<User>
   fun add(user: UserRequest): Result<UserId>
 }
 
@@ -22,7 +22,7 @@ class UserServiceImpl : UserService {
       )
     )
 
-  override fun get(id: UserId): Result<User> =
+  override fun fetch(id: UserId): Result<User> =
     Result.success(User(id, "foo", 42))
 
   override fun add(user: UserRequest): Result<UserId> =

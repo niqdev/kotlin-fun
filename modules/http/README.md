@@ -13,6 +13,8 @@ TODO
 * chart
 
 ```bash
+./gradlew :modules:http:test
+
 # starts server
 ./gradlew :modules:http:run
 
