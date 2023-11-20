@@ -74,6 +74,7 @@ kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.
 kotest-assertions-json = { module = "io.kotest:kotest-assertions-json", version.ref = "kotest" }
 kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 kotest-kafka = { module = "io.kotest.extensions:kotest-extensions-embedded-kafka", version = "2.0.0" }
+mockk = { module = "io.mockk:mockk", version = "1.13.8" }
 
 [bundles]
 hoplite = [ "hoplite-core", "hoplite-yaml" ]

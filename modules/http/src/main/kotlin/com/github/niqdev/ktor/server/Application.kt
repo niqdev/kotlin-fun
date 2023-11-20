@@ -14,7 +14,6 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.routing.routing
 
 // DI https://insert-koin.io/docs/reference/koin-ktor/ktor
-// HEADER https://youtrack.jetbrains.com/issue/KTOR-6481/ktor-server-header-validation
 
 // https://github.com/ktorio/ktor-documentation/tree/main/codeSnippets
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)

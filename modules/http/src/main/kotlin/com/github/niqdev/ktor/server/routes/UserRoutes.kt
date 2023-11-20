@@ -5,7 +5,7 @@ import com.github.niqdev.ktor.server.services.UserService
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.request.receive
-import io.ktor.server.response.*
+import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
@@ -26,7 +26,7 @@ fun Route.userRoutes(userService: UserService) {
     }
     get("/{id}") {
       val idParameter = call.parameters["id"].orEmpty()
-      UserId.unsafeFrom(idParameter)
+      UserId.fromString(idParameter)
         .onFailure {
           val errorMessage = "Invalid id"
           call.application.environment.log.error(errorMessage, it)
@@ -39,7 +39,7 @@ fun Route.userRoutes(userService: UserService) {
     post {
       val userRequest = call.receive<UserRequest>()
       val onSuccess: (UserId) -> Unit = {
-        call.response.status(HttpStatusCode(HttpStatusCode.Created.value, it.value))
+        call.response.status(HttpStatusCode(HttpStatusCode.Created.value, it.uuid.toString()))
       }
       val onFailure: (Throwable) -> Unit = {
         val errorMessage = "Failed to create user"
