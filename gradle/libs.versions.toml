@@ -53,7 +53,7 @@ aws-v2-s3 = { module = "software.amazon.awssdk:s3" }
 aws-v2-sqs = { module = "software.amazon.awssdk:sqs" }
 aws-lambda-core = { module = "com.amazonaws:aws-lambda-java-core", version = "1.2.3" }
 aws-lambda-events = { module = "com.amazonaws:aws-lambda-java-events", version = "3.11.3" }
-aws-lambda-log4j2 = { module = "com.amazonaws:aws-lambda-java-log4j2", version = "1.5.1" }
+aws-lambda-log4j2 = { module = "com.amazonaws:aws-lambda-java-log4j2", version = "1.6.0" }
 aws-kotlin-lambda = { module = "aws.sdk.kotlin:lambda", version = "0.34.9-beta" }
 
 # http
