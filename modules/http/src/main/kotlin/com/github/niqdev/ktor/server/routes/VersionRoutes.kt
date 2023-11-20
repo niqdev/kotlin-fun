@@ -18,7 +18,7 @@ private const val VERSION_HEADER = "X-My-Version"
 private val myVersionPlugin = createRouteScopedPlugin("MyVersionPlugin") {
   on(CallSetup) { call ->
     if (!call.request.headers.contains(VERSION_HEADER)) {
-      throw RuntimeException("Required header is missing")
+      throw IllegalArgumentException("Required header is missing")
     }
   }
 }
