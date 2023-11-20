@@ -30,16 +30,17 @@ fun Route.userRoutes(userService: UserService) {
         .onSuccess {
           userService.fetch(it).fold({ user -> call.respond(user) }, onHttpFailure("Failed to fetch user"))
         }
-        .onFailure(
-          onHttpFailure("Invalid id format", HttpStatusCode.BadRequest)
-        )
+        .onFailure(onHttpFailure("Invalid id format", HttpStatusCode.BadRequest))
     }
     post {
       val userRequest = call.receive<UserRequest>()
       val onSuccess: (UserId) -> Unit = {
         call.response.status(HttpStatusCode(HttpStatusCode.Created.value, it.uuid.toString()))
       }
-      userService.add(userRequest).fold(onSuccess, onHttpFailure("Failed to create user"))
+      userService
+        .add(userRequest)
+        .map(onSuccess)
+        .onFailure(onHttpFailure("Failed to create user"))
     }
   }
 }

@@ -3,7 +3,6 @@
 * [Ktor](https://ktor.io/docs)
 
 TODO
-* test routes
 * repositories (SQLite)
 * test repositories with https://testcontainers.com
 * local docker-compose db
