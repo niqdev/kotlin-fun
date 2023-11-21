@@ -1,17 +1,24 @@
 ## http
 
 * [Ktor](https://ktor.io/docs)
+* [Flyway](https://documentation.red-gate.com/fd)
+* [Jdbi](https://jdbi.org)
 
 TODO
 * repositories (SQLite)
 * test repositories with https://testcontainers.com
 * local docker-compose db
+* bruno
 * client
 * docker
 * chart
 
 ```bash
 ./gradlew :modules:http:test
+
+docker-compose -f local/docker-compose-http.yml up -d
+docker-compose -f local/docker-compose-http.yml logs --follow
+docker-compose -f local/docker-compose-http.yml down -v
 
 # starts server
 ./gradlew :modules:http:run

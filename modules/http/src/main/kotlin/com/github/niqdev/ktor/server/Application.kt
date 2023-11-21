@@ -2,6 +2,7 @@ package com.github.niqdev.ktor.server
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.github.niqdev.ktor.server.repositories.DatabaseSetup
 import com.github.niqdev.ktor.server.routes.statusRoutes
 import com.github.niqdev.ktor.server.routes.userRoutes
 import com.github.niqdev.ktor.server.routes.versionRoutes
@@ -36,6 +37,11 @@ fun Application.mainModule() {
   log.debug("Loading configs")
   val config = loadConfigOrThrow()
   log.info("\n$config")
+
+  log.debug("Migrating database")
+  val dataSource = DatabaseSetup.initDataSource(config.database)
+  DatabaseSetup.migrateDatabase(dataSource)
+  val jdbiClient = DatabaseSetup.initJdbiClient(dataSource)
 
   log.debug("Loading dependency graph")
   val userService = UserServiceImpl()

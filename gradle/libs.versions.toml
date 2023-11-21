@@ -5,6 +5,7 @@ hoplite = "2.7.5"
 kondor = "2.1.2"
 confluent = "7.3.3" # FIXME 7.4.0
 log4j = "2.22.0"
+flyway = "10.0.1"
 # tests
 kotest = "5.8.0"
 
@@ -57,13 +58,22 @@ aws-lambda-log4j2 = { module = "com.amazonaws:aws-lambda-java-log4j2", version =
 aws-kotlin-lambda = { module = "aws.sdk.kotlin:lambda", version = "0.35.1-beta" }
 
 # http
-ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
-ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
-ktor-server-logging = { module = "io.ktor:ktor-server-call-logging", version.ref = "ktor" }
-ktor-server-content = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktor" }
-ktor-client-content = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
-ktor-jackson = { module = "io.ktor:ktor-serialization-jackson", version.ref = "ktor" }
-ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm", version.ref = "ktor" }
+ktor-bom = { module = "io.ktor:ktor-bom", version.ref = "ktor" }
+ktor-server-core = { module = "io.ktor:ktor-server-core-jvm" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm" }
+ktor-server-logging = { module = "io.ktor:ktor-server-call-logging" }
+ktor-server-content = { module = "io.ktor:ktor-server-content-negotiation" }
+ktor-client-content = { module = "io.ktor:ktor-client-content-negotiation" }
+ktor-jackson = { module = "io.ktor:ktor-serialization-jackson" }
+ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm" }
+
+# database
+jdbi-bom = { module = "org.jdbi:jdbi3-bom", version = "3.41.3" }
+jdbi-core = { module = "org.jdbi:jdbi3-core" }
+jdbi-postgres = { module = "org.jdbi:jdbi3-postgres" }
+flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
+flyway-postgres = { module = "org.flywaydb:flyway-database-postgresql", version.ref = "flyway" }
+driver-postgres = { module = "org.postgresql:postgresql", version = "42.7.0" }
 
 # confluent
 kafka-schema-provider = { module = "io.confluent:kafka-json-schema-provider", version.ref = "confluent" }
@@ -80,6 +90,7 @@ mockk = { module = "io.mockk:mockk", version = "1.13.8" }
 [bundles]
 hoplite = [ "hoplite-core", "hoplite-yaml" ]
 ktor-server = [ "ktor-server-core", "ktor-server-netty", "ktor-server-logging", "ktor-server-content" ]
+ktor-client = [ "ktor-client-content" ]
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

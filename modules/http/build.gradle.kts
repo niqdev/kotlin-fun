@@ -7,9 +7,19 @@ plugins {
 
 dependencies {
   // http
+  implementation(platform(libs.ktor.bom))
   implementation(libs.bundles.ktor.server)
-  implementation(libs.ktor.client.content)
+  implementation(libs.bundles.ktor.client)
   implementation(libs.ktor.jackson)
+  implementation(libs.jackson.module)
+
+  // database
+  implementation(platform(libs.jdbi.bom))
+  implementation(libs.jdbi.core)
+  implementation(libs.jdbi.postgres)
+  implementation(libs.flyway.core)
+  implementation(libs.flyway.postgres)
+  implementation(libs.driver.postgres)
 
   // logging
   implementation(libs.slf4j.api)
