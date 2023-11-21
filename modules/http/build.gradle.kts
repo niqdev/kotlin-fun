@@ -22,7 +22,7 @@ dependencies {
   implementation(libs.driver.postgres)
 
   // logging
-  implementation(libs.slf4j.api)
+  implementation(libs.kotlin.logging)
   runtimeOnly(libs.logback.classic)
 
   // testing

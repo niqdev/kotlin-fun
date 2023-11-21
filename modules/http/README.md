@@ -5,9 +5,7 @@
 * [Jdbi](https://jdbi.org)
 
 TODO
-* repositories (SQLite)
 * test repositories with https://testcontainers.com
-* local docker-compose db
 * bruno
 * client
 * docker
@@ -16,6 +14,7 @@ TODO
 ```bash
 ./gradlew :modules:http:test
 
+# starts dependencies
 docker-compose -f local/docker-compose-http.yml up -d
 docker-compose -f local/docker-compose-http.yml logs --follow
 docker-compose -f local/docker-compose-http.yml down -v
