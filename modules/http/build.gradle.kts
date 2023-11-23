@@ -35,6 +35,7 @@ dependencies {
   testImplementation(libs.kotlin.test.junit)
   testImplementation(libs.ktor.server.tests)
   testImplementation(libs.mockk)
+  testImplementation(libs.kotest.property)
 }
 
 application {
@@ -46,7 +47,7 @@ application {
   )
 }
 
-// required for junit - not for kotlin-test-junit
+// required for junit and kotest - not for kotlin-test-junit
 tasks.withType<Test> {
   useJUnitPlatform()
 }

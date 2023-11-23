@@ -13,8 +13,8 @@ import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
-import io.ktor.http.contentType
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
 import io.ktor.serialization.jackson.jackson
 import io.ktor.server.routing.routing
 import io.ktor.server.testing.testApplication
@@ -165,6 +165,8 @@ class UserRoutesTest {
       {
         "user_id" : "2c9fd82f-040f-4841-b817-52c5152ea273"
       }
-      """.trimIndent(), response.bodyAsText())
+      """.trimIndent(),
+      response.bodyAsText()
+    )
   }
 }

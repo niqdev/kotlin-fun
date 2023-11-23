@@ -14,8 +14,10 @@ interface UserService {
 
 class UserServiceImpl(private val repository: UserRepository) : UserService {
 
-  override fun list(): Result<List<User>> =
-    repository.find()
+  override fun add(request: UserRequest): Result<UserId> {
+    val user = toUser(request)
+    return repository.create(user).map { user.id }
+  }
 
   override fun fetch(id: UserId): Result<User> =
     repository.findById(id).flatMap { user ->
@@ -23,10 +25,8 @@ class UserServiceImpl(private val repository: UserRepository) : UserService {
       else Result.failure(IllegalArgumentException("user not found"))
     }
 
-  override fun add(request: UserRequest): Result<UserId> {
-    val user = toUser(request)
-    return repository.create(user).map { user.id }
-  }
+  override fun list(): Result<List<User>> =
+    repository.find()
 
   private fun toUser(request: UserRequest): User =
     User(

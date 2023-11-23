@@ -12,7 +12,7 @@ class UserRepositoryTest {
   // https://java.testcontainers.org/test_framework_integration/manual_lifecycle_control
   private val userRepository = UserRepositoryImpl(DatabaseContainer.client)
 
-  // TODO kotest arbitrary
+  // TODO see userArb
   // https://kotest.io/docs/proptest/property-test-generators.html
   private fun newUser(): User =
     User(
