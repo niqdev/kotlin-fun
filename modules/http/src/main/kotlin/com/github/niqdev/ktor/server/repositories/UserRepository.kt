@@ -10,7 +10,7 @@ import kotlin.jvm.optionals.getOrNull
 
 interface UserRepository {
   fun create(user: User): Result<Int>
-  fun findById(id: UserId): Result<User>
+  fun findById(id: UserId): Result<User?>
   fun find(): Result<List<User>>
 }
 
@@ -34,7 +34,7 @@ class UserRepositoryImpl(private val client: Jdbi) : UserRepository {
       }
     }
 
-  override fun findById(id: UserId): Result<User> =
+  override fun findById(id: UserId): Result<User?> =
     runCatching {
       log.debug { "find user by id: $id" }
 

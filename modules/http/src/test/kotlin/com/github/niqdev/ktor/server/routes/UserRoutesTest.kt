@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.github.niqdev.ktor.models.User
 import com.github.niqdev.ktor.models.UserId
+import com.github.niqdev.ktor.server.repositories.UserRepository
 import com.github.niqdev.ktor.server.services.UserService
 import com.github.niqdev.ktor.server.services.UserServiceImpl
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -13,6 +14,7 @@ import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
+import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.jackson.jackson
 import io.ktor.server.routing.routing
 import io.ktor.server.testing.testApplication
@@ -62,7 +64,8 @@ class UserRoutesTest {
   @Test
   fun testGetIdInvalid() = testApplication {
     application {
-      val userService = UserServiceImpl()
+      val userRepository = mockk<UserRepository>()
+      val userService = UserServiceImpl(userRepository)
       routing { userRoutes(userService) }
     }
 
@@ -156,7 +159,12 @@ class UserRoutesTest {
       contentType(ContentType.Application.Json)
       setBody(UserRequest("foo", 1))
     }
-    assertEquals(201, response.status.value)
-    assertEquals(userId.uuid.toString(), response.status.description)
+    assertEquals(HttpStatusCode.Created, response.status)
+    assertEquals(
+      """
+      {
+        "user_id" : "2c9fd82f-040f-4841-b817-52c5152ea273"
+      }
+      """.trimIndent(), response.bodyAsText())
   }
 }

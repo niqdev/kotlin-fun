@@ -12,6 +12,7 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 
 data class UserRequest(val name: String, val age: Int)
+data class UserResponse(val userId: UserId)
 
 // TODO use instead of RESULT throwable
 sealed interface UserResponseError {
@@ -34,12 +35,12 @@ fun Route.userRoutes(userService: UserService) {
     }
     post {
       val userRequest = call.receive<UserRequest>()
-      val onSuccess: (UserId) -> Unit = {
-        call.response.status(HttpStatusCode(HttpStatusCode.Created.value, it.uuid.toString()))
+      val onSuccess: suspend (UserId) -> Unit = {
+        call.respond(HttpStatusCode.Created, UserResponse(it))
       }
       userService
         .add(userRequest)
-        .map(onSuccess)
+        .map { onSuccess(it) }
         .onFailure(onHttpFailure("Failed to create user"))
     }
   }

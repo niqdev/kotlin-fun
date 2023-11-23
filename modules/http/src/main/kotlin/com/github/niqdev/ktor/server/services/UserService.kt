@@ -1,5 +1,6 @@
 package com.github.niqdev.ktor.server.services
 
+import com.github.niqdev.ktor.common.flatMap
 import com.github.niqdev.ktor.models.User
 import com.github.niqdev.ktor.models.UserId
 import com.github.niqdev.ktor.server.repositories.UserRepository
@@ -17,7 +18,10 @@ class UserServiceImpl(private val repository: UserRepository) : UserService {
     repository.find()
 
   override fun fetch(id: UserId): Result<User> =
-    repository.findById(id)
+    repository.findById(id).flatMap { user ->
+      if (user != null) Result.success(user)
+      else Result.failure(IllegalArgumentException("user not found"))
+    }
 
   override fun add(request: UserRequest): Result<UserId> {
     val user = toUser(request)
