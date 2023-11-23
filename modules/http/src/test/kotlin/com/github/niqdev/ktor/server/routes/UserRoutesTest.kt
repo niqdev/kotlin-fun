@@ -18,9 +18,9 @@ import io.ktor.server.routing.routing
 import io.ktor.server.testing.testApplication
 import io.mockk.every
 import io.mockk.mockk
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import java.util.UUID
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 // TODO https://github.com/skyscreamer/JSONassert
 class UserRoutesTest {

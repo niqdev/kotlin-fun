@@ -86,12 +86,23 @@ kotest-assertions-core = { module = "io.kotest:kotest-assertions-core", version.
 kotest-assertions-json = { module = "io.kotest:kotest-assertions-json", version.ref = "kotest" }
 kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 kotest-kafka = { module = "io.kotest.extensions:kotest-extensions-embedded-kafka", version = "2.0.0" }
+
+junit-bom = { module = "org.junit:junit-bom", version = "5.10.1" }
+junit-core = { module = "org.junit.jupiter:junit-jupiter" }
+junit-api = { module = "org.junit.jupiter:junit-jupiter-api" }
 mockk = { module = "io.mockk:mockk", version = "1.13.8" }
+
+testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version = "1.19.3" }
+testcontainers-core = { module = "org.testcontainers:testcontainers" }
+testcontainers-junit = { module = "org.testcontainers:junit-jupiter" }
+testcontainers-postgres = { module = "org.testcontainers:postgresql" }
 
 [bundles]
 hoplite = [ "hoplite-core", "hoplite-yaml" ]
 ktor-server = [ "ktor-server-core", "ktor-server-netty", "ktor-server-logging", "ktor-server-content" ]
 ktor-client = [ "ktor-client-content" ]
+junit = [ "junit-core", "junit-api" ]
+testcontainers = [ "testcontainers-core", "testcontainers-junit", "testcontainers-postgres" ]
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }

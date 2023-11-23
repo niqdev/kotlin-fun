@@ -26,8 +26,14 @@ dependencies {
   runtimeOnly(libs.logback.classic)
 
   // testing
-  testImplementation(libs.ktor.server.tests)
+  implementation(platform(libs.junit.bom))
+  testImplementation(libs.bundles.junit)
+
+  implementation(platform(libs.testcontainers.bom))
+  testImplementation(libs.bundles.testcontainers)
+
   testImplementation(libs.kotlin.test.junit)
+  testImplementation(libs.ktor.server.tests)
   testImplementation(libs.mockk)
 }
 
@@ -38,4 +44,9 @@ application {
     "-Dio.ktor.development",
     "-Dkotlinx.coroutines.debug"
   )
+}
+
+// required for junit - not for kotlin-test-junit
+tasks.withType<Test> {
+  useJUnitPlatform()
 }
