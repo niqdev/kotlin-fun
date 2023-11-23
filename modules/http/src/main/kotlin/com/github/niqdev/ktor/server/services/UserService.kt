@@ -2,29 +2,32 @@ package com.github.niqdev.ktor.server.services
 
 import com.github.niqdev.ktor.models.User
 import com.github.niqdev.ktor.models.UserId
+import com.github.niqdev.ktor.server.repositories.UserRepository
 import com.github.niqdev.ktor.server.routes.UserRequest
 
 interface UserService {
-  fun list(): Result<List<User>>
+  fun add(request: UserRequest): Result<UserId>
   fun fetch(id: UserId): Result<User>
-  fun add(user: UserRequest): Result<UserId>
+  fun list(): Result<List<User>>
 }
 
-// TODO repositories
-class UserServiceImpl : UserService {
+class UserServiceImpl(private val repository: UserRepository) : UserService {
 
   override fun list(): Result<List<User>> =
-    Result.success(
-      listOf(
-        User(UserId(java.util.UUID.randomUUID()), "name1", 1),
-        User(UserId(java.util.UUID.randomUUID()), "name2", 2),
-        User(UserId(java.util.UUID.randomUUID()), "name3", 3),
-      )
-    )
+    repository.find()
 
   override fun fetch(id: UserId): Result<User> =
-    Result.success(User(id, "foo", 42))
+    repository.findById(id)
 
-  override fun add(user: UserRequest): Result<UserId> =
-    Result.success(UserId(java.util.UUID.randomUUID()))
+  override fun add(request: UserRequest): Result<UserId> {
+    val user = toUser(request)
+    return repository.create(user).map { user.id }
+  }
+
+  private fun toUser(request: UserRequest): User =
+    User(
+      id = UserId(java.util.UUID.randomUUID()),
+      name = request.name,
+      age = request.age
+    )
 }

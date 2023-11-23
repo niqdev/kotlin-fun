@@ -3,6 +3,7 @@ package com.github.niqdev.ktor.server
 import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.github.niqdev.ktor.server.repositories.DatabaseSetup
+import com.github.niqdev.ktor.server.repositories.UserRepositoryImpl
 import com.github.niqdev.ktor.server.routes.statusRoutes
 import com.github.niqdev.ktor.server.routes.userRoutes
 import com.github.niqdev.ktor.server.routes.versionRoutes
@@ -44,7 +45,8 @@ fun Application.mainModule() {
   val jdbiClient = DatabaseSetup.initJdbiClient(dataSource)
 
   log.debug("Loading dependency graph")
-  val userService = UserServiceImpl()
+  val userRepository = UserRepositoryImpl(jdbiClient)
+  val userService = UserServiceImpl(userRepository)
 
   log.debug("Loading route plugins")
   routing {

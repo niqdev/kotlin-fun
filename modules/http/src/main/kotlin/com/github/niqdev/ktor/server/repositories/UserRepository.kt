@@ -26,7 +26,7 @@ class UserRepositoryImpl(private val client: Jdbi) : UserRepository {
       log.debug { "create user: $user" }
 
       client.withHandle<Int, Exception> { handle ->
-        handle.createUpdate("INSERT INTO $TABLE_NAME (id, name, age) VALUES (:id, :name, :age);")
+        handle.createUpdate("INSERT INTO $TABLE_NAME (id, name, age) VALUES (:id, :name, :age)")
           .bind("id", user.id.uuid.toString())
           .bind("name", user.name)
           .bind("age", user.age)
@@ -39,7 +39,7 @@ class UserRepositoryImpl(private val client: Jdbi) : UserRepository {
       log.debug { "find user by id: $id" }
 
       client.withHandle<User, Exception> { handle ->
-        handle.select("SELECT * FROM $TABLE_NAME WHERE id = :id;")
+        handle.select("SELECT * FROM $TABLE_NAME WHERE id = :id")
           .bind("id", id.uuid.toString())
           .map(::toUser)
           .findOne()
