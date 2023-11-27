@@ -5,6 +5,7 @@ import io.ktor.server.application.call
 import io.ktor.server.application.createRouteScopedPlugin
 import io.ktor.server.application.hooks.CallSetup
 import io.ktor.server.application.install
+import io.ktor.server.response.respond
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
@@ -18,7 +19,9 @@ private const val VERSION_HEADER = "X-My-Version"
 private val myVersionPlugin = createRouteScopedPlugin("MyVersionPlugin") {
   on(CallSetup) { call ->
     if (!call.request.headers.contains(VERSION_HEADER)) {
-      throw IllegalArgumentException("Required header is missing")
+      val errorMessage = "Required header is missing"
+      call.application.environment.log.error(errorMessage)
+      return@on call.respond(HttpStatusCode.BadRequest, errorMessage)
     }
   }
 }

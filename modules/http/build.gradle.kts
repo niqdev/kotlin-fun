@@ -32,7 +32,6 @@ dependencies {
   implementation(platform(libs.testcontainers.bom))
   testImplementation(libs.bundles.testcontainers)
 
-  testImplementation(libs.kotlin.test.junit)
   testImplementation(libs.ktor.server.tests)
   testImplementation(libs.mockk)
   testImplementation(libs.kotest.property)

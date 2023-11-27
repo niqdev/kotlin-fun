@@ -3,6 +3,7 @@ package com.github.niqdev.ktor.server.routes
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.routing.routing
 import io.ktor.server.testing.testApplication
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -16,10 +17,9 @@ class VersionRoutesTest {
       routing { versionRoutes() }
     }
 
-    val responseError = kotlin.test.assertFailsWith<IllegalArgumentException> {
-      client.get("/version")
-    }
-    assertEquals("Required header is missing", responseError.message)
+    val response = client.get("/version")
+    assertEquals(HttpStatusCode.BadRequest, response.status)
+    assertEquals("Required header is missing", response.bodyAsText())
   }
 
   @Test
