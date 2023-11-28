@@ -1,15 +1,16 @@
 ## http
 
+TODO
+* bruno
+* http-client
+* chart
+
 ### Development
 
 * [Ktor](https://ktor.io/docs)
 * [Jdbi](https://jdbi.org)
 * [Flyway](https://documentation.red-gate.com/fd)
 * [Testcontainers](https://java.testcontainers.org)
-
-TODO
-* bruno
-* http-client
 
 ```bash
 ./gradlew :modules:http:test
@@ -43,7 +44,12 @@ curl -sS http://localhost:8080/user -H 'Content-Type: application/json' --data '
 
 # publish remote image
 ./gradlew :modules:http:publishImage
-```
 
-TODO
-* chart
+# test container
+docker run --rm \
+  --name kotlin-fun-http \
+  --network http-server_default \
+  -e POSTGRES_URL="jdbc:postgresql://postgres:5432/example_db" \
+  -p 8080:8080 \
+  niqdev/kotlin-fun-http
+```

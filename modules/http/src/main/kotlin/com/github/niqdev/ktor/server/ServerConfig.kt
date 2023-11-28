@@ -1,5 +1,6 @@
 package com.github.niqdev.ktor.server
 
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 
 data class ServerConfig(
@@ -8,6 +9,7 @@ data class ServerConfig(
 ) {
   companion object {
     private val objectMapper = jacksonObjectMapper()
+      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
     fun load(values: Map<String, Any?>): Result<ServerConfig> =
       runCatching { objectMapper.convertValue(values, ServerConfig::class.java) }

@@ -52,10 +52,10 @@ tasks.withType<Test> {
 }
 
 ktor {
-  val repository = "niqdev/${rootProject.name}-${project.name}"
+  val repository = "${rootProject.name}-${project.name}"
   docker {
-    localImageName.set(repository)
-    imageTag.set(System.getenv("GITHUB_SHA") ?: "dev")
+    localImageName.set("niqdev/$repository")
+    imageTag.set(System.getenv("GITHUB_REF_NAME") ?: "dev")
 
     // https://hub.docker.com/repository/docker/niqdev/kotlin-fun-http
     // https://github.com/niqdev/kotlin-fun/settings/secrets/actions > Repository secrets
