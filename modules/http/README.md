@@ -1,5 +1,7 @@
 ## http
 
+### Development
+
 * [Ktor](https://ktor.io/docs)
 * [Jdbi](https://jdbi.org)
 * [Flyway](https://documentation.red-gate.com/fd)
@@ -8,8 +10,6 @@
 TODO
 * bruno
 * http-client
-* docker
-* chart
 
 ```bash
 ./gradlew :modules:http:test
@@ -32,3 +32,18 @@ curl -v http://localhost:8080/user/e5c931fd-2ed0-4af7-bf17-a53d2d3daa66
 # add
 curl -sS http://localhost:8080/user -H 'Content-Type: application/json' --data '{"name":"foo","age":42}' | jq
 ```
+
+### Deployment
+
+* [Ktor/Docker](https://ktor.io/docs/docker.html)
+
+```bash
+# publish local image
+./gradlew :modules:http:publishImageToLocalRegistry
+
+# publish remote image
+./gradlew :modules:http:publishImage
+```
+
+TODO
+* chart

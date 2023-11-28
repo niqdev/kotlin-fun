@@ -50,3 +50,21 @@ application {
 tasks.withType<Test> {
   useJUnitPlatform()
 }
+
+ktor {
+  val repository = "niqdev/${rootProject.name}-${project.name}"
+  docker {
+    localImageName.set(repository)
+    imageTag.set(System.getenv("GITHUB_SHA") ?: "dev")
+
+    // https://hub.docker.com/repository/docker/niqdev/kotlin-fun-http
+    // https://github.com/niqdev/kotlin-fun/settings/secrets/actions > Repository secrets
+    externalRegistry.set(
+      io.ktor.plugin.features.DockerImageRegistry.dockerHub(
+        appName = provider { repository },
+        username = providers.environmentVariable("DOCKER_HUB_USERNAME"),
+        password = providers.environmentVariable("DOCKER_HUB_PASSWORD")
+      )
+    )
+  }
+}
