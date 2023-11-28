@@ -1,7 +1,7 @@
 ## http
 
 TODO
-* bruno
+* [bruno](https://www.usebruno.com)
 * http-client
 * chart
 
@@ -13,6 +13,7 @@ TODO
 * [Testcontainers](https://java.testcontainers.org)
 
 ```bash
+# runs tests
 ./gradlew :modules:http:test
 
 # starts dependencies
@@ -23,6 +24,7 @@ docker-compose -f local/docker-compose-http.yml down -v
 # starts server
 ./gradlew :modules:http:run
 
+# healthcheck
 curl http://localhost:8080/status
 # version
 curl -H 'X-My-Version: foo' http://localhost:8080/version
@@ -36,16 +38,16 @@ curl -sS http://localhost:8080/user -H 'Content-Type: application/json' --data '
 
 ### Deployment
 
-* [Ktor/Docker](https://ktor.io/docs/docker.html)
+* [niqdev/kotlin-fun-http](https://hub.docker.com/r/niqdev/kotlin-fun-http)
 
 ```bash
-# publish local image
+# publishes local image
 ./gradlew :modules:http:publishImageToLocalRegistry
 
-# publish remote image
+# publishes remote image
 ./gradlew :modules:http:publishImage
 
-# test container
+# starts test container
 docker run --rm \
   --name kotlin-fun-http \
   --network http-server_default \
