@@ -61,7 +61,7 @@ ktor {
     // https://github.com/niqdev/kotlin-fun/settings/secrets/actions > Repository secrets
     externalRegistry.set(
       io.ktor.plugin.features.DockerImageRegistry.dockerHub(
-        appName = provider { repository },
+        appName = providers.provider { repository },
         username = providers.environmentVariable("DOCKER_HUB_USERNAME"),
         password = providers.environmentVariable("DOCKER_HUB_PASSWORD")
       )
