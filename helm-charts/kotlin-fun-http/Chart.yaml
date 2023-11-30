@@ -1,3 +1,9 @@
 apiVersion: v2
 name: kotlin-fun-http
-version: 0.1.0
+version: 0.2.0
+dependencies:
+  # https://github.com/bitnami/charts/tree/main/bitnami/postgresql
+  - name: postgresql
+    version: 13.2.22
+    # https://helm.sh/docs/topics/registries
+    repository: oci://registry-1.docker.io/bitnamicharts/postgresql

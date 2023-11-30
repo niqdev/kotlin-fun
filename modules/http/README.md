@@ -3,7 +3,6 @@
 TODO
 * [bruno](https://www.usebruno.com)
 * http-client
-* chart
 
 ### Development
 
@@ -57,6 +56,9 @@ docker run --rm \
 ```
 
 * [Helm](https://helm.sh/docs)
+* PostgreSQL charts
+  - [bitnami/postgresql](https://github.com/bitnami/charts/tree/main/bitnami/postgresql)
+  - [cetic/helm-postgresql](https://github.com/cetic/helm-postgresql)
 
 ```bash
 # create chart
@@ -64,4 +66,10 @@ mkdir -p helm-charts && helm create helm-charts/kotlin-fun-http
 
 # verify chart
 helm template helm-charts/kotlin-fun-http --debug > tmp-app.yaml
+```
+
+* [argo-cd](https://github.com/hckops/kube-template/blob/main/applications/templates/examples/kotlin-fun.yaml) app
+
+```bash
+TODO port-forward
 ```
