@@ -4,5 +4,6 @@ version: 0.2.0
 dependencies:
   # https://artifacthub.io/packages/helm/cetic/postgresql
   - name: postgresql
+    alias: database
     version: 0.2.4
     repository: https://cetic.github.io/helm-charts

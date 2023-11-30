@@ -11,6 +11,10 @@ image:
 env:
   - name: SERVER_NAME
     value: "kotlin-fun-http-example"
+  - name: POSTGRES_URL
+    # format [service-name].[namespace].cluster.local
+    # TODO extract config hostname and override it in the app using the interpolated namespace
+    value: "jdbc:postgresql://kotlin-fun-postgresql.examples.svc.cluster.local:5432/example_db"
 
 resources:
   requests:
@@ -23,3 +27,10 @@ app:
   version: main-v0.1.0
   replicas: 1
   httpPort: 8080
+
+database:
+  # TODO use secret operator
+  postgresql:
+    username: postgres
+    password: pgpassword
+    database: example_db
