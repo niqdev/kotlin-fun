@@ -12,7 +12,7 @@ env:
   - name: SERVER_NAME
     value: "kotlin-fun-http-example"
   - name: POSTGRES_URL
-    # format [pod-name].[namespace].cluster.local
+    # format [service-name].[namespace].svc.cluster.local
     # TODO extract config hostname and override it in the app using the interpolated namespace
     value: "jdbc:postgresql://kotlin-fun-database.examples.svc.cluster.local:5432/example_db"
 
@@ -28,7 +28,11 @@ app:
   replicas: 1
   httpPort: 8080
 
+# see alias in Chart.yaml: it changes service-name from "kotlin-fun-postgres" to "kotlin-fun-database"
 database:
+  image:
+    repository: postgres
+    tag: "16-alpine"
   # TODO use secret operator
   postgresql:
     username: postgres

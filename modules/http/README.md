@@ -72,14 +72,16 @@ helm template helm-charts/kotlin-fun-http --debug > tmp-app.yaml
 * [argo-cd](https://github.com/hckops/kube-template/blob/main/applications/templates/examples/kotlin-fun.yaml) app
 
 ```bash
-TODO port-forward
-
+# port forward locally
 kubectl --kubeconfig clusters/do-template-kubeconfig.yaml -n examples \
-  port-forward svc/kotlin-fun-postgresql 5432:5432
+  port-forward svc/niqdev-kotlin-fun-http-main-v0-1-0 8888:8080
+
+# verify service
+curl http://localhost:8888/status
 
 # pgpassword
 kubectl --kubeconfig clusters/do-template-kubeconfig.yaml -n examples \
-  exec -it sts/kotlin-fun-database -- psql -h localhost -U postgres --password -p 5432 example_db
+  exec -it sts/kotlin-fun-database -c kotlin-fun-database -- psql -h localhost -U postgres --password -p 5432 example_db
 
 # show tables
 \dt
