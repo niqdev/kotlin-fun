@@ -57,15 +57,14 @@ docker run --rm \
 
 * [Helm](https://helm.sh/docs)
 * PostgreSQL charts
-  - [bitnami/postgresql](https://github.com/bitnami/charts/tree/main/bitnami/postgresql)
-  - [cetic/helm-postgresql](https://github.com/cetic/helm-postgresql)
-* [Deploy Helm OCI charts with ArgoCD](https://drake0103.medium.com/deploy-helm-oci-charts-with-argocd-583699c7d739)
+  - [cetic/helm-postgresql](https://github.com/cetic/helm-postgresql) is ***obsolete*** and it supports only v11
+  - [bitnami/postgresql](https://github.com/bitnami/charts/tree/main/bitnami/postgresql) requires OCI registry config in argo, see [Deploy Helm OCI charts with ArgoCD](https://drake0103.medium.com/deploy-helm-oci-charts-with-argocd-583699c7d739)
 
 ```bash
-# create chart
+# creates chart
 mkdir -p helm-charts && helm create helm-charts/kotlin-fun-http
 
-# verify chart
+# verifies chart
 helm template helm-charts/kotlin-fun-http --debug > tmp-app.yaml
 ```
 
@@ -76,13 +75,13 @@ helm template helm-charts/kotlin-fun-http --debug > tmp-app.yaml
 kubectl --kubeconfig clusters/do-template-kubeconfig.yaml -n examples \
   port-forward svc/niqdev-kotlin-fun-http-main-v0-1-0 8888:8080
 
-# verify service
+# verifies service
 curl http://localhost:8888/status
 
-# pgpassword
+# POSTGRES_PASSWORD=pgpassword
 kubectl --kubeconfig clusters/do-template-kubeconfig.yaml -n examples \
   exec -it sts/kotlin-fun-database -c kotlin-fun-database -- psql -h localhost -U postgres --password -p 5432 example_db
 
-# show tables
+# show stables
 \dt
 ```

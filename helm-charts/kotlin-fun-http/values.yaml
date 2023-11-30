@@ -32,7 +32,8 @@ app:
 database:
   image:
     repository: postgres
-    tag: "16-alpine"
+    # TODO chart compatible only with v11 use bitnami for latest version (oci registry issue in argo)
+    tag: "11-alpine"
   # TODO use secret operator
   postgresql:
     username: postgres
