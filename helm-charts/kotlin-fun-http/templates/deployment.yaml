@@ -26,11 +26,11 @@ spec:
         livenessProbe:
           httpGet:
             path: /status
-            port: http
+            port: http-svc
         readinessProbe:
           httpGet:
             path: /status
-            port: http
+            port: http-svc
         # env
         {{- with .Values.env }}
         env:
