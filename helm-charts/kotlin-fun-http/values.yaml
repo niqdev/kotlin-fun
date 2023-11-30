@@ -14,7 +14,7 @@ env:
   - name: POSTGRES_URL
     # format [pod-name].[namespace].cluster.local
     # TODO extract config hostname and override it in the app using the interpolated namespace
-    value: "jdbc:postgresql://kotlin-fun-database-0.examples.svc.cluster.local:5432/example_db"
+    value: "jdbc:postgresql://kotlin-fun-database.examples.svc.cluster.local:5432/example_db"
 
 resources:
   requests:
