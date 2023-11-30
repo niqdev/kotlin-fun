@@ -73,4 +73,14 @@ helm template helm-charts/kotlin-fun-http --debug > tmp-app.yaml
 
 ```bash
 TODO port-forward
+
+kubectl --kubeconfig clusters/do-template-kubeconfig.yaml -n examples \
+  port-forward svc/kotlin-fun-postgresql 5432:5432
+
+# pgpassword
+kubectl --kubeconfig clusters/do-template-kubeconfig.yaml -n examples \
+  exec -it sts/kotlin-fun-database -- psql -h localhost -U postgres --password -p 5432 example_db
+
+# show tables
+\dt
 ```
