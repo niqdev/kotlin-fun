@@ -59,6 +59,7 @@ docker run --rm \
 * PostgreSQL charts
   - [bitnami/postgresql](https://github.com/bitnami/charts/tree/main/bitnami/postgresql)
   - [cetic/helm-postgresql](https://github.com/cetic/helm-postgresql)
+* [Deploy Helm OCI charts with ArgoCD](https://drake0103.medium.com/deploy-helm-oci-charts-with-argocd-583699c7d739)
 
 ```bash
 # create chart
