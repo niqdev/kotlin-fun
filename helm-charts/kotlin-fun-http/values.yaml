@@ -1,0 +1,25 @@
+namespace: INVALID_NAMESPACE
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: niqdev/kotlin-fun-http
+  tag: latest
+  # default is IfNotPresent
+  pullPolicy: Always
+
+env:
+  - name: SERVER_NAME
+    value: "kotlin-fun-http-example"
+
+resources:
+  requests:
+    memory: 256Mi
+    cpu: 250m
+  limits:
+    memory: 256Mi
+
+app:
+  version: main-v0.1.0
+  replicas: 1
+  httpPort: 8080

@@ -55,3 +55,13 @@ docker run --rm \
   -p 8080:8080 \
   niqdev/kotlin-fun-http
 ```
+
+* [Helm](https://helm.sh/docs)
+
+```bash
+# create chart
+mkdir -p helm-charts && helm create helm-charts/kotlin-fun-http
+
+# verify chart
+helm template helm-charts/kotlin-fun-http --debug > tmp-app.yaml
+```
