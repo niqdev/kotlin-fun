@@ -82,6 +82,6 @@ kubectl --kubeconfig clusters/do-template-kubeconfig.yaml -n examples \
   exec -it sts/kotlin-fun-database -c kotlin-fun-database -- \
   psql -h localhost -U postgres --password -p 5432 example_db
 
-# show stables
+# show tables
 \dt
 ```
