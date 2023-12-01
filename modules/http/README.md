@@ -37,7 +37,7 @@ curl -sS http://localhost:8080/user -H 'Content-Type: application/json' --data '
 
 ### Deployment
 
-* [niqdev/kotlin-fun-http](https://hub.docker.com/r/niqdev/kotlin-fun-http)
+* [niqdev/kotlin-fun-http](https://hub.docker.com/r/niqdev/kotlin-fun-http) docker image updated on every push, see [ci-workflow](https://github.com/niqdev/kotlin-fun/blob/main/.github/workflows/ci.yml)
 
 ```bash
 # publishes local image
@@ -55,9 +55,8 @@ docker run --rm \
   niqdev/kotlin-fun-http
 ```
 
-* [Helm](https://helm.sh/docs)
-* PostgreSQL charts
-  - [cetic/helm-postgresql](https://github.com/cetic/helm-postgresql) is ***obsolete*** and it supports only v11
+* PostgreSQL [Helm](https://helm.sh/docs) charts (StatefulSet)
+  - [cetic/helm-postgresql](https://github.com/cetic/helm-postgresql) is ***obsolete*** and supports only v11
   - [bitnami/postgresql](https://github.com/bitnami/charts/tree/main/bitnami/postgresql) requires OCI registry config in argo, see [Deploy Helm OCI charts with ArgoCD](https://drake0103.medium.com/deploy-helm-oci-charts-with-argocd-583699c7d739)
 
 ```bash
@@ -68,7 +67,7 @@ mkdir -p helm-charts && helm create helm-charts/kotlin-fun-http
 helm template helm-charts/kotlin-fun-http --debug > tmp-app.yaml
 ```
 
-* [argo-cd](https://github.com/hckops/kube-template/blob/main/applications/templates/examples/kotlin-fun.yaml) app
+* [argo-cd](https://github.com/hckops/kube-template/blob/main/applications/templates/examples/kotlin-fun.yaml) app deployed on Kubernetes
 
 ```bash
 # port forward locally
@@ -80,7 +79,8 @@ curl http://localhost:8888/status
 
 # POSTGRES_PASSWORD=pgpassword
 kubectl --kubeconfig clusters/do-template-kubeconfig.yaml -n examples \
-  exec -it sts/kotlin-fun-database -c kotlin-fun-database -- psql -h localhost -U postgres --password -p 5432 example_db
+  exec -it sts/kotlin-fun-database -c kotlin-fun-database -- \
+  psql -h localhost -U postgres --password -p 5432 example_db
 
 # show stables
 \dt
