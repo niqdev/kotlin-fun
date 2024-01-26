@@ -32,6 +32,21 @@ sealed interface FileResult<T> {
   }
 }
 
+inline fun <reified T> FileResult<T>.getOrNull(): T? =
+  when (this) {
+    is FileResult.Success -> this.value
+    is FileResult.Failure -> null
+  }
+
+inline fun <reified T, reified R> FileResult<T>.fold(
+  s: (T) -> R,
+  f: (FileFailure) -> R
+): R =
+  when (this) {
+    is FileResult.Success -> s(this.value)
+    is FileResult.Failure -> f(this.error)
+  }
+
 inline fun <reified T, reified R> FileResult<T>.map(
   f: (T) -> R
 ): FileResult<R> =
@@ -39,3 +54,9 @@ inline fun <reified T, reified R> FileResult<T>.map(
     is FileResult.Success -> FileResult.Success(f(this.value))
     is FileResult.Failure -> FileResult.Failure(this.error)
   }
+
+inline fun <reified T> FileResult<T>.toBoolean(): Boolean =
+  fold({ true }, { false })
+
+fun <T> Result<T>.toFileResult(): FileResult<T> =
+  this.fold({ FileResult.success(it) }, FileResult.Companion::failure )
