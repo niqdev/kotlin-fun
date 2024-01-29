@@ -1,8 +1,6 @@
 ## http
 
-TODO
-* [bruno](https://www.usebruno.com)
-* http-client
+> TODO http-client example
 
 ### Development
 
@@ -10,9 +8,7 @@ TODO
 * [Jdbi](https://jdbi.org)
 * [Flyway](https://documentation.red-gate.com/fd)
 * [Testcontainers](https://java.testcontainers.org)
-* OpenAPI and Swagger UI, see [Generate OpenAPI Specification](https://www.jetbrains.com/help/idea/ktor.html#openapi)
-    - with the `Application.kt` file open, select `Help > Find Action` and type `Generate OpenAPI documentation for Ktor in Module: kotlin-fun.modules.http.main`
-    - set `Update OpenAPI automatically` in `modules/http/src/main/resources/openapi/documentation.yaml`Open
+* TODO [bruno](https://www.usebruno.com)
 
 ```bash
 # runs tests
@@ -39,6 +35,11 @@ curl -v http://localhost:8080/user/e5c931fd-2ed0-4af7-bf17-a53d2d3daa66
 # add
 curl -sS http://localhost:8080/user -H 'Content-Type: application/json' --data '{"name":"foo","age":42}' | jq
 ```
+
+OpenAPI and Swagger UI
+- see [Generate OpenAPI Specification](https://www.jetbrains.com/help/idea/ktor.html#openapi)
+- first time only, with the `Application.kt` file open, select `Help > Find Action` and type `Generate OpenAPI documentation for Ktor in Module: kotlin-fun.modules.http.main`
+- set `Update OpenAPI automatically` in `modules/http/src/main/resources/openapi/documentation.yaml`
 
 ### Deployment
 
