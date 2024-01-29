@@ -16,14 +16,32 @@ class FileStorageTest : WordSpec({
       val filePath = FilePath("$testDir/my-file.json")
       val result = PlainFileStorage.exists(filePath)
 
+      result.isSuccess() shouldBe true
       result.getOrNull() shouldBe true
     }
 
-    "verify not exists" {
+    "verify invalid exists" {
       val filePath = FilePath("$testDir/foo")
       val result = PlainFileStorage.exists(filePath)
 
+      result.isSuccess() shouldBe true
       result.getOrNull() shouldBe false
+    }
+
+    "verify get" {
+      val filePath = FilePath("$testDir/my-file.json")
+      val result = PlainFileStorage.get(filePath)
+
+      result.isSuccess() shouldBe true
+      result.getOrNull() shouldBe "{}"
+    }
+
+    "verify invalid get" {
+      val filePath = FilePath("$testDir/foo")
+      val result = PlainFileStorage.get(filePath)
+
+      // TODO FileFailure.FileNotFound
+      result.isSuccess() shouldBe false
     }
   }
 })

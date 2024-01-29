@@ -19,9 +19,7 @@ sealed interface FileStorage<T> {
 data object PlainFileStorage : FileStorage<String> {
 
   override fun exists(filePath: FilePath): FileResult<Boolean> =
-    runCatching {
-      Files.exists(filePath.toUnsafePath())
-    }.toFileResult()
+    runCatching { Files.exists(filePath.toUnsafePath()) }.toFileResult()
 
   override fun get(filePath: FilePath): FileResult<String> =
     runCatching { Files.readString(filePath.toUnsafePath()) }.toFileResult()

@@ -1,7 +1,5 @@
 package com.github.niqdev.files
 
-import java.io.FileNotFoundException
-
 sealed interface FileFailure {
   data class FileNotFound(val exception: Throwable) : FileFailure
   data class Unknown(val exception: Throwable) : FileFailure
@@ -9,7 +7,7 @@ sealed interface FileFailure {
   companion object {
     fun from(exception: Throwable): FileFailure =
       when (exception) {
-        is FileNotFoundException -> FileNotFound(exception)
+        is java.nio.file.NoSuchFileException -> FileNotFound(exception)
         else -> Unknown(exception)
       }
   }
@@ -55,8 +53,8 @@ inline fun <reified T, reified R> FileResult<T>.map(
     is FileResult.Failure -> FileResult.Failure(this.error)
   }
 
-inline fun <reified T> FileResult<T>.toBoolean(): Boolean =
+inline fun <reified T> FileResult<T>.isSuccess(): Boolean =
   fold({ true }, { false })
 
 fun <T> Result<T>.toFileResult(): FileResult<T> =
-  this.fold({ FileResult.success(it) }, FileResult.Companion::failure )
+  this.fold({ FileResult.success(it) }, FileResult.Companion::failure)
