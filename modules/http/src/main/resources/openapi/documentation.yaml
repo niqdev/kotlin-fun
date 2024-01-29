@@ -1,0 +1,125 @@
+openapi: "3.0.3"
+info:
+  title: "kotlin_fun API"
+  description: "kotlin_fun API"
+  version: "1.0.0"
+servers:
+- url: "https://kotlin_fun"
+paths:
+  /status:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "OK"
+  /user:
+    get:
+      description: ""
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                type: "array"
+                items:
+                  $ref: "#/components/schemas/User"
+    post:
+      description: ""
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: "#/components/schemas/UserRequest"
+        required: true
+      responses:
+        "201":
+          description: "Created"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserResponse"
+  /user/{id}:
+    get:
+      description: ""
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Function1_? super User"
+  /version:
+    get:
+      description: ""
+      parameters:
+      - name: "X-My-Version"
+        in: "header"
+        required: false
+        schema:
+          type: "string"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+components:
+  schemas:
+    UserId:
+      type: "object"
+      properties:
+        uuid:
+          type: "string"
+          format: "uuid"
+      required:
+      - "uuid"
+    User:
+      type: "object"
+      properties:
+        id:
+          $ref: "#/components/schemas/UserId"
+        name:
+          type: "string"
+        age:
+          type: "integer"
+          format: "int32"
+      required:
+      - "id"
+      - "name"
+    UserRequest:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        age:
+          type: "integer"
+          format: "int32"
+      required:
+      - "name"
+    UserResponse:
+      type: "object"
+      properties:
+        userId:
+          $ref: "#/components/schemas/UserId"
+      required:
+      - "userId"
+    Function1:
+      type: "object"
+      properties: {}
+    Function1_? super User:
+      type: "object"

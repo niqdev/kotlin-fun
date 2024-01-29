@@ -36,7 +36,7 @@ jobs:
         run: ./gradlew clean build
 
       - if: github.ref_name == 'main'
-        name: Publish image
+        name: Publish Docker image
         run: ./gradlew :modules:http:publishImage
         env:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
