@@ -10,6 +10,9 @@ TODO
 * [Jdbi](https://jdbi.org)
 * [Flyway](https://documentation.red-gate.com/fd)
 * [Testcontainers](https://java.testcontainers.org)
+* OpenAPI and Swagger UI, see [Generate OpenAPI Specification](https://www.jetbrains.com/help/idea/ktor.html#openapi)
+    - with the `Application.kt` file open, select `Help > Find Action` and type `Generate OpenAPI documentation for Ktor in Module: kotlin-fun.modules.http.main`
+    - set `Update OpenAPI automatically` in `modules/http/src/main/resources/openapi/documentation.yaml`Open
 
 ```bash
 # runs tests
@@ -25,6 +28,8 @@ docker-compose -f local/docker-compose-http.yml down -v
 
 # healthcheck
 curl http://localhost:8080/status
+# openapi spec
+curl -sS http://localhost:8080/swagger/documentation.yaml | yq
 # version
 curl -H 'X-My-Version: foo' http://localhost:8080/version
 # list

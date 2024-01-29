@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.github.niqdev.ktor.server.repositories.DatabaseSetup
 import com.github.niqdev.ktor.server.repositories.UserRepositoryImpl
+import com.github.niqdev.ktor.server.routes.homeRoutes
 import com.github.niqdev.ktor.server.routes.statusRoutes
 import com.github.niqdev.ktor.server.routes.userRoutes
 import com.github.niqdev.ktor.server.routes.versionRoutes
@@ -50,6 +51,7 @@ fun Application.mainModule() {
 
   log.debug("Loading route plugins")
   routing {
+    homeRoutes()
     statusRoutes()
     userRoutes(userService)
     versionRoutes()
