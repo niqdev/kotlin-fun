@@ -11,7 +11,7 @@ data class FilePath(val value: String) {
 sealed interface FileStorage<T> {
   fun exists(filePath: FilePath): FileResult<Boolean>
   fun get(filePath: FilePath): FileResult<T>
-  fun list(prefix: String, suffix: String): FileResult<T>
+  fun list(prefix: String, suffix: String): FileResult<List<FilePath>>
   fun store(filePath: FilePath, value: T): FileResult<Unit>
   fun delete(filePath: FilePath): FileResult<Unit>
 }
@@ -24,15 +24,22 @@ data object PlainFileStorage : FileStorage<String> {
   override fun get(filePath: FilePath): FileResult<String> =
     runCatching { Files.readString(filePath.toUnsafePath()) }.toFileResult()
 
-  override fun list(prefix: String, suffix: String): FileResult<String> {
-    TODO("Not yet implemented")
-  }
+  override fun list(prefix: String, suffix: String): FileResult<List<FilePath>> =
+    runCatching { Files.newDirectoryStream(Paths.get(prefix), "*$suffix")
+      .mapNotNull { FilePath(it.toFile().absolutePath.removePrefix("$prefix/")) }
+    }.toFileResult()
 
-  override fun delete(filePath: FilePath): FileResult<Unit> {
-    TODO("Not yet implemented")
-  }
+  override fun store(filePath: FilePath, value: String): FileResult<Unit> =
+    runCatching {
+      Files.createDirectories(filePath.toUnsafePath().parent)
+      Files.write(filePath.toUnsafePath(), value.toByteArray())
+      Unit
+    }.toFileResult()
 
-  override fun store(filePath: FilePath, value: String): FileResult<Unit> {
-    TODO("Not yet implemented")
-  }
+  override fun delete(filePath: FilePath): FileResult<Unit> =
+    runCatching {
+      Files.deleteIfExists(filePath.toUnsafePath())
+      Unit
+    }.toFileResult()
+
 }

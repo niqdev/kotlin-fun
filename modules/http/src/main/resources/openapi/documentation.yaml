@@ -6,6 +6,19 @@ info:
 servers:
 - url: "https://kotlin_fun"
 paths:
+  /:
+    get:
+      description: ""
+      responses:
+        "301":
+          description: "Moved Permanently <br> Redirect"
+          content:
+            text/plain:
+              schema:
+                type: "string"
+              examples:
+                Example#1:
+                  value: "/openapi"
   /status:
     get:
       description: ""

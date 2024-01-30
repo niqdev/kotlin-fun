@@ -43,5 +43,30 @@ class FileStorageTest : WordSpec({
       // TODO FileFailure.FileNotFound
       result.isSuccess() shouldBe false
     }
+
+    "verify list" {
+      val result = PlainFileStorage.list(testDir, "txt")
+
+      result.isSuccess() shouldBe true
+      val paths = result.getOrNull()
+      paths?.size shouldBe 2
+      val expected = listOf("my-file-1.txt", "my-file-2.txt").map { FilePath(it) }
+      paths?.sortedBy { it.value } shouldBe expected
+    }
+
+    "verify store and delete" {
+      val filePath = FilePath("$testDir/my-example")
+      val fileValue = "foo"
+
+      val storeResult = PlainFileStorage.store(filePath, fileValue)
+      storeResult.isSuccess() shouldBe true
+
+      PlainFileStorage.get(filePath).getOrNull() shouldBe fileValue
+      PlainFileStorage.exists(filePath).getOrNull() shouldBe true
+
+      val deleteResult = PlainFileStorage.delete(filePath)
+      deleteResult.isSuccess() shouldBe true
+      PlainFileStorage.exists(filePath).getOrNull() shouldBe false
+    }
   }
 })
