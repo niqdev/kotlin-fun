@@ -5,7 +5,7 @@
 [ci-image]: https://github.com/niqdev/kotlin-fun/actions/workflows/ci.yml/badge.svg
 [ci-url]: https://github.com/niqdev/kotlin-fun/actions/workflows/ci.yml
 
-Personal notes about Kotlin. The project's name was inspired by [this](https://www.youtube.com/watch?v=GrzM3jK3Y2E) talk!
+The project's name was inspired by [this](https://www.youtube.com/watch?v=GrzM3jK3Y2E) talk!
 
 * Kotlin [docs](https://kotlinlang.org/docs/home.html)
 
