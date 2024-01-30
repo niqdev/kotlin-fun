@@ -25,8 +25,9 @@ data object PlainFileStorage : FileStorage<String> {
     runCatching { Files.readString(filePath.toUnsafePath()) }.toFileResult()
 
   override fun list(prefix: String, suffix: String): FileResult<List<FilePath>> =
-    runCatching { Files.newDirectoryStream(Paths.get(prefix), "*$suffix")
-      .mapNotNull { FilePath(it.toFile().absolutePath.removePrefix("$prefix/")) }
+    runCatching {
+      Files.newDirectoryStream(Paths.get(prefix), "*$suffix")
+        .mapNotNull { FilePath(it.toFile().absolutePath.removePrefix("$prefix/")) }
     }.toFileResult()
 
   override fun store(filePath: FilePath, value: String): FileResult<Unit> =
@@ -41,5 +42,4 @@ data object PlainFileStorage : FileStorage<String> {
       Files.deleteIfExists(filePath.toUnsafePath())
       Unit
     }.toFileResult()
-
 }
