@@ -8,12 +8,22 @@ permissions:
 jobs:
   dependabot:
     runs-on: ubuntu-latest
+
     if: github.actor == 'dependabot[bot]'
     steps:
-      - id: metadata
+      - name: Approve PR
+        run: gh pr review --approve "$PR_URL"
+        env:
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+      - name: Fetch PR info
+        id: metadata
         uses: dependabot/fetch-metadata@v1
-      - if: contains(fromJSON('["version-update:semver-minor", "version-update:semver-patch"]'), steps.metadata.outputs.update-type)
-        run: gh pr merge --auto --merge "$PR_URL"
+
+      - name: Auto-Merge PR with minor and patch updates
+        if: contains(fromJSON('["version-update:semver-minor", "version-update:semver-patch"]'), steps.metadata.outputs.update-type)
+        run: gh pr merge --auto --rebase "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
