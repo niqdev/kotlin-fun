@@ -21,6 +21,8 @@ jobs:
         id: metadata
         uses: dependabot/fetch-metadata@v1
 
+      # requires "Allow auto-merge" enabled in settings
+      # https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/automatically-merging-a-pull-request
       - name: Auto-Merge PR with minor and patch updates
         if: contains(fromJSON('["version-update:semver-minor", "version-update:semver-patch"]'), steps.metadata.outputs.update-type)
         run: gh pr merge --auto --rebase "$PR_URL"
