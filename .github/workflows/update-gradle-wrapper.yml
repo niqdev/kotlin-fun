@@ -14,6 +14,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # required for buildSrc only, fixes "Could not resolve project :buildSrc"
+      # last failing workflow https://github.com/niqdev/kotlin-fun/actions/runs/7717490036
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
