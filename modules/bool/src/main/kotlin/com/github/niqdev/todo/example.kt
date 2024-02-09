@@ -1,4 +1,4 @@
-package com.github.niqdev.query
+package com.github.niqdev.todo
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper

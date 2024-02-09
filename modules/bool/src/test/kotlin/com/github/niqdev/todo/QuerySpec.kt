@@ -1,4 +1,4 @@
-package com.github.niqdev.query
+package com.github.niqdev.todo
 
 import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe

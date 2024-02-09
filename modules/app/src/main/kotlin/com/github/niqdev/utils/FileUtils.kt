@@ -1,6 +1,6 @@
-package com.github.niqdev.ktor.common
+package com.github.niqdev.utils
 
-object Files {
+object FileUtils {
 
   fun unsafeReadFromResource(path: String): String =
     this::class.java.classLoader.getResource(path)?.readText()!!
