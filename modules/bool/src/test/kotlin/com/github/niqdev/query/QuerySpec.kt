@@ -18,19 +18,43 @@ import io.kotest.matchers.shouldBe
 // Encoder[A]: A -> Json
 // Decoder[A]: Json -> A
 
-// QueryParser "foo=3&bar=42"
-// JsonParser "[{"name":"foo","value":"3"},{"name":"bar","value":"42"}]"
+// parser combinator
+// https://github.com/NickLydon/KotZen/blob/main/src/test/kotlin/parsingJsonExample/JsonParser.kt
+
+// profunctor
+// https://github.com/uberto/kondor-json
+// https://github.com/uberto/kotlin-pearls/blob/master/src/main/kotlin/com/ubertob/adjunction/Profunctor.kt
 
 class QuerySpec : WordSpec({
 
   "Query" should {
 
-    "parser" {
+    "parse query" {
       val expected = FilterPredicate.In(
-        head = FilterPredicate.Filter(name = "foo", value = "3"),
-        tail = listOf(FilterPredicate.Filter(name = "bar", value = "42"))
+        FilterPredicate.Filter(name = "foo", value = "3"),
+        FilterPredicate.Filter(name = "bar", value = "42")
       )
-      val result = QueryParser.parse("foo=3&bar=42")
+      val result = FilterParser.query("foo=3&bar=42")
+      result.isSuccess() shouldBe true
+      result.getOrNull() shouldBe expected
+    }
+
+    "parse json filter" {
+      val expected = FilterPredicate.Filter(name = "foo", value = "3")
+      val value = """{"name":"foo","value":"3"}"""
+      val result = FilterParser.json(value)
+      result.isSuccess() shouldBe true
+      result.getOrNull() shouldBe expected
+    }
+
+    "parse json filters" {
+      val expected = FilterPredicate.In(
+        FilterPredicate.Filter(name = "foo", value = "3"),
+        FilterPredicate.Filter(name = "bar", value = "42")
+      )
+      // TODO ideally "[{"name":"foo","value":"3"},{"name":"bar","value":"42"}]"
+      val value = """{"filters":[{"name":"foo","value":"3"},{"name":"bar","value":"42"}]}"""
+      val result = FilterParser.json(value)
       result.isSuccess() shouldBe true
       result.getOrNull() shouldBe expected
     }
@@ -38,7 +62,6 @@ class QuerySpec : WordSpec({
     "simple" {
       // https://dundalek.com/rql
       val rql = "and(eq(foo,3),eq(foo,bar))"
-      val query = "foo=3&bar=42"
       val json = """
         {
           "query": {

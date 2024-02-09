@@ -5,6 +5,8 @@ plugins {
 dependencies {
   testImplementation(libs.kotest.runner.junit5)
   testImplementation(libs.kotest.assertions.core)
+
+  implementation(libs.jackson.module)
 }
 
 tasks.withType<Test> {

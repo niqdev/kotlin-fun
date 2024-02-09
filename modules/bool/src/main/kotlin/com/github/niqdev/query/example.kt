@@ -1,5 +1,9 @@
 package com.github.niqdev.query
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
+
 sealed interface Operator {
   data object Eq : Operator
   data object Neq : Operator
@@ -18,17 +22,6 @@ fun Operator.pretty(): String =
     is Operator.Gt -> ">"
     is Operator.Gte -> ">="
   }
-
-// ////////////////////////////
-
-// TODO type decoder (int/string/date) and operator (eq/neq/gt/ls)
-
-sealed interface FilterPredicate {
-  data object All : FilterPredicate
-  data class Filter(val name: String, val value: String) : FilterPredicate
-  // TODO replace with NonEmptyList
-  data class In(val head: Filter, val tail: List<Filter> = emptyList()) : FilterPredicate
-}
 
 // ////////////////////////////
 
@@ -60,23 +53,62 @@ inline fun <reified T> ParserResult<T>.isSuccess(): Boolean =
 
 // ////////////////////////////
 
-sealed interface FilterParser {
-  fun parse(value: String): ParserResult<FilterPredicate>
+interface Parser<T> {
+  fun parse(value: String): ParserResult<T>
 }
 
-data object QueryParser : FilterParser {
-  override fun parse(value: String): ParserResult<FilterPredicate> =
-    runCatching {
-      // TODO Decoder with validation
-      val filters = value.split("&").fold(emptyList<FilterPredicate.Filter>()) { xs, raw ->
-        val x = raw.split("=")
-        xs + FilterPredicate.Filter(x.first(), x.last())
-      }
+// ////////////////////////////
 
-      when (filters.size) {
-        0 -> FilterPredicate.All
-        1 -> filters.first()
-        else -> FilterPredicate.In(filters.first(), filters.drop(1))
-      }
-    }.toParserResult()
+sealed interface FilterParser : Parser<FilterPredicate> {
+  override fun parse(value: String): ParserResult<FilterPredicate>
+
+  data object Query : FilterParser {
+    override fun parse(value: String): ParserResult<FilterPredicate> =
+      runCatching {
+        // TODO Decoder with validation
+        val filters = value.split("&").fold(emptyList<FilterPredicate.Filter>()) { xs, raw ->
+          val x = raw.split("=")
+          xs + FilterPredicate.Filter(x.first(), x.last())
+        }
+
+        when (filters.size) {
+          0 -> FilterPredicate.All
+          1 -> filters.first()
+          else -> FilterPredicate.In(filters)
+        }
+      }.toParserResult()
+  }
+
+  data object Json : FilterParser {
+    private val mapper = jacksonObjectMapper()
+    override fun parse(value: String): ParserResult<FilterPredicate> =
+      runCatching { mapper.readValue<FilterPredicate>(value) }.toParserResult()
+  }
+
+  companion object {
+    fun query(value: String): ParserResult<FilterPredicate> = Query.parse(value)
+    fun json(value: String): ParserResult<FilterPredicate> = Json.parse(value)
+  }
+}
+
+// ////////////////////////////
+
+// TODO type decoder (int/string/date) and operator (eq/neq/gt/ls)
+// https://github.com/FasterXML/jackson-module-kotlin/blob/2.17/src/test/kotlin/com/fasterxml/jackson/module/kotlin/test/SealedClassTest.kt
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.DEDUCTION)
+sealed interface FilterPredicate {
+  data object All : FilterPredicate
+  data class Filter(val name: String, val value: String) : FilterPredicate
+  // TODO replace with NonEmptyList
+  data class In(val filters: List<Filter>) : FilterPredicate {
+    companion object {
+      operator fun invoke(vararg filters: Filter): FilterPredicate =
+        In(filters.asList())
+    }
+  }
+
+  companion object {
+    val eval: (FilterPredicate) -> Boolean = TODO()
+  }
 }
