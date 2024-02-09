@@ -1,6 +1,7 @@
 package com.github.niqdev.example
 
 // https://arosien.github.io/talks/free-boolean-algebras.html
+// https://engineering.wingify.com/posts/Free-objects
 // https://youtu.be/6-afaw_ht80
 sealed interface FreeB<out A> {
 
@@ -39,6 +40,8 @@ infix fun <A> FreeB<A>.and(right: FreeB<A>): FreeB<A> =
 infix fun <A> FreeB<A>.or(right: FreeB<A>): FreeB<A> =
   FreeB.Or(this, right)
 
+// interpreter
+// TODO FreeB<A>.normalize(): FreeB<A>
 fun <A> FreeB<A>.pretty(f: (A) -> String): String =
   when (this) {
     is FreeB.Pure -> f(value)

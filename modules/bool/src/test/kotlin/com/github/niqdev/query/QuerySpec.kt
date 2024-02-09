@@ -13,12 +13,27 @@ import io.kotest.matchers.shouldBe
 // https://www.youtube.com/watch?v=oRLkb6mqvVM
 // TODO https://arosien.github.io/talks/free-boolean-algebras.html
 
+// TODO lenses https://arrow-kt.io/learn/immutable-data/intro
+
 // Encoder[A]: A -> Json
 // Decoder[A]: Json -> A
+
+// QueryParser "foo=3&bar=42"
+// JsonParser "[{"name":"foo","value":"3"},{"name":"bar","value":"42"}]"
 
 class QuerySpec : WordSpec({
 
   "Query" should {
+
+    "parser" {
+      val expected = FilterPredicate.In(
+        head = FilterPredicate.Filter(name = "foo", value = "3"),
+        tail = listOf(FilterPredicate.Filter(name = "bar", value = "42"))
+      )
+      val result = QueryParser.parse("foo=3&bar=42")
+      result.isSuccess() shouldBe true
+      result.getOrNull() shouldBe expected
+    }
 
     "simple" {
       // https://dundalek.com/rql
