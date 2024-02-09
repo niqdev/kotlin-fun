@@ -8,10 +8,7 @@ class FreeBSpec : WordSpec({
   "FreeB" should {
 
     "example" {
-      val valid = FreeB.And(
-        FreeB.Pure(Predicate.AtLeast13(15)),
-        FreeB.Pure(Predicate.NonEmptyName("martin"))
-      )
+      val valid = pure(Predicate.AtLeast13(15)) and pure(Predicate.NonEmptyName("martin"))
       valid.run(Predicate.eval) shouldBe true
       valid.pretty() shouldBe "(at-least-13=15 && non-empty=martin)"
 

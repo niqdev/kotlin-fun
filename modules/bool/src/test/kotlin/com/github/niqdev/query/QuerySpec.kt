@@ -13,6 +13,9 @@ import io.kotest.matchers.shouldBe
 // https://www.youtube.com/watch?v=oRLkb6mqvVM
 // TODO https://arosien.github.io/talks/free-boolean-algebras.html
 
+// Encoder[A]: A -> Json
+// Decoder[A]: Json -> A
+
 class QuerySpec : WordSpec({
 
   "Query" should {
