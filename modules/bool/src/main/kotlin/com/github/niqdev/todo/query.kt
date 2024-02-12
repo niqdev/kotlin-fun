@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 
+// not used
 sealed interface Operator {
   data object Eq : Operator
   data object Neq : Operator
@@ -109,6 +110,7 @@ sealed interface FilterPredicate {
   }
 
   companion object {
+    // TODO you need an interpreter "(A) -> B" or a generalized FreeB, not "(A) -> "Boolean"
     val eval: (FilterPredicate) -> Boolean = TODO()
   }
 }
