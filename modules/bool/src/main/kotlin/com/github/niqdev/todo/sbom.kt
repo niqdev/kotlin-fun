@@ -30,11 +30,11 @@ data class Sbom(
 // https://osv.dev
 // TODO semver
 sealed interface VulnerabilityPredicate {
-  data class IsName(val name: String): VulnerabilityPredicate
-  data class IsVersion(val version: Int): VulnerabilityPredicate
-  data class IsVersionLessThan(val version: Int): VulnerabilityPredicate
-  data class AnyVersionIn(val versions: List<Int>): VulnerabilityPredicate
-  data class IsPackage(val type: PackageType): VulnerabilityPredicate
+  data class IsName(val name: String) : VulnerabilityPredicate
+  data class IsVersion(val version: Int) : VulnerabilityPredicate
+  data class IsVersionLessThan(val version: Int) : VulnerabilityPredicate
+  data class AnyVersionIn(val versions: List<Int>) : VulnerabilityPredicate
+  data class IsPackage(val type: PackageType) : VulnerabilityPredicate
 
   companion object {
     fun eval(pkg: Package): (VulnerabilityPredicate) -> Boolean = {
@@ -72,8 +72,8 @@ fun main() {
 
   val fooVulnerability: FreeB<VulnerabilityPredicate> =
     pure(VulnerabilityPredicate.IsName("foo")) and
-    pure(VulnerabilityPredicate.AnyVersionIn(listOf(1, 5, 7))) and
-    pure(VulnerabilityPredicate.IsPackage(PackageType.APK))
+      pure(VulnerabilityPredicate.AnyVersionIn(listOf(1, 5, 7))) and
+      pure(VulnerabilityPredicate.IsPackage(PackageType.APK))
 
   val barVulnerability: FreeB<VulnerabilityPredicate> =
     pure(VulnerabilityPredicate.IsName("bar")) and
