@@ -4,10 +4,7 @@ import io.kotest.core.spec.style.WordSpec
 import io.kotest.matchers.shouldBe
 
 // TODO https://github.com/persvr/rql
-// TODO https://github.com/anchore/syft
-// syft niqdev/kotlin-fun-http -o cyclonedx-json > foo.json
-// TODO https://falco.org/docs/rules/basic-elements
-// TODO https://www.openpolicyagent.org/docs/latest/#rego
+
 // TODO fixpoint
 // https://www.youtube.com/watch?v=7xSfLPD6tiQ
 // https://www.youtube.com/watch?v=oRLkb6mqvVM

@@ -1,0 +1,3085 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "alpine",
+  "documentNamespace": "https://anchore.com/syft/image/alpine-46bddbe1-e6a8-4a04-ad85-1f20bd01ac9c",
+  "creationInfo": {
+    "licenseListVersion": "3.22",
+    "creators": [
+      "Organization: Anchore, Inc",
+      "Tool: syft-0.104.0"
+    ],
+    "created": "2024-02-09T17:33:54Z"
+  },
+  "packages": [
+    {
+      "name": "alpine-baselayout",
+      "SPDXID": "SPDXRef-Package-apk-alpine-baselayout-cdd2655fffa41c69",
+      "versionInfo": "3.4.3-r2",
+      "supplier": "Person: Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+      "originator": "Person: Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+      "downloadLocation": "https://git.alpinelinux.org/cgit/aports/tree/main/alpine-baselayout",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "6a22bff30e2aed347029eeb9d51c810613705455"
+      },
+      "sourceInfo": "acquired package info from APK DB: /lib/apk/db/installed",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "GPL-2.0-only",
+      "copyrightText": "NOASSERTION",
+      "description": "Alpine base dir structure and init scripts",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine-baselayout:alpine-baselayout:3.4.3-r2:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine-baselayout:alpine_baselayout:3.4.3-r2:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine_baselayout:alpine-baselayout:3.4.3-r2:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine_baselayout:alpine_baselayout:3.4.3-r2:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine:alpine-baselayout:3.4.3-r2:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine:alpine_baselayout:3.4.3-r2:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:apk/alpine/alpine-baselayout@3.4.3-r2?arch=x86_64\u0026distro=alpine-3.19.1"
+        }
+      ]
+    },
+    {
+      "name": "alpine-baselayout-data",
+      "SPDXID": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "versionInfo": "3.4.3-r2",
+      "supplier": "Person: Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+      "originator": "Person: Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+      "downloadLocation": "https://git.alpinelinux.org/cgit/aports/tree/main/alpine-baselayout",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "4962e023276446b5ad42c0775b25a3ff86019cb2"
+      },
+      "sourceInfo": "acquired package info from APK DB: /lib/apk/db/installed",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "GPL-2.0-only",
+      "copyrightText": "NOASSERTION",
+      "description": "Alpine base dir structure and init scripts",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine-baselayout-data:alpine-baselayout-data:3.4.3-r2:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine-baselayout-data:alpine_baselayout_data:3.4.3-r2:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine_baselayout_data:alpine-baselayout-data:3.4.3-r2:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine_baselayout_data:alpine_baselayout_data:3.4.3-r2:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine-baselayout:alpine-baselayout-data:3.4.3-r2:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine-baselayout:alpine_baselayout_data:3.4.3-r2:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine_baselayout:alpine-baselayout-data:3.4.3-r2:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine_baselayout:alpine_baselayout_data:3.4.3-r2:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine:alpine-baselayout-data:3.4.3-r2:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine:alpine_baselayout_data:3.4.3-r2:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:apk/alpine/alpine-baselayout-data@3.4.3-r2?arch=x86_64\u0026upstream=alpine-baselayout\u0026distro=alpine-3.19.1"
+        }
+      ]
+    },
+    {
+      "name": "alpine-keys",
+      "SPDXID": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "versionInfo": "2.4-r1",
+      "supplier": "Person: Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+      "originator": "Person: Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+      "downloadLocation": "https://alpinelinux.org",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "42c2ac64648128428d646a7ccb701e14d0b2cb2e"
+      },
+      "sourceInfo": "acquired package info from APK DB: /lib/apk/db/installed",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "description": "Public keys for Alpine Linux packages",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine-keys:alpine-keys:2.4-r1:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine-keys:alpine_keys:2.4-r1:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine_keys:alpine-keys:2.4-r1:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine_keys:alpine_keys:2.4-r1:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine:alpine-keys:2.4-r1:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:alpine:alpine_keys:2.4-r1:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:apk/alpine/alpine-keys@2.4-r1?arch=x86_64\u0026distro=alpine-3.19.1"
+        }
+      ]
+    },
+    {
+      "name": "apk-tools",
+      "SPDXID": "SPDXRef-Package-apk-apk-tools-93ce1abff709ab00",
+      "versionInfo": "2.14.0-r5",
+      "supplier": "Person: Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+      "originator": "Person: Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+      "downloadLocation": "https://gitlab.alpinelinux.org/alpine/apk-tools",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "a70ec20bb0046399f0631671145b6d7c6fa8b17c"
+      },
+      "sourceInfo": "acquired package info from APK DB: /lib/apk/db/installed",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "GPL-2.0-only",
+      "copyrightText": "NOASSERTION",
+      "description": "Alpine Package Keeper - package manager for alpine",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:apk-tools:apk-tools:2.14.0-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:apk-tools:apk_tools:2.14.0-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:apk_tools:apk-tools:2.14.0-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:apk_tools:apk_tools:2.14.0-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:apk:apk-tools:2.14.0-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:apk:apk_tools:2.14.0-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:apk/alpine/apk-tools@2.14.0-r5?arch=x86_64\u0026distro=alpine-3.19.1"
+        }
+      ]
+    },
+    {
+      "name": "busybox",
+      "SPDXID": "SPDXRef-Package-apk-busybox-6d810d507355b170",
+      "versionInfo": "1.36.1-r15",
+      "supplier": "Person: Sören Tempel \u003csoeren+alpine@soeren-tempel.net\u003e",
+      "originator": "Person: Sören Tempel \u003csoeren+alpine@soeren-tempel.net\u003e",
+      "downloadLocation": "https://busybox.net/",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "c25d1f13cc44d04d78e17fbccc95c817618f2125"
+      },
+      "sourceInfo": "acquired package info from APK DB: /lib/apk/db/installed",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "GPL-2.0-only",
+      "copyrightText": "NOASSERTION",
+      "description": "Size optimized toolbox of many common UNIX utilities",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:busybox:busybox:1.36.1-r15:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:apk/alpine/busybox@1.36.1-r15?arch=x86_64\u0026distro=alpine-3.19.1"
+        }
+      ]
+    },
+    {
+      "name": "busybox-binsh",
+      "SPDXID": "SPDXRef-Package-apk-busybox-binsh-fc5373023233a760",
+      "versionInfo": "1.36.1-r15",
+      "supplier": "Person: Sören Tempel \u003csoeren+alpine@soeren-tempel.net\u003e",
+      "originator": "Person: Sören Tempel \u003csoeren+alpine@soeren-tempel.net\u003e",
+      "downloadLocation": "https://busybox.net/",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "229b265aef6b2f0a9700f86ab66a7ceb0f483005"
+      },
+      "sourceInfo": "acquired package info from APK DB: /lib/apk/db/installed",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "GPL-2.0-only",
+      "copyrightText": "NOASSERTION",
+      "description": "busybox ash /bin/sh",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:busybox-binsh:busybox-binsh:1.36.1-r15:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:busybox-binsh:busybox_binsh:1.36.1-r15:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:busybox_binsh:busybox-binsh:1.36.1-r15:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:busybox_binsh:busybox_binsh:1.36.1-r15:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:busybox:busybox-binsh:1.36.1-r15:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:busybox:busybox_binsh:1.36.1-r15:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:apk/alpine/busybox-binsh@1.36.1-r15?arch=x86_64\u0026upstream=busybox\u0026distro=alpine-3.19.1"
+        }
+      ]
+    },
+    {
+      "name": "ca-certificates-bundle",
+      "SPDXID": "SPDXRef-Package-apk-ca-certificates-bundle-f988a2ee2dfd2ef3",
+      "versionInfo": "20230506-r0",
+      "supplier": "Person: Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+      "originator": "Person: Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+      "downloadLocation": "https://www.mozilla.org/en-US/about/governance/policies/security-group/certs/",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "d98736c880d3536649f0593cd6ef1168a5683a06"
+      },
+      "sourceInfo": "acquired package info from APK DB: /lib/apk/db/installed",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "(MPL-2.0 AND MIT)",
+      "copyrightText": "NOASSERTION",
+      "description": "Pre generated bundle of Mozilla certificates",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:ca-certificates-bundle:ca-certificates-bundle:20230506-r0:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:ca-certificates-bundle:ca_certificates_bundle:20230506-r0:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:ca_certificates_bundle:ca-certificates-bundle:20230506-r0:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:ca_certificates_bundle:ca_certificates_bundle:20230506-r0:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:ca-certificates:ca-certificates-bundle:20230506-r0:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:ca-certificates:ca_certificates_bundle:20230506-r0:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:ca_certificates:ca-certificates-bundle:20230506-r0:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:ca_certificates:ca_certificates_bundle:20230506-r0:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:mozilla:ca-certificates-bundle:20230506-r0:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:mozilla:ca_certificates_bundle:20230506-r0:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:ca:ca-certificates-bundle:20230506-r0:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:ca:ca_certificates_bundle:20230506-r0:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:apk/alpine/ca-certificates-bundle@20230506-r0?arch=x86_64\u0026upstream=ca-certificates\u0026distro=alpine-3.19.1"
+        }
+      ]
+    },
+    {
+      "name": "libc-utils",
+      "SPDXID": "SPDXRef-Package-apk-libc-utils-8526606e9762158b",
+      "versionInfo": "0.7.2-r5",
+      "supplier": "Person: Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+      "originator": "Person: Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+      "downloadLocation": "https://alpinelinux.org",
+      "filesAnalyzed": false,
+      "sourceInfo": "acquired package info from APK DB: /lib/apk/db/installed",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "(BSD-2-Clause AND BSD-3-Clause)",
+      "copyrightText": "NOASSERTION",
+      "description": "Meta package to pull in correct libc",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:libc-utils:libc-utils:0.7.2-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:libc-utils:libc_utils:0.7.2-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:libc_utils:libc-utils:0.7.2-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:libc_utils:libc_utils:0.7.2-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:libc:libc-utils:0.7.2-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:libc:libc_utils:0.7.2-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:apk/alpine/libc-utils@0.7.2-r5?arch=x86_64\u0026upstream=libc-dev\u0026distro=alpine-3.19.1"
+        }
+      ]
+    },
+    {
+      "name": "libcrypto3",
+      "SPDXID": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "versionInfo": "3.1.4-r5",
+      "supplier": "Person: Ariadne Conill \u003cariadne@dereferenced.org\u003e",
+      "originator": "Person: Ariadne Conill \u003cariadne@dereferenced.org\u003e",
+      "downloadLocation": "https://www.openssl.org/",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "1042b59ffd35f53692a4f492d46d7b4f7a1f5ea5"
+      },
+      "sourceInfo": "acquired package info from APK DB: /lib/apk/db/installed",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "Apache-2.0",
+      "copyrightText": "NOASSERTION",
+      "description": "Crypto library from openssl",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:libcrypto3:libcrypto3:3.1.4-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:libcrypto3:libcrypto:3.1.4-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:libcrypto:libcrypto3:3.1.4-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:libcrypto:libcrypto:3.1.4-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:apk/alpine/libcrypto3@3.1.4-r5?arch=x86_64\u0026upstream=openssl\u0026distro=alpine-3.19.1"
+        }
+      ]
+    },
+    {
+      "name": "libssl3",
+      "SPDXID": "SPDXRef-Package-apk-libssl3-5f7aa9549ece55ec",
+      "versionInfo": "3.1.4-r5",
+      "supplier": "Person: Ariadne Conill \u003cariadne@dereferenced.org\u003e",
+      "originator": "Person: Ariadne Conill \u003cariadne@dereferenced.org\u003e",
+      "downloadLocation": "https://www.openssl.org/",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "82e34d74bf2da974d24da004bbf74f072476dd83"
+      },
+      "sourceInfo": "acquired package info from APK DB: /lib/apk/db/installed",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "Apache-2.0",
+      "copyrightText": "NOASSERTION",
+      "description": "SSL shared libraries",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:libssl3:libssl3:3.1.4-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:libssl3:libssl:3.1.4-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:libssl:libssl3:3.1.4-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:libssl:libssl:3.1.4-r5:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:apk/alpine/libssl3@3.1.4-r5?arch=x86_64\u0026upstream=openssl\u0026distro=alpine-3.19.1"
+        }
+      ]
+    },
+    {
+      "name": "musl",
+      "SPDXID": "SPDXRef-Package-apk-musl-c9b07b7f6eec0816",
+      "versionInfo": "1.2.4_git20230717-r4",
+      "supplier": "Person: Timo Teräs \u003ctimo.teras@iki.fi\u003e",
+      "originator": "Person: Timo Teräs \u003ctimo.teras@iki.fi\u003e",
+      "downloadLocation": "https://musl.libc.org/",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "8cff19dad8e99139c1c4a0b4afcc4d3011e4bc57"
+      },
+      "sourceInfo": "acquired package info from APK DB: /lib/apk/db/installed",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "MIT",
+      "copyrightText": "NOASSERTION",
+      "description": "the musl c library (libc) implementation",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:musl-libc:musl:1.2.4_git20230717-r4:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:musl_libc:musl:1.2.4_git20230717-r4:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:musl:musl:1.2.4_git20230717-r4:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:apk/alpine/musl@1.2.4_git20230717-r4?arch=x86_64\u0026distro=alpine-3.19.1"
+        }
+      ]
+    },
+    {
+      "name": "musl-utils",
+      "SPDXID": "SPDXRef-Package-apk-musl-utils-fe1f395c5f8eec1c",
+      "versionInfo": "1.2.4_git20230717-r4",
+      "supplier": "Person: Timo Teräs \u003ctimo.teras@iki.fi\u003e",
+      "originator": "Person: Timo Teräs \u003ctimo.teras@iki.fi\u003e",
+      "downloadLocation": "https://musl.libc.org/",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "63c089004c4da9d836b2a7abec689bfb30c1ee09"
+      },
+      "sourceInfo": "acquired package info from APK DB: /lib/apk/db/installed",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "(MIT AND BSD-2-Clause AND GPL-2.0-or-later)",
+      "copyrightText": "NOASSERTION",
+      "description": "the musl c library (libc) implementation",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:musl-utils:musl-utils:1.2.4_git20230717-r4:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:musl-utils:musl_utils:1.2.4_git20230717-r4:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:musl_utils:musl-utils:1.2.4_git20230717-r4:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:musl_utils:musl_utils:1.2.4_git20230717-r4:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:musl-libc:musl-utils:1.2.4_git20230717-r4:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:musl-libc:musl_utils:1.2.4_git20230717-r4:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:musl:musl-utils:1.2.4_git20230717-r4:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:musl:musl_utils:1.2.4_git20230717-r4:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:apk/alpine/musl-utils@1.2.4_git20230717-r4?arch=x86_64\u0026upstream=musl\u0026distro=alpine-3.19.1"
+        }
+      ]
+    },
+    {
+      "name": "scanelf",
+      "SPDXID": "SPDXRef-Package-apk-scanelf-3050e8b53f82ff29",
+      "versionInfo": "1.3.7-r2",
+      "supplier": "Person: Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+      "originator": "Person: Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+      "downloadLocation": "https://wiki.gentoo.org/wiki/Hardened/PaX_Utilities",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "e02e883b6d8effe5b8bcee219db39404528f1794"
+      },
+      "sourceInfo": "acquired package info from APK DB: /lib/apk/db/installed",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "GPL-2.0-only",
+      "copyrightText": "NOASSERTION",
+      "description": "Scan ELF binaries for stuff",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:scanelf:scanelf:1.3.7-r2:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:apk/alpine/scanelf@1.3.7-r2?arch=x86_64\u0026upstream=pax-utils\u0026distro=alpine-3.19.1"
+        }
+      ]
+    },
+    {
+      "name": "ssl_client",
+      "SPDXID": "SPDXRef-Package-apk-ssl-client-17de13f9e782bd29",
+      "versionInfo": "1.36.1-r15",
+      "supplier": "Person: Sören Tempel \u003csoeren+alpine@soeren-tempel.net\u003e",
+      "originator": "Person: Sören Tempel \u003csoeren+alpine@soeren-tempel.net\u003e",
+      "downloadLocation": "https://busybox.net/",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "839a07d6e3d3e9bfddf6d76add730861a40ec242"
+      },
+      "sourceInfo": "acquired package info from APK DB: /lib/apk/db/installed",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "GPL-2.0-only",
+      "copyrightText": "NOASSERTION",
+      "description": "EXternal ssl_client for busybox wget",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:ssl-client:ssl-client:1.36.1-r15:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:ssl-client:ssl_client:1.36.1-r15:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:ssl_client:ssl-client:1.36.1-r15:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:ssl_client:ssl_client:1.36.1-r15:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:ssl:ssl-client:1.36.1-r15:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:ssl:ssl_client:1.36.1-r15:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:apk/alpine/ssl_client@1.36.1-r15?arch=x86_64\u0026upstream=busybox\u0026distro=alpine-3.19.1"
+        }
+      ]
+    },
+    {
+      "name": "zlib",
+      "SPDXID": "SPDXRef-Package-apk-zlib-6007bd824ae77825",
+      "versionInfo": "1.3.1-r0",
+      "supplier": "Person: Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+      "originator": "Person: Natanael Copa \u003cncopa@alpinelinux.org\u003e",
+      "downloadLocation": "https://zlib.net/",
+      "filesAnalyzed": true,
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "b656b3d4dcad265620785a6e39a04974792827d4"
+      },
+      "sourceInfo": "acquired package info from APK DB: /lib/apk/db/installed",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "Zlib",
+      "copyrightText": "NOASSERTION",
+      "description": "A compression/decompression Library",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceType": "cpe23Type",
+          "referenceLocator": "cpe:2.3:a:zlib:zlib:1.3.1-r0:*:*:*:*:*:*:*"
+        },
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:apk/alpine/zlib@1.3.1-r0?arch=x86_64\u0026distro=alpine-3.19.1"
+        }
+      ]
+    },
+    {
+      "name": "alpine",
+      "SPDXID": "SPDXRef-DocumentRoot-Image-alpine",
+      "versionInfo": "sha256:686b46a0213ffe2331b98dd30f3e0b552bb602845c2246ac85b8dea35403e62a",
+      "supplier": "NOASSERTION",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "686b46a0213ffe2331b98dd30f3e0b552bb602845c2246ac85b8dea35403e62a"
+        }
+      ],
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:oci/alpine@sha256:686b46a0213ffe2331b98dd30f3e0b552bb602845c2246ac85b8dea35403e62a?arch=amd64"
+        }
+      ],
+      "primaryPackagePurpose": "CONTAINER"
+    }
+  ],
+  "files": [
+    {
+      "fileName": "/bin/busybox",
+      "SPDXID": "SPDXRef-File-bin-busybox-7f85f255e27fcb9a",
+      "fileTypes": [
+        "APPLICATION",
+        "BINARY"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "0e617f66cd5b2d29f010cae1eab326479a3b0f1c"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5e0f7910dbb1dfa15c9b2993e913253a0fb43725edaba47b4bba88386436ae82"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/apk/keys/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-4a6a0840.rsa.pub-1283f43f662ba815",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "3af08548ef78cfdedcf349880c2c6a1a48763a0e"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9c102bcc376af1498d549b77bdbfa815ae86faa1d2d82f040e616b18ef2df2d4"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/apk/keys/alpine-devel@lists.alpinelinux.org-5243ef4b.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-5243ef4b.rsa.pub-5a96d49dbd6d84a5",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "bfb616658cc05a872568b0c8e398c482e23b60dd"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ebf31683b56410ecc4c00acd9f6e2839e237a3b62b5ae7ef686705c7ba0396a9"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/apk/keys/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-5261cecb.rsa.pub-d33c1cdb156f9c6f",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "3671ae0ec7503b1e193587c1dcdf7b78bc863e42"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "12f899e55a7691225603d6fb3324940fc51cd7f133e7ead788663c2b7eecb00c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/apk/keys/alpine-devel@lists.alpinelinux.org-6165ee59.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-6165ee59.rsa.pub-1c77460987afe27f",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "95995311236b7a55933642ffa10ce6014f1af7d0"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "207e4696d3c05f7cb05966aee557307151f1f00217af4143c1bcaf33b8df733f"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/apk/keys/alpine-devel@lists.alpinelinux.org-61666e3f.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-61666e3f.rsa.pub-f7e985a62128e85b",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "58d5ba4b2f3b1e927721d7a6432f298eedf72a6b"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "128d34d4aec39b0daedea8163cd8dc24dff36fd3d848630ab97eeb1d3084bbb3"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/busybox-paths.d/busybox",
+      "SPDXID": "SPDXRef-File-etc-busybox-paths.d-busybox-bad6200bdffa112a",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "af9972dab927fb4bfcbf574de8cf870492a66657"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e12e0822f5c6426b62f07799a0fc20394241535c5bc2cc8f10c8a25088b8defa"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/crontabs/root",
+      "SPDXID": "SPDXRef-File-etc-crontabs-root-8f934748f4ac9909",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "bdf9356a9516238c8b2468613517749098b17ef6"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "575d810a9fae5f2f0671c9b2c0ce973e46c7207fbe5cb8d1b0d1836a6a0470e3"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/fstab",
+      "SPDXID": "SPDXRef-File-etc-fstab-72e2c5a19a2b1b1b",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "d50ee135ef10a434b9df582ea8276b5c1ce803fa"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a3efca2e8d62785c87517283092b4c800d88612b6f3f06b80a4c2f39d8e68841"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/group",
+      "SPDXID": "SPDXRef-File-etc-group-000b267cde7e3d56",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "dcafa89498396b2cc7495354920819257b81fbd6"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0632d55a68081065097472fe7bc7c66f0785f3b78f39fb23f622d24a7e09be9f"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/hostname",
+      "SPDXID": "SPDXRef-File-etc-hostname-ec99f5c78e8aa047",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "ea75706155cffed0a1bd43ddba4543da27d73a67"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "d906aecb61d076a967d9ffe8821c7b04b063f72df9d9e35b33ef36b1c0d98f16"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/hosts",
+      "SPDXID": "SPDXRef-File-etc-hosts-8716402c19dd1753",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "043eb324a653456caa1a73e2e2d49f77792bb0c5"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e3998dbe02b51dada33de87ae43d18a93ab6915b9e34f5a751bf2b9b25a55492"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/inittab",
+      "SPDXID": "SPDXRef-File-etc-inittab-b1bffe0919a868cf",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "4ecb616e15bb4335917b513f34ac133ae0f8a477"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "54a5f36970125bf70cdf7b215c9e12a287d92ad76a693bd72aec4cbc5645df87"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/logrotate.d/acpid",
+      "SPDXID": "SPDXRef-File-etc-logrotate.d-acpid-665322d723680816",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "4f29720883559a74be03f4de69de2f66113b064b"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "d608a3b7715886b5735def0cc50a6359fd364fac2e0e0a459c588c04be471031"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/modprobe.d/aliases.conf",
+      "SPDXID": "SPDXRef-File-etc-modprobe.d-aliases.conf-2401cde31a1bdc81",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "5946e1e930583552bb7b863eb94bcbb3feef8aa9"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3ebaba946f213670170c7d69949f690a3854553bd0b1560f1d980cba4c83a942"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/modprobe.d/blacklist.conf",
+      "SPDXID": "SPDXRef-File-etc-modprobe.d-blacklist.conf-fceca58b0acbf99e",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "e1376014791376ddee402f8d06dae7b4e9e6f67e"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5cd46031fc7dc7186e67c97fd34780597de4ebff51dbe41eba27220fe5e0d866"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/modprobe.d/i386.conf",
+      "SPDXID": "SPDXRef-File-etc-modprobe.d-i386.conf-00c05d902dc61609",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "a676b2fe78e7ea897d702b2c2fb2a2659f1eb657"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "6c46c4cbfb8b7594f19eb94801a350fa2221ae9ac5239a8819d15555caa76ae8"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/modprobe.d/kms.conf",
+      "SPDXID": "SPDXRef-File-etc-modprobe.d-kms.conf-dd2311ac2c46698a",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "ca76cb9f71980e9bda8db6bf95da759e26b27a88"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "50467fa732f809f3a2bb5738628765c5f895c3a237e1c1ad09f85d41fd9ca7c5"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/modules",
+      "SPDXID": "SPDXRef-File-etc-modules-ffffc64bf91fddc3",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "b68a208d48a91c670c8040a03c95fae12c144f53"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "2c881de75a5409c35d2433a24f180b8b02ba478ef2c1c60ea3434a35bcbc335d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/motd",
+      "SPDXID": "SPDXRef-File-etc-motd-64c6f694ee6e94c5",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "48b912f610627546cfc30af0f974745a1bf7c30f"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ff044e9be5daa2eee2d3d10a4da72e5477e4c24c16f1792de2c91dae844c0e30"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/network/if-up.d/dad",
+      "SPDXID": "SPDXRef-File-etc-network-if-up.d-dad-d0a4010629a0a453",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "3917fe94f44ab9881d90105c2a87af475b7ad10e"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "8ee2455448c12cd1fd0befbc84f1ace7b80ba46603aff0d67bc7bcad604ea466"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/nsswitch.conf",
+      "SPDXID": "SPDXRef-File-etc-nsswitch.conf-a8659880b8b499ed",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "f4306c327bf44767da8da4e3a13bf40bdd4d3aaa"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0afd94c183d30a348b45057f6bf468e121aa448a7641109addb5bb8e282f514d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/passwd",
+      "SPDXID": "SPDXRef-File-etc-passwd-1f2fa0bc8032de27",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "4dc86eb8b51fbabd22cef7d9419c6037f2c9841f"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "2e0902cf0a7f64bf4e64ef2fad66ae977b4d01975dddf5352a84aea5c4e901f0"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/profile",
+      "SPDXID": "SPDXRef-File-etc-profile-35532e6fd0fdcdad",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "54dd1d99ac0383798113f96307ee9b52b0bb0f37"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "87e8643d3ce156de0c09370d4d39446f30bd00d264bea248abc191c4d7b9df3e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/profile.d/20locale.sh",
+      "SPDXID": "SPDXRef-File-etc-profile.d-20locale.sh-a4a20fbe9704eaf4",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "96adbd950ccf992085295990f9bbe667f0cf4c4e"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "284a6ef56ab97a13a777c6b01ae14f2cc3d2b7a29c19e750e622e70cc3c73186"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/profile.d/README",
+      "SPDXID": "SPDXRef-File-etc-profile.d-README-7ab3c907e0be3bf5",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "df9396b02cf3be70767e6171eb691baa6d40c759"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b73284f27fe2da9ae1902b1fe9596c3ffc61a154e2805a034184f0468f8b09b0"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/profile.d/color_prompt.sh.disabled",
+      "SPDXID": "SPDXRef-File-etc-profile.d-color-prompt.sh.disabled-b5e5c6c5edcd5dd2",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "d5733d99d7b5676f6d58c19a3a47a8bc3fe6e2e5"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ba24425c6864a5d17fa0fdaf914c4d21419e47c4d62080c33830af059fe46617"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/protocols",
+      "SPDXID": "SPDXRef-File-etc-protocols-9705062854233758",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "d5f9654539089b96f1b1956848d783527da6fb47"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4959498abbadaa1e50894a266f8d0d94500101cfe5b5f09dcad82e9d5bdfab46"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/securetty",
+      "SPDXID": "SPDXRef-File-etc-securetty-57add8204fb32db1",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "0e29ce7fa251a4246033abcdaa339ec5dde84a75"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "713fcea5109728883b9147e822429133fcc8b5e253afd3c2a197b10cd0bc3b4d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/services",
+      "SPDXID": "SPDXRef-File-etc-services-2ec08535081b7ce7",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "a0d7a229bf049f7fe17e8445226236e4024535d0"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f6183055fd949f9c53d49ee620f85d0150123ea691d25ed1bba0c641b4ee2f48"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/shadow",
+      "SPDXID": "SPDXRef-File-etc-shadow-5bfc44a4d14acff4",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "258ab61690a3d3c96c2447483f55c6761ed21b01"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "cdcdf002dbf6a03de7cf3c024d12162d6227cb5e2d27ca58844a716301f03151"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/shells",
+      "SPDXID": "SPDXRef-File-etc-shells-29d58a0ac4faf933",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "a239b661da4227a07f6a9183699fd275bdb12640"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "24be6ceb236610df45684c83b06c918ae45635be55f69975e43676b7595bbc5f"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/ssl/certs/ca-certificates.crt",
+      "SPDXID": "SPDXRef-File-etc-ssl-certs-ca-certificates.crt-3e472afe23b7cd80",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "b132b312a42c8be5d632069aecc6797b629f1264"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "824cefcee69de918c76b7b92776f304c3a4b7f6281539118bc1d41a9dd8476d9"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/ssl/ct_log_list.cnf",
+      "SPDXID": "SPDXRef-File-etc-ssl-ct-log-list.cnf-b0563e5db583cb46",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "a2587c4e97408b64274e5e052b74e3754892c13a"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f1c1803d13d1d0b755b13b23c28bd4e20e07baf9f2b744c9337ba5866aa0ec3b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/ssl/ct_log_list.cnf.dist",
+      "SPDXID": "SPDXRef-File-etc-ssl-ct-log-list.cnf.dist-9ba6622b38707b78",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "a2587c4e97408b64274e5e052b74e3754892c13a"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f1c1803d13d1d0b755b13b23c28bd4e20e07baf9f2b744c9337ba5866aa0ec3b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/ssl/misc/CA.pl",
+      "SPDXID": "SPDXRef-File-etc-ssl-misc-CA.pl-a0ced0803fb4a94f",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "99ca8b6ceea241ef139900a8443a3315649c8ac4"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "35a85ebe05ac4ee42a0efe544c02ad2c70bf374c4dcd8bf5aaf403b7c1b6cdd8"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/ssl/misc/tsget.pl",
+      "SPDXID": "SPDXRef-File-etc-ssl-misc-tsget.pl-f616a93be2e6e0b4",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "5e1685574b8a41fa02191348c5bc53045fee70f5"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "1c303a261c93d09a04dbb5b4167e93553607a8d06e968bd1cf06325933c147bc"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/ssl/openssl.cnf",
+      "SPDXID": "SPDXRef-File-etc-ssl-openssl.cnf-72bbb48dd3b98722",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "c22e9d6430e914e1a6b72b22093b3cab5338f1cc"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f6045e326b439e8ee31d4efd020ddf660d616c67d03e0e8e7a927eb14cbb5d1f"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/ssl/openssl.cnf.dist",
+      "SPDXID": "SPDXRef-File-etc-ssl-openssl.cnf.dist-e0c69017812c7508",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "c22e9d6430e914e1a6b72b22093b3cab5338f1cc"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f6045e326b439e8ee31d4efd020ddf660d616c67d03e0e8e7a927eb14cbb5d1f"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/sysctl.conf",
+      "SPDXID": "SPDXRef-File-etc-sysctl.conf-82e3c039933b2fb4",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "e2ea73ded7e7371664204b148569fb5e88b0f7a8"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "8bba47da45bc8715c69ac904a60410eabffaa7bbbef640f9c1368ab9c48493d0"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/udhcpc/udhcpc.conf",
+      "SPDXID": "SPDXRef-File-etc-udhcpc-udhcpc.conf-cc18ca4163babfe2",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "9bc069e434228e6ca441848bfb7a6bac23fa148a"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5b372209e01cda07c87b8afa6d1ab3d7e8daf18a1f2332d744203a6dc289eb1a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/etc/udhcpd.conf",
+      "SPDXID": "SPDXRef-File-etc-udhcpd.conf-3a5c030960d411b3",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "1202c58e3ebba2edde32aa789b7af66639d0ed05"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9249f3fd52c2500bfe3586def6765b82336ba7832b65cb8c6b8ca1999c31342e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/lib/apk/db/installed",
+      "SPDXID": "SPDXRef-File-lib-apk-db-installed-bba99768af78e2e1",
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "0000000000000000000000000000000000000000"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/lib/ld-musl-x86_64.so.1",
+      "SPDXID": "SPDXRef-File-lib-ld-musl-x86-64.so.1-7f0aeb6cbc774482",
+      "fileTypes": [
+        "APPLICATION",
+        "BINARY"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "fb3109886e770b1cbb0e4579a1942a7969f3c9b6"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "16c1e108145e26ee4b2c693548216428cadbcc8499b1a9993442c490f4aa3590"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/lib/libapk.so.2.14.0",
+      "SPDXID": "SPDXRef-File-lib-libapk.so.2.14.0-556b566e085dc60a",
+      "fileTypes": [
+        "APPLICATION",
+        "BINARY"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "cf2aa572b994288af6cb88177de3f6d9a9580ee6"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "26ae7d58e0bfcec90a8dbc41f8216435c131d2a26588c9ba9dac6d5c6ac975e7"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/lib/libcrypto.so.3",
+      "SPDXID": "SPDXRef-File-lib-libcrypto.so.3-eb2b05a228390909",
+      "fileTypes": [
+        "APPLICATION",
+        "BINARY"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "05fe7e000a2542aff8c3d0da95e3369ce3d3f109"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "03396d65ce038cf22435555acd7eb40fb86bbe4259408809d64b98aacb24105e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/lib/libssl.so.3",
+      "SPDXID": "SPDXRef-File-lib-libssl.so.3-8f5c93e46c2f6f90",
+      "fileTypes": [
+        "APPLICATION",
+        "BINARY"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "8552e1f8e0ab62f2ed634ed82824840a3a0a21fe"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "26d4781c4ec3a72bf6a6ec4a679a4267d3113fbfd2d3d40f1518f8dca628948e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/lib/libz.so.1.3.1",
+      "SPDXID": "SPDXRef-File-lib-libz.so.1.3.1-8111391f97833d3a",
+      "fileTypes": [
+        "APPLICATION",
+        "BINARY"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "373834f52be3c366bfeb74d76a9ee50a3aeeae19"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9993bddaff33bda56d4f130b7dce37598b8f701cbd0b2ede22908d5324bdbf77"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/lib/sysctl.d/00-alpine.conf",
+      "SPDXID": "SPDXRef-File-lib-sysctl.d-00-alpine.conf-d87edac48cf6d50b",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "1e9125cd6d7112098a7c446d4f2ee8a269a7aba7"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ee169bea2cb6859420b55ca7a9c23fb68b50adc1d26c951f904dec9e8f767380"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/sbin/apk",
+      "SPDXID": "SPDXRef-File-sbin-apk-ff9969c3449b1e27",
+      "fileTypes": [
+        "APPLICATION",
+        "BINARY"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "f75144427ed0b55eda7d6c123c3f9a8522de94af"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a0f1b6028e47f23fd25a8f5193cc897e214187ab236ce7768b878cca366f335a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/sbin/ldconfig",
+      "SPDXID": "SPDXRef-File-sbin-ldconfig-34835816d39f67e8",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "2a36b6f8f3992b112450e66ac128c2ea499a103e"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b4a2c06db38742e8c42c3c9838b285a7d8cdac6c091ff3df5ff9a15f1e41b9c7"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/bin/getconf",
+      "SPDXID": "SPDXRef-File-usr-bin-getconf-424352abb1172af4",
+      "fileTypes": [
+        "APPLICATION",
+        "BINARY"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "d5d2c32f78cd622f3c486d09c0234961da56c5b3"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "d4dec318319c5f54a75f02179cd79be861533ab5d96d4f8ef6f3c397a7e58576"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/bin/getent",
+      "SPDXID": "SPDXRef-File-usr-bin-getent-7c468898671ee9ab",
+      "fileTypes": [
+        "APPLICATION",
+        "BINARY"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "3ea8c5f611327013df9c3525d6bdf19f5391fc9f"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "647ad20b28801f680ff2d795fbe25ba38eadaf8c78aa1201453606e43c9ffa97"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/bin/iconv",
+      "SPDXID": "SPDXRef-File-usr-bin-iconv-82199b7e4b7a0c5c",
+      "fileTypes": [
+        "APPLICATION",
+        "BINARY"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "63cb086fda7cbd4db6841c08dbd7ab16362a9952"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9794cb80e8c9b91a0d22cadc6c3b1726a10ffba013b7310572eb68c0c7dee08c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/bin/ldd",
+      "SPDXID": "SPDXRef-File-usr-bin-ldd-6b02ae84004c385c",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "c850211a08262fb11181b200eca431c93cdfde4b"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9a49c2541a439be89f1ef1496604ef3b607f460d589877c60775acf74cdb5dfb"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/bin/scanelf",
+      "SPDXID": "SPDXRef-File-usr-bin-scanelf-5668f8c2e0dd312c",
+      "fileTypes": [
+        "APPLICATION",
+        "BINARY"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "6c162eaf64832e6ae15d8627d84a2340c6b18539"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "239ebd4a83fbdd145088224ed38cc7fa14aa350c28a47629f4123a8da065f75b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/bin/ssl_client",
+      "SPDXID": "SPDXRef-File-usr-bin-ssl-client-84e4c34fea592bf5",
+      "fileTypes": [
+        "APPLICATION",
+        "BINARY"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "1e7ab54165325f4a2d92db115e91fb62a894f614"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3c29697d4b180a45669356a80fceae2ec9698db580217009fc0afac3e72fbc4c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/lib/engines-3/afalg.so",
+      "SPDXID": "SPDXRef-File-usr-lib-engines-3-afalg.so-e95ba7dbadf74fb0",
+      "fileTypes": [
+        "APPLICATION",
+        "BINARY"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "a3883ff026bcf648cc0ac6916909b2bb48d4a337"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "24065320be1659b6ab5b25ec7635062434e3beef6926561e5b0b2f835442eeb8"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/lib/engines-3/capi.so",
+      "SPDXID": "SPDXRef-File-usr-lib-engines-3-capi.so-a7d4fd57bea38854",
+      "fileTypes": [
+        "APPLICATION",
+        "BINARY"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "e114b7859c342bfa551531675d43b68ecd55e563"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "01d2c9a6bc99e8b1bada2ae3bc0e8a5a7b8d417b6107dbf2d66b83bdc48713aa"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/lib/engines-3/loader_attic.so",
+      "SPDXID": "SPDXRef-File-usr-lib-engines-3-loader-attic.so-2eb82658706daf02",
+      "fileTypes": [
+        "APPLICATION",
+        "BINARY"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "955ae2d3d389b894c46312050370992bc592b5bf"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "61e8e6fa3e40ac2886d215355ed2b5c405549bfede7ab5dca1bc026c6f00bc69"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/lib/engines-3/padlock.so",
+      "SPDXID": "SPDXRef-File-usr-lib-engines-3-padlock.so-8e0f2b1aa97e7b9e",
+      "fileTypes": [
+        "APPLICATION",
+        "BINARY"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "38513adeb108aab9b336d88993aa7a8f84a132a7"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "67f6afb685942251fb04fa73ab182c9e94c0820e5ab0e5ab6c6f452d71d5a42b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/lib/ossl-modules/legacy.so",
+      "SPDXID": "SPDXRef-File-usr-lib-ossl-modules-legacy.so-aa440d598dd5a98b",
+      "fileTypes": [
+        "APPLICATION",
+        "BINARY"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "cd349d71bd21b04679067c0be007f20437f4d71a"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e13939064632b4eb5fb110cdcd7063a0d741d5b4ca6e38bf9340f725c719b39b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-4a6a0840.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-4a6a0840.rsa.pub-7546ead8b1737a12",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "3af08548ef78cfdedcf349880c2c6a1a48763a0e"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9c102bcc376af1498d549b77bdbfa815ae86faa1d2d82f040e616b18ef2df2d4"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-5243ef4b.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-5243ef4b.rsa.pub-b7427bcd0d7afc92",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "bfb616658cc05a872568b0c8e398c482e23b60dd"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ebf31683b56410ecc4c00acd9f6e2839e237a3b62b5ae7ef686705c7ba0396a9"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-524d27bb.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-524d27bb.rsa.pub-01870aa4cbf75d39",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "053a92f87fd4532850bb31f0881978efe0532ae5"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "1bb2a846c0ea4ca9d0e7862f970863857fc33c32f5506098c636a62a726a847b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-5261cecb.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-5261cecb.rsa.pub-b49b7d4282ec99b4",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "3671ae0ec7503b1e193587c1dcdf7b78bc863e42"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "12f899e55a7691225603d6fb3324940fc51cd7f133e7ead788663c2b7eecb00c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-58199dcc.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-58199dcc.rsa.pub-35eb7d6d8dc9aadd",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "39ac5d72c6ba018a0f74b8b453894edc9db07b5f"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "73867d92083f2f8ab899a26ccda7ef63dfaa0032a938620eda605558958a8041"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-58cbb476.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-58cbb476.rsa.pub-11286455f9db63c1",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "c8fabeb2eeb992c368c77b9707e0d1ecfd7cf905"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9a4cd858d9710963848e6d5f555325dc199d1c952b01cf6e64da2c15deedbd97"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-58e4f17d.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-58e4f17d.rsa.pub-c9f8bc04029d39d2",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "329643357d0b78b1ef48ec155325e25f1d7534dd"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "780b3ed41786772cbc7b68136546fa3f897f28a23b30c72dde6225319c44cfff"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-5e69ca50.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-5e69ca50.rsa.pub-c3ec0644565d8b4b",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "825090fde25bbc0e71a9cb3076316b5afe459e4d"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "59c01c57b446633249f67c04b115dd6787f4378f183dff2bbf65406df93f176d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-60ac2099.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-60ac2099.rsa.pub-248ad01f812ec65c",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "5d4743128353b6396fad2fa2ba793ace21602295"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "db0b49163f07ffba64a5ca198bcf1688610b0bd1f0d8d5afeaf78559d73f2278"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-6165ee59.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-6165ee59.rsa.pub-4b5604c442039662",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "95995311236b7a55933642ffa10ce6014f1af7d0"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "207e4696d3c05f7cb05966aee557307151f1f00217af4143c1bcaf33b8df733f"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-61666e3f.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-61666e3f.rsa.pub-168b7c68a7295117",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "58d5ba4b2f3b1e927721d7a6432f298eedf72a6b"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "128d34d4aec39b0daedea8163cd8dc24dff36fd3d848630ab97eeb1d3084bbb3"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616a9724.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-616a9724.rsa.pub-8191f78b06154112",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "23d0f2ea1af269c2f66165e0f8a944e96bf011de"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "10877cce0a935e46ad88cb79e174a2491680508eccda08e92bf04fb9bf37fbc1"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616abc23.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-616abc23.rsa.pub-bf03503363ce2d59",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "3529ec82670c6d4e20ee3e4968db34b551e91d50"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4a095a9daca86da496a3cd9adcd95ee2197fdbeb84638656d469f05a4d740751"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616ac3bc.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-616ac3bc.rsa.pub-ad14b446a3a977ed",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "55a301064e11c6fe9ba0f2ca17e234f3943ccb61"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0caf5662fde45616d88cfd7021b7bda269a2fcaf311e51c48945a967a609ec0b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616adfeb.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-616adfeb.rsa.pub-06b79f791cd7eefb",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "de1241307014aae3dba798e900f163408d98d6f4"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ebe717d228555aa58133c202314a451f81e71f174781fd7ff8d8970d6cfa60da"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616ae350.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-616ae350.rsa.pub-18e73c3bf9abba75",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "57f6b93fda4a4496fab62844ddef0eeb168f80b5"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "d11f6b21c61b4274e182eb888883a8ba8acdbf820dcc7a6d82a7d9fc2fd2836d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/apk/keys/alpine-devel@lists.alpinelinux.org-616db30d.rsa.pub",
+      "SPDXID": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-616db30d.rsa.pub-2370551248aa1b02",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "df02c9adc2906a3aa5e5ad69f50e3953e65710d0"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "40a216cbd163f22e5f16a9e0929de7cde221b9cbae8e36aa368b1e128afe0a31"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    },
+    {
+      "fileName": "/usr/share/udhcpc/default.script",
+      "SPDXID": "SPDXRef-File-usr-share-udhcpc-default.script-836aa2a5f8bc1019",
+      "fileTypes": [
+        "TEXT"
+      ],
+      "checksums": [
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "1d6a46dde403f14a22e2692cd84dd24af3805216"
+        },
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c4e5a7c4783a7a73dec48dee009ee687015d2de7ff86b269679b95bef2c60e13"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "copyrightText": "",
+      "comment": "layerID: sha256:d4fc045c9e3a848011de66f34b81f052d4f2c15a17bb196d637e526349601820"
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "relatedSpdxElement": "SPDXRef-File-etc-group-000b267cde7e3d56",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "relatedSpdxElement": "SPDXRef-File-etc-passwd-1f2fa0bc8032de27",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "relatedSpdxElement": "SPDXRef-File-etc-shells-29d58a0ac4faf933",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "relatedSpdxElement": "SPDXRef-File-etc-services-2ec08535081b7ce7",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "relatedSpdxElement": "SPDXRef-File-etc-profile-35532e6fd0fdcdad",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "relatedSpdxElement": "SPDXRef-File-etc-shadow-5bfc44a4d14acff4",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "relatedSpdxElement": "SPDXRef-File-etc-fstab-72e2c5a19a2b1b1b",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "relatedSpdxElement": "SPDXRef-File-etc-sysctl.conf-82e3c039933b2fb4",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "relatedSpdxElement": "SPDXRef-File-etc-hosts-8716402c19dd1753",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "relatedSpdxElement": "SPDXRef-File-etc-protocols-9705062854233758",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "relatedSpdxElement": "SPDXRef-File-etc-nsswitch.conf-a8659880b8b499ed",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "relatedSpdxElement": "SPDXRef-File-etc-inittab-b1bffe0919a868cf",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "relatedSpdxElement": "SPDXRef-File-lib-apk-db-installed-bba99768af78e2e1",
+      "relationshipType": "OTHER",
+      "comment": "evident-by: indicates the package's existence is evident by the given file"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "relatedSpdxElement": "SPDXRef-Package-apk-alpine-baselayout-cdd2655fffa41c69",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "relatedSpdxElement": "SPDXRef-File-etc-hostname-ec99f5c78e8aa047",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "relatedSpdxElement": "SPDXRef-File-etc-modules-ffffc64bf91fddc3",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-ssl-client-17de13f9e782bd29",
+      "relatedSpdxElement": "SPDXRef-File-usr-bin-ssl-client-84e4c34fea592bf5",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-ssl-client-17de13f9e782bd29",
+      "relatedSpdxElement": "SPDXRef-File-lib-apk-db-installed-bba99768af78e2e1",
+      "relationshipType": "OTHER",
+      "comment": "evident-by: indicates the package's existence is evident by the given file"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-scanelf-3050e8b53f82ff29",
+      "relatedSpdxElement": "SPDXRef-File-usr-bin-scanelf-5668f8c2e0dd312c",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-scanelf-3050e8b53f82ff29",
+      "relatedSpdxElement": "SPDXRef-File-lib-apk-db-installed-bba99768af78e2e1",
+      "relationshipType": "OTHER",
+      "comment": "evident-by: indicates the package's existence is evident by the given file"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-scanelf-3050e8b53f82ff29",
+      "relatedSpdxElement": "SPDXRef-Package-apk-musl-utils-fe1f395c5f8eec1c",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relatedSpdxElement": "SPDXRef-Package-apk-ssl-client-17de13f9e782bd29",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relatedSpdxElement": "SPDXRef-File-usr-lib-engines-3-loader-attic.so-2eb82658706daf02",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relatedSpdxElement": "SPDXRef-Package-apk-libssl3-5f7aa9549ece55ec",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relatedSpdxElement": "SPDXRef-File-etc-ssl-openssl.cnf-72bbb48dd3b98722",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relatedSpdxElement": "SPDXRef-File-usr-lib-engines-3-padlock.so-8e0f2b1aa97e7b9e",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relatedSpdxElement": "SPDXRef-Package-apk-apk-tools-93ce1abff709ab00",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relatedSpdxElement": "SPDXRef-File-etc-ssl-ct-log-list.cnf.dist-9ba6622b38707b78",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relatedSpdxElement": "SPDXRef-File-etc-ssl-misc-CA.pl-a0ced0803fb4a94f",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relatedSpdxElement": "SPDXRef-File-usr-lib-engines-3-capi.so-a7d4fd57bea38854",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relatedSpdxElement": "SPDXRef-File-usr-lib-ossl-modules-legacy.so-aa440d598dd5a98b",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relatedSpdxElement": "SPDXRef-File-etc-ssl-ct-log-list.cnf-b0563e5db583cb46",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relatedSpdxElement": "SPDXRef-File-lib-apk-db-installed-bba99768af78e2e1",
+      "relationshipType": "OTHER",
+      "comment": "evident-by: indicates the package's existence is evident by the given file"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relatedSpdxElement": "SPDXRef-File-etc-ssl-openssl.cnf.dist-e0c69017812c7508",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relatedSpdxElement": "SPDXRef-File-usr-lib-engines-3-afalg.so-e95ba7dbadf74fb0",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relatedSpdxElement": "SPDXRef-File-lib-libcrypto.so.3-eb2b05a228390909",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relatedSpdxElement": "SPDXRef-File-etc-ssl-misc-tsget.pl-f616a93be2e6e0b4",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libssl3-5f7aa9549ece55ec",
+      "relatedSpdxElement": "SPDXRef-Package-apk-ssl-client-17de13f9e782bd29",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libssl3-5f7aa9549ece55ec",
+      "relatedSpdxElement": "SPDXRef-File-lib-libssl.so.3-8f5c93e46c2f6f90",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libssl3-5f7aa9549ece55ec",
+      "relatedSpdxElement": "SPDXRef-Package-apk-apk-tools-93ce1abff709ab00",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libssl3-5f7aa9549ece55ec",
+      "relatedSpdxElement": "SPDXRef-File-lib-apk-db-installed-bba99768af78e2e1",
+      "relationshipType": "OTHER",
+      "comment": "evident-by: indicates the package's existence is evident by the given file"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-zlib-6007bd824ae77825",
+      "relatedSpdxElement": "SPDXRef-File-lib-libz.so.1.3.1-8111391f97833d3a",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-zlib-6007bd824ae77825",
+      "relatedSpdxElement": "SPDXRef-Package-apk-apk-tools-93ce1abff709ab00",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-zlib-6007bd824ae77825",
+      "relatedSpdxElement": "SPDXRef-File-lib-apk-db-installed-bba99768af78e2e1",
+      "relationshipType": "OTHER",
+      "comment": "evident-by: indicates the package's existence is evident by the given file"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-busybox-6d810d507355b170",
+      "relatedSpdxElement": "SPDXRef-File-etc-udhcpd.conf-3a5c030960d411b3",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-busybox-6d810d507355b170",
+      "relatedSpdxElement": "SPDXRef-File-etc-securetty-57add8204fb32db1",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-busybox-6d810d507355b170",
+      "relatedSpdxElement": "SPDXRef-File-etc-logrotate.d-acpid-665322d723680816",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-busybox-6d810d507355b170",
+      "relatedSpdxElement": "SPDXRef-File-bin-busybox-7f85f255e27fcb9a",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-busybox-6d810d507355b170",
+      "relatedSpdxElement": "SPDXRef-File-usr-share-udhcpc-default.script-836aa2a5f8bc1019",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-busybox-6d810d507355b170",
+      "relatedSpdxElement": "SPDXRef-File-etc-busybox-paths.d-busybox-bad6200bdffa112a",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-busybox-6d810d507355b170",
+      "relatedSpdxElement": "SPDXRef-File-lib-apk-db-installed-bba99768af78e2e1",
+      "relationshipType": "OTHER",
+      "comment": "evident-by: indicates the package's existence is evident by the given file"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-busybox-6d810d507355b170",
+      "relatedSpdxElement": "SPDXRef-File-etc-udhcpc-udhcpc.conf-cc18ca4163babfe2",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-busybox-6d810d507355b170",
+      "relatedSpdxElement": "SPDXRef-File-etc-network-if-up.d-dad-d0a4010629a0a453",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-busybox-6d810d507355b170",
+      "relatedSpdxElement": "SPDXRef-Package-apk-busybox-binsh-fc5373023233a760",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-libc-utils-8526606e9762158b",
+      "relatedSpdxElement": "SPDXRef-File-lib-apk-db-installed-bba99768af78e2e1",
+      "relationshipType": "OTHER",
+      "comment": "evident-by: indicates the package's existence is evident by the given file"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-apk-tools-93ce1abff709ab00",
+      "relatedSpdxElement": "SPDXRef-File-lib-libapk.so.2.14.0-556b566e085dc60a",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-apk-tools-93ce1abff709ab00",
+      "relatedSpdxElement": "SPDXRef-File-lib-apk-db-installed-bba99768af78e2e1",
+      "relationshipType": "OTHER",
+      "comment": "evident-by: indicates the package's existence is evident by the given file"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-apk-tools-93ce1abff709ab00",
+      "relatedSpdxElement": "SPDXRef-File-sbin-apk-ff9969c3449b1e27",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-c9b07b7f6eec0816",
+      "relatedSpdxElement": "SPDXRef-Package-apk-ssl-client-17de13f9e782bd29",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-c9b07b7f6eec0816",
+      "relatedSpdxElement": "SPDXRef-Package-apk-scanelf-3050e8b53f82ff29",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-c9b07b7f6eec0816",
+      "relatedSpdxElement": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-c9b07b7f6eec0816",
+      "relatedSpdxElement": "SPDXRef-Package-apk-libssl3-5f7aa9549ece55ec",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-c9b07b7f6eec0816",
+      "relatedSpdxElement": "SPDXRef-Package-apk-zlib-6007bd824ae77825",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-c9b07b7f6eec0816",
+      "relatedSpdxElement": "SPDXRef-Package-apk-busybox-6d810d507355b170",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-c9b07b7f6eec0816",
+      "relatedSpdxElement": "SPDXRef-File-lib-ld-musl-x86-64.so.1-7f0aeb6cbc774482",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-c9b07b7f6eec0816",
+      "relatedSpdxElement": "SPDXRef-Package-apk-apk-tools-93ce1abff709ab00",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-c9b07b7f6eec0816",
+      "relatedSpdxElement": "SPDXRef-Package-apk-apk-tools-93ce1abff709ab00",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-c9b07b7f6eec0816",
+      "relatedSpdxElement": "SPDXRef-File-lib-apk-db-installed-bba99768af78e2e1",
+      "relationshipType": "OTHER",
+      "comment": "evident-by: indicates the package's existence is evident by the given file"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-c9b07b7f6eec0816",
+      "relatedSpdxElement": "SPDXRef-Package-apk-musl-utils-fe1f395c5f8eec1c",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-cdd2655fffa41c69",
+      "relatedSpdxElement": "SPDXRef-File-etc-modprobe.d-i386.conf-00c05d902dc61609",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-cdd2655fffa41c69",
+      "relatedSpdxElement": "SPDXRef-File-etc-modprobe.d-aliases.conf-2401cde31a1bdc81",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-cdd2655fffa41c69",
+      "relatedSpdxElement": "SPDXRef-File-etc-motd-64c6f694ee6e94c5",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-cdd2655fffa41c69",
+      "relatedSpdxElement": "SPDXRef-File-etc-profile.d-README-7ab3c907e0be3bf5",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-cdd2655fffa41c69",
+      "relatedSpdxElement": "SPDXRef-File-etc-crontabs-root-8f934748f4ac9909",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-cdd2655fffa41c69",
+      "relatedSpdxElement": "SPDXRef-File-etc-profile.d-20locale.sh-a4a20fbe9704eaf4",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-cdd2655fffa41c69",
+      "relatedSpdxElement": "SPDXRef-File-etc-profile.d-color-prompt.sh.disabled-b5e5c6c5edcd5dd2",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-cdd2655fffa41c69",
+      "relatedSpdxElement": "SPDXRef-File-lib-apk-db-installed-bba99768af78e2e1",
+      "relationshipType": "OTHER",
+      "comment": "evident-by: indicates the package's existence is evident by the given file"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-cdd2655fffa41c69",
+      "relatedSpdxElement": "SPDXRef-File-lib-sysctl.d-00-alpine.conf-d87edac48cf6d50b",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-cdd2655fffa41c69",
+      "relatedSpdxElement": "SPDXRef-File-etc-modprobe.d-kms.conf-dd2311ac2c46698a",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-baselayout-cdd2655fffa41c69",
+      "relatedSpdxElement": "SPDXRef-File-etc-modprobe.d-blacklist.conf-fceca58b0acbf99e",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-524d27bb.rsa.pub-01870aa4cbf75d39",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-616adfeb.rsa.pub-06b79f791cd7eefb",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-58cbb476.rsa.pub-11286455f9db63c1",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-4a6a0840.rsa.pub-1283f43f662ba815",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-61666e3f.rsa.pub-168b7c68a7295117",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-616ae350.rsa.pub-18e73c3bf9abba75",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-6165ee59.rsa.pub-1c77460987afe27f",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-616db30d.rsa.pub-2370551248aa1b02",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-60ac2099.rsa.pub-248ad01f812ec65c",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-58199dcc.rsa.pub-35eb7d6d8dc9aadd",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-6165ee59.rsa.pub-4b5604c442039662",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-5243ef4b.rsa.pub-5a96d49dbd6d84a5",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-4a6a0840.rsa.pub-7546ead8b1737a12",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-616a9724.rsa.pub-8191f78b06154112",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-616ac3bc.rsa.pub-ad14b446a3a977ed",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-5261cecb.rsa.pub-b49b7d4282ec99b4",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-5243ef4b.rsa.pub-b7427bcd0d7afc92",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-lib-apk-db-installed-bba99768af78e2e1",
+      "relationshipType": "OTHER",
+      "comment": "evident-by: indicates the package's existence is evident by the given file"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-616abc23.rsa.pub-bf03503363ce2d59",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-5e69ca50.rsa.pub-c3ec0644565d8b4b",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-58e4f17d.rsa.pub-c9f8bc04029d39d2",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-5261cecb.rsa.pub-d33c1cdb156f9c6f",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relatedSpdxElement": "SPDXRef-File-...alpine-devel-lists.alpinelinux.org-61666e3f.rsa.pub-f7e985a62128e85b",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-ca-certificates-bundle-f988a2ee2dfd2ef3",
+      "relatedSpdxElement": "SPDXRef-File-etc-ssl-certs-ca-certificates.crt-3e472afe23b7cd80",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-ca-certificates-bundle-f988a2ee2dfd2ef3",
+      "relatedSpdxElement": "SPDXRef-Package-apk-apk-tools-93ce1abff709ab00",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-ca-certificates-bundle-f988a2ee2dfd2ef3",
+      "relatedSpdxElement": "SPDXRef-File-lib-apk-db-installed-bba99768af78e2e1",
+      "relationshipType": "OTHER",
+      "comment": "evident-by: indicates the package's existence is evident by the given file"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-busybox-binsh-fc5373023233a760",
+      "relatedSpdxElement": "SPDXRef-File-bin-busybox-7f85f255e27fcb9a",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-busybox-binsh-fc5373023233a760",
+      "relatedSpdxElement": "SPDXRef-File-lib-apk-db-installed-bba99768af78e2e1",
+      "relationshipType": "OTHER",
+      "comment": "evident-by: indicates the package's existence is evident by the given file"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-busybox-binsh-fc5373023233a760",
+      "relatedSpdxElement": "SPDXRef-Package-apk-alpine-baselayout-cdd2655fffa41c69",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-utils-fe1f395c5f8eec1c",
+      "relatedSpdxElement": "SPDXRef-File-sbin-ldconfig-34835816d39f67e8",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-utils-fe1f395c5f8eec1c",
+      "relatedSpdxElement": "SPDXRef-File-usr-bin-getconf-424352abb1172af4",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-utils-fe1f395c5f8eec1c",
+      "relatedSpdxElement": "SPDXRef-File-usr-bin-ldd-6b02ae84004c385c",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-utils-fe1f395c5f8eec1c",
+      "relatedSpdxElement": "SPDXRef-File-usr-bin-getent-7c468898671ee9ab",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-utils-fe1f395c5f8eec1c",
+      "relatedSpdxElement": "SPDXRef-File-usr-bin-iconv-82199b7e4b7a0c5c",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-utils-fe1f395c5f8eec1c",
+      "relatedSpdxElement": "SPDXRef-Package-apk-libc-utils-8526606e9762158b",
+      "relationshipType": "DEPENDENCY_OF"
+    },
+    {
+      "spdxElementId": "SPDXRef-Package-apk-musl-utils-fe1f395c5f8eec1c",
+      "relatedSpdxElement": "SPDXRef-File-lib-apk-db-installed-bba99768af78e2e1",
+      "relationshipType": "OTHER",
+      "comment": "evident-by: indicates the package's existence is evident by the given file"
+    },
+    {
+      "spdxElementId": "SPDXRef-DocumentRoot-Image-alpine",
+      "relatedSpdxElement": "SPDXRef-Package-apk-alpine-baselayout-cdd2655fffa41c69",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-DocumentRoot-Image-alpine",
+      "relatedSpdxElement": "SPDXRef-Package-apk-alpine-baselayout-data-0c262da2274ab8ff",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-DocumentRoot-Image-alpine",
+      "relatedSpdxElement": "SPDXRef-Package-apk-alpine-keys-de767a9b092c19c4",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-DocumentRoot-Image-alpine",
+      "relatedSpdxElement": "SPDXRef-Package-apk-apk-tools-93ce1abff709ab00",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-DocumentRoot-Image-alpine",
+      "relatedSpdxElement": "SPDXRef-Package-apk-busybox-6d810d507355b170",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-DocumentRoot-Image-alpine",
+      "relatedSpdxElement": "SPDXRef-Package-apk-busybox-binsh-fc5373023233a760",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-DocumentRoot-Image-alpine",
+      "relatedSpdxElement": "SPDXRef-Package-apk-ca-certificates-bundle-f988a2ee2dfd2ef3",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-DocumentRoot-Image-alpine",
+      "relatedSpdxElement": "SPDXRef-Package-apk-libc-utils-8526606e9762158b",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-DocumentRoot-Image-alpine",
+      "relatedSpdxElement": "SPDXRef-Package-apk-libcrypto3-371d9115be79e528",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-DocumentRoot-Image-alpine",
+      "relatedSpdxElement": "SPDXRef-Package-apk-libssl3-5f7aa9549ece55ec",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-DocumentRoot-Image-alpine",
+      "relatedSpdxElement": "SPDXRef-Package-apk-musl-c9b07b7f6eec0816",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-DocumentRoot-Image-alpine",
+      "relatedSpdxElement": "SPDXRef-Package-apk-musl-utils-fe1f395c5f8eec1c",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-DocumentRoot-Image-alpine",
+      "relatedSpdxElement": "SPDXRef-Package-apk-scanelf-3050e8b53f82ff29",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-DocumentRoot-Image-alpine",
+      "relatedSpdxElement": "SPDXRef-Package-apk-ssl-client-17de13f9e782bd29",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-DocumentRoot-Image-alpine",
+      "relatedSpdxElement": "SPDXRef-Package-apk-zlib-6007bd824ae77825",
+      "relationshipType": "CONTAINS"
+    },
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relatedSpdxElement": "SPDXRef-DocumentRoot-Image-alpine",
+      "relationshipType": "DESCRIBES"
+    }
+  ]
+}
