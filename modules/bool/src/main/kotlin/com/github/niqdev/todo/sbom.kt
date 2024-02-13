@@ -27,6 +27,13 @@ data class Sbom(
   val packages: List<Package>
 )
 
+fun Sbom.isVulnerable(catalog: VulnerabilityCatalog): Boolean =
+  catalog.vulnerabilities.run(VulnerabilityPredicate.evalAnyOf(packages, catalog))
+
+data class VulnerabilityCatalog(
+  val vulnerabilities: FreeB<VulnerabilityPredicate>
+)
+
 // https://osv.dev
 // TODO semver
 sealed interface VulnerabilityPredicate {
@@ -37,7 +44,7 @@ sealed interface VulnerabilityPredicate {
   data class IsPackage(val type: PackageType) : VulnerabilityPredicate
 
   companion object {
-    fun eval(pkg: Package): (VulnerabilityPredicate) -> Boolean = {
+    private fun eval(pkg: Package): (VulnerabilityPredicate) -> Boolean = {
       when (it) {
         is IsName -> it.name == pkg.name
         is IsVersion -> it.version == pkg.version
@@ -46,17 +53,12 @@ sealed interface VulnerabilityPredicate {
         is IsPackage -> it.type == pkg.type
       }
     }
-  }
-}
 
-data class VulnerabilityCatalog(
-  val vulnerabilities: FreeB<VulnerabilityPredicate>
-)
-
-// TODO extract CatalogPredicate?
-fun VulnerabilityCatalog.eval(packages: List<Package>): (VulnerabilityPredicate) -> Boolean = {
-  packages.fold(false) { isVulnerable, pkg ->
-    isVulnerable || this.vulnerabilities.run(VulnerabilityPredicate.eval(pkg))
+    fun evalAnyOf(packages: List<Package>, catalog: VulnerabilityCatalog): (VulnerabilityPredicate) -> Boolean = {
+      packages.fold(false) { isVulnerable, pkg ->
+        isVulnerable || catalog.vulnerabilities.run(eval(pkg))
+      }
+    }
   }
 }
 
@@ -84,6 +86,5 @@ fun main() {
     vulnerabilities = fooVulnerability or barVulnerability
   )
 
-  val isVulnerable = apkCatalog.vulnerabilities.run(apkCatalog.eval(sbom.packages))
-  println(isVulnerable)
+  println(sbom.isVulnerable(apkCatalog))
 }
