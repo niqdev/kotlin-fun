@@ -36,10 +36,18 @@ curl -v http://localhost:8080/user/e5c931fd-2ed0-4af7-bf17-a53d2d3daa66
 curl -sS http://localhost:8080/user -H 'Content-Type: application/json' --data '{"name":"foo","age":42}' | jq
 ```
 
-OpenAPI and Swagger UI
+OpenAPI, Swagger UI and Redoc
 - see [Generate OpenAPI Specification](https://www.jetbrains.com/help/idea/ktor.html#openapi)
 - first time only, with the `Application.kt` file open, select `Help > Find Action` and type `Generate OpenAPI documentation for Ktor in Module: kotlin-fun.modules.http.main`
 - set `Update OpenAPI automatically` in `modules/http/src/main/resources/openapi/documentation.yaml`
+- local Redoc demo
+    ```bash
+    # see http://localhost:8081
+    docker run -it --rm -p 8081:80 \
+      -v $(pwd)/modules/http/src/main/resources/openapi/documentation.yaml:/usr/share/nginx/html/swagger.yaml \
+      -e SPEC_URL=swagger.yaml redocly/redoc
+    ```
+- live [Redocly](https://redocly.com/docs/redoc/) demo https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/niqdev/kotlin-fun/main/modules/http/src/main/resources/openapi/documentation.yaml
 
 ### Deployment
 
