@@ -2,7 +2,7 @@
 kotlin = "1.9.22"
 ktor = "2.3.8"
 hoplite = "2.7.5"
-kondor = "2.1.2"
+kondor = "2.2.3"
 confluent = "7.3.3" # FIXME 7.4.0
 log4j = "2.22.1"
 flyway = "10.8.1"
