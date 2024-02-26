@@ -92,7 +92,7 @@ kotest-kafka = { module = "io.kotest.extensions:kotest-extensions-embedded-kafka
 junit-bom = { module = "org.junit:junit-bom", version = "5.10.2" }
 junit-core = { module = "org.junit.jupiter:junit-jupiter" }
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api" }
-mockk = { module = "io.mockk:mockk", version = "1.13.8" }
+mockk = { module = "io.mockk:mockk", version = "1.13.9" }
 
 testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version = "1.19.5" }
 testcontainers-core = { module = "org.testcontainers:testcontainers" }
