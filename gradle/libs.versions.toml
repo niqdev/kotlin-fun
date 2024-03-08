@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.9.22"
+kotlin = "1.9.23"
 ktor = "2.3.9"
 hoplite = "2.7.5"
 kondor = "2.2.3"
