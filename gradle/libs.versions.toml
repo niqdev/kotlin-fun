@@ -7,7 +7,7 @@ confluent = "7.3.3" # FIXME 7.4.0
 log4j = "2.23.1"
 flyway = "10.9.1"
 # tests
-kotest = "5.8.0"
+kotest = "5.8.1"
 
 [libraries]
 kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin" }
