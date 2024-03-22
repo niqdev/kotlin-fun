@@ -19,7 +19,7 @@ jobs:
 
       - name: Fetch PR metadata
         id: metadata
-        uses: dependabot/fetch-metadata@v1
+        uses: dependabot/fetch-metadata@v2
 
       # requires "Allow auto-merge" in settings
       # https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/incorporating-changes-from-a-pull-request/automatically-merging-a-pull-request
