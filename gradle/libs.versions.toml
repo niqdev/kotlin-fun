@@ -1,6 +1,6 @@
 [versions]
 kotlin = "1.9.24"
-ktor = "2.3.10"
+ktor = "2.3.11"
 hoplite = "2.7.5"
 kondor = "2.3.2"
 confluent = "7.3.3" # FIXME 7.4.0
