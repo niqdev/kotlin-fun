@@ -11,7 +11,10 @@ dependencies {
   implementation(libs.bundles.ktor.server)
   implementation(libs.bundles.ktor.client)
   implementation(libs.ktor.jackson)
-  implementation(libs.jackson.module)
+
+  // json
+  implementation(platform(libs.jackson.bom))
+  implementation(libs.bundles.jackson)
 
   // database
   implementation(platform(libs.jdbi.bom))
