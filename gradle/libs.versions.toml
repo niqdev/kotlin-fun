@@ -39,6 +39,7 @@ json-kotlin-schema = { module = "net.pwall.json:json-kotlin-schema", version = "
 # other
 clikt = { module = "com.github.ajalt.clikt:clikt", version = "4.4.0" }
 jdom = { module = "org.jdom:jdom2", version = "2.0.6.1" }
+uuid = { module = "com.github.f4b6a3:uuid-creator", version = "5.3.3" }
 
 # reactor
 reactor-core = { module = "io.projectreactor:reactor-core", version = "3.6.6" }
