@@ -31,15 +31,19 @@ hoplite-yaml = { module = "com.sksamuel.hoplite:hoplite-yaml", version.ref = "ho
 # json
 kondor-core = { module = "com.ubertob.kondor:kondor-core", version.ref = "kondor" }
 kondor-tools = { module = "com.ubertob.kondor:kondor-tools", version.ref = "kondor" }
-jackson-module = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version = "2.17.1" }
 zjsonpatch = { module = "com.flipkart.zjsonpatch:zjsonpatch", version = "0.4.16" }
 everit-json-schema = { module = "com.github.erosb:everit-json-schema", version = "1.14.4" }
 json-kotlin-schema = { module = "net.pwall.json:json-kotlin-schema", version = "0.47" }
+
+jackson-bom = { module = "com.fasterxml.jackson:jackson-bom", version = "2.17.1" }
+jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
+jackson-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" }
 
 # other
 clikt = { module = "com.github.ajalt.clikt:clikt", version = "4.4.0" }
 jdom = { module = "org.jdom:jdom2", version = "2.0.6.1" }
 uuid = { module = "com.github.f4b6a3:uuid-creator", version = "5.3.3" }
+jwt = { module = "com.auth0:java-jwt", version = "4.4.0" }
 
 # reactor
 reactor-core = { module = "io.projectreactor:reactor-core", version = "3.6.6" }
@@ -102,6 +106,7 @@ testcontainers-postgres = { module = "org.testcontainers:postgresql" }
 
 [bundles]
 hoplite = [ "hoplite-core", "hoplite-yaml" ]
+jackson = [ "jackson-kotlin", "jackson-jsr310" ]
 ktor-server = [ "ktor-server-core", "ktor-server-netty", "ktor-server-logging", "ktor-server-content", "ktor-server-openapi", "ktor-server-swagger" ]
 ktor-client = [ "ktor-client-content" ]
 junit = [ "junit-core", "junit-api" ]
