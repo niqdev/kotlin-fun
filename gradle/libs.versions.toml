@@ -41,7 +41,7 @@ clikt = { module = "com.github.ajalt.clikt:clikt", version = "4.4.0" }
 jdom = { module = "org.jdom:jdom2", version = "2.0.6.1" }
 
 # reactor
-reactor-core = { module = "io.projectreactor:reactor-core", version = "3.6.5" }
+reactor-core = { module = "io.projectreactor:reactor-core", version = "3.6.6" }
 reactor-kotlin = { module = "io.projectreactor.kotlin:reactor-kotlin-extensions", version = "1.2.2" }
 
 # arrow
