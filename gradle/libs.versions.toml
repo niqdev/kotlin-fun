@@ -1,24 +1,24 @@
 [versions]
-kotlin = "1.9.23"
-ktor = "2.3.9"
+kotlin = "1.9.24"
+ktor = "2.3.11"
 hoplite = "2.7.5"
-kondor = "2.2.4"
+kondor = "2.3.2"
 confluent = "7.3.3" # FIXME 7.4.0
 log4j = "2.23.1"
-flyway = "10.10.0"
+flyway = "10.13.0"
 # tests
-kotest = "5.8.1"
+kotest = "5.9.0"
 
 [libraries]
 kotlin-bom = { module = "org.jetbrains.kotlin:kotlin-bom", version.ref = "kotlin" }
 kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit" }
-kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version = "1.8.0" }
+kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version = "1.8.1" }
 kotlinx-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.6.3" }
 
 # logging
-slf4j-api = { module = "org.slf4j:slf4j-api", version = "2.0.12" }
-logback-classic = { module = "ch.qos.logback:logback-classic", version = "1.5.3" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version = "2.0.13" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version = "1.5.6" }
 log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
 log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
 log4j-slf4j = { module = "org.apache.logging.log4j:log4j-slf4j-impl", version.ref = "log4j" }
@@ -31,32 +31,37 @@ hoplite-yaml = { module = "com.sksamuel.hoplite:hoplite-yaml", version.ref = "ho
 # json
 kondor-core = { module = "com.ubertob.kondor:kondor-core", version.ref = "kondor" }
 kondor-tools = { module = "com.ubertob.kondor:kondor-tools", version.ref = "kondor" }
-jackson-module = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version = "2.17.0" }
 zjsonpatch = { module = "com.flipkart.zjsonpatch:zjsonpatch", version = "0.4.16" }
 everit-json-schema = { module = "com.github.erosb:everit-json-schema", version = "1.14.4" }
 json-kotlin-schema = { module = "net.pwall.json:json-kotlin-schema", version = "0.47" }
 
+jackson-bom = { module = "com.fasterxml.jackson:jackson-bom", version = "2.17.1" }
+jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
+jackson-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" }
+
 # other
-clikt = { module = "com.github.ajalt.clikt:clikt", version = "4.2.2" }
+clikt = { module = "com.github.ajalt.clikt:clikt", version = "4.4.0" }
 jdom = { module = "org.jdom:jdom2", version = "2.0.6.1" }
+uuid = { module = "com.github.f4b6a3:uuid-creator", version = "5.3.7" }
+jwt = { module = "com.auth0:java-jwt", version = "4.4.0" }
 
 # reactor
-reactor-core = { module = "io.projectreactor:reactor-core", version = "3.6.2" }
+reactor-core = { module = "io.projectreactor:reactor-core", version = "3.6.6" }
 reactor-kotlin = { module = "io.projectreactor.kotlin:reactor-kotlin-extensions", version = "1.2.2" }
 
 # arrow
-arrow-stack = { module = "io.arrow-kt:arrow-stack", version = "1.2.3" }
+arrow-stack = { module = "io.arrow-kt:arrow-stack", version = "1.2.4" }
 arrow-core = { module = "io.arrow-kt:arrow-core" }
 
 # aws
-aws-v2-bom = { module = "software.amazon.awssdk:bom", version = "2.25.15" }
+aws-v2-bom = { module = "software.amazon.awssdk:bom", version = "2.25.56" }
 aws-v2-lambda = { module = "software.amazon.awssdk:lambda" }
 aws-v2-s3 = { module = "software.amazon.awssdk:s3" }
 aws-v2-sqs = { module = "software.amazon.awssdk:sqs" }
 aws-lambda-core = { module = "com.amazonaws:aws-lambda-java-core", version = "1.2.3" }
-aws-lambda-events = { module = "com.amazonaws:aws-lambda-java-events", version = "3.11.3" }
+aws-lambda-events = { module = "com.amazonaws:aws-lambda-java-events", version = "3.11.5" }
 aws-lambda-log4j2 = { module = "com.amazonaws:aws-lambda-java-log4j2", version = "1.6.0" }
-aws-kotlin-lambda = { module = "aws.sdk.kotlin:lambda", version = "1.1.2" }
+aws-kotlin-lambda = { module = "aws.sdk.kotlin:lambda", version = "1.2.16" }
 
 # http
 ktor-bom = { module = "io.ktor:ktor-bom", version.ref = "ktor" }
@@ -92,15 +97,16 @@ kotest-kafka = { module = "io.kotest.extensions:kotest-extensions-embedded-kafka
 junit-bom = { module = "org.junit:junit-bom", version = "5.10.2" }
 junit-core = { module = "org.junit.jupiter:junit-jupiter" }
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api" }
-mockk = { module = "io.mockk:mockk", version = "1.13.10" }
+mockk = { module = "io.mockk:mockk", version = "1.13.11" }
 
-testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version = "1.19.7" }
+testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version = "1.19.8" }
 testcontainers-core = { module = "org.testcontainers:testcontainers" }
 testcontainers-junit = { module = "org.testcontainers:junit-jupiter" }
 testcontainers-postgres = { module = "org.testcontainers:postgresql" }
 
 [bundles]
 hoplite = [ "hoplite-core", "hoplite-yaml" ]
+jackson = [ "jackson-kotlin", "jackson-jsr310" ]
 ktor-server = [ "ktor-server-core", "ktor-server-netty", "ktor-server-logging", "ktor-server-content", "ktor-server-openapi", "ktor-server-swagger" ]
 ktor-client = [ "ktor-client-content" ]
 junit = [ "junit-core", "junit-api" ]

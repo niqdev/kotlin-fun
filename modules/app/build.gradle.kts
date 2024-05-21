@@ -19,12 +19,16 @@ dependencies {
   // config
   implementation(libs.bundles.hoplite)
 
-  // cli
-  implementation(libs.clikt)
-
   // json
   implementation(libs.kondor.core)
   testImplementation(libs.kondor.tools)
+  implementation(platform(libs.jackson.bom))
+  implementation(libs.bundles.jackson)
+
+  // other
+  implementation(libs.clikt)
+  implementation(libs.uuid)
+  implementation(libs.jwt)
 
   // reactor
   implementation(libs.reactor.core)

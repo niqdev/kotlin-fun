@@ -18,7 +18,8 @@ dependencies {
 
   // json diff
   implementation(libs.zjsonpatch)
-  implementation(libs.jackson.module)
+  implementation(platform(libs.jackson.bom))
+  implementation(libs.bundles.jackson)
 
   // testing
   testImplementation(libs.kotest.runner.junit5)

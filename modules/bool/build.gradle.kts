@@ -6,7 +6,8 @@ dependencies {
   testImplementation(libs.kotest.runner.junit5)
   testImplementation(libs.kotest.assertions.core)
 
-  implementation(libs.jackson.module)
+  implementation(platform(libs.jackson.bom))
+  implementation(libs.bundles.jackson)
 }
 
 tasks.withType<Test> {
