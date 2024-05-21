@@ -17,3 +17,6 @@ inline fun <A> Result<A>.mapError(onFailure: (Throwable) -> Result<A>): Result<A
 
 inline fun <A> Result<A>.filter(predicate: (A) -> Boolean): Result<A> =
   flatMap { if (predicate(it)) this else Result.failure(java.util.NoSuchElementException("Invalid predicate")) }
+
+fun <A> List<Result<A>>.traverse(): Result<List<A>> =
+  runCatching { fold(emptyList()) { results, r -> results + r.getOrThrow() } }
