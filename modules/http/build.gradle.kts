@@ -49,6 +49,11 @@ application {
   )
 }
 
+task("run-client", JavaExec::class) {
+  mainClass.set("com.github.niqdev.ktor.client.ApplicationKt")
+  classpath = sourceSets["main"].runtimeClasspath
+}
+
 // required for junit and kotest - not for kotlin-test-junit
 tasks.withType<Test> {
   useJUnitPlatform()
