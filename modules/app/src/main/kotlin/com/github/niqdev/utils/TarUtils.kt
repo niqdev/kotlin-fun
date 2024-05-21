@@ -19,6 +19,21 @@ import java.nio.file.SimpleFileVisitor
 import java.nio.file.attribute.BasicFileAttributes
 import kotlin.io.path.absolutePathString
 
+/*
+ * https://commons.apache.org/proper/commons-compress/examples.html
+ * https://stackoverflow.com/questions/13461393/compress-directory-to-tar-gz-with-commons-compress
+ * https://stackoverflow.com/questions/11431143/how-to-untar-a-tar-file-using-apache-commons
+ * https://mkyong.com/java/how-to-create-tar-gz-in-java
+ *
+ * # compress archive
+ * tar -zcvf local/archive/example.tar.gz  local/archive/example
+ *
+ * # list archive content
+ * tar -tvf local/archive/example.tar.gz
+ *
+ * # decompress archive
+ * tar -zxvf local/archive/example.tar.gz
+ */
 object TarUtils {
   private val log = LoggerFactory.getLogger(TarUtils::class.java)
   private val BLACKLIST_FILES = listOf("._", ".DS_Store")
@@ -93,4 +108,23 @@ object TarUtils {
     }
     return temporaryPath.absolutePathString()
   }
+
+  fun addFileToArchive(archivePath: String, info: FileInfo, deleteTmpDir: Boolean = false): Result<String> =
+    runCatching {
+      val temporaryPath = decompress(archivePath, info.prefix)
+
+      log.debug("Adding file=${info.name} to temporaryPath=$temporaryPath")
+      // writes file to disk
+      File(temporaryPath, info.name).writeText(info.data)
+
+      val outputPath = compress(temporaryPath, info.prefix)
+      if (deleteTmpDir) {
+        val deleted = File(temporaryPath).deleteRecursively()
+        log.debug("Deleting temporaryPath=$temporaryPath deleted=$deleted")
+      }
+
+      outputPath
+    }
 }
+
+data class FileInfo(val name: String, val prefix: String, val data: String)
