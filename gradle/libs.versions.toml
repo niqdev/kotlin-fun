@@ -44,6 +44,7 @@ clikt = { module = "com.github.ajalt.clikt:clikt", version = "4.4.0" }
 jdom = { module = "org.jdom:jdom2", version = "2.0.6.1" }
 uuid = { module = "com.github.f4b6a3:uuid-creator", version = "5.3.7" }
 jwt = { module = "com.auth0:java-jwt", version = "4.4.0" }
+apache-compress = { module = "org.apache.commons:commons-compress", version = "1.26.1" }
 
 # reactor
 reactor-core = { module = "io.projectreactor:reactor-core", version = "3.6.6" }
