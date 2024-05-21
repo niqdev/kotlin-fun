@@ -58,5 +58,5 @@ fun Application.mainModule() {
   }
 }
 
-private fun Application.loadConfigOrThrow(): ServerConfig =
+internal fun Application.loadConfigOrThrow(): ServerConfig =
   ServerConfig.load(environment.config.config("server").toMap()).getOrThrow()

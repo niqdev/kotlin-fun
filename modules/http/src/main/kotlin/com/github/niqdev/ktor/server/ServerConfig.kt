@@ -9,7 +9,7 @@ data class ServerConfig(
 ) {
   companion object {
     private val objectMapper = jacksonObjectMapper()
-      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+      .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
 
     fun load(values: Map<String, Any?>): Result<ServerConfig> =
       runCatching { objectMapper.convertValue(values, ServerConfig::class.java) }
