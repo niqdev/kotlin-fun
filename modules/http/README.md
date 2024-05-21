@@ -8,7 +8,7 @@
 * [Jdbi](https://jdbi.org)
 * [Flyway](https://documentation.red-gate.com/fd)
 * [Testcontainers](https://java.testcontainers.org)
-* TODO [bruno](https://www.usebruno.com)
+* [bruno](https://www.usebruno.com) Open Collection `local/bruno/kotlin-fun-http`
 
 ```bash
 # runs tests
