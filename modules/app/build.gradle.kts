@@ -29,6 +29,7 @@ dependencies {
   implementation(libs.clikt)
   implementation(libs.uuid)
   implementation(libs.jwt)
+  implementation(libs.apache.compress)
 
   // reactor
   implementation(libs.reactor.core)

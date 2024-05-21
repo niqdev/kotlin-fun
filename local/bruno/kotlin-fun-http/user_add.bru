@@ -1,0 +1,18 @@
+meta {
+  name: user_add
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{BASE_URL}}/user
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "foo",
+    "age": 42
+  }
+}

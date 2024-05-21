@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "kotlin-fun-http",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

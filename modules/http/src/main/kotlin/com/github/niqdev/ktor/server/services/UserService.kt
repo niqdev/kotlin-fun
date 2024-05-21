@@ -5,6 +5,7 @@ import com.github.niqdev.ktor.models.User
 import com.github.niqdev.ktor.models.UserId
 import com.github.niqdev.ktor.server.repositories.UserRepository
 import com.github.niqdev.ktor.server.routes.UserRequest
+import io.github.oshai.kotlinlogging.KotlinLogging
 
 interface UserService {
   fun add(request: UserRequest): Result<UserId>
@@ -14,7 +15,12 @@ interface UserService {
 
 class UserServiceImpl(private val repository: UserRepository) : UserService {
 
+  companion object {
+    private val log = KotlinLogging.logger { }
+  }
+
   override fun add(request: UserRequest): Result<UserId> {
+    log.info { "adding user" }
     val user = toUser(request)
     return repository.create(user).map { user.id }
   }
