@@ -1,7 +1,5 @@
 ## http
 
-> TODO http-client example
-
 ### Development
 
 * [Ktor](https://ktor.io/docs)

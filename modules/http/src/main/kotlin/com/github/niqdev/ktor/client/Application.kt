@@ -1,12 +1,11 @@
 package com.github.niqdev.ktor.client
 
+import com.github.niqdev.ktor.models.User
 import com.github.niqdev.ktor.server.routes.UserRequest
+import com.github.niqdev.ktor.server.routes.UserResponse
 import com.sksamuel.hoplite.fp.Validated
 import io.github.oshai.kotlinlogging.KotlinLogging
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.java.Java
-import io.ktor.client.plugins.HttpRequestRetry
-import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -28,19 +27,15 @@ fun main(args: Array<String>) {
 }
 
 private suspend fun runClient(config: ClientConfig) {
-  val client = HttpClient(Java) {
-    install(Logging)
-    install(HttpRequestRetry) {
-      retryOnServerErrors(maxRetries = 5)
-      exponentialDelay()
-    }
-  }
-  client.get(config.baseUrl)
+  val client = HttpClientBuilder.build()
+  val usersBefore = client.get("${config.baseUrl}/user").body<List<User>>()
+  log.info { "Users before: $usersBefore" }
 
-  client.post(config.baseUrl) {
+  val newUser = client.post("${config.baseUrl}/user") {
     contentType(ContentType.Application.Json)
     setBody(UserRequest(name = "my-name", age = 28))
-  }
+  }.body<UserResponse>()
+  log.info { "New user: $newUser" }
 
   // see "use" for single requests
   client.close()
