@@ -27,6 +27,7 @@ kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version = "5.1
 # config
 hoplite-core = { module = "com.sksamuel.hoplite:hoplite-core", version.ref = "hoplite" }
 hoplite-yaml = { module = "com.sksamuel.hoplite:hoplite-yaml", version.ref = "hoplite" }
+hoplite-hocon = { module = "com.sksamuel.hoplite:hoplite-hocon", version.ref = "hoplite" }
 
 # json
 kondor-core = { module = "com.ubertob.kondor:kondor-core", version.ref = "kondor" }
@@ -67,14 +68,19 @@ aws-kotlin-lambda = { module = "aws.sdk.kotlin:lambda", version = "1.2.18" }
 # http
 ktor-bom = { module = "io.ktor:ktor-bom", version.ref = "ktor" }
 ktor-server-core = { module = "io.ktor:ktor-server-core-jvm" }
-ktor-server-netty = { module = "io.ktor:ktor-server-netty-jvm" }
+ktor-server-engine = { module = "io.ktor:ktor-server-netty-jvm" }
 ktor-server-logging = { module = "io.ktor:ktor-server-call-logging" }
 ktor-server-content = { module = "io.ktor:ktor-server-content-negotiation" }
 ktor-server-openapi = { module = "io.ktor:ktor-server-openapi" }
 ktor-server-swagger = { module = "io.ktor:ktor-server-swagger" }
-ktor-client-content = { module = "io.ktor:ktor-client-content-negotiation" }
-ktor-jackson = { module = "io.ktor:ktor-serialization-jackson" }
 ktor-server-tests = { module = "io.ktor:ktor-server-tests-jvm" }
+
+ktor-client-core = { module = "io.ktor:ktor-client-core" }
+ktor-client-engine = { module = "io.ktor:ktor-client-java" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging" }
+ktor-client-content = { module = "io.ktor:ktor-client-content-negotiation" }
+
+ktor-jackson = { module = "io.ktor:ktor-serialization-jackson" }
 
 # database
 jdbi-bom = { module = "org.jdbi:jdbi3-bom", version = "3.45.1" }
@@ -106,10 +112,10 @@ testcontainers-junit = { module = "org.testcontainers:junit-jupiter" }
 testcontainers-postgres = { module = "org.testcontainers:postgresql" }
 
 [bundles]
-hoplite = [ "hoplite-core", "hoplite-yaml" ]
+hoplite = [ "hoplite-core", "hoplite-yaml", "hoplite-hocon" ]
 jackson = [ "jackson-kotlin", "jackson-jsr310" ]
-ktor-server = [ "ktor-server-core", "ktor-server-netty", "ktor-server-logging", "ktor-server-content", "ktor-server-openapi", "ktor-server-swagger" ]
-ktor-client = [ "ktor-client-content" ]
+ktor-server = [ "ktor-server-core", "ktor-server-engine", "ktor-server-logging", "ktor-server-content", "ktor-server-openapi", "ktor-server-swagger" ]
+ktor-client = [ "ktor-client-core", "ktor-client-engine", "ktor-client-logging", "ktor-client-content" ]
 junit = [ "junit-core", "junit-api" ]
 testcontainers = [ "testcontainers-core", "testcontainers-junit", "testcontainers-postgres" ]
 
