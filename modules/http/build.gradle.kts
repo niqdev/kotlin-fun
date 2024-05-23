@@ -28,6 +28,9 @@ dependencies {
   implementation(libs.kotlin.logging)
   runtimeOnly(libs.logback.classic)
 
+  // config
+  implementation(libs.bundles.hoplite)
+
   // testing
   implementation(platform(libs.junit.bom))
   testImplementation(libs.bundles.junit)
@@ -38,6 +41,15 @@ dependencies {
   testImplementation(libs.ktor.server.tests)
   testImplementation(libs.mockk)
   testImplementation(libs.kotest.property)
+
+  /*
+  implementation("<GROUP>:<MODULE>:<VERSION>") {
+    exclude(group = "my-group", module = "my-module")
+  }
+  implementation("<GROUP>:<MODULE>:<VERSION>") {
+    because("FIX DEPENDENCIES")
+  }
+  */
 }
 
 application {
@@ -47,6 +59,11 @@ application {
     "-Dio.ktor.development",
     "-Dkotlinx.coroutines.debug"
   )
+}
+
+task("run-client", JavaExec::class) {
+  mainClass.set("com.github.niqdev.ktor.client.ApplicationKt")
+  classpath = sourceSets["main"].runtimeClasspath
 }
 
 // required for junit and kotest - not for kotlin-test-junit

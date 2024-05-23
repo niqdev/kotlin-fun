@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.github.niqdev.ktor.server.repositories.DatabaseSetup
 import com.github.niqdev.ktor.server.repositories.UserRepositoryImpl
+import com.github.niqdev.ktor.server.routes.fileRoutes
 import com.github.niqdev.ktor.server.routes.homeRoutes
 import com.github.niqdev.ktor.server.routes.statusRoutes
 import com.github.niqdev.ktor.server.routes.userRoutes
@@ -55,8 +56,9 @@ fun Application.mainModule() {
     statusRoutes()
     userRoutes(userService)
     versionRoutes()
+    fileRoutes()
   }
 }
 
-private fun Application.loadConfigOrThrow(): ServerConfig =
+internal fun Application.loadConfigOrThrow(): ServerConfig =
   ServerConfig.load(environment.config.config("server").toMap()).getOrThrow()

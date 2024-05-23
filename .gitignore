@@ -19,3 +19,4 @@ node_modules
 
 modules/http/docs/
 tmp-*
+README.md

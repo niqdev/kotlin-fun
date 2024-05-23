@@ -1,14 +1,12 @@
 ## http
 
-> TODO http-client example
-
 ### Development
 
 * [Ktor](https://ktor.io/docs)
 * [Jdbi](https://jdbi.org)
 * [Flyway](https://documentation.red-gate.com/fd)
 * [Testcontainers](https://java.testcontainers.org)
-* TODO [bruno](https://www.usebruno.com)
+* [bruno](https://www.usebruno.com) Open Collection `local/bruno/kotlin-fun-http`
 
 ```bash
 # runs tests
@@ -34,6 +32,11 @@ curl -sS http://localhost:8080/user | jq
 curl -v http://localhost:8080/user/e5c931fd-2ed0-4af7-bf17-a53d2d3daa66
 # add
 curl -sS http://localhost:8080/user -H 'Content-Type: application/json' --data '{"name":"foo","age":42}' | jq
+# upload
+curl -i -H "Content-Type: application/x-www-form-urlencoded" --data-binary "@README.md" http://localhost:8080/file/upload
+
+# starts client
+./gradlew :modules:http:run-client
 ```
 
 OpenAPI, Swagger UI and Redoc

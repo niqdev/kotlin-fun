@@ -1,0 +1,15 @@
+meta {
+  name: version
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{BASE_URL}}/version
+  body: none
+  auth: none
+}
+
+headers {
+  X-My-Version: foo
+}
