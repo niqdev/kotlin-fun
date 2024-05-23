@@ -17,14 +17,13 @@ import kotlinx.coroutines.runBlocking
 private val log = KotlinLogging.logger { }
 
 fun main(args: Array<String>) {
-
   when (val validatedConfig = ClientConfig.load()) {
     is Validated.Valid -> {
       log.info { "Client config:\n${validatedConfig.value}" }
       runBlocking { runClient(validatedConfig.value) }
     }
     is Validated.Invalid ->
-      log.warn { "Invalid client config" }
+      log.warn { "Invalid client config:\n${validatedConfig.error.description()}" }
   }
 }
 

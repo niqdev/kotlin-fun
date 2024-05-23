@@ -2,8 +2,9 @@ package com.github.niqdev.ktor.client
 
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.sksamuel.hoplite.ConfigLoader
+import com.sksamuel.hoplite.ConfigLoaderBuilder
 import com.sksamuel.hoplite.ConfigResult
+import com.sksamuel.hoplite.addResourceSource
 
 data class ClientConfig(
   val baseUrl: String
@@ -13,7 +14,11 @@ data class ClientConfig(
       .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
 
     fun load(): ConfigResult<ClientConfig> =
-      ConfigLoader().loadConfig<ClientConfig>("/client.conf")
+      ConfigLoaderBuilder.default()
+        .addResourceSource("/client.conf")
+        .strict()
+        .build()
+        .loadConfig<ClientConfig>()
   }
 
   override fun toString(): String =
