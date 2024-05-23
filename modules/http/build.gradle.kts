@@ -71,6 +71,13 @@ tasks.withType<Test> {
   useJUnitPlatform()
 }
 
+// fixes jib-gradle-plugin
+jib {
+  container {
+    mainClass = "com.github.niqdev.ktor.client.ApplicationKt"
+  }
+}
+
 ktor {
   val repository = "${rootProject.name}-${project.name}"
   docker {
