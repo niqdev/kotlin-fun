@@ -15,18 +15,41 @@ import kotlinx.coroutines.runBlocking
 
 private val log = KotlinLogging.logger { }
 
+private enum class Argument {
+  ARG_USER,
+  ARG_DOWNLOAD,
+  ARG_UPLOAD;
+}
+
 fun main(args: Array<String>) {
   when (val validatedConfig = ClientConfig.load()) {
     is Validated.Valid -> {
       log.info { "Client config:\n${validatedConfig.value}" }
-      runBlocking { runClient(validatedConfig.value) }
+      runClient(args.toList(), validatedConfig.value)
     }
     is Validated.Invalid ->
       log.warn { "Invalid client config:\n${validatedConfig.error.description()}" }
   }
 }
 
-private suspend fun runClient(config: ClientConfig) {
+private fun runClient(args: List<String>, config: ClientConfig) {
+  log.debug { "arguments: $args" }
+  if (args.size != 1) {
+    log.error { "invalid arguments: ${Argument.entries}" }
+    return
+  }
+
+  when (Argument.valueOf(args.first().uppercase())) {
+    Argument.ARG_USER ->
+      runBlocking { runUserClient(config) }
+    Argument.ARG_DOWNLOAD ->
+      TODO()
+    Argument.ARG_UPLOAD ->
+      TODO()
+  }
+}
+
+private suspend fun runUserClient(config: ClientConfig) {
   val client = HttpClientBuilder.build()
   val usersBefore = client.get("${config.baseUrl}/user").body<List<User>>()
   log.info { "Users before: $usersBefore" }

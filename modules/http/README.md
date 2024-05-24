@@ -35,8 +35,8 @@ curl -sS http://localhost:8080/user -H 'Content-Type: application/json' --data '
 # upload
 curl -i -H "Content-Type: application/x-www-form-urlencoded" --data-binary "@README.md" http://localhost:8080/file/upload
 
-# starts client
-./gradlew :modules:http:run-client
+# invokes user api
+./gradlew :modules:http:run-client --args="arg_user"
 ```
 
 OpenAPI, Swagger UI and Redoc
