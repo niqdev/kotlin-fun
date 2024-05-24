@@ -19,4 +19,5 @@ node_modules
 
 modules/http/docs/
 tmp-*
-README.md
+local/archive/README.md
+local/archive/upload-*

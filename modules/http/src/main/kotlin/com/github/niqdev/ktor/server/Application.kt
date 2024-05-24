@@ -9,6 +9,7 @@ import com.github.niqdev.ktor.server.routes.homeRoutes
 import com.github.niqdev.ktor.server.routes.statusRoutes
 import com.github.niqdev.ktor.server.routes.userRoutes
 import com.github.niqdev.ktor.server.routes.versionRoutes
+import com.github.niqdev.ktor.server.services.FileServiceImpl
 import com.github.niqdev.ktor.server.services.UserServiceImpl
 import io.ktor.serialization.jackson.jackson
 import io.ktor.server.application.Application
@@ -49,6 +50,7 @@ fun Application.mainModule() {
   log.debug("Loading dependency graph")
   val userRepository = UserRepositoryImpl(jdbiClient)
   val userService = UserServiceImpl(userRepository)
+  val fileService = FileServiceImpl()
 
   log.debug("Loading route plugins")
   routing {
@@ -56,7 +58,7 @@ fun Application.mainModule() {
     statusRoutes()
     userRoutes(userService)
     versionRoutes()
-    fileRoutes()
+    fileRoutes(fileService)
   }
 }
 
