@@ -2,7 +2,7 @@
 
 ### Development
 
-* [Ktor](https://ktor.io/docs)
+* [Ktor](https://ktor.io/docs) and [snippets](https://github.com/ktorio/ktor-documentation/tree/main/codeSnippets/snippets)
 * [Jdbi](https://jdbi.org)
 * [Flyway](https://documentation.red-gate.com/fd)
 * [Testcontainers](https://java.testcontainers.org)
@@ -35,8 +35,9 @@ curl -sS http://localhost:8080/user -H 'Content-Type: application/json' --data '
 # upload
 curl -i -H "Content-Type: application/x-www-form-urlencoded" --data-binary "@README.md" http://localhost:8080/file/upload
 
-# invokes user api
+# invokes api
 ./gradlew :modules:http:run-client --args="arg_user"
+./gradlew :modules:http:run-client --args="arg_upload"
 ```
 
 OpenAPI, Swagger UI and Redoc

@@ -22,6 +22,10 @@ object HttpClientBuilder {
         retryOnServerErrors(maxRetries = 5)
         exponentialDelay()
       }
+    }
+
+  fun buildJson(builder: HttpClientConfig<out HttpClientEngineConfig>.() -> Unit = {}): HttpClient =
+    build {
       install(ContentNegotiation) {
         jackson {
           configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)

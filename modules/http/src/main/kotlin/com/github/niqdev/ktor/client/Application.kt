@@ -6,19 +6,26 @@ import com.github.niqdev.ktor.server.routes.UserResponse
 import com.sksamuel.hoplite.fp.Validated
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.call.body
+import io.ktor.client.plugins.onUpload
+import io.ktor.client.request.forms.MultiPartFormDataContent
+import io.ktor.client.request.forms.formData
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
+import io.ktor.http.Headers
+import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import kotlinx.coroutines.runBlocking
+import java.io.File
 
 private val log = KotlinLogging.logger { }
 
 private enum class Argument {
   ARG_USER,
-  ARG_DOWNLOAD,
-  ARG_UPLOAD;
+  ARG_UPLOAD,
+  ARG_DOWNLOAD;
 }
 
 fun main(args: Array<String>) {
@@ -42,15 +49,15 @@ private fun runClient(args: List<String>, config: ClientConfig) {
   when (Argument.valueOf(args.first().uppercase())) {
     Argument.ARG_USER ->
       runBlocking { runUserClient(config) }
-    Argument.ARG_DOWNLOAD ->
-      TODO()
     Argument.ARG_UPLOAD ->
+      runBlocking { runUploadClient(config) }
+    Argument.ARG_DOWNLOAD ->
       TODO()
   }
 }
 
 private suspend fun runUserClient(config: ClientConfig) {
-  val client = HttpClientBuilder.build()
+  val client = HttpClientBuilder.buildJson()
   val usersBefore = client.get("${config.baseUrl}/user").body<List<User>>()
   log.info { "Users before: $usersBefore" }
 
@@ -62,4 +69,30 @@ private suspend fun runUserClient(config: ClientConfig) {
 
   // see "use" for single requests
   client.close()
+}
+
+private suspend fun runUploadClient(config: ClientConfig) {
+  val client = HttpClientBuilder.build()
+
+  val response = client.post("${config.baseUrl}/file/upload-multipart") {
+    setBody(
+      MultiPartFormDataContent(
+        formData {
+          append("description", "ktor logo")
+          append(
+            "image", File("../../local/archive/kotlin-ktor.png").readBytes(),
+            Headers.build {
+              append(HttpHeaders.ContentType, "image/png")
+              append(HttpHeaders.ContentDisposition, "filename=\"kotlin-ktor.png\"")
+            }
+          )
+        }
+      )
+    )
+    onUpload { bytesSentTotal, contentLength ->
+      log.info { "Sent $bytesSentTotal bytes from $contentLength" }
+    }
+  }
+
+  log.info(response.bodyAsText())
 }
