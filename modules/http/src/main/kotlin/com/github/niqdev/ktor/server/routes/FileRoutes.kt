@@ -36,7 +36,13 @@ fun Route.fileRoutes(fileService: FileService) {
     get("/download-archive") {
       // list all png files and return a zip
       fileService.downloadArchive(ARCHIVE_PATH, ".png").fold(
-        { call.respondBytes { it.toByteArray() } },
+        {
+          call.response.header(
+            HttpHeaders.ContentDisposition,
+            ContentDisposition.Attachment.withParameter(ContentDisposition.Parameters.FileName, "archive.zip").toString()
+          )
+          call.respondBytes { it.toByteArray() }
+        },
         { call.respond(HttpStatusCode.InternalServerError, "please try again") }
       )
     }

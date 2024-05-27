@@ -34,6 +34,8 @@ curl -v http://localhost:8080/user/e5c931fd-2ed0-4af7-bf17-a53d2d3daa66
 curl -sS http://localhost:8080/user -H 'Content-Type: application/json' --data '{"name":"foo","age":42}' | jq
 # upload
 curl -i -H "Content-Type: application/x-www-form-urlencoded" --data-binary "@README.md" http://localhost:8080/file/upload
+# download (-J allows remote header filename)
+curl -sS -J http://localhost:8080/file/download-archive -o my-archive.zip
 
 # invokes api
 ./gradlew :modules:http:run-client --args="arg_user"
