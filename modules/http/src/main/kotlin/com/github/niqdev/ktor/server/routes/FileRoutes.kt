@@ -1,13 +1,15 @@
 package com.github.niqdev.ktor.server.routes
 
 import com.github.niqdev.ktor.server.services.FileService
-import io.ktor.http.*
-import io.ktor.http.content.*
+import io.ktor.http.ContentDisposition
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.call
 import io.ktor.server.request.receiveChannel
 import io.ktor.server.request.receiveMultipart
 import io.ktor.server.response.header
 import io.ktor.server.response.respond
+import io.ktor.server.response.respondBytes
 import io.ktor.server.response.respondFile
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
@@ -27,15 +29,16 @@ fun Route.fileRoutes(fileService: FileService) {
       val file = File("$ARCHIVE_PATH/kotlin-ktor.png")
       call.response.header(
         HttpHeaders.ContentDisposition,
-        ContentDisposition.Attachment.withParameter(ContentDisposition.Parameters.FileName, "ktor.png")
-          .toString()
+        ContentDisposition.Attachment.withParameter(ContentDisposition.Parameters.FileName, "ktor.png").toString()
       )
       call.respondFile(file)
     }
     get("/download-archive") {
-      // list all files containing "kotlin-ktor" and return a tar.gz
-
-      TODO()
+      // list all png files and return a zip
+      fileService.downloadArchive(ARCHIVE_PATH, ".png").fold(
+        { call.respondBytes { it.toByteArray() } },
+        { call.respond(HttpStatusCode.InternalServerError, "please try again") }
+      )
     }
     post("/upload") {
       val file = File("$ARCHIVE_PATH/README.md")

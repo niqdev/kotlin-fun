@@ -52,6 +52,7 @@ private fun runClient(args: List<String>, config: ClientConfig) {
     Argument.ARG_UPLOAD ->
       runBlocking { runUploadClient(config) }
     Argument.ARG_DOWNLOAD ->
+      // https://github.com/ktorio/ktor/issues/1639
       TODO()
   }
 }
@@ -82,6 +83,7 @@ private suspend fun runUploadClient(config: ClientConfig) {
           append(
             "image", File("../../local/archive/kotlin-ktor.png").readBytes(),
             Headers.build {
+              // TODO ContentType.Image.PNG
               append(HttpHeaders.ContentType, "image/png")
               append(HttpHeaders.ContentDisposition, "filename=\"kotlin-ktor.png\"")
             }
