@@ -29,6 +29,7 @@ private enum class Argument {
   ARG_UPLOAD,
   ARG_DOWNLOAD;
 }
+private const val ARCHIVE_PATH = "../../local/archive"
 
 fun main(args: Array<String>) {
   when (val validatedConfig = ClientConfig.load()) {
@@ -82,7 +83,7 @@ private suspend fun runUploadClient(config: ClientConfig) {
         formData {
           append("description", "ktor logo")
           append(
-            "image", File("../../local/archive/kotlin-ktor.png").readBytes(),
+            "image", File("$ARCHIVE_PATH/kotlin-ktor.png").readBytes(),
             Headers.build {
               // see ContentType.Image.PNG
               append(HttpHeaders.ContentType, "image/png")
@@ -114,7 +115,7 @@ private suspend fun runDownloadClient(config: ClientConfig) {
     .parse(response.headers[HttpHeaders.ContentDisposition].orEmpty())
     .parameter(ContentDisposition.Parameters.FileName)
 
-  val file = File("../../local/archive/download-${System.currentTimeMillis()}-$fileName")
+  val file = File("$ARCHIVE_PATH/download-${System.currentTimeMillis()}-$fileName")
   file.writeBytes(response.body())
   log.info { "Downloaded ${file.path}" }
 }
