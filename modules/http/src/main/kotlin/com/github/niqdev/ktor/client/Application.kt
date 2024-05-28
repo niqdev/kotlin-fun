@@ -6,6 +6,7 @@ import com.github.niqdev.ktor.server.routes.UserResponse
 import com.sksamuel.hoplite.fp.Validated
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.ktor.client.call.body
+import io.ktor.client.plugins.onDownload
 import io.ktor.client.plugins.onUpload
 import io.ktor.client.request.forms.MultiPartFormDataContent
 import io.ktor.client.request.forms.formData
@@ -13,6 +14,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.bodyAsText
+import io.ktor.http.ContentDisposition
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
@@ -52,8 +54,7 @@ private fun runClient(args: List<String>, config: ClientConfig) {
     Argument.ARG_UPLOAD ->
       runBlocking { runUploadClient(config) }
     Argument.ARG_DOWNLOAD ->
-      // https://github.com/ktorio/ktor/issues/1639
-      TODO()
+      runBlocking { runDownloadClient(config) }
   }
 }
 
@@ -83,7 +84,7 @@ private suspend fun runUploadClient(config: ClientConfig) {
           append(
             "image", File("../../local/archive/kotlin-ktor.png").readBytes(),
             Headers.build {
-              // TODO ContentType.Image.PNG
+              // see ContentType.Image.PNG
               append(HttpHeaders.ContentType, "image/png")
               append(HttpHeaders.ContentDisposition, "filename=\"kotlin-ktor.png\"")
             }
@@ -97,4 +98,23 @@ private suspend fun runUploadClient(config: ClientConfig) {
   }
 
   log.info(response.bodyAsText())
+}
+
+// alternative https://github.com/ktorio/ktor/issues/1639
+private suspend fun runDownloadClient(config: ClientConfig) {
+  val client = HttpClientBuilder.build()
+
+  val response = client.get("${config.baseUrl}/file/download-archive") {
+    onDownload { bytesSentTotal, contentLength ->
+      log.debug { "Received $bytesSentTotal bytes from $contentLength" }
+    }
+  }
+
+  val fileName = ContentDisposition
+    .parse(response.headers[HttpHeaders.ContentDisposition].orEmpty())
+    .parameter(ContentDisposition.Parameters.FileName)
+
+  val file = File("../../local/archive/download-${System.currentTimeMillis()}-$fileName")
+  file.writeBytes(response.body())
+  log.info { "Downloaded ${file.path}" }
 }

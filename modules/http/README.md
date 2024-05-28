@@ -40,6 +40,7 @@ curl -sS -J http://localhost:8080/file/download-archive -o my-archive.zip
 # invokes api
 ./gradlew :modules:http:run-client --args="arg_user"
 ./gradlew :modules:http:run-client --args="arg_upload"
+./gradlew :modules:http:run-client --args="arg_download"
 ```
 
 OpenAPI, Swagger UI and Redoc

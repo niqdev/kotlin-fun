@@ -21,3 +21,4 @@ modules/http/docs/
 tmp-*
 local/archive/README.md
 local/archive/upload-*
+local/archive/downaload-*
