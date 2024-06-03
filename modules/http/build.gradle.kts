@@ -74,7 +74,7 @@ tasks.withType<Test> {
 // fixes jib-gradle-plugin
 jib {
   container {
-    mainClass = "com.github.niqdev.ktor.client.ApplicationKt"
+    mainClass = "com.github.niqdev.ktor.server.ApplicationKt"
   }
 }
 
