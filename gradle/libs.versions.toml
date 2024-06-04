@@ -5,7 +5,7 @@ hoplite = "2.7.5"
 kondor = "2.3.3"
 confluent = "7.3.3" # FIXME 7.4.0
 log4j = "2.23.1"
-flyway = "10.13.0"
+flyway = "10.14.0"
 # tests
 kotest = "5.9.0"
 
