@@ -71,10 +71,22 @@ tasks.withType<Test> {
   useJUnitPlatform()
 }
 
-// fixes jib-gradle-plugin
+// https://github.com/GoogleContainerTools/jib/blob/master/jib-gradle-plugin/README.md
 jib {
   container {
     mainClass = "com.github.niqdev.ktor.server.ApplicationKt"
+  }
+  from {
+    platforms {
+      platform {
+        architecture = "amd64"
+        os = "linux"
+      }
+      platform {
+        architecture = "arm64"
+        os = "linux"
+      }
+    }
   }
 }
 
