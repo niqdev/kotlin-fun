@@ -106,5 +106,3 @@ kubectl --kubeconfig clusters/do-template-kubeconfig.yaml -n examples \
 # show tables
 \dt
 ```
-
-***IMPORTANT: after stopping the cluster, don't forget to delete the Volumes Block Storage on DigitalOcean i.e. pvc***
