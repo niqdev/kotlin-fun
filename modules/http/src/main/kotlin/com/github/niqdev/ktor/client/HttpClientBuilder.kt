@@ -14,7 +14,6 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.jackson.jackson
 
 object HttpClientBuilder {
-
   fun build(builder: HttpClientConfig<out HttpClientEngineConfig>.() -> Unit = {}): HttpClient =
     HttpClient(Java) {
       install(Logging)

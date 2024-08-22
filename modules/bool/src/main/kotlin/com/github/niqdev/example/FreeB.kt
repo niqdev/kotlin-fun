@@ -4,7 +4,6 @@ package com.github.niqdev.example
 // https://engineering.wingify.com/posts/Free-objects
 // https://youtu.be/6-afaw_ht80
 sealed interface FreeB<out A> {
-
   fun run(f: (A) -> Boolean): Boolean =
     when (this) {
       is Pure -> f(value)
@@ -15,30 +14,40 @@ sealed interface FreeB<out A> {
       is Not -> !fa.run(f)
     }
 
-  data class Pure<A>(val value: A) : FreeB<A>
+  data class Pure<A>(
+    val value: A,
+  ) : FreeB<A>
+
   // see data object in kotlin 1.9
   // https://youtu.be/zvwTwGAa41Y
   data object True : FreeB<Nothing> {
-    override fun toString(): String =
-      this::class.simpleName ?: "true"
+    override fun toString(): String = this::class.simpleName ?: "true"
   }
+
   data object False : FreeB<Nothing>
-  data class And<A>(val left: FreeB<A>, val right: FreeB<A>) : FreeB<A>
-  data class Or<A>(val left: FreeB<A>, val right: FreeB<A>) : FreeB<A>
-  data class Not<A>(val fa: FreeB<A>) : FreeB<A>
+
+  data class And<A>(
+    val left: FreeB<A>,
+    val right: FreeB<A>,
+  ) : FreeB<A>
+
+  data class Or<A>(
+    val left: FreeB<A>,
+    val right: FreeB<A>,
+  ) : FreeB<A>
+
+  data class Not<A>(
+    val fa: FreeB<A>,
+  ) : FreeB<A>
 }
 
-fun <A> pure(value: A): FreeB<A> =
-  FreeB.Pure(value)
+fun <A> pure(value: A): FreeB<A> = FreeB.Pure(value)
 
-fun <A> not(fa: FreeB<A>): FreeB<A> =
-  FreeB.Not(fa)
+fun <A> not(fa: FreeB<A>): FreeB<A> = FreeB.Not(fa)
 
-infix fun <A> FreeB<A>.and(right: FreeB<A>): FreeB<A> =
-  FreeB.And(this, right)
+infix fun <A> FreeB<A>.and(right: FreeB<A>): FreeB<A> = FreeB.And(this, right)
 
-infix fun <A> FreeB<A>.or(right: FreeB<A>): FreeB<A> =
-  FreeB.Or(this, right)
+infix fun <A> FreeB<A>.or(right: FreeB<A>): FreeB<A> = FreeB.Or(this, right)
 
 // interpreter
 // TODO FreeB<A>.normalize(): FreeB<A>
@@ -53,8 +62,13 @@ fun <A> FreeB<A>.pretty(f: (A) -> String): String =
   }
 
 sealed interface Predicate {
-  data class AtLeast13(val i: Int) : Predicate
-  data class NonEmptyName(val s: String) : Predicate
+  data class AtLeast13(
+    val i: Int,
+  ) : Predicate
+
+  data class NonEmptyName(
+    val s: String,
+  ) : Predicate
 
   companion object {
     val eval: (Predicate) -> Boolean = {

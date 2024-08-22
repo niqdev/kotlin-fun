@@ -9,42 +9,43 @@ import io.kotest.core.spec.style.WordSpec
 import io.kotest.extensions.embedded.kafka.EmbeddedKafkaListener
 import io.kotest.matchers.shouldBe
 
-class SchemaRegistryTest : WordSpec({
+class SchemaRegistryTest :
+  WordSpec({
 
-  // see Testcontainers: in-memory kafka and zookeeper
-  listener(EmbeddedKafkaListener(kafkaPort = 6005, zookeeperPort = 9005))
+    // see Testcontainers: in-memory kafka and zookeeper
+    listener(EmbeddedKafkaListener(kafkaPort = 6005, zookeeperPort = 9005))
 
-  "SchemaRegistry" should {
+    "SchemaRegistry" should {
 
-    "verify" {
-      val props = java.util.Properties()
-      // without kafka schema-registry doesn't start
-      props[SchemaRegistryConfig.KAFKASTORE_BOOTSTRAP_SERVERS_CONFIG] = "localhost:6005"
-      props[SchemaRegistryConfig.SCHEMA_PROVIDERS_CONFIG] = JsonSchemaProvider::class.java.name
-      val app = SchemaRegistryRestApplication(props)
-      app.start()
+      "verify" {
+        val props = java.util.Properties()
+        // without kafka schema-registry doesn't start
+        props[SchemaRegistryConfig.KAFKASTORE_BOOTSTRAP_SERVERS_CONFIG] = "localhost:6005"
+        props[SchemaRegistryConfig.SCHEMA_PROVIDERS_CONFIG] = JsonSchemaProvider::class.java.name
+        val app = SchemaRegistryRestApplication(props)
+        app.start()
 
-      val client = MockSchemaRegistry.getClientForScope("testClient")
-      val schemaString = "/employee.schema.json".readFromResource()
-      val jsonSchema = JsonSchema(schemaString)
+        val client = MockSchemaRegistry.getClientForScope("testClient")
+        val schemaString = "/employee.schema.json".readFromResource()
+        val jsonSchema = JsonSchema(schemaString)
 
-      // validate should throw if invalid
-      // jsonSchema.validate()
+        // validate should throw if invalid
+        // jsonSchema.validate()
 
-      // e.g. topic name
-      val subject = "test-subject"
-      val schemaId = client.register(subject, jsonSchema)
+        // e.g. topic name
+        val subject = "test-subject"
+        val schemaId = client.register(subject, jsonSchema)
 
-      schemaId shouldBe 1
-      client.allSubjects shouldBe listOf(subject)
-      val schema = client.getSchemaById(1)
-      schema.schemaType() shouldBe "JSON"
-      // title
-      schema.name() shouldBe "Record of employee"
-      schema.rawSchema() shouldBe jsonSchema.rawSchema()
+        schemaId shouldBe 1
+        client.allSubjects shouldBe listOf(subject)
+        val schema = client.getSchemaById(1)
+        schema.schemaType() shouldBe "JSON"
+        // title
+        schema.name() shouldBe "Record of employee"
+        schema.rawSchema() shouldBe jsonSchema.rawSchema()
 
-      // TODO make sure it's always invoked
-      app.stop()
+        // TODO make sure it's always invoked
+        app.stop()
+      }
     }
-  }
-})
+  })

@@ -3,12 +3,15 @@ package com.github.niqdev.json.core
 typealias ValidatedNel<E, T> = Validated<NonEmptyList<E>, T>
 
 sealed interface Validated<out E, out T> {
-
-  data class Invalid<E>(val error: E) : Validated<E, Nothing> {
+  data class Invalid<E>(
+    val error: E,
+  ) : Validated<E, Nothing> {
     override fun toString(): String = show()
   }
 
-  data class Valid<T>(val value: T) : Validated<Nothing, T> {
+  data class Valid<T>(
+    val value: T,
+  ) : Validated<Nothing, T> {
     override fun toString(): String = show()
   }
 
@@ -31,8 +34,6 @@ sealed interface Validated<out E, out T> {
     }
 }
 
-fun <E> E.invalid(): Validated<E, Nothing> =
-  Validated.Invalid(this)
+fun <E> E.invalid(): Validated<E, Nothing> = Validated.Invalid(this)
 
-fun <T> T.valid(): Validated<Nothing, T> =
-  Validated.Valid(this)
+fun <T> T.valid(): Validated<Nothing, T> = Validated.Valid(this)

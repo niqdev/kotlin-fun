@@ -16,29 +16,33 @@ import kotlin.time.toDuration
 object CoroutineComparison {
   val logger: Logger = LoggerFactory.getLogger(CoroutineComparison.javaClass)
 
-  private suspend fun newRequest(seconds: Int, label: String): String {
+  private suspend fun newRequest(
+    seconds: Int,
+    label: String,
+  ): String {
     logger.debug("before: $label")
     delay(seconds.toDuration(DurationUnit.SECONDS))
     logger.debug("after $label")
     return "response-$label"
   }
 
-  private suspend fun fastRequest(): String =
-    newRequest(1, "fast")
+  private suspend fun fastRequest(): String = newRequest(1, "fast")
 
-  private suspend fun slowRequest(): String =
-    newRequest(5, "slow")
+  private suspend fun slowRequest(): String = newRequest(5, "slow")
 
-  private fun compare(a: String, b: String): Boolean =
-    a.split("-").first() == b.split("-").first()
+  private fun compare(
+    a: String,
+    b: String,
+  ): Boolean = a.split("-").first() == b.split("-").first()
 
   // "launch{}" blocks the scope and prevents to return
   // replace with "CoroutineScope(Dispatchers.???).launch{}" to fire and forget
   suspend fun run(): String =
     coroutineScope {
-      val fastResponse = async {
-        fastRequest()
-      }
+      val fastResponse =
+        async {
+          fastRequest()
+        }
 
       launch(Dispatchers.Default) {
         // call await multiple times to get the same result

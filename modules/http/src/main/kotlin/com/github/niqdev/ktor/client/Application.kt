@@ -27,8 +27,9 @@ private val log = KotlinLogging.logger { }
 private enum class Argument {
   ARG_USER,
   ARG_UPLOAD,
-  ARG_DOWNLOAD;
+  ARG_DOWNLOAD,
 }
+
 private const val ARCHIVE_PATH = "../../local/archive"
 
 fun main(args: Array<String>) {
@@ -42,7 +43,10 @@ fun main(args: Array<String>) {
   }
 }
 
-private fun runClient(args: List<String>, config: ClientConfig) {
+private fun runClient(
+  args: List<String>,
+  config: ClientConfig,
+) {
   log.debug { "arguments: $args" }
   if (args.size != 1) {
     log.error { "invalid arguments: ${Argument.entries}" }
@@ -64,10 +68,12 @@ private suspend fun runUserClient(config: ClientConfig) {
   val usersBefore = client.get("${config.baseUrl}/user").body<List<User>>()
   log.info { "Users before: $usersBefore" }
 
-  val newUser = client.post("${config.baseUrl}/user") {
-    contentType(ContentType.Application.Json)
-    setBody(UserRequest(name = "my-name", age = 28))
-  }.body<UserResponse>()
+  val newUser =
+    client
+      .post("${config.baseUrl}/user") {
+        contentType(ContentType.Application.Json)
+        setBody(UserRequest(name = "my-name", age = 28))
+      }.body<UserResponse>()
   log.info { "New user: $newUser" }
 
   // see "use" for single requests
@@ -77,26 +83,28 @@ private suspend fun runUserClient(config: ClientConfig) {
 private suspend fun runUploadClient(config: ClientConfig) {
   val client = HttpClientBuilder.build()
 
-  val response = client.post("${config.baseUrl}/file/upload-multipart") {
-    setBody(
-      MultiPartFormDataContent(
-        formData {
-          append("description", "ktor logo")
-          append(
-            "image", File("$ARCHIVE_PATH/kotlin-ktor.png").readBytes(),
-            Headers.build {
-              // see ContentType.Image.PNG
-              append(HttpHeaders.ContentType, "image/png")
-              append(HttpHeaders.ContentDisposition, "filename=\"kotlin-ktor.png\"")
-            }
-          )
-        }
+  val response =
+    client.post("${config.baseUrl}/file/upload-multipart") {
+      setBody(
+        MultiPartFormDataContent(
+          formData {
+            append("description", "ktor logo")
+            append(
+              "image",
+              File("$ARCHIVE_PATH/kotlin-ktor.png").readBytes(),
+              Headers.build {
+                // see ContentType.Image.PNG
+                append(HttpHeaders.ContentType, "image/png")
+                append(HttpHeaders.ContentDisposition, "filename=\"kotlin-ktor.png\"")
+              },
+            )
+          },
+        ),
       )
-    )
-    onUpload { bytesSentTotal, contentLength ->
-      log.info { "Sent $bytesSentTotal bytes from $contentLength" }
+      onUpload { bytesSentTotal, contentLength ->
+        log.info { "Sent $bytesSentTotal bytes from $contentLength" }
+      }
     }
-  }
 
   log.info(response.bodyAsText())
 }
@@ -105,15 +113,17 @@ private suspend fun runUploadClient(config: ClientConfig) {
 private suspend fun runDownloadClient(config: ClientConfig) {
   val client = HttpClientBuilder.build()
 
-  val response = client.get("${config.baseUrl}/file/download-archive") {
-    onDownload { bytesSentTotal, contentLength ->
-      log.debug { "Received $bytesSentTotal bytes from $contentLength" }
+  val response =
+    client.get("${config.baseUrl}/file/download-archive") {
+      onDownload { bytesSentTotal, contentLength ->
+        log.debug { "Received $bytesSentTotal bytes from $contentLength" }
+      }
     }
-  }
 
-  val fileName = ContentDisposition
-    .parse(response.headers[HttpHeaders.ContentDisposition].orEmpty())
-    .parameter(ContentDisposition.Parameters.FileName)
+  val fileName =
+    ContentDisposition
+      .parse(response.headers[HttpHeaders.ContentDisposition].orEmpty())
+      .parameter(ContentDisposition.Parameters.FileName)
 
   val file = File("$ARCHIVE_PATH/download-${System.currentTimeMillis()}-$fileName")
   file.writeBytes(response.body())

@@ -24,7 +24,9 @@ mutableName = getValue()
 // - `internal` modifier means that the class is accessible only from inside the module where it's defined
 // - `protected` is restricted to extending classes and doesn't include classes in the same package
 // a Kotlin class is `final` by default: to make a Kotlin class non-final, use the open modifier
-class Person0 constructor(name: String) {
+class Person0 constructor(
+  name: String,
+) {
   val name: String
 
   // constructor implementation with access to constructor parameters
@@ -34,37 +36,50 @@ class Person0 constructor(name: String) {
 }
 
 // equivalent to
-class Person1 constructor(name: String) {
+class Person1 constructor(
+  name: String,
+) {
   // no `init` block: one-liner constructor
   val name: String = name
 }
 
 // equivalent to (combine the constructor declaration, the property declaration, and the property initialization)
 // added `val`
-class Person2 constructor(val name: String) // with {} (formatKotlin removed it)
+class Person2 constructor(
+  val name: String,
+) // with {} (formatKotlin removed it)
 
 // equivalent to (because the block {} is empty, it can be removed and also the word `constructor`)
-class Person3(val name: String)
+class Person3(
+  val name: String,
+)
 
 // ------------------------------
 
 // must be declared `open for extension`
-open class Person4(val name: String) : java.io.Serializable, Comparable<Person4> {
-
+open class Person4(
+  val name: String,
+) : java.io.Serializable,
+  Comparable<Person4> {
   // when extending a class or implementing an interface overriding must be explicitly specified
-  override fun compareTo(other: Person4): Int =
-    TODO("Not yet implemented")
+  override fun compareTo(other: Person4): Int = TODO("Not yet implemented")
 }
 
 // NO `val`
-class Member(name: String, val age: Int) : Person4(name)
+class Member(
+  name: String,
+  val age: Int,
+) : Person4(name)
 // use the constructor as a function to create a new instance
 val person: Person4 = Member("myName", 42)
 
 // ------------------------------
 
 // generates `hashCode`, `equals`, `toString`, `copy` and `componentN` functions
-data class Person5(val name: String, val age: Int = 42)
+data class Person5(
+  val name: String,
+  val age: Int = 42,
+)
 
 val person5 = Person5("name")
 
@@ -78,8 +93,9 @@ println("$name5 | $age5")
 // ------------------------------
 
 // in Kotlin, classes have no static members: use `companion objects`
-data class Person6(val name: String) {
-
+data class Person6(
+  val name: String,
+) {
   companion object {
     fun hello(value: String) = println("hello $value")
   }
@@ -142,14 +158,15 @@ fun myClosure(limit: Int): Int {
   // local inner function
   // inc() function `close over` the "seq" variable: such a construct is called a `closure`
   // multi-line lambda
-  fun inc(): Int = seq.fold(
-    0,
-    { acc, i ->
-      val result = acc + i
-      // the value returned by the lambda is the value of the expression on the last line
-      if (result < limit) result else acc
-    }
-  )
+  fun inc(): Int =
+    seq.fold(
+      0,
+      { acc, i ->
+        val result = acc + i
+        // the value returned by the lambda is the value of the expression on the last line
+        if (result < limit) result else acc
+      },
+    )
 
   return inc()
 }
@@ -178,6 +195,7 @@ fun product(list: List<Int>): Int = list.fold(1) { acc: Int, value: Int -> acc *
 
 // simplified syntax for lambdas with a single parameter implicitly named `it`
 fun List<Int>.myTriple0(): List<Int> = this.map { it * 3 }
+
 fun List<Int>.myTriple1(): List<Int> = map { it * 3 }
 
 // ------------------------------
@@ -212,18 +230,20 @@ val size3 = nullableString?.length ?: 0
 
 // "when" replaces "switch...case"
 val myValue = "aaa"
-val verifyValue0 = when (myValue) {
-  "aaa" -> "A"
-  "bbb" -> "B"
-  "ccc" -> "C"
-  else -> "XYZ"
-}
-val verifyValue1 = when {
-  myValue.startsWith("a") -> "A"
-  myValue.endsWith("b") -> "B"
-  true -> "C"
-  else -> "XYZ"
-}
+val verifyValue0 =
+  when (myValue) {
+    "aaa" -> "A"
+    "bbb" -> "B"
+    "ccc" -> "C"
+    else -> "XYZ"
+  }
+val verifyValue1 =
+  when {
+    myValue.startsWith("a") -> "A"
+    myValue.endsWith("b") -> "B"
+    true -> "C"
+    else -> "XYZ"
+  }
 
 // ------------------------------
 

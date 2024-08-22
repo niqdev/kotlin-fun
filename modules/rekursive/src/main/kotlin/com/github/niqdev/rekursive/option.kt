@@ -5,8 +5,7 @@ sealed class ForMyOption private constructor()
 typealias MyOptionOf<A> = Kind<ForMyOption, A>
 
 @Suppress("NOTHING_TO_INLINE")
-inline fun <A> MyOptionOf<A>.fix(): MyOption<A> =
-  this as MyOption<A>
+inline fun <A> MyOptionOf<A>.fix(): MyOption<A> = this as MyOption<A>
 
 object MyOptionFunctor : Functor<ForMyOption> {
   override fun <A, B> map(fa: MyOptionOf<A>): ((A) -> B) -> MyOptionOf<B> =
@@ -19,12 +18,13 @@ object MyOptionFunctor : Functor<ForMyOption> {
 }
 
 sealed interface MyOption<out A> : MyOptionOf<A> {
-
   object None : MyOption<Nothing> {
     override fun toString(): String = this.show()
   }
 
-  data class Some<out A>(val value: A) : MyOption<A> {
+  data class Some<out A>(
+    val value: A,
+  ) : MyOption<A> {
     override fun toString(): String = this.show()
   }
 

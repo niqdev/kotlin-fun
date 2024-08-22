@@ -12,21 +12,34 @@ import org.json.JSONObject
 import org.json.JSONTokener
 
 sealed interface SchemaError
-data class InternalError(val message: String) : SchemaError
-data class ValidationError(val message: String) : SchemaError
-data class CompatibilityError(val message: String) : SchemaError
 
-private class CompatibilityException(val errors: List<String>) : RuntimeException()
+data class InternalError(
+  val message: String,
+) : SchemaError
+
+data class ValidationError(
+  val message: String,
+) : SchemaError
+
+data class CompatibilityError(
+  val message: String,
+) : SchemaError
+
+private class CompatibilityException(
+  val errors: List<String>,
+) : RuntimeException()
 
 sealed interface Schema {
   fun validate(json: String): ValidatedNel<SchemaError, Unit>
+
   fun isBackwardCompatible(previousSchema: String): ValidatedNel<SchemaError, Unit>
+
   fun isForwardCompatible(previousSchema: String): ValidatedNel<SchemaError, Unit>
 
   companion object {
-
     private fun loadUnsafe(value: String): org.everit.json.schema.Schema =
-      SchemaLoader.builder()
+      SchemaLoader
+        .builder()
         .schemaJson(JSONTokener(value).nextValue())
         .draftV7Support()
         .build()
@@ -34,13 +47,14 @@ sealed interface Schema {
         .build()
 
     // TODO uberto/kondor-json
-    fun load(value: String): Either<Throwable, Schema> =
-      Either.catch { loadUnsafe(value) }.map { InternalSchemaImpl(value, it) }
+    fun load(value: String): Either<Throwable, Schema> = Either.catch { loadUnsafe(value) }.map { InternalSchemaImpl(value, it) }
   }
 }
 
-private class InternalSchemaImpl(val rawSchema: String, val schema: org.everit.json.schema.Schema) : Schema {
-
+private class InternalSchemaImpl(
+  val rawSchema: String,
+  val schema: org.everit.json.schema.Schema,
+) : Schema {
   override fun validate(json: String): ValidatedNel<SchemaError, Unit> =
     Either
       .catch { schema.validate(JSONObject(json)) }
@@ -59,7 +73,10 @@ private class InternalSchemaImpl(val rawSchema: String, val schema: org.everit.j
       .mapError { toSchemaErrorNel(it) }
       .toValidated()
 
-  private fun verifyCompatibilityUnsafe(compatibilityLevel: CompatibilityLevel, previousSchema: String) {
+  private fun verifyCompatibilityUnsafe(
+    compatibilityLevel: CompatibilityLevel,
+    previousSchema: String,
+  ) {
     val errors = JsonSchema(rawSchema).isCompatible(compatibilityLevel, listOf(JsonSchema(previousSchema)))
     if (errors.isNotEmpty()) throw CompatibilityException(errors)
   }

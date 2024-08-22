@@ -2,6 +2,7 @@
 
 interface Clickable {
   fun click()
+
   fun showOff() = println("I'm clickable!")
 }
 
@@ -11,7 +12,9 @@ interface Focusable {
 
 // Kotlin uses the colon after the class name to replace both the `extends` and `implements` keywords used in Java
 // must implement method
-class Button : Clickable, Focusable {
+class Button :
+  Clickable,
+  Focusable {
   // unlike Java, using the override modifier is mandatory in Kotlin
   override fun click() = println("I was clicked")
 
@@ -58,6 +61,7 @@ abstract class Animated {
 
   //  Non-abstract functions in abstract classes aren't open by default but can be marked as open
   open fun stopAnimating() {}
+
   fun animateTwice() {}
 }
 
@@ -76,6 +80,7 @@ abstract class Animated {
 
 class Outer {
   class Nested
+
   inner class Inner {
     //  to reference an instance of an outer
     val outer: Outer = this@Outer
@@ -90,8 +95,14 @@ class Outer {
 // You can't declare a sealed interface
 sealed class Expr {
   // the `()` means invoke the default constructor
-  class Num(val value: Int) : Expr()
-  class Sum(val left: Expr, val right: Expr) : Expr()
+  class Num(
+    val value: Int,
+  ) : Expr()
+
+  class Sum(
+    val left: Expr,
+    val right: Expr,
+  ) : Expr()
 }
 
 // ------------------------------
@@ -104,7 +115,9 @@ sealed class Expr {
 
 // primary constructor with one parameter
 // The underscore in the constructor parameter _name serves to distinguish the name of the property from the name of the constructor parameter
-class UserVerbose0 constructor(_name: String) {
+class UserVerbose0 constructor(
+  _name: String,
+) {
   val name: String
 
   // initializer block
@@ -118,7 +131,9 @@ class UserVerbose0 constructor(_name: String) {
 }
 
 // Primary constructor with one parameter
-class UserVerbose1(_name: String) {
+class UserVerbose1(
+  _name: String,
+) {
   // The property is initialized with the parameter
   val name = _name
 }
@@ -129,11 +144,19 @@ class UserVerbose1(_name: String) {
 // Provides a default value for the constructor parameter
 // create an instance of a class, you call the constructor directly, without the new keyword
 // If all the constructor parameters have default values, the compiler generates an additional constructor without parameters that uses all the default values
-class User(val name: String, val isSubscribed: Boolean = true)
+class User(
+  val name: String,
+  val isSubscribed: Boolean = true,
+)
 
 // If your class has a superclass, the primary constructor also needs to initialize the superclass
-open class User1(val name: String)
-class TwitterUser1(val nickname: String) : User1(nickname)
+open class User1(
+  val name: String,
+)
+
+class TwitterUser1(
+  val nickname: String,
+) : User1(nickname)
 
 // private constructor: ensure that your class can't be instantiated
 class Secretive private constructor()
@@ -147,6 +170,7 @@ open class View {
   constructor(ctx: String) {}
   constructor(ctx: String, attr: String) {}
 }
+
 class MyButton : View {
   // invokes View constructor
   constructor(ctx: String) : super(ctx)
@@ -163,10 +187,16 @@ class MyButton : View {
 // ------------------------------
 
 // Universal object methods: toString, equals, and hashCode
-data class ClientData(val name: String, val postalCode: Int)
+data class ClientData(
+  val name: String,
+  val postalCode: Int,
+)
 
 // equivalent to
-class Client(val name: String, val postalCode: Int) {
+class Client(
+  val name: String,
+  val postalCode: Int,
+) {
   override fun toString() = "Client(name=$name, postalCode=$postalCode)"
 
   // If applied to primitive types, Java's == compares values, whereas == on reference types compares references
@@ -197,7 +227,7 @@ println(client2)
 
 // Decorator pattern: `by` keyword
 class DelegatingCollection<T>(
-  innerList: Collection<T> = ArrayList<T>()
+  innerList: Collection<T> = ArrayList<T>(),
 ) : Collection<T> by innerList
 
 // ------------------------------
@@ -213,25 +243,32 @@ class DelegatingCollection<T>(
 // in Java you access it with Payroll.INSTANCE
 object Payroll {
   val allEmployees = arrayListOf<String>()
+
   fun calculateSalary() {
-    for (person in allEmployees) { println(person) }
+    for (person in allEmployees) {
+      println(person)
+    }
   }
 }
 
 // ------------------------------
 
 // COMPANION OBJECT
-class Example1 private constructor(val name: String) {
+class Example1 private constructor(
+  val name: String,
+) {
   private val bar = 1
 
   // only one companion object is allowed per class
   companion object {
     // alternative to secondary constructors: factories
-    fun instance() =
-      Example1("hello")
+    fun instance() = Example1("hello")
   }
 }
-class Example2(val name: String) {
+
+class Example2(
+  val name: String,
+) {
   companion object Foo {
     fun bar() = println(this.javaClass)
   }
@@ -243,7 +280,10 @@ println("${Example1.instance()} ${Example2.Foo.bar()}")
 interface JSONFactory<T> {
   fun fromJSON(jsonText: String): T
 }
-class Example3(val name: String) {
+
+class Example3(
+  val name: String,
+) {
   companion object : JSONFactory<Example3> {
     override fun fromJSON(jsonText: String): Example3 {
       TODO("Not yet implemented")
@@ -254,10 +294,13 @@ class Example3(val name: String) {
 // See @JvmStatic @JvmField for Java interop
 
 // COMPANION OBJECT extension
-class Example4(val name: String) {
+class Example4(
+  val name: String,
+) {
   // you have to declare a companion object in your class, even an empty one, in order to be able to define extensions to it
   companion object
 }
+
 fun Example4.Companion.foo(bar: String): Example4 = Example4(bar)
 
 println(Example4.foo("bar").name)
@@ -267,8 +310,9 @@ println(Example4.foo("bar").name)
 // declaring anonymous objects
 // Unlike object declarations, anonymous objects aren’t singletons. Every time an object expression is executed, a new instance of the object is created
 // Object expressions are mostly useful when you need to override multiple methods in your anonymous object
-val myExample = object : JSONFactory<Example4> {
-  override fun fromJSON(jsonText: String): Example4 {
-    TODO("Not yet implemented")
+val myExample =
+  object : JSONFactory<Example4> {
+    override fun fromJSON(jsonText: String): Example4 {
+      TODO("Not yet implemented")
+    }
   }
-}

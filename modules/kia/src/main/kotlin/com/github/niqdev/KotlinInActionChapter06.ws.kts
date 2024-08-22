@@ -31,12 +31,24 @@ unsafeStrLen1(null)
 
 // Elvis operator or the null-coalescing operator: `?:`
 
-class Address(val streetAddress: String, val zipCode: Int, val city: String, val country: String)
-class Company(val name: String, val address: Address?)
-class Person(val name: String, val company: Company?)
+class Address(
+  val streetAddress: String,
+  val zipCode: Int,
+  val city: String,
+  val country: String,
+)
 
-fun Person.countryName(): String =
-  this.company?.address?.country ?: "unknown"
+class Company(
+  val name: String,
+  val address: Address?,
+)
+
+class Person(
+  val name: String,
+  val company: Company?,
+)
+
+fun Person.countryName(): String = this.company?.address?.country ?: "unknown"
 
 fun printShippingLabel(person: Person) {
   // throw ;-(
@@ -60,7 +72,9 @@ fun printShippingLabel(person: Person) {
 
 // ------------------------------
 
-fun sendEmail(email: String?) { println("send $email") }
+fun sendEmail(email: String?) {
+  println("send $email")
+}
 val email: String? = "aaa@bbb.com"
 email.let { e -> sendEmail(e) }
 email?.let { sendEmail(it) }

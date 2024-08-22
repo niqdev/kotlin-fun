@@ -83,12 +83,6 @@ task("runCoroutineComparison", JavaExec::class) {
   jvmArgs = listOf("-Dkotlinx.coroutines.debug")
 }
 
-// the task has precedence over .editorconfig
-kotlinter {
-  // "disabled_rules" is not picked up correctly
-  disabledRules = arrayOf("no-wildcard-imports")
-}
-
 tasks.withType<Test> {
   // required for kotest
   useJUnitPlatform()

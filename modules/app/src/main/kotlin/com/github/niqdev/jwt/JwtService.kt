@@ -10,17 +10,18 @@ import java.util.UUID
 
 interface JwtService {
   fun encode(payload: JwtPayload): String
+
   fun decode(token: String): Result<JwtPayload>
 }
 
 class JwtServiceImpl(
-  private val config: JwtConfig
+  private val config: JwtConfig,
 ) : JwtService {
-
   private companion object {
-    val mapper = jacksonObjectMapper()
-      .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
-      .registerModule(JavaTimeModule())
+    val mapper =
+      jacksonObjectMapper()
+        .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
+        .registerModule(JavaTimeModule())
   }
 
   private val algorithm = Algorithm.HMAC256(config.secret)
@@ -28,7 +29,8 @@ class JwtServiceImpl(
   override fun encode(payload: JwtPayload): String {
     val timestamp = Instant.now()
 
-    return JWT.create()
+    return JWT
+      .create()
       .withIssuer(config.issuer) // identifies the party that created the token and signed it
       .withSubject("${config.issuer}-foo") // identifies the subject of the JWT
       .withIssuedAt(timestamp) // identifies the time at which the JWT was created
@@ -40,17 +42,20 @@ class JwtServiceImpl(
   }
 
   // verifies online https://jwt.io
-  override fun decode(token: String): Result<JwtPayload> = runCatching {
-    val verifier = JWT.require(algorithm)
-      .withIssuer(config.issuer)
-      .build()
+  override fun decode(token: String): Result<JwtPayload> =
+    runCatching {
+      val verifier =
+        JWT
+          .require(algorithm)
+          .withIssuer(config.issuer)
+          .build()
 
-    val decodedJwt = verifier.verify(token)
+      val decodedJwt = verifier.verify(token)
 
-    JwtPayload(
-      userId = UUID.fromString(decodedJwt.getClaim("user_id").asString()),
-      session = decodedJwt.getClaim("session").asInt(),
-      expiresAt = decodedJwt.getClaim("expires_at").asInstant(),
-    )
-  }
+      JwtPayload(
+        userId = UUID.fromString(decodedJwt.getClaim("user_id").asString()),
+        session = decodedJwt.getClaim("session").asInt(),
+        expiresAt = decodedJwt.getClaim("expires_at").asInstant(),
+      )
+    }
 }

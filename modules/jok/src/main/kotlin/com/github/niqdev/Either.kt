@@ -2,12 +2,15 @@ package com.github.niqdev
 
 // SUM type, covariant in A and B
 sealed class Either<out A, out B> {
-
-  internal class Left<out A, out B>(internal val value: A) : Either<A, B>() {
+  internal class Left<out A, out B>(
+    internal val value: A,
+  ) : Either<A, B>() {
     override fun toString(): String = "Left($value)"
   }
 
-  internal class Right<out A, out B>(internal val value: B) : Either<A, B>() {
+  internal class Right<out A, out B>(
+    internal val value: B,
+  ) : Either<A, B>() {
     override fun toString(): String = "Right($value)"
   }
 
@@ -58,12 +61,11 @@ fun <A, B> Either<A, B>.getOrElse(): (() -> B) -> B =
     }
   }
 
-fun <A, B> Either<A, B>.orElse(): (() -> Either<A, B>) -> Either<A, B> =
-  { default -> default().map<A, B, B>()() { this.getOrElse()() { it } } }
+fun <A, B> Either<A, B>.orElse(): (() -> Either<A, B>) -> Either<A, B> = { default -> default().map<A, B, B> { this.getOrElse { it } } }
 
 fun main() {
   println(Either.right<String, String>("hello").map<String, String, String>()(String::uppercase))
   println(Either.left<String, Int>("error").mapLeft<String, Int, String>()(String::uppercase))
-  println(Either.left<String, Int>("error").getOrElse()() { -> 42 })
-  println(Either.left<String, Int>("error").orElse()() { Either.left("new-error") })
+  println(Either.left<String, Int>("error").getOrElse { 42 })
+  println(Either.left<String, Int>("error").orElse { Either.left("new-error") })
 }

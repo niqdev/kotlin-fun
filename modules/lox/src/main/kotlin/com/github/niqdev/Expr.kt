@@ -25,16 +25,47 @@ package com.github.niqdev
  * primary        → NUMBER | STRING | "true" | "false" | "nil" | "(" expression ")" ;
  */
 sealed interface Expr {
-  data class Assign(val name: Token, val value: Expr) : Expr
-  data class Binary(val left: Expr, val op: Token, val right: Expr) : Expr
-  data class Call(val callee: Expr, val paren: Token, val arguments: List<Expr>) : Expr
-  data class Grouping(val expression: Expr) : Expr
+  data class Assign(
+    val name: Token,
+    val value: Expr,
+  ) : Expr
+
+  data class Binary(
+    val left: Expr,
+    val op: Token,
+    val right: Expr,
+  ) : Expr
+
+  data class Call(
+    val callee: Expr,
+    val paren: Token,
+    val arguments: List<Expr>,
+  ) : Expr
+
+  data class Grouping(
+    val expression: Expr,
+  ) : Expr
 
   // TODO use Value instead of Any?
-  data class Literal(val value: Any?) : Expr
-  data class Logical(val left: Expr, val op: Token, val right: Expr) : Expr
-  data class Unary(val op: Token, val right: Expr) : Expr
-  data class Variable(val name: Token) : Expr
+  data class Literal(
+    val value: Any?,
+  ) : Expr
+
+  data class Logical(
+    val left: Expr,
+    val op: Token,
+    val right: Expr,
+  ) : Expr
+
+  data class Unary(
+    val op: Token,
+    val right: Expr,
+  ) : Expr
+
+  data class Variable(
+    val name: Token,
+  ) : Expr
+
   object Empty : Expr
 }
 
@@ -53,10 +84,18 @@ fun Expr.pretty(): String =
 
 sealed interface Value {
   object True : Value
+
   object False : Value
+
   object Null : Value
-  data class String(val string: kotlin.String) : Value
-  data class Number(val double: Double) : Value
+
+  data class String(
+    val string: kotlin.String,
+  ) : Value
+
+  data class Number(
+    val double: Double,
+  ) : Value
 }
 
 fun Value.pretty(): String =
@@ -73,7 +112,7 @@ fun main(args: Array<String>) {
     Expr.Binary(
       Expr.Unary(Token(TokenType.MINUS, "-", null, 1), Expr.Literal(123)),
       Token(TokenType.STAR, "*", null, 1),
-      Expr.Literal(45.67)
+      Expr.Literal(45.67),
     )
 
   // ((-123.0) * 45.67)

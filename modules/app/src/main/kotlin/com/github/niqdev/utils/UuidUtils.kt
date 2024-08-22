@@ -7,10 +7,9 @@ typealias ModelId = UUID
 
 data class MyModel(
   val name: String,
-  val value: Int
+  val value: Int,
 ) {
   companion object {
-    fun toId(name: String): ModelId =
-      UuidCreator.getNameBasedSha1("my-$name")
+    fun toId(name: String): ModelId = UuidCreator.getNameBasedSha1("my-$name")
   }
 }

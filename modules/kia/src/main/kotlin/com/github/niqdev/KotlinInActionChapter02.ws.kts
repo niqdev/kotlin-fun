@@ -32,15 +32,20 @@ println("hello")
 // assignments are expressions in Java and become statements in Kotlin
 
 // function: {} block body + return keyword
-fun maxFunction(a: Int, b: Int): Int {
+fun maxFunction(
+  a: Int,
+  b: Int,
+): Int {
   // `if` is an expression, not a statement
   return if (a > b) a else b
 }
 
 // function with expression body: one single expression only
 // expression: NO {}, NO return
-fun maxExpression(a: Int, b: Int): Int =
-  if (a > b) a else b
+fun maxExpression(
+  a: Int,
+  b: Int,
+): Int = if (a > b) a else b
 
 // functions with a block body that return a value must specify the return type and write the return statements explicitly
 // omitting the return type is allowed only for functions with an expression body
@@ -51,7 +56,9 @@ println("max ${maxExpression(2, 1)}")
 
 // value objects
 // `public` is the default visibility
-class Person(val name: String)
+class Person(
+  val name: String,
+)
 
 // In Java, the combination of the field and its accessors (getter and setter) is often referred to as a property
 
@@ -63,10 +70,15 @@ class Person(val name: String)
 
 // enum is a so-called soft keyword: it has a special meaning when it comes before class,
 // but you can use it as a regular name in other places
-enum class Color(val r: Int, val g: Int, val b: Int) {
+enum class Color(
+  val r: Int,
+  val g: Int,
+  val b: Int,
+) {
   RED(255, 0, 0),
   GREEN(0, 255, 0),
-  BLUE(0, 0, 255);
+  BLUE(0, 0, 255),
+  ;
 
   fun rgb() = (r * 256 + g) * 256 + b
 }
@@ -83,7 +95,10 @@ fun getColorName(color: Color): String =
   }
 println(getColorName(Color.BLUE))
 
-fun getColorSet(c1: Color, c2: Color): String =
+fun getColorSet(
+  c1: Color,
+  c2: Color,
+): String =
   when (setOf(c1, c2)) {
     setOf(Color.RED, Color.GREEN) -> "myColor"
     else -> TODO()
@@ -93,8 +108,15 @@ fun getColorSet(c1: Color, c2: Color): String =
 
 // `:` class implements an interface
 interface Expr
-class Num(val value: Int) : Expr
-class Sum(val left: Expr, val right: Expr) : Expr
+
+class Num(
+  val value: Int,
+) : Expr
+
+class Sum(
+  val left: Expr,
+  val right: Expr,
+) : Expr
 
 // `is` is called smart cast
 // `is` check is similar to instanceof in Java
@@ -144,6 +166,7 @@ for ((index, element) in binaryArray.withIndex()) {
 }
 
 fun isLetter(c: Char) = c in 'a'..'z' || c in 'A'..'Z'
+
 fun isNotDigit(c: Char) = c !in '0'..'9'
 println(isLetter('q'))
 println(isNotDigit('x'))

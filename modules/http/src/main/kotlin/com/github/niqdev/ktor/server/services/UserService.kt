@@ -8,12 +8,15 @@ import com.github.niqdev.ktor.server.routes.UserRequest
 
 interface UserService {
   fun add(request: UserRequest): Result<UserId>
+
   fun fetch(id: UserId): Result<User>
+
   fun list(): Result<List<User>>
 }
 
-class UserServiceImpl(private val repository: UserRepository) : UserService {
-
+class UserServiceImpl(
+  private val repository: UserRepository,
+) : UserService {
   override fun add(request: UserRequest): Result<UserId> {
     val user = toUser(request)
     return repository.create(user).map { user.id }
@@ -21,17 +24,19 @@ class UserServiceImpl(private val repository: UserRepository) : UserService {
 
   override fun fetch(id: UserId): Result<User> =
     repository.findById(id).flatMap { user ->
-      if (user != null) Result.success(user)
-      else Result.failure(IllegalArgumentException("user not found"))
+      if (user != null) {
+        Result.success(user)
+      } else {
+        Result.failure(IllegalArgumentException("user not found"))
+      }
     }
 
-  override fun list(): Result<List<User>> =
-    repository.find()
+  override fun list(): Result<List<User>> = repository.find()
 
   private fun toUser(request: UserRequest): User =
     User(
       id = UserId(java.util.UUID.randomUUID()),
       name = request.name,
-      age = request.age
+      age = request.age,
     )
 }

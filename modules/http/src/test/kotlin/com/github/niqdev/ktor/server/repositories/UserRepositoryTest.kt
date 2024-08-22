@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class UserRepositoryTest {
-
   // singleton pattern
   // https://java.testcontainers.org/test_framework_integration/manual_lifecycle_control
   private val userRepository = UserRepositoryImpl(DatabaseContainer.client)
@@ -18,7 +17,7 @@ class UserRepositoryTest {
     User(
       id = UserId(java.util.UUID.randomUUID()),
       name = "foo-${(0..10).random()}",
-      age = (18..40).random()
+      age = (18..40).random(),
     )
 
   @Test

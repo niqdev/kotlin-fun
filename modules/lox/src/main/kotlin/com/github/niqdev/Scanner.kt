@@ -3,26 +3,28 @@ package com.github.niqdev
 // >>> (3)
 
 // Scanner or Lexer
-class Scanner(private val source: String) {
-
-  private val keywords = mapOf(
-    "and" to TokenType.AND,
-    "class" to TokenType.CLASS,
-    "else" to TokenType.ELSE,
-    "false" to TokenType.FALSE,
-    "for" to TokenType.FOR,
-    "fun" to TokenType.FUN,
-    "if" to TokenType.IF,
-    "nil" to TokenType.NIL,
-    "or" to TokenType.OR,
-    "print" to TokenType.PRINT,
-    "return" to TokenType.RETURN,
-    "super" to TokenType.SUPER,
-    "this" to TokenType.THIS,
-    "true" to TokenType.TRUE,
-    "var" to TokenType.VAR,
-    "while" to TokenType.WHILE
-  )
+class Scanner(
+  private val source: String,
+) {
+  private val keywords =
+    mapOf(
+      "and" to TokenType.AND,
+      "class" to TokenType.CLASS,
+      "else" to TokenType.ELSE,
+      "false" to TokenType.FALSE,
+      "for" to TokenType.FOR,
+      "fun" to TokenType.FUN,
+      "if" to TokenType.IF,
+      "nil" to TokenType.NIL,
+      "or" to TokenType.OR,
+      "print" to TokenType.PRINT,
+      "return" to TokenType.RETURN,
+      "super" to TokenType.SUPER,
+      "this" to TokenType.THIS,
+      "true" to TokenType.TRUE,
+      "var" to TokenType.VAR,
+      "while" to TokenType.WHILE,
+    )
 
   private val tokens = mutableListOf<Token>()
   private var start = 0
@@ -72,7 +74,10 @@ class Scanner(private val source: String) {
         }
     }
 
-  private fun addToken(type: TokenType, literal: Any? = null) {
+  private fun addToken(
+    type: TokenType,
+    literal: Any? = null,
+  ) {
     val text = source.substring(start, current)
     tokens.add(Token(type, text, literal, line))
   }
@@ -94,20 +99,21 @@ class Scanner(private val source: String) {
 
   // lookahead
   private fun peek(): Char = if (isAtEnd()) '\u0000' else source[current]
+
   private fun peekNext(): Char = if (current + 1 >= source.length) '\u0000' else source[current + 1]
 
   private fun incrementOffset(): Int = current++
+
   private fun incrementLine() {
-    line++; return
+    line++
+    return
   }
 
   private fun scanSlash() {
     // single-line comment: it goes until the end of the line
     if (match('/')) {
       while (peek() != '\n' && !isAtEnd()) advance()
-    }
-    // multi-line comment
-    else if (match('*')) {
+    } else if (match('*')) { // multi-line comment
       while (!isAtEnd()) {
         if (peek() == '*' && peekNext() == '/') {
           advance()
@@ -120,9 +126,9 @@ class Scanner(private val source: String) {
         advance()
       }
       if (isAtEnd()) Lox.reportError(line, "Unterminated comment")
+    } else { // comments are discarded
+      addToken(TokenType.SLASH)
     }
-    // comments are discarded
-    else addToken(TokenType.SLASH)
   }
 
   private fun scanString() {
@@ -167,5 +173,7 @@ class Scanner(private val source: String) {
 }
 
 private fun Char.isDigit(): Boolean = this in '0'..'9'
+
 private fun Char.isAlpha(): Boolean = this in 'a'..'z' || this in 'A'..'Z' || this == '_'
+
 private fun Char.isAlphaNumeric(): Boolean = this.isDigit() || this.isAlpha()

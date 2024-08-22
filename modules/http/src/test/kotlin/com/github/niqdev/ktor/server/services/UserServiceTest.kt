@@ -11,12 +11,12 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 class UserServiceTest {
-
   @Test
   fun `verify add user`() {
-    val repository = mockk<UserRepository> {
-      every { create(any()) } returns Result.success(8)
-    }
+    val repository =
+      mockk<UserRepository> {
+        every { create(any()) } returns Result.success(8)
+      }
     val service = UserServiceImpl(repository)
     val request = UserRequest(name = "foo", age = 42)
     val result = service.add(request)
@@ -27,14 +27,16 @@ class UserServiceTest {
   @Test
   fun `verify fetch user`() {
     val userId = UserId(java.util.UUID.randomUUID())
-    val user = User(
-      id = userId,
-      name = "foo",
-      age = 42
-    )
-    val repository = mockk<UserRepository> {
-      every { findById(userId) } returns Result.success(user)
-    }
+    val user =
+      User(
+        id = userId,
+        name = "foo",
+        age = 42,
+      )
+    val repository =
+      mockk<UserRepository> {
+        every { findById(userId) } returns Result.success(user)
+      }
     val service = UserServiceImpl(repository)
     val result = service.fetch(userId)
 

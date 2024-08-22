@@ -9,12 +9,12 @@ import kotlin.math.pow
  * - every path from the root to an empty subtree has the same number of blacks
  */
 sealed class RedBlackTree<out T : Comparable<@UnsafeVariance T>> {
-
   abstract val color: Color
 
   internal object Empty : RedBlackTree<Nothing>() {
     // the empty tree is black
     override val color: Color = Color.Black
+
     override fun toString(): String = "Empty"
   }
 
@@ -22,7 +22,7 @@ sealed class RedBlackTree<out T : Comparable<@UnsafeVariance T>> {
     override val color: Color,
     val left: RedBlackTree<T>,
     val value: T,
-    val right: RedBlackTree<T>
+    val right: RedBlackTree<T>,
   ) : RedBlackTree<T>() {
     override fun toString(): String = "Leaf($color, $left, $value, $right)"
   }
@@ -123,7 +123,7 @@ private fun <T : Comparable<T>> RedBlackTree<T>.balance(
   color: RedBlackTree.Color,
   left: RedBlackTree<T>,
   value: T,
-  right: RedBlackTree<T>
+  right: RedBlackTree<T>,
 ): RedBlackTree<T> =
   when (this) {
     is RedBlackTree.Empty -> this
@@ -151,7 +151,7 @@ private fun <T : Comparable<T>> RedBlackTree<T>.balance(
             RedBlackTree.Color.Red,
             left.unsafeLeft()!!.blacken(),
             left.unsafeValue()!!,
-            RedBlackTree.Leaf(RedBlackTree.Color.Black, left.unsafeRight()!!, value, right)
+            RedBlackTree.Leaf(RedBlackTree.Color.Black, left.unsafeRight()!!, value, right),
           )
         /*
          * balance B (T R a x (T R b y c)) z d  -->  T R (T B a x b) y (T B c z d)
@@ -176,10 +176,10 @@ private fun <T : Comparable<T>> RedBlackTree<T>.balance(
               RedBlackTree.Color.Black,
               left.unsafeLeft()!!,
               left.unsafeValue()!!,
-              left.unsafeRight()!!.unsafeLeft()!!
+              left.unsafeRight()!!.unsafeLeft()!!,
             ),
             left.unsafeRight()!!.unsafeValue()!!,
-            RedBlackTree.Leaf(RedBlackTree.Color.Black, left.unsafeRight()!!.unsafeRight()!!, value, right)
+            RedBlackTree.Leaf(RedBlackTree.Color.Black, left.unsafeRight()!!.unsafeRight()!!, value, right),
           )
         /*
          * balance B a x (T R (T R b y c) z d)  -->  T R (T B a x b) y (T B c z d)
@@ -204,15 +204,15 @@ private fun <T : Comparable<T>> RedBlackTree<T>.balance(
               RedBlackTree.Color.Black,
               left,
               value,
-              right.unsafeLeft()!!.unsafeLeft()!!
+              right.unsafeLeft()!!.unsafeLeft()!!,
             ),
             right.unsafeLeft()!!.unsafeValue()!!,
             RedBlackTree.Leaf(
               RedBlackTree.Color.Black,
               right.unsafeLeft()!!.unsafeRight()!!,
               right.unsafeValue()!!,
-              right.unsafeRight()!!
-            )
+              right.unsafeRight()!!,
+            ),
           )
         /*
          * balance B a x (T R b y (T R c z d))  -->  T R (T B a x b) y (T B c z d)
@@ -235,7 +235,7 @@ private fun <T : Comparable<T>> RedBlackTree<T>.balance(
             RedBlackTree.Color.Red,
             RedBlackTree.Leaf(RedBlackTree.Color.Black, left, value, right.unsafeLeft()!!),
             right.unsafeValue()!!,
-            right.unsafeRight()!!.blacken()
+            right.unsafeRight()!!.blacken(),
           )
         else ->
           // balance color a x b = T color a x b
@@ -263,8 +263,7 @@ private fun <T : Comparable<T>> RedBlackTree<T>.add(): (T) -> RedBlackTree<T> =
     }
   }
 
-operator fun <T : Comparable<T>> RedBlackTree<T>.plus(element: T): RedBlackTree<T> =
-  this.add()(element).blacken()
+operator fun <T : Comparable<T>> RedBlackTree<T>.plus(element: T): RedBlackTree<T> = this.add()(element).blacken()
 
 // ------------------------------
 
@@ -272,7 +271,7 @@ private fun <T : Comparable<T>> RedBlackTree<T>.bubble(
   color: RedBlackTree.Color,
   left: RedBlackTree<T>,
   value: T,
-  right: RedBlackTree<T>
+  right: RedBlackTree<T>,
 ): RedBlackTree<T> = TODO()
 
 private fun <T : Comparable<T>> RedBlackTree<T>.remove(): RedBlackTree<T> = TODO()
@@ -291,8 +290,7 @@ private fun <T : Comparable<T>> RedBlackTree<T>.delete(): (T) -> RedBlackTree<T>
     }
   }
 
-operator fun <T : Comparable<T>> RedBlackTree<T>.minus(element: T): RedBlackTree<T> =
-  this.delete()(element).blacken()
+operator fun <T : Comparable<T>> RedBlackTree<T>.minus(element: T): RedBlackTree<T> = this.delete()(element).blacken()
 
 // ------------------------------
 
@@ -309,7 +307,7 @@ fun <T : Comparable<T>> RedBlackTree<T>.pretty(): String {
     table: Array<Array<String>>,
     tree: RedBlackTree<A>,
     hPosition: Int,
-    vPosition: Int
+    vPosition: Int,
   ): Array<Array<String>> =
     when (tree) {
       is RedBlackTree.Empty -> table

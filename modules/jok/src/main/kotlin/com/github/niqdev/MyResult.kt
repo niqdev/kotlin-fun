@@ -6,12 +6,15 @@ import java.lang.NullPointerException
 import java.lang.RuntimeException
 
 sealed interface MyResult<out A> : Serializable {
-
-  class Failure<out A>(internal val exception: RuntimeException) : MyResult<A> {
+  class Failure<out A>(
+    internal val exception: RuntimeException,
+  ) : MyResult<A> {
     override fun toString(): String = "Failure(${exception.message})"
   }
 
-  class Success<out A>(internal val value: A) : MyResult<A> {
+  class Success<out A>(
+    internal val value: A,
+  ) : MyResult<A> {
     override fun toString(): String = "Success($value)"
   }
 
@@ -20,7 +23,6 @@ sealed interface MyResult<out A> : Serializable {
   }
 
   companion object {
-
     operator fun <A> invoke(a: A? = null): MyResult<A> =
       when (a) {
         null -> Failure(NullPointerException())
@@ -28,8 +30,7 @@ sealed interface MyResult<out A> : Serializable {
       }
 
     // wrap in runtime exception
-    fun <A> failure(message: String): MyResult<A> =
-      Failure(IllegalStateException(message))
+    fun <A> failure(message: String): MyResult<A> = Failure(IllegalStateException(message))
 
     // if you need to deal with exceptions, apply the safe principle: always catch, never throw
     fun <A> failure(exception: Throwable): MyResult<A> =
@@ -40,7 +41,11 @@ sealed interface MyResult<out A> : Serializable {
       }
 
     fun <A> of(a: () -> A): MyResult<A> =
-      try { MyResult(a()) } catch (e: Throwable) { failure(e) }
+      try {
+        MyResult(a())
+      } catch (e: Throwable) {
+        failure(e)
+      }
   }
 }
 
@@ -51,11 +56,12 @@ fun <A, B> MyResult<A>.map(): ((A) -> B) -> MyResult<B> =
     when (this) {
       is MyResult.Empty -> MyResult.Empty
       is MyResult.Failure -> MyResult.Failure(this.exception)
-      is MyResult.Success -> try {
-        MyResult.Success(f(this.value))
-      } catch (e: Throwable) {
-        MyResult.failure(e)
-      }
+      is MyResult.Success ->
+        try {
+          MyResult.Success(f(this.value))
+        } catch (e: Throwable) {
+          MyResult.failure(e)
+        }
     }
   }
 
@@ -64,11 +70,12 @@ fun <A, B> MyResult<A>.flatMap(): ((A) -> MyResult<B>) -> MyResult<B> =
     when (this) {
       is MyResult.Empty -> MyResult.Empty
       is MyResult.Failure -> MyResult.Failure(this.exception)
-      is MyResult.Success -> try {
-        f(this.value)
-      } catch (e: Throwable) {
-        MyResult.failure(e)
-      }
+      is MyResult.Success ->
+        try {
+          f(this.value)
+        } catch (e: Throwable) {
+          MyResult.failure(e)
+        }
     }
   }
 
@@ -91,12 +98,11 @@ fun <A> MyResult<A>.orElse(): (() -> MyResult<A>) -> MyResult<A> =
 // ---------- 7.5 ----------
 
 fun <A> MyResult<A>.filter(): ((A) -> Boolean) -> MyResult<A> =
-  { p -> this.flatMap<A, A>()() { a -> if (p(a)) MyResult.Success(a) else MyResult.failure("invalid") } }
+  { p -> this.flatMap<A, A> { a -> if (p(a)) MyResult.Success(a) else MyResult.failure("invalid") } }
 
 // ---------- 7.6 ----------
 
-fun <A> MyResult<A>.exists(): ((A) -> Boolean) -> Boolean =
-  { p -> this.map<A, Boolean>()(p).getOrElse()() { false } }
+fun <A> MyResult<A>.exists(): ((A) -> Boolean) -> Boolean = { p -> this.map<A, Boolean>()(p).getOrElse { false } }
 
 // ---------- 7.7 ----------
 
@@ -138,21 +144,20 @@ fun <A> MyResult<A>.unsafeForEachOrElse(): ((A) -> Unit) -> ((RuntimeException) 
 
 // ---------- 7.12 ----------
 
-fun <A, B> ((A) -> B).liftResult(): (MyResult<A>) -> MyResult<B> =
-  { result -> result.map<A, B>()() { a -> this(a) } }
+fun <A, B> ((A) -> B).liftResult(): (MyResult<A>) -> MyResult<B> = { result -> result.map<A, B> { a -> this(a) } }
 
 // ---------- 7.13 ----------
 
 fun <A, B, C> ((A) -> (B) -> C).lift2Result(): (MyResult<A>) -> (MyResult<B>) -> MyResult<C> =
-  { resultA -> { resultB -> resultA.flatMap<A, C>()() { a -> resultB.map<B, C>()() { b -> this(a)(b) } } } }
+  { resultA -> { resultB -> resultA.flatMap<A, C> { a -> resultB.map<B, C> { b -> this(a)(b) } } } }
 
 fun <A, B, C, D> ((A) -> (B) -> (C) -> D).lift3Result(): (MyResult<A>) -> (MyResult<B>) -> (MyResult<C>) -> MyResult<D> =
   { resultA ->
     { resultB ->
       { resultC ->
-        resultA.flatMap<A, D>()() { a ->
-          resultB.flatMap<B, D>()() { b ->
-            resultC.map<C, D>()() { c ->
+        resultA.flatMap<A, D> { a ->
+          resultB.flatMap<B, D> { b ->
+            resultC.map<C, D> { c ->
               this(a)(b)(c)
             }
           }
@@ -163,8 +168,7 @@ fun <A, B, C, D> ((A) -> (B) -> (C) -> D).lift3Result(): (MyResult<A>) -> (MyRes
 
 // ---------- 7.14 ----------
 
-fun <A, B, C> MyResult<A>.map2(): (MyResult<B>) -> ((A) -> (B) -> C) -> MyResult<C> =
-  { resultB -> { f -> f.lift2Result()(this)(resultB) } }
+fun <A, B, C> MyResult<A>.map2(): (MyResult<B>) -> ((A) -> (B) -> C) -> MyResult<C> = { resultB -> { f -> f.lift2Result()(this)(resultB) } }
 
 // ------------------------------
 
@@ -180,10 +184,10 @@ fun <A> MyResult<A>.toOption(): Option<A> =
 // specify the types because of the limited type inference capacity of Kotlin
 // use comprehension pattern to compose: N flatMap + map
 fun main() {
-  println(MyResult(42).filter()() { it < 100 })
-  println(MyResult(42).filter()() { it > 100 })
-  println(MyResult(42).exists()() { it < 100 })
-  println(MyResult<Int>().exists()() { it < 100 })
+  println(MyResult(42).filter { it < 100 })
+  println(MyResult(42).filter { it > 100 })
+  println(MyResult(42).exists { it < 100 })
+  println(MyResult<Int>().exists { it < 100 })
   println(MyResult(42).unsafeForEach()(::println))
-  println(MyResult.failure<Int>("error").unsafeForEachOrElse()(::println)(::println)() { println("empty") })
+  println(MyResult.failure<Int>("error").unsafeForEachOrElse()(::println)(::println) { println("empty") })
 }

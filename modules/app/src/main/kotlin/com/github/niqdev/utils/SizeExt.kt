@@ -5,15 +5,15 @@ import kotlin.math.log10
 import kotlin.math.pow
 
 // https://stackoverflow.com/questions/13533485/is-there-any-way-to-get-the-size-in-bytes-of-a-string-in-java
-fun String.sizeInBytes() =
-  this.toByteArray(Charsets.UTF_8).size
+fun String.sizeInBytes() = this.toByteArray(Charsets.UTF_8).size
 
-fun String.humanReadableSize() =
-  readableSize(this.sizeInBytes().toLong())
+fun String.humanReadableSize() = readableSize(this.sizeInBytes().toLong())
 
 // https://stackoverflow.com/questions/3263892/format-file-size-as-mb-gb-etc
 private fun readableSize(size: Long): String =
-  if (size <= 0) "0" else {
+  if (size <= 0) {
+    "0"
+  } else {
     val units = listOf("B", "kB", "MB", "GB", "TB")
     val digitGroups = log10(size.toDouble()) / log10(1024.0)
     DecimalFormat("#,##0.#").format(size / 1024.0.pow(digitGroups)) + " " + units[digitGroups.toInt()]

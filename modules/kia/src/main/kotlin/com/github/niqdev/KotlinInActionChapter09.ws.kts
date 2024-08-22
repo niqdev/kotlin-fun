@@ -89,8 +89,7 @@ println(items.filterIsInstance<String>())
 // Therefore, the compiler can generate the bytecode that references the specific class used as a type argument
 
 // example
-inline fun <reified T> loadService() =
-  java.util.ServiceLoader.load(T::class.java)
+inline fun <reified T> loadService() = java.util.ServiceLoader.load(T::class.java)
 
 // >>> see 9.2.4 for restrictions
 
@@ -151,6 +150,7 @@ interface Consumer<in T> {
 // Consumer<Animal> is a subtype of Consumer<Cat> (controvariant): a catConsumer can consume Animal
 
 // contravariant on its argument and covariant on its return type
+@Suppress("ktlint:standard:comment-wrapping", "ktlint:standard:value-parameter-comment")
 interface Function1<in I, out O> {
   fun invoke(i: /* IN consume */ I): /* OUT produce */ O
 }
@@ -163,7 +163,7 @@ interface Function1<in I, out O> {
 // `type projection`: "source" isn't a regular MutableList, but a `projected` (restricted) one
 fun <T> copyData(
   source: MutableList<out T>,
-  destination: MutableList<in T>
+  destination: MutableList<in T>,
 ) {
   for (item in source) {
     destination.add(item)

@@ -1,7 +1,10 @@
 package com.github.niqdev.coroutine
 
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
@@ -11,29 +14,31 @@ import kotlinx.coroutines.runBlocking
 // Flows are `cold` streams: does not run until the flow is collected
 // Flow is a reactive stream
 
-fun main() = runBlocking {
-  // ------------------------------
+fun main() =
+  runBlocking {
+    // ------------------------------
 
-  launch {
-    for (k in 1..3) {
-      println("$k not blocked")
-      delay(90)
+    launch {
+      for (k in 1..3) {
+        println("$k not blocked")
+        delay(90)
+      }
     }
+    simple().collect(::println)
+
+    // ------------------------------
+
+    responses.collect(::println)
   }
-  simple().collect(::println)
-
-  // ------------------------------
-
-  responses.collect(::println)
-}
 
 // not suspended
-fun simple(): Flow<Int> = flow {
-  for (i in 1..3) {
-    delay(100)
-    emit(i)
+fun simple(): Flow<Int> =
+  flow {
+    for (i in 1..3) {
+      delay(100)
+      emit(i)
+    }
   }
-}
 
 // ------------------------------
 

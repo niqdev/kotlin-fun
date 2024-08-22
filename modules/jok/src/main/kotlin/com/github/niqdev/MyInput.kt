@@ -2,11 +2,13 @@ package com.github.niqdev
 
 sealed interface MyInput : java.io.Closeable {
   fun readString(message: String = ""): MyResult<Pair<String, MyInput>>
+
   fun readInt(message: String = ""): MyResult<Pair<Int, MyInput>>
 }
 
-abstract class AbstractReader(private val reader: java.io.BufferedReader) : MyInput {
-
+abstract class AbstractReader(
+  private val reader: java.io.BufferedReader,
+) : MyInput {
   private fun <T> readLine(): ((String) -> T) -> MyResult<Pair<T, MyInput>> =
     { f ->
       runCatching {
@@ -19,17 +21,16 @@ abstract class AbstractReader(private val reader: java.io.BufferedReader) : MyIn
       }.getOrElse { MyResult.failure(it) }
     }
 
-  override fun readString(message: String): MyResult<Pair<String, MyInput>> =
-    readLine<String>()() { it }
+  override fun readString(message: String): MyResult<Pair<String, MyInput>> = readLine<String> { it }
 
-  override fun readInt(message: String): MyResult<Pair<Int, MyInput>> =
-    readLine<Int>()() { it.toInt() }
+  override fun readInt(message: String): MyResult<Pair<Int, MyInput>> = readLine<Int> { it.toInt() }
 
-  override fun close() =
-    reader.close()
+  override fun close() = reader.close()
 }
 
-class ConsoleReader(reader: java.io.BufferedReader) : AbstractReader(reader) {
+class ConsoleReader(
+  reader: java.io.BufferedReader,
+) : AbstractReader(reader) {
   override fun readString(message: String): MyResult<Pair<String, MyInput>> {
     print(message)
     return super.readString(message)
@@ -41,12 +42,14 @@ class ConsoleReader(reader: java.io.BufferedReader) : AbstractReader(reader) {
   }
 
   companion object {
-    operator fun invoke(): ConsoleReader =
-      ConsoleReader(java.io.BufferedReader(java.io.InputStreamReader(System.`in`)))
+    operator fun invoke(): ConsoleReader = ConsoleReader(java.io.BufferedReader(java.io.InputStreamReader(System.`in`)))
   }
 }
 
-class FileReader(reader: java.io.BufferedReader) : AbstractReader(reader), AutoCloseable {
+class FileReader(
+  reader: java.io.BufferedReader,
+) : AbstractReader(reader),
+  AutoCloseable {
   companion object {
     operator fun invoke(path: String): MyResult<MyInput> =
       try {
@@ -57,17 +60,19 @@ class FileReader(reader: java.io.BufferedReader) : AbstractReader(reader), AutoC
   }
 }
 
-class ScriptReader private constructor(private val commands: MyList<String>) : MyInput {
-
+class ScriptReader private constructor(
+  private val commands: MyList<String>,
+) : MyInput {
   override fun readString(message: String): MyResult<Pair<String, MyInput>> =
     when {
       commands.isEmpty() -> MyResult.failure("Not enough entries in script")
-      else -> MyResult(
-        Pair(
-          commands.head().getOrElse()() { "" },
-          ScriptReader(commands.drop()(1))
+      else ->
+        MyResult(
+          Pair(
+            commands.head().getOrElse { "" },
+            ScriptReader(commands.drop()(1)),
+          ),
         )
-      )
     }
 
   override fun readInt(message: String): MyResult<Pair<Int, MyInput>> =
@@ -75,7 +80,7 @@ class ScriptReader private constructor(private val commands: MyList<String>) : M
       commands.isEmpty() -> MyResult.failure("Not enough entries in script")
       else ->
         runCatching {
-          Integer.parseInt(commands.head().getOrElse()() { "" })
+          Integer.parseInt(commands.head().getOrElse { "" })
         }.map {
           when {
             it >= 0 ->
@@ -89,30 +94,34 @@ class ScriptReader private constructor(private val commands: MyList<String>) : M
   override fun close() {}
 
   companion object {
-    operator fun invoke(commands: MyList<String>) =
-      ScriptReader(commands)
+    operator fun invoke(commands: MyList<String>) = ScriptReader(commands)
 
-    operator fun invoke(vararg commands: String) =
-      ScriptReader(MyList(*commands))
+    operator fun invoke(vararg commands: String) = ScriptReader(MyList(*commands))
   }
 }
 
 // ---------- 12.2 ----------
 
-data class Person(val id: Int, val firstName: String, val lastName: String)
+data class Person(
+  val id: Int,
+  val firstName: String,
+  val lastName: String,
+)
 
 private fun person(input: MyInput): MyResult<Pair<Person, MyInput>> =
   input
     .readInt("enter id: ")
-    .flatMap<Pair<Int, MyInput>, Pair<Person, MyInput>>()() { id ->
-    id.second.readString("enter firstName: ")
-      .flatMap<Pair<String, MyInput>, Pair<Person, MyInput>>()() { firstName ->
-      firstName.second.readString("enter lastName: ")
-        .map<Pair<String, MyInput>, Pair<Person, MyInput>>()() { lastName ->
-        Person(id.first, firstName.first, lastName.first) to lastName.second
-      }
+    .flatMap<Pair<Int, MyInput>, Pair<Person, MyInput>> { id ->
+      id.second
+        .readString("enter firstName: ")
+        .flatMap<Pair<String, MyInput>, Pair<Person, MyInput>> { firstName ->
+          firstName.second
+            .readString("enter lastName: ")
+            .map<Pair<String, MyInput>, Pair<Person, MyInput>> { lastName ->
+              Person(id.first, firstName.first, lastName.first) to lastName.second
+            }
+        }
     }
-  }
 
 // ---------- 12.3 ----------
 
@@ -120,31 +129,33 @@ private fun person(input: MyInput): MyResult<Pair<Person, MyInput>> =
 
 // TODO
 private fun readPersonsFromFile(path: String): MyResult<MyList<Person>> =
-  FileReader(path).map<MyInput, MyList<Person>>()() { it.use { input -> MyStream<Person>().unfold<Person, MyInput>()(input)(::person).toList() } }
+  FileReader(path).map<MyInput, MyList<Person>> {
+    it.use { input ->
+      MyStream<Person>().unfold<Person, MyInput>()(input)(::person).toList()
+    }
+  }
 
 // ------------------------------
 
 private fun exampleString(): Unit =
   ConsoleReader()
     .readString("enter your name: ")
-    .map<Pair<String, MyInput>, String>()() { it.first }
-    .map<String, String>()() { "Hello: $it" }
-    .unsafeForEachOrElse()(::println)() { println("error: $it") }() { println("empty") }
+    .map<Pair<String, MyInput>, String> { it.first }
+    .map<String, String> { "Hello: $it" }
+    .unsafeForEachOrElse()(::println) { println("error: $it") } { println("empty") }
 
 private fun exampleInt(): Unit =
   ConsoleReader()
     .readInt("enter your age: ")
-    .map<Pair<Int, MyInput>, Int>()() { it.first }
-    .map<Int, String>()() { "You look younger than $it" }
-    .unsafeForEachOrElse()(::println)() { println("error: $it") }() { println("empty") }
+    .map<Pair<Int, MyInput>, Int> { it.first }
+    .map<Int, String> { "You look younger than $it" }
+    .unsafeForEachOrElse()(::println) { println("error: $it") } { println("empty") }
 
 // TODO unfold StackOverflowError
-private fun examplePerson(): MyList<Person> =
-  MyStream<Person>().unfold<Person, MyInput>()(ConsoleReader())(::person).toList()
+private fun examplePerson(): MyList<Person> = MyStream<Person>().unfold<Person, MyInput>()(ConsoleReader())(::person).toList()
 
 // ok but never prints the parsed list
-private fun examplePersonList(): MyResult<MyList<Person>> =
-  MyList<Person>().unfoldResult<Person, MyInput>()(ConsoleReader())(::person)
+private fun examplePersonList(): MyResult<MyList<Person>> = MyList<Person>().unfoldResult<Person, MyInput>()(ConsoleReader())(::person)
 
 // TODO unfold StackOverflowError
 private fun readPersonsFromScript(vararg commands: String): MyList<Person> =

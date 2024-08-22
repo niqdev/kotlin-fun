@@ -68,8 +68,7 @@ object example {
 // put the name of the class or interface that you're extending before the name of the function you're adding
 // This class name is called the `receiver type`; the value on which you're calling the extension function is called the `receiver object`
 // e.g. `List` is the `receiver type` and `this` is the `receiver object`
-fun <T> List<T>.lastOptional(): java.util.Optional<T> =
-  this.lastOrNull()?.let { java.util.Optional.of(it) } ?: java.util.Optional.empty()
+fun <T> List<T>.lastOptional(): java.util.Optional<T> = this.lastOrNull()?.let { java.util.Optional.of(it) } ?: java.util.Optional.empty()
 
 listOf(1, 2, 3).lastOptional()
 listOf<Int>().lastOptional()

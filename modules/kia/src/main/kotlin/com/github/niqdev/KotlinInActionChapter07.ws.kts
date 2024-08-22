@@ -5,18 +5,18 @@
 // Kotlin operators don't automatically support "commutativity" (the ability to swap the left and right sides of an operator)
 
 // overloading of binary operators (operators that are applied to two values)
-data class Point(val x: Int, val y: Int) {
-
+data class Point(
+  val x: Int,
+  val y: Int,
+) {
   // all functions used to overload operators need to be marked with `operator` keyword
-  operator fun plus(other: Point): Point =
-    Point(x + other.x, y + other.y)
+  operator fun plus(other: Point): Point = Point(x + other.x, y + other.y)
 }
 
 Point(10, 20) + Point(30, 40)
 
 // alternative using extension function syntax
-operator fun Point.times(scale: Double): Point =
-  Point((x * scale).toInt(), (y * scale).toInt())
+operator fun Point.times(scale: Double): Point = Point((x * scale).toInt(), (y * scale).toInt())
 
 // ------------------------------
 
@@ -55,10 +55,11 @@ operator fun Point.unaryMinus(): Point = Point(-x, -y)
 
 // ------------------------------
 
-class Person(val firstName: String, val lastName: String) : Comparable<Person> {
-  override fun compareTo(other: Person): Int {
-    return compareValuesBy(this, other, Person::lastName, Person::firstName)
-  }
+class Person(
+  val firstName: String,
+  val lastName: String,
+) : Comparable<Person> {
+  override fun compareTo(other: Person): Int = compareValuesBy(this, other, Person::lastName, Person::firstName)
 }
 
 Person("Alice", "Smith") < Person("Bob", "Johnson")
@@ -81,7 +82,10 @@ point[0]
 
 // ------------------------------
 
-data class Rectangle(val upperLeft: Point, val lowerRight: Point)
+data class Rectangle(
+  val upperLeft: Point,
+  val lowerRight: Point,
+)
 
 // use the `until` standard library function to build an open range and then use the `in` operator on a range to check that a point belongs to it
 // CLOSED-RANGE: 10..20 (20 included)
@@ -123,7 +127,9 @@ myPoint.component1()
 myPoint.component2()
 
 val map = mapOf("Oracle" to "Java", "JetBrains" to "Kotlin")
-for ((key, value) in map) { println("$key -> $value") }
+for ((key, value) in map) {
+  println("$key -> $value")
+}
 
 // ------------------------------
 

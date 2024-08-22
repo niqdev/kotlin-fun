@@ -2,7 +2,6 @@ package com.github.niqdev
 
 // Comparable is contravariant on T
 sealed class MyTree<out T : Comparable<@UnsafeVariance T>> {
-
   internal object MyEmpty : MyTree<Nothing>() {
     override fun toString(): String = "Empty"
   }
@@ -10,7 +9,7 @@ sealed class MyTree<out T : Comparable<@UnsafeVariance T>> {
   internal class MyLeaf<T : Comparable<T>>(
     val left: MyTree<T>,
     val value: T,
-    val right: MyTree<T>
+    val right: MyTree<T>,
   ) : MyTree<T>() {
     override fun toString(): String = "Leaf($left, $value, $right)"
   }
@@ -22,7 +21,10 @@ sealed class MyTree<out T : Comparable<@UnsafeVariance T>> {
     // ---------- 10.2 ----------
 
     fun <T : Comparable<T>> from(list: MyList<T>): MyTree<T> {
-      fun loop(tmp: MyList<T>, result: MyTree<T>): MyTree<T> =
+      fun loop(
+        tmp: MyList<T>,
+        result: MyTree<T>,
+      ): MyTree<T> =
         when (tmp) {
           is MyList.MyNil -> result
           is MyList.MyCons -> loop(tmp.tail, result + tmp.head)
@@ -30,8 +32,7 @@ sealed class MyTree<out T : Comparable<@UnsafeVariance T>> {
       return loop(list, MyEmpty)
     }
 
-    fun <T : Comparable<T>> leaf(value: T): MyTree<T> =
-      MyLeaf(MyEmpty, value, MyEmpty)
+    fun <T : Comparable<T>> leaf(value: T): MyTree<T> = MyLeaf(MyEmpty, value, MyEmpty)
   }
 }
 
@@ -43,8 +44,7 @@ fun <T : Comparable<T>> MyTree<T>.isEmpty(): Boolean =
 
 // ---------- 10.1 ----------
 
-operator fun <T : Comparable<T>> MyTree<T>.plus(element: @UnsafeVariance T): MyTree<T> =
-  this.add()(element)
+operator fun <T : Comparable<T>> MyTree<T>.plus(element: @UnsafeVariance T): MyTree<T> = this.add()(element)
 
 fun <T : Comparable<T>> MyTree<T>.add(): (T) -> MyTree<T> =
   { element ->
@@ -98,21 +98,24 @@ fun <T : Comparable<T>> MyTree<T>.height(): Int =
 fun <T : Comparable<T>> MyTree<T>.max(): MyResult<T> =
   when (this) {
     is MyTree.MyEmpty -> MyResult.Empty
-    is MyTree.MyLeaf -> right.max().orElse()() { MyResult(value) }
+    is MyTree.MyLeaf -> right.max().orElse { MyResult(value) }
   }
 
 fun <T : Comparable<T>> MyTree<T>.min(): MyResult<T> =
   when (this) {
     is MyTree.MyEmpty -> MyResult.Empty
-    is MyTree.MyLeaf -> left.max().orElse()() { MyResult(value) }
+    is MyTree.MyLeaf -> left.max().orElse { MyResult(value) }
   }
 
 // ---------- 10.6 ----------
 
-operator fun <T : Comparable<T>> MyTree<T>.minus(element: T): MyTree<T> =
-  this.remove()(element)
+operator fun <T : Comparable<T>> MyTree<T>.minus(element: T): MyTree<T> = this.remove()(element)
 
-private fun <T : Comparable<T>> removeMerge(ltree: MyTree<T>, rtree: MyTree<T>, element: T): MyTree<T> =
+private fun <T : Comparable<T>> removeMerge(
+  ltree: MyTree<T>,
+  rtree: MyTree<T>,
+  element: T,
+): MyTree<T> =
   when (ltree) {
     is MyTree.MyEmpty -> rtree
     is MyTree.MyLeaf ->
@@ -200,6 +203,7 @@ fun <A : Comparable<A>, B> MyTree<A>.foldInOrder(): (B) -> ((B) -> (A) -> (B) ->
       }
     }
   }
+
 fun <A : Comparable<A>, B> MyTree<A>.foldInReverseOrder(): (B) -> ((B) -> (A) -> (B) -> B) -> B =
   { identity ->
     { f ->
@@ -209,6 +213,7 @@ fun <A : Comparable<A>, B> MyTree<A>.foldInReverseOrder(): (B) -> ((B) -> (A) ->
       }
     }
   }
+
 fun <A : Comparable<A>, B> MyTree<A>.foldPreOrder(): (B) -> ((A) -> (B) -> (B) -> B) -> B =
   { identity ->
     { f ->
@@ -218,6 +223,7 @@ fun <A : Comparable<A>, B> MyTree<A>.foldPreOrder(): (B) -> ((A) -> (B) -> (B) -
       }
     }
   }
+
 fun <A : Comparable<A>, B> MyTree<A>.foldPostOrder(): (B) -> ((B) -> (B) -> (A) -> B) -> B =
   { identity ->
     { f ->
@@ -231,13 +237,12 @@ fun <A : Comparable<A>, B> MyTree<A>.foldPostOrder(): (B) -> ((B) -> (B) -> (A) 
 // ---------- 10.10 ----------
 
 // TODO combine two trees and a root to create a new tree
-fun <A : Comparable<A>> MyTree<A>.invoke(): (MyTree<A>) -> (A) -> (MyTree<A>) -> MyTree<A> =
-  { left -> { a -> { right -> TODO() } } }
+fun <A : Comparable<A>> MyTree<A>.invoke(): (MyTree<A>) -> (A) -> (MyTree<A>) -> MyTree<A> = { left -> { a -> { right -> TODO() } } }
 
 // ---------- 10.11 ----------
 
 fun <A : Comparable<A>, B : Comparable<B>> MyTree<A>.map(): ((A) -> B) -> MyTree<B> =
-  { f -> foldInOrder<A, MyTree<B>>()(MyTree.MyEmpty)() { b1 -> { a -> { b2 -> MyTree.MyLeaf(b1, f(a), b2) } } } }
+  { f -> foldInOrder<A, MyTree<B>>()(MyTree.MyEmpty) { b1 -> { a -> { b2 -> MyTree.MyLeaf(b1, f(a), b2) } } } }
 
 // ---------- 10.12 ----------
 
@@ -265,7 +270,10 @@ fun <A : Comparable<A>> MyTree<A>.rotateLeft(): MyTree<A> =
 
 fun <A : Comparable<A>> MyTree<A>.toListInOrderRight(): MyList<A> {
   // unBalanceRight - stack-safe corecursive: rotates the tree to the right until the left branch is empty
-  tailrec fun loop(tree: MyTree<A>, result: MyList<A>): MyList<A> =
+  tailrec fun loop(
+    tree: MyTree<A>,
+    result: MyList<A>,
+  ): MyList<A> =
     when (tree) {
       is MyTree.MyEmpty -> result
       is MyTree.MyLeaf ->
@@ -307,7 +315,7 @@ fun main() {
     MyTree.MyLeaf(
       MyTree.MyLeaf(MyTree.MyEmpty, 5, MyTree.MyEmpty),
       0,
-      MyTree.MyLeaf(MyTree.MyEmpty, 10, MyTree.MyEmpty)
+      MyTree.MyLeaf(MyTree.MyEmpty, 10, MyTree.MyEmpty),
     )
   println(myTree)
   println(myTree + 3 + 15 + 7)
@@ -327,15 +335,21 @@ fun main() {
       MyTree.MyLeaf(
         MyTree.MyLeaf(MyTree.leaf(5), 6, MyTree.leaf(7)),
         8,
-        MyTree.MyLeaf(MyTree.leaf(9), 10, MyTree.leaf(11))
-      )
+        MyTree.MyLeaf(MyTree.leaf(9), 10, MyTree.leaf(11)),
+      ),
     )
   println(exampleTree)
   println(exampleTree - 3)
   println(exampleTree - 8)
   println(MyTree.from(MyList(1, 2, 3)).merge(MyTree.from(MyList(4, 5, 6))))
-  println(exampleTree.foldLeft<Int, MyList<Int>>()(MyList())() { ints -> { a -> ints.cons()(a) } }() { x -> { y -> y.concat()(x) } })
-  println(exampleTree.foldInReverseOrder<Int, MyList<Int>>()(MyList())() { tmpResult -> { item -> { result -> result.concat()(tmpResult.cons()(item)) } } })
+  println(exampleTree.foldLeft<Int, MyList<Int>>()(MyList()) { ints -> { a -> ints.cons()(a) } } { x -> { y -> y.concat()(x) } })
+  println(
+    exampleTree.foldInReverseOrder<Int, MyList<Int>>()(MyList()) { tmpResult ->
+      { item ->
+        { result -> result.concat()(tmpResult.cons()(item)) }
+      }
+    },
+  )
 
   // In-order: 1234567
   // Pre-order: 4213657
@@ -344,9 +358,9 @@ fun main() {
     MyTree.MyLeaf(
       MyTree.MyLeaf(MyTree.leaf(1), 2, MyTree.leaf(3)),
       4,
-      MyTree.MyLeaf(MyTree.leaf(5), 6, MyTree.leaf(7))
+      MyTree.MyLeaf(MyTree.leaf(5), 6, MyTree.leaf(7)),
     )
-  println(anotherTree.map<Int, Int>()() { it * 2 })
+  println(anotherTree.map<Int, Int> { it * 2 })
   println(anotherTree.rotateRight())
   println(anotherTree.rotateLeft())
   println(anotherTree.toListInOrderRight())

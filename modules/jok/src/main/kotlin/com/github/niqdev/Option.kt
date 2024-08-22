@@ -1,14 +1,15 @@
 package com.github.niqdev
 
 sealed class Option<out A> {
-
   internal object None : Option<Nothing>() {
     override fun toString(): String = "None"
     // override fun equals(other: Any?): Boolean = other === None
     // override fun hashCode(): Int = 0
   }
 
-  internal data class Some<out A>(internal val value: A) : Option<A>() {
+  internal data class Some<out A>(
+    internal val value: A,
+  ) : Option<A>() {
     override fun toString(): String = "Some($value)"
   }
 
@@ -66,39 +67,49 @@ fun <A, B> Option<A>.flatMap(f: (A) -> Option<B>): Option<B> =
     is Option.Some -> f(this.value)
   }
 
-fun <A, B> Option<A>.flatMapWithMap(f: (A) -> Option<B>): Option<B> =
-  this.map(f).getOrElse(Option.None)
+fun <A, B> Option<A>.flatMapWithMap(f: (A) -> Option<B>): Option<B> = this.map(f).getOrElse(Option.None)
 
 // ---------- 6.5 ----------
 
-fun <A> Option<A>.orElse(default: () -> Option<A>): Option<A> =
-  Option(this).getOrElseLazy(default)
+fun <A> Option<A>.orElse(default: () -> Option<A>): Option<A> = Option(this).getOrElseLazy(default)
 
 // ---------- 6.6 ----------
 
-fun <A> Option<A>.filter(p: (A) -> Boolean): Option<A> =
-  this.flatMapWithMap { a -> if (p(a)) Option(a) else Option.None }
+fun <A> Option<A>.filter(p: (A) -> Boolean): Option<A> = this.flatMapWithMap { a -> if (p(a)) Option(a) else Option.None }
 
 // ------------------------------
 
-fun <K, V> Map<K, V>.getOption(key: K): Option<V> =
-  Option(this[key])
+fun <K, V> Map<K, V>.getOption(key: K): Option<V> = Option(this[key])
 
 // ---------- 6.8 ----------
 
-fun <A, B> lift(f: (A) -> B): (Option<A>) -> Option<B> =
-  { it.map(f) }
+fun <A, B> lift(f: (A) -> B): (Option<A>) -> Option<B> = { it.map(f) }
 
-fun <A, B> ((A) -> B).liftOption(): (Option<A>) -> Option<B> =
-  { it.map(this) }
+fun <A, B> ((A) -> B).liftOption(): (Option<A>) -> Option<B> = { it.map(this) }
 
 // ---------- 6.9 ----------
 
 fun <A, B> liftSafe(): ((A) -> B) -> (Option<A>) -> Option<B> =
-  { f -> { maybeA -> try { maybeA.map(f) } catch (e: Exception) { Option.None } } }
+  { f ->
+    { maybeA ->
+      try {
+        maybeA.map(f)
+      } catch (e: Exception) {
+        Option.None
+      }
+    }
+  }
 
 fun <A, B> hLift(): ((A) -> B) -> (A) -> Option<B> =
-  { f -> { a -> try { Option(a).map(f) } catch (e: Exception) { Option.None } } }
+  { f ->
+    { a ->
+      try {
+        Option(a).map(f)
+      } catch (e: Exception) {
+        Option.None
+      }
+    }
+  }
 
 // ---------- 6.10 ----------
 
@@ -127,5 +138,5 @@ fun main() {
   println(lift(String::uppercase)(Option("example")))
   println(abs.liftOption()(Option(1.0)))
 
-  println(Option(42).map2<Int, Int, String>()(Option(8))() { a, b -> "$a | $b" })
+  println(Option(42).map2<Int, Int, String>()(Option(8)) { a, b -> "$a | $b" })
 }

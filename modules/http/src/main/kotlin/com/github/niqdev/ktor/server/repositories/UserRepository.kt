@@ -10,12 +10,15 @@ import kotlin.jvm.optionals.getOrNull
 
 interface UserRepository {
   fun create(user: User): Result<Int>
+
   fun findById(id: UserId): Result<User?>
+
   fun find(): Result<List<User>>
 }
 
-class UserRepositoryImpl(private val client: Jdbi) : UserRepository {
-
+class UserRepositoryImpl(
+  private val client: Jdbi,
+) : UserRepository {
   companion object {
     private const val TABLE_NAME = "users"
     private val log = KotlinLogging.logger {}
@@ -26,7 +29,8 @@ class UserRepositoryImpl(private val client: Jdbi) : UserRepository {
       log.debug { "create user: $user" }
 
       client.withHandle<Int, Exception> { handle ->
-        handle.createUpdate("INSERT INTO $TABLE_NAME (id, name, age) VALUES (:id, :name, :age)")
+        handle
+          .createUpdate("INSERT INTO $TABLE_NAME (id, name, age) VALUES (:id, :name, :age)")
           .bind("id", user.id.uuid.toString())
           .bind("name", user.name)
           .bind("age", user.age)
@@ -39,7 +43,8 @@ class UserRepositoryImpl(private val client: Jdbi) : UserRepository {
       log.debug { "find user by id: $id" }
 
       client.withHandle<User, Exception> { handle ->
-        handle.select("SELECT * FROM $TABLE_NAME WHERE id = :id")
+        handle
+          .select("SELECT * FROM $TABLE_NAME WHERE id = :id")
           .bind("id", id.uuid.toString())
           .map(::toUser)
           .findOne()
@@ -52,16 +57,20 @@ class UserRepositoryImpl(private val client: Jdbi) : UserRepository {
       log.debug { "find users" }
 
       client.withHandle<List<User>, Exception> { handle ->
-        handle.select("SELECT * FROM $TABLE_NAME")
+        handle
+          .select("SELECT * FROM $TABLE_NAME")
           .map(::toUser)
           .list()
       }
     }
 
-  private fun toUser(rs: ResultSet, ctx: StatementContext): User =
+  private fun toUser(
+    rs: ResultSet,
+    ctx: StatementContext,
+  ): User =
     User(
       id = UserId.fromStringUnsafe(rs.getString("id")),
       name = rs.getString("name"),
-      age = rs.getInt("age")
+      age = rs.getInt("age"),
     )
 }

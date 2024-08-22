@@ -9,7 +9,9 @@ package com.github.niqdev
  * Given a valid sequence of tokens, produce a corresponding syntax tree
  * Given an invalid sequence of tokens, detect any errors and tell the user about their mistakes
  */
-class Parser(private val tokens: List<Token>) {
+class Parser(
+  private val tokens: List<Token>,
+) {
   private var current = 0
 
   fun parse(): List<Stmt> {
@@ -57,8 +59,11 @@ class Parser(private val tokens: List<Token>) {
     val name = consume(TokenType.IDENTIFIER, "Expected variable name")
 
     val initializer =
-      if (match(TokenType.EQUAL)) expression()
-      else Expr.Empty
+      if (match(TokenType.EQUAL)) {
+        expression()
+      } else {
+        Expr.Empty
+      }
 
     consume(TokenType.SEMICOLON, "Expected ';' after variable declaration")
     return Stmt.Var(name, initializer)
@@ -80,21 +85,28 @@ class Parser(private val tokens: List<Token>) {
   private fun forStatement(): Stmt {
     consume(TokenType.LEFT_PAREN, "Expected '(' after 'for'")
 
-    val initializer = when {
-      match(TokenType.SEMICOLON) -> Stmt.Empty
-      match(TokenType.VAR) -> varDeclaration()
-      else -> expressionStatement()
-    }
+    val initializer =
+      when {
+        match(TokenType.SEMICOLON) -> Stmt.Empty
+        match(TokenType.VAR) -> varDeclaration()
+        else -> expressionStatement()
+      }
 
     val condition =
-      if (check(TokenType.SEMICOLON)) Expr.Literal(true)
-      else expression()
+      if (check(TokenType.SEMICOLON)) {
+        Expr.Literal(true)
+      } else {
+        expression()
+      }
 
     consume(TokenType.SEMICOLON, "Expected ';' after loop condition")
 
     val increment =
-      if (check(TokenType.RIGHT_PAREN)) Expr.Empty
-      else expression()
+      if (check(TokenType.RIGHT_PAREN)) {
+        Expr.Empty
+      } else {
+        expression()
+      }
 
     consume(TokenType.RIGHT_PAREN, "Expected ')' after for clauses")
 
@@ -109,7 +121,7 @@ class Parser(private val tokens: List<Token>) {
 
     return if (initializer != null) Statement.Block(listOf(initializer, body))
     else body
-    */
+     */
 
   /*
    * for (var i = 0; i < 10; i = i + 1) print i;
@@ -132,11 +144,11 @@ class Parser(private val tokens: List<Token>) {
           Stmt.Block(
             listOf(
               statement(), // body
-              Stmt.Expression(increment)
-            )
-          )
-        )
-      )
+              Stmt.Expression(increment),
+            ),
+          ),
+        ),
+      ),
     )
   }
 
@@ -162,6 +174,7 @@ class Parser(private val tokens: List<Token>) {
     consume(TokenType.RIGHT_BRACE, "Expected '}' after block")
     return statements
   }
+
   private fun blockStatement(): Stmt = Stmt.Block(blockStatements())
 
   private fun printStatement(): Stmt {
@@ -173,8 +186,11 @@ class Parser(private val tokens: List<Token>) {
   private fun returnStatement(): Stmt {
     val keyword = previous()
     val value =
-      if (!check(TokenType.SEMICOLON)) expression()
-      else Expr.Empty
+      if (!check(TokenType.SEMICOLON)) {
+        expression()
+      } else {
+        Expr.Empty
+      }
 
     consume(TokenType.SEMICOLON, "Expected ';' after return value")
     return Stmt.Return(keyword, value)
@@ -357,8 +373,11 @@ class Parser(private val tokens: List<Token>) {
 
   // returns if the current token is of the given type
   private fun check(type: TokenType): Boolean =
-    if (isAtEnd()) false
-    else peek().type == type
+    if (isAtEnd()) {
+      false
+    } else {
+      peek().type == type
+    }
 
   // consumes the current token and returns it
   private fun advance(): Token {
@@ -374,13 +393,22 @@ class Parser(private val tokens: List<Token>) {
   // returns the most recently consumed token
   private fun previous(): Token = tokens[current - 1]
 
-  private fun consume(type: TokenType, message: String): Token =
-    if (check(type)) advance()
-    else throw error(peek(), message)
+  private fun consume(
+    type: TokenType,
+    message: String,
+  ): Token =
+    if (check(type)) {
+      advance()
+    } else {
+      throw error(peek(), message)
+    }
 
   private class ParseError : RuntimeException()
 
-  private fun error(token: Token, message: String): ParseError {
+  private fun error(
+    token: Token,
+    message: String,
+  ): ParseError {
     Lox.error(token, message)
     return ParseError()
   }

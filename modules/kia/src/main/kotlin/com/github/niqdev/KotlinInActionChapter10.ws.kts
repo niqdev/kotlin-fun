@@ -20,7 +20,9 @@ annotation class JsonExclude
 // the annotations that can be applied to annotation classes are called meta-annotations
 @Target(AnnotationTarget.PROPERTY)
 // the parameters are declared in the primary constructor of the class
-annotation class JsonName(val name: String)
+annotation class JsonName(
+  val name: String,
+)
 
 // ------------------------------
 
@@ -35,30 +37,37 @@ annotation class BindingAnnotation
 
 // KClass type is Kotlin's counterpart to Java's java.lang.Class type
 // allows to control the deserialization of properties that have an interface type
-annotation class DeserializeInterface(val targetClass: kotlin.reflect.KClass<out Any>)
+annotation class DeserializeInterface(
+  val targetClass: kotlin.reflect.KClass<out Any>,
+)
 
 interface Company {
   val name: String
 }
-data class CompanyImpl(override val name: String) : Company
+
+data class CompanyImpl(
+  override val name: String,
+) : Company
+
 data class Person(
   val name: String,
   // the type of the annotation argument CompanyImpl::class (KClass<CompanyImpl>) is a subtype of the annotation parameter type (KClass<out Any>)
   // if you wrote KClass<Any> without the out modifier, you wouldn't be able to pass CompanyImpl::class as an argument: the only allowed argument would be Any::class.
   // the out keyword specifies that you're allowed to refer to classes that extend Any, not just to Any itself
-  @DeserializeInterface(CompanyImpl::class) val company: Company
+  @DeserializeInterface(CompanyImpl::class) val company: Company,
 )
 
 // ------------------------------
 
 interface ValueSerializer<T> {
   fun toJsonValue(value: T): Any?
+
   fun fromJsonValue(jsonValue: Any?): T
 }
 
 annotation class CustomSerializer(
   // you know nothing about the types of properties with which this annotation will be used
-  val serializerClass: kotlin.reflect.KClass<out ValueSerializer<*>>
+  val serializerClass: kotlin.reflect.KClass<out ValueSerializer<*>>,
 )
 
 // ------------------------------
@@ -68,7 +77,9 @@ annotation class CustomSerializer(
 // java.lang.reflect
 // kotlin.reflect
 
-class Example(string: String)
+class Example(
+  string: String,
+)
 val example = Example("hello")
 
 // KClass is the counterpart of java.lang.Class
