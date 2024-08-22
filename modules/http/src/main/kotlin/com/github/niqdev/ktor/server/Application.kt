@@ -22,7 +22,9 @@ import io.ktor.server.routing.routing
 // DI https://insert-koin.io/docs/reference/koin-ktor/ktor
 
 // https://github.com/ktorio/ktor-documentation/tree/main/codeSnippets
-fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+fun main(args: Array<String>): Unit =
+  io.ktor.server.netty.EngineMain
+    .main(args)
 
 fun Application.commonModule() {
   log.debug("Loading common plugins")
@@ -62,5 +64,4 @@ fun Application.mainModule() {
   }
 }
 
-internal fun Application.loadConfigOrThrow(): ServerConfig =
-  ServerConfig.load(environment.config.config("server").toMap()).getOrThrow()
+internal fun Application.loadConfigOrThrow(): ServerConfig = ServerConfig.load(environment.config.config("server").toMap()).getOrThrow()

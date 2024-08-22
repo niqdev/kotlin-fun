@@ -8,11 +8,11 @@ include(
   "modules:bool",
   "modules:fpk",
   "modules:http",
-  "modules:jok",
+  // "modules:jok", // TODO fix compilation errors
   "modules:json-schema",
   "modules:kia",
   "modules:lox",
-  "modules:rekursive"
+  // "modules:rekursive" // TODO fix compilation errors
 )
 
 // example of how to include a project for development, without publishing to mavenLocal

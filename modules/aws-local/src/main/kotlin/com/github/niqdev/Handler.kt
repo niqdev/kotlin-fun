@@ -7,7 +7,10 @@ import org.slf4j.LoggerFactory
 class Handler : RequestHandler<String, String> {
   private val logger = LoggerFactory.getLogger(Handler::class.java)
 
-  override fun handleRequest(input: String?, context: Context?): String {
+  override fun handleRequest(
+    input: String?,
+    context: Context?,
+  ): String {
     logger.info(input)
     return "TODO"
   }

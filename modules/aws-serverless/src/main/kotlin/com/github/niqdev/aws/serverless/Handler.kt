@@ -8,12 +8,14 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 import org.slf4j.LoggerFactory
 
 class Handler : RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
-
   companion object {
     private val log = LoggerFactory.getLogger(Handler::class.java)
   }
 
-  override fun handleRequest(input: APIGatewayProxyRequestEvent?, context: Context?): APIGatewayProxyResponseEvent {
+  override fun handleRequest(
+    input: APIGatewayProxyRequestEvent?,
+    context: Context?,
+  ): APIGatewayProxyResponseEvent {
     // example with internal logger
     val logger: LambdaLogger? = context?.logger
     logger?.log("INPUT from context: $input")

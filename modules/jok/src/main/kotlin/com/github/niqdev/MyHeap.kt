@@ -2,23 +2,20 @@ package com.github.niqdev
 
 // a heap-ordered leftist tree: used to implement priority queues
 sealed interface MyHeap<out T : Comparable<@UnsafeVariance T>> {
-
   object MyEmpty : MyHeap<Nothing>
 
   class MyHead<T : Comparable<T>>(
     val rank: Int,
     val left: MyHeap<T>,
     val head: T,
-    val right: MyHeap<T>
+    val right: MyHeap<T>,
   ) : MyHeap<T>
 
   companion object {
     // to compile requires `out` and `@UnsafeVariance`
-    operator fun <T : Comparable<T>> invoke(): MyHeap<T> =
-      MyEmpty
+    operator fun <T : Comparable<T>> invoke(): MyHeap<T> = MyEmpty
 
-    operator fun <T : Comparable<T>> invoke(element: T): MyHeap<T> =
-      MyHead(1, MyEmpty, element, MyEmpty)
+    operator fun <T : Comparable<T>> invoke(element: T): MyHeap<T> = MyHead(1, MyEmpty, element, MyEmpty)
   }
 }
 
@@ -66,42 +63,49 @@ fun <T : Comparable<T>> MyHeap<T>.size(): Int =
 
 // ---------- 11.5 ----------
 
-private fun <T : Comparable<T>> mergeHead(head: T, first: MyHeap<T>, second: MyHeap<T>): MyHeap<T> =
+private fun <T : Comparable<T>> mergeHead(
+  head: T,
+  first: MyHeap<T>,
+  second: MyHeap<T>,
+): MyHeap<T> =
   when {
     first.rank() >= second.rank() -> MyHeap.MyHead(second.rank() + 1, first, head, second)
     else -> MyHeap.MyHead(first.rank() + 1, second, head, first)
   }
 
-private fun <T : Comparable<T>> merge(first: MyHeap<T>, second: MyHeap<T>): MyHeap<T> =
-  first.head().flatMap<T, MyHeap<T>>()() { fh ->
-    second.head().flatMap<T, MyHeap<T>>()() { sh ->
-      when {
-        fh <= sh ->
-          first.left().flatMap<MyHeap<T>, MyHeap<T>>()() { fl ->
-            first.right().map<MyHeap<T>, MyHeap<T>>()() { fr ->
-              mergeHead(fh, fl, merge(fr, second))
+private fun <T : Comparable<T>> merge(
+  first: MyHeap<T>,
+  second: MyHeap<T>,
+): MyHeap<T> =
+  first
+    .head()
+    .flatMap<T, MyHeap<T>> { fh ->
+      second.head().flatMap<T, MyHeap<T>> { sh ->
+        when {
+          fh <= sh ->
+            first.left().flatMap<MyHeap<T>, MyHeap<T>> { fl ->
+              first.right().map<MyHeap<T>, MyHeap<T>> { fr ->
+                mergeHead(fh, fl, merge(fr, second))
+              }
             }
-          }
-        else ->
-          second.left().flatMap<MyHeap<T>, MyHeap<T>>()() { sl ->
-            second.right().map<MyHeap<T>, MyHeap<T>>()() { sr ->
-              mergeHead(sh, sl, merge(first, sr))
+          else ->
+            second.left().flatMap<MyHeap<T>, MyHeap<T>> { sl ->
+              second.right().map<MyHeap<T>, MyHeap<T>> { sr ->
+                mergeHead(sh, sl, merge(first, sr))
+              }
             }
-          }
+        }
+      }
+    }.getOrElse {
+      when (first) {
+        is MyHeap.MyEmpty -> second
+        is MyHeap.MyHead -> first
       }
     }
-  }.getOrElse()() {
-    when (first) {
-      is MyHeap.MyEmpty -> second
-      is MyHeap.MyHead -> first
-    }
-  }
 
-private fun <T : Comparable<T>> MyHeap<T>.add(): (T) -> MyHeap<T> =
-  { element -> merge(this, MyHeap(element)) }
+private fun <T : Comparable<T>> MyHeap<T>.add(): (T) -> MyHeap<T> = { element -> merge(this, MyHeap(element)) }
 
-operator fun <T : Comparable<T>> MyHeap<T>.plus(element: T): MyHeap<T> =
-  this.add()(element)
+operator fun <T : Comparable<T>> MyHeap<T>.plus(element: T): MyHeap<T> = this.add()(element)
 
 // ---------- 11.6 ----------
 
@@ -120,7 +124,7 @@ fun <T : Comparable<T>> MyHeap<T>.get(): (Int) -> MyResult<T> =
       is MyHeap.MyHead ->
         when (index) {
           0 -> MyResult(head)
-          else -> tail().flatMap<MyHeap<T>, T>()() { it.get()(index - 1) }
+          else -> tail().flatMap<MyHeap<T>, T> { it.get()(index - 1) }
         }
     }
   }
@@ -130,18 +134,23 @@ fun <T : Comparable<T>> MyHeap<T>.get(): (Int) -> MyResult<T> =
 fun <T : Comparable<T>> MyHeap<T>.pop(): Option<Pair<T, MyHeap<T>>> =
   when (this) {
     is MyHeap.MyEmpty -> Option.None
-    is MyHeap.MyHead -> tail().map<MyHeap<T>, Pair<T, MyHeap<T>>>()() { head to it }.toOption()
+    is MyHeap.MyHead -> tail().map<MyHeap<T>, Pair<T, MyHeap<T>>> { head to it }.toOption()
   }
 
-fun <T : Comparable<T>> MyHeap<T>.toList(): MyList<T> =
-  MyList<T>().unfold<T, MyHeap<T>>()(this)() { it.pop() }
+fun <T : Comparable<T>> MyHeap<T>.toList(): MyList<T> = MyList<T>().unfold<T, MyHeap<T>>()(this) { it.pop() }
 
 // ---------- 11.9 ----------
 
-fun <A : Comparable<A>, B, Z> MyHeap<A>.unfold(identity: B, f: (B) -> (A) -> B): (Z) -> ((Z) -> Option<Pair<A, Z>>) -> B =
+fun <A : Comparable<A>, B, Z> MyHeap<A>.unfold(
+  identity: B,
+  f: (B) -> (A) -> B,
+): (Z) -> ((Z) -> Option<Pair<A, Z>>) -> B =
   { zero ->
     { getNext ->
-      tailrec fun loop(z: Z, result: B): B =
+      tailrec fun loop(
+        z: Z,
+        result: B,
+      ): B =
         when (val next = getNext(z)) {
           is Option.None -> result
           is Option.Some ->
@@ -152,10 +161,9 @@ fun <A : Comparable<A>, B, Z> MyHeap<A>.unfold(identity: B, f: (B) -> (A) -> B):
   }
 
 fun <A : Comparable<A>, B> MyHeap<A>.foldLeft(): (B) -> ((B) -> (A) -> B) -> B =
-  { identity -> { f -> this.unfold<A, B, MyHeap<A>>(identity, f)(this)() { it.pop() } } }
+  { identity -> { f -> this.unfold<A, B, MyHeap<A>>(identity, f)(this) { it.pop() } } }
 
-fun <T : Comparable<T>> MyHeap<T>.toListWithUnfold(): MyList<T> =
-  this.foldLeft<T, MyList<T>>()(MyList.MyNil)(MyList<T>::cons).reverse()
+fun <T : Comparable<T>> MyHeap<T>.toListWithUnfold(): MyList<T> = this.foldLeft<T, MyList<T>>()(MyList.MyNil)(MyList<T>::cons).reverse()
 
 // ---------- 11.10 ----------
 
@@ -168,7 +176,7 @@ fun main() {
   val heap = MyHeap<Int>() + 1 + 2 + 3 + 4 + 5
   println(heap.pretty())
   println((heap + 6).pretty())
-  println((heap.tail().getOrElse()() { MyHeap.MyEmpty }).pretty())
+  println((heap.tail().getOrElse { MyHeap.MyEmpty }).pretty())
   println(heap.get()(1))
   println(heap.get()(10))
   println(heap.toList())

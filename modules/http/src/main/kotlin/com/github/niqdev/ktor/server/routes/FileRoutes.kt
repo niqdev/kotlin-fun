@@ -29,7 +29,7 @@ fun Route.fileRoutes(fileService: FileService) {
       val file = File("$ARCHIVE_PATH/kotlin-ktor.png")
       call.response.header(
         HttpHeaders.ContentDisposition,
-        ContentDisposition.Attachment.withParameter(ContentDisposition.Parameters.FileName, "ktor.png").toString()
+        ContentDisposition.Attachment.withParameter(ContentDisposition.Parameters.FileName, "ktor.png").toString(),
       )
       call.respondFile(file)
     }
@@ -39,11 +39,11 @@ fun Route.fileRoutes(fileService: FileService) {
         {
           call.response.header(
             HttpHeaders.ContentDisposition,
-            ContentDisposition.Attachment.withParameter(ContentDisposition.Parameters.FileName, "archive.zip").toString()
+            ContentDisposition.Attachment.withParameter(ContentDisposition.Parameters.FileName, "archive.zip").toString(),
           )
           call.respondBytes { it.toByteArray() }
         },
-        { call.respond(HttpStatusCode.InternalServerError, "please try again") }
+        { call.respond(HttpStatusCode.InternalServerError, "please try again") },
       )
     }
     post("/upload") {
@@ -56,7 +56,7 @@ fun Route.fileRoutes(fileService: FileService) {
       val multipart = call.receiveMultipart()
       fileService.uploadMultipartFile(multipart, ARCHIVE_PATH).fold(
         { call.respondText("file uploaded: $it") },
-        { call.respond(HttpStatusCode.InternalServerError, "please try again") }
+        { call.respond(HttpStatusCode.InternalServerError, "please try again") },
       )
     }
   }

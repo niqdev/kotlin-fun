@@ -5,14 +5,18 @@ package com.github.niqdev.bool
 // - "IN a, b, b"
 // - "MATCH /aaa/"
 object Parser {
-
   // TODO Validated<NonEmptyList<Error>, FreeB<Predicate>>
   // recursive descent parser: given a valid sequence of tokens, produce a corresponding Abstract Syntax Tree
-  fun parse(tokens: List<Token>, keys: Map<String, Token> = emptyMap()): FreeB<Predicate> =
-    expression(resolveKeys(tokens, keys))
+  fun parse(
+    tokens: List<Token>,
+    keys: Map<String, Token> = emptyMap(),
+  ): FreeB<Predicate> = expression(resolveKeys(tokens, keys))
 
   // TODO this is a hack, in reality keys should be resolved at runtime i.e. in the interpreter
-  private fun resolveKeys(tokens: List<Token>, keys: Map<String, Token>): List<Token> =
+  private fun resolveKeys(
+    tokens: List<Token>,
+    keys: Map<String, Token>,
+  ): List<Token> =
     tokens.map {
       when (it) {
         is Token.TokenKey -> keys.getOrDefault(it.key, it) // TODO Validated
@@ -21,12 +25,14 @@ object Parser {
     }
 
   // expression -> or
-  private fun expression(tokens: List<Token>): FreeB<Predicate> =
-    or(tokens).second
+  private fun expression(tokens: List<Token>): FreeB<Predicate> = or(tokens).second
 
   // or -> and [ "OR" and ]*
   private fun or(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
-    fun loop(currentTokens: List<Token>, left: FreeB<Predicate>): Pair<List<Token>, FreeB<Predicate>> =
+    fun loop(
+      currentTokens: List<Token>,
+      left: FreeB<Predicate>,
+    ): Pair<List<Token>, FreeB<Predicate>> =
       when {
         currentTokens.isEmpty() -> emptyList<Token>() to left
         else -> {
@@ -47,7 +53,10 @@ object Parser {
 
   // and -> not [ "AND" not ]*
   private fun and(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
-    fun loop(currentTokens: List<Token>, left: FreeB<Predicate>): Pair<List<Token>, FreeB<Predicate>> =
+    fun loop(
+      currentTokens: List<Token>,
+      left: FreeB<Predicate>,
+    ): Pair<List<Token>, FreeB<Predicate>> =
       when {
         currentTokens.isEmpty() -> emptyList<Token>() to left
         else -> {
@@ -84,7 +93,10 @@ object Parser {
 
   // equality -> comparison [ "!=" | "==" comparison ]*
   private fun equality(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
-    fun loop(currentTokens: List<Token>, left: FreeB<Predicate>): Pair<List<Token>, FreeB<Predicate>> =
+    fun loop(
+      currentTokens: List<Token>,
+      left: FreeB<Predicate>,
+    ): Pair<List<Token>, FreeB<Predicate>> =
       when {
         currentTokens.isEmpty() -> emptyList<Token>() to left
         else -> {
@@ -109,7 +121,10 @@ object Parser {
 
   // comparison -> primary [ ">" | ">=" | "<" | "<=" primary ]*
   private fun comparison(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
-    fun loop(currentTokens: List<Token>, left: FreeB<Predicate>): Pair<List<Token>, FreeB<Predicate>> =
+    fun loop(
+      currentTokens: List<Token>,
+      left: FreeB<Predicate>,
+    ): Pair<List<Token>, FreeB<Predicate>> =
       when {
         currentTokens.isEmpty() -> emptyList<Token>() to left
         else -> {
@@ -119,8 +134,10 @@ object Parser {
               val (nextTokens, right) = comparison(tail)
               // TODO should this logic be implemented in the parser? e.g. how to custom VERSION parser
               when {
-                left is FreeB.Pure && left.value is Predicate.Identity &&
-                  right is FreeB.Pure && right.value is Predicate.Identity ->
+                left is FreeB.Pure &&
+                  left.value is Predicate.Identity &&
+                  right is FreeB.Pure &&
+                  right.value is Predicate.Identity ->
                   nextTokens to FreeB.Pure(Predicate.Greater(left.value, right.value))
                 else -> error("unexpected predicate in comparison: [left=$left][right=$right]")
               }
@@ -163,7 +180,10 @@ object Parser {
   // it tries to match an expression between parentheses of ONLY 1 nested level
   // TODO keep counts of other open parentheses to parse multiple nesting level e.g. context (index, line, nestedCount)
   private fun grouping(tokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> {
-    fun loop(tmp: List<Token>, expressionTokens: List<Token>): Pair<List<Token>, FreeB<Predicate>> =
+    fun loop(
+      tmp: List<Token>,
+      expressionTokens: List<Token>,
+    ): Pair<List<Token>, FreeB<Predicate>> =
       when {
         tmp.isEmpty() ->
           error("expected ')' after expression") // TODO Validated

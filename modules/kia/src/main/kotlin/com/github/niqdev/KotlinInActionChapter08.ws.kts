@@ -34,11 +34,16 @@ println("ab1c".myFilter { it in 'a'..'z' })
 
 enum class Delivery { STANDARD, PREMIUM }
 
-class Order(val itemCount: Int)
+class Order(
+  val itemCount: Int,
+)
 
 fun getShippingCostCalculator(delivery: Delivery): (Order) -> Double =
-  if (delivery == Delivery.PREMIUM) { order -> 6 + 2.1 * order.itemCount }
-  else { order -> 1.2 * order.itemCount }
+  if (delivery == Delivery.PREMIUM) {
+    { order -> 6 + 2.1 * order.itemCount }
+  } else {
+    { order -> 1.2 * order.itemCount }
+  }
 
 val shippingCosts = getShippingCostCalculator(Delivery.PREMIUM)(Order(3))
 
@@ -56,15 +61,17 @@ inline fun applyMyAction(action: () -> Boolean): String = TODO()
 // not every function that uses lambdas can be inlined. When the function is inlined, the body of the lambda expression that's passed as an argument is substituted directly into the resulting code
 // Generally, the parameter can be inlined if it's called directly or passed as an argument to another inline function
 
-inline fun foo(inlined: () -> Unit, noinline notInlined: () -> Unit): String = TODO()
+inline fun foo(
+  inlined: () -> Unit,
+  noinline notInlined: () -> Unit,
+): String = TODO()
 
 // Using the inline keyword is likely to improve performance only with functions that take lambdas as arguments; all other cases require additional measuring and investigation
 
 // ------------------------------
 
 // One common pattern where lambdas can remove duplicate code is resource management: acquiring a resource before an operation and releasing it afterward
-fun readFirstLineFromFile(path: String): String =
-  java.io.BufferedReader(java.io.FileReader(path)).use { it.readLine() }
+fun readFirstLineFromFile(path: String): String = java.io.BufferedReader(java.io.FileReader(path)).use { it.readLine() }
 
 // ------------------------------
 
@@ -93,16 +100,14 @@ fun lookForAlice2(people: List<String>) {
     fun (person) {
       if (person == "Alice") return
       println("$person is not Alice")
-    }
+    },
   )
 }
 
 // an anonymous function looks similar to a regular function, except that its name and parameter types are omitted
 fun lookForAlice3(people: List<Int>) {
   people.filter(
-    fun (person): Boolean {
-      return person < 30
-    }
+    fun (person): Boolean = person < 30,
   )
 }
 

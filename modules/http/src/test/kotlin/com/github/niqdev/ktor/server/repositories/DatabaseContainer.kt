@@ -8,7 +8,6 @@ import org.testcontainers.utility.DockerImageName
 
 // https://java.testcontainers.org/test_framework_integration/junit_5
 object DatabaseContainer {
-
   private val postgresContainer: PostgreSQLContainer<*> by lazy {
     PostgreSQLContainer(DockerImageName.parse("postgres:16-alpine"))
       .withDatabaseName("test_db")
@@ -22,7 +21,8 @@ object DatabaseContainer {
   }
 
   val client: Jdbi by lazy {
-    Jdbi.create(postgresContainer.getJdbcUrl(), postgresContainer.username, postgresContainer.password)
+    Jdbi
+      .create(postgresContainer.getJdbcUrl(), postgresContainer.username, postgresContainer.password)
       .setSqlLogger(Slf4JSqlLogger())
   }
 }

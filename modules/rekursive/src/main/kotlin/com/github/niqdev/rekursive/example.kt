@@ -71,12 +71,13 @@ private fun <E, B> foldRightStep2(): (MyList<E>) -> ((MyOption<Pair<E, B>>) -> B
 private fun <E, B> foldRightStep3a(): ((MyOption<Pair<E, B>>) -> B) -> (MyList<E>) -> B =
   { f ->
     // lazy val ???
-    fun kernel(): (MyList<E>) -> B = { list ->
-      when (list) {
-        is MyList.Nil -> f(MyOption.None)
-        is MyList.Cons -> f(MyOption(list.head to kernel()(list.tail)))
+    fun kernel(): (MyList<E>) -> B =
+      { list ->
+        when (list) {
+          is MyList.Nil -> f(MyOption.None)
+          is MyList.Cons -> f(MyOption(list.head to kernel()(list.tail)))
+        }
       }
-    }
     kernel()
   }
 
@@ -102,12 +103,13 @@ private fun <E, B> foldRightStep3c(f: (MyOption<Pair<E, B>>) -> B): (MyList<E>) 
 
 private fun <E, A> unfoldStep3(): ((A) -> MyOption<Pair<E, A>>) -> (A) -> MyList<E> =
   { f ->
-    fun kernel(): (A) -> MyList<E> = { a ->
-      when (val pair = f(a)) {
-        is MyOption.None -> MyList.Nil
-        is MyOption.Some -> MyList.Cons(pair.value.first, kernel()(pair.value.second))
+    fun kernel(): (A) -> MyList<E> =
+      { a ->
+        when (val pair = f(a)) {
+          is MyOption.None -> MyList.Nil
+          is MyOption.Some -> MyList.Cons(pair.value.first, kernel()(pair.value.second))
+        }
       }
-    }
     kernel()
   }
 
@@ -140,26 +142,29 @@ private fun <E, B> foldRightStep5(): ((MyOption<Pair<E, B>>) -> B) -> (MyList<E>
     // typealias S = MyList<E>
 
     // (S) -> B
-    fun kernel(): (MyList<E>) -> B = { init ->
-      // (S) -> F<S>
-      fun unpack(): (MyList<E>) -> MyOption<Pair<E, MyList<E>>> = {
-        when (it) {
-          is MyList.Nil -> MyOption.None
-          is MyList.Cons -> MyOption.Some(it.head to it.tail)
-        }
-      }
+    fun kernel(): (MyList<E>) -> B =
+      { init ->
+        // (S) -> F<S>
+        fun unpack(): (MyList<E>) -> MyOption<Pair<E, MyList<E>>> =
+          {
+            when (it) {
+              is MyList.Nil -> MyOption.None
+              is MyList.Cons -> MyOption.Some(it.head to it.tail)
+            }
+          }
 
-      // this implementation can be replaced with a Functor
-      // (F<S>) -> F<B>
-      fun recurse(): (MyOption<Pair<E, MyList<E>>>) -> MyOption<Pair<E, B>> = {
-        when (it) {
-          is MyOption.None -> MyOption.None
-          is MyOption.Some -> MyOption(it.value.first to kernel()(it.value.second))
-        }
+        // this implementation can be replaced with a Functor
+        // (F<S>) -> F<B>
+        fun recurse(): (MyOption<Pair<E, MyList<E>>>) -> MyOption<Pair<E, B>> =
+          {
+            when (it) {
+              is MyOption.None -> MyOption.None
+              is MyOption.Some -> MyOption(it.value.first to kernel()(it.value.second))
+            }
+          }
+        // f: (F<P>) -> B
+        f(recurse()(unpack()(init)))
       }
-      // f: (F<P>) -> B
-      f(recurse()(unpack()(init)))
-    }
 
     kernel()
   }
@@ -169,7 +174,7 @@ private fun <E, B> foldRightStep5(): ((MyOption<Pair<E, B>>) -> B) -> (MyList<E>
 private fun <F, S, B> foldRightStep6(
   f: (Kind<F, B>) -> B,
   project: (S) -> Kind<F, S>,
-  ff: Functor<F>
+  ff: Functor<F>,
 ): (S) -> B =
   { s ->
     fun kernel(init: S): B = f(ff.map<S, B>(project(init))(::kernel))
@@ -187,7 +192,7 @@ typealias CoAlgebra<F, A> = (A) -> Kind<F, A>
 // TODO instance of Functor: map is an extension without implementation
 private fun <F, A, B> cata(
   algebra: (Kind<F, A>) -> A,
-  project: (B) -> Kind<F, B>
+  project: (B) -> Kind<F, B>,
 ): (B) -> A {
   fun loop(init: B): A = algebra(project(init).map(::loop))
   return ::loop
@@ -223,7 +228,6 @@ def cataFix[F[_]: Functor, A](
 // ------------------------------
 
 object Steps {
-
   fun step1() {
     val prodOp: (Int, Int) -> Int = { a, b -> a * b }
     // 200
@@ -231,8 +235,11 @@ object Steps {
 
     val rangeOp: (Int) -> MyOption<Pair<Int, Int>> =
       { v ->
-        if (v <= 0) MyOption.None
-        else MyOption.Some(v to v - 1)
+        if (v <= 0) {
+          MyOption.None
+        } else {
+          MyOption.Some(v to v - 1)
+        }
       }
     // List(10, 9, 8, 7, 6, 5, 4, 3, 2, 1, Nil)
     println(unfoldStep1<Int, Int>()(10)(rangeOp))

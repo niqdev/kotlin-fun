@@ -1,10 +1,12 @@
 package com.github.niqdev.bool
 
 object StringLexer {
-
   // TODO Validated<NonEmptyList<Error>, List<Token>>
   fun tokenize(input: String): List<Token> {
-    tailrec fun loop(index: Int, result: List<Token>): List<Token> =
+    tailrec fun loop(
+      index: Int,
+      result: List<Token>,
+    ): List<Token> =
       when {
         index < input.length -> {
           when (val c = input[index]) {
@@ -83,7 +85,10 @@ object StringLexer {
   private fun scan(): ((Char) -> Boolean) -> (String) -> String =
     { predicate ->
       { input ->
-        tailrec fun loop(index: Int, result: String): String =
+        tailrec fun loop(
+          index: Int,
+          result: String,
+        ): String =
           when {
             // end of the input string
             index >= input.length -> result
@@ -96,6 +101,7 @@ object StringLexer {
     }
 
   // TODO validate max length
+  @Suppress("ktlint:standard:unnecessary-parentheses-before-trailing-lambda")
   private fun scanString(): (String) -> String = scan()() { it != '"' }
 
   // TODO validate Int.MAX_VALUE and Int.MIN_VALUE
@@ -106,4 +112,5 @@ object StringLexer {
 }
 
 private fun Char.isDigit(): Boolean = this in '0'..'9'
+
 private fun Char.isKey(): Boolean = this in 'a'..'z' || this in 'A'..'Z' || "._-".contains(this)

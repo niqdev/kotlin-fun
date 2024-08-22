@@ -1,6 +1,11 @@
 package com.github.niqdev.coroutine
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlin.system.measureTimeMillis
 
 // https://kotlinlang.org/docs/coroutines-guide.html
@@ -74,36 +79,42 @@ suspend fun printWorld() {
   println("World!")
 }
 
-suspend fun myScope() = coroutineScope {
-  launch {
-    delay(1000L)
-    println("coroutine")
+suspend fun myScope() =
+  coroutineScope {
+    launch {
+      delay(1000L)
+      println("coroutine")
+    }
   }
-}
 
 // ------------------------------
 
 // the code in the coroutine, just like in the regular code, is "sequential" by default
 
-suspend fun doSomethingUseful(time: Long, result: Int): Int {
+suspend fun doSomethingUseful(
+  time: Long,
+  result: Int,
+): Int {
   delay(1000L)
   return result
 }
 
-suspend fun sequential() = measureTimeMillis {
-  val one = doSomethingUseful(1000L, 13)
-  val two = doSomethingUseful(1000L, 42)
-  println("The answer is ${one + two}")
-}
+suspend fun sequential() =
+  measureTimeMillis {
+    val one = doSomethingUseful(1000L, 13)
+    val two = doSomethingUseful(1000L, 42)
+    println("The answer is ${one + two}")
+  }
 
 // ------------------------------
 
 // `launch` returns a `Job` and does not carry any resulting value, while `async` returns a `Deferred` — a light-weight non-blocking future that represents a promise to provide a result later
 
-suspend fun parallel() = coroutineScope {
-  val one = async { doSomethingUseful(1000L, 1) }
-  val two = async(start = CoroutineStart.LAZY) { doSomethingUseful(1000L, 2) }
-  delay(500L)
-  two.start()
-  println("[${Thread.currentThread().name}] The answer is ${one.await() + two.await()}")
-}
+suspend fun parallel() =
+  coroutineScope {
+    val one = async { doSomethingUseful(1000L, 1) }
+    val two = async(start = CoroutineStart.LAZY) { doSomethingUseful(1000L, 2) }
+    delay(500L)
+    two.start()
+    println("[${Thread.currentThread().name}] The answer is ${one.await() + two.await()}")
+  }

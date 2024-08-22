@@ -10,9 +10,10 @@ import io.kotest.property.arbitrary.string
 import io.kotest.property.arbitrary.uuid
 
 // TODO not used
-val userArb = arbitrary {
-  val id = Arb.uuid().map { UserId(it) }.bind()
-  val name = Arb.string(0, 100).bind()
-  val age = Arb.int(18..99).bind()
-  User(id, name, age)
-}
+val userArb =
+  arbitrary {
+    val id = Arb.uuid().map { UserId(it) }.bind()
+    val name = Arb.string(0, 100).bind()
+    val age = Arb.int(18..99).bind()
+    User(id, name, age)
+  }

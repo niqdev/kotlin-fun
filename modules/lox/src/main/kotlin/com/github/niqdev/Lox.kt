@@ -11,7 +11,6 @@ import kotlin.system.exitProcess
 // >>> (1)
 
 object Lox {
-
   private var error = false
   private var runtimeError = false
 
@@ -68,10 +67,15 @@ object Lox {
     Interpreter().interpret(statements)
   }
 
-  fun error(token: Token, message: String) =
-    reportError(token.line, "[${token.lexeme}] $message")
+  fun error(
+    token: Token,
+    message: String,
+  ) = reportError(token.line, "[${token.lexeme}] $message")
 
-  fun reportError(line: Int, message: String) {
+  fun reportError(
+    line: Int,
+    message: String,
+  ) {
     System.err.println("[$line] Error: $message")
     error = true
   }

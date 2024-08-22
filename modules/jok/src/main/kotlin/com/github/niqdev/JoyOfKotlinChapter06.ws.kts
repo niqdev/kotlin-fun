@@ -32,7 +32,7 @@ val variance: (List<Double>) -> Option<Double> = { list ->
     mean(
       list.map { x ->
         Math.pow(x - m, 2.0)
-      }
+      },
     )
   }
 }

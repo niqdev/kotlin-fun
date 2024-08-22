@@ -10,15 +10,15 @@ import org.junit.jupiter.api.Test
 
 // TODO kotest-assertions-ktor
 class StatusRoutesTest {
-
   @Test
-  fun testStatus() = testApplication {
-    application {
-      routing { statusRoutes() }
+  fun testStatus() =
+    testApplication {
+      application {
+        routing { statusRoutes() }
+      }
+      client.get("/status").apply {
+        assertEquals(HttpStatusCode.OK, status)
+        assertEquals("OK", bodyAsText())
+      }
     }
-    client.get("/status").apply {
-      assertEquals(HttpStatusCode.OK, status)
-      assertEquals("OK", bodyAsText())
-    }
-  }
 }

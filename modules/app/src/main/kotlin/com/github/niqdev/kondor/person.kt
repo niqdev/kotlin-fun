@@ -13,7 +13,9 @@ import com.ubertob.kondor.json.str
 // convert json to data class
 // https://toolbox.http4k.org/dataclass
 
-data class Person(val name: String)
+data class Person(
+  val name: String,
+)
 
 // generated with
 // modules/app/src/test/kotlin/com/github/niqdev/kondor/generators.kt
@@ -22,6 +24,6 @@ object JPerson : JAny<Person>() {
 
   override fun JsonNodeObject.deserializeOrThrow(): Person =
     Person(
-      name = +name
+      name = +name,
     )
 }

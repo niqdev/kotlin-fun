@@ -52,6 +52,7 @@ val doubleRef0: kotlin.reflect.KProperty0<(Int) -> Int> = ::double1
 
 class MyClass {
   fun ref0(): Int = 8
+
   companion object {
     fun ref1(): Int = 42
   }
@@ -66,17 +67,28 @@ val myRef5: kotlin.reflect.KFunction1<MyClass, Int> = MyClass::ref0
 
 // ---------- 3.1 ----------
 
-fun compose0(f: (Int) -> Int, g: (Int) -> Int): (Int) -> Int = { x -> f(g(x)) }
-fun compose1(f: (Int) -> Int, g: (Int) -> Int): (Int) -> Int = { f(g(it)) }
+fun compose0(
+  f: (Int) -> Int,
+  g: (Int) -> Int,
+): (Int) -> Int = { x -> f(g(x)) }
+
+fun compose1(
+  f: (Int) -> Int,
+  g: (Int) -> Int,
+): (Int) -> Int = { f(g(it)) }
 
 val square: (Int) -> Int = { it * it }
+
 fun triple(value: Int): Int = value * 3
 val squareOfTriple: (Int) -> Int = compose1(square, ::triple)
 println(squareOfTriple(2))
 
 // ---------- 3.2 ----------
 
-fun <I, O, T> compose2(f: (T) -> O, g: (I) -> T): (I) -> O = { f(g(it)) }
+fun <I, O, T> compose2(
+  f: (T) -> O,
+  g: (I) -> T,
+): (I) -> O = { f(g(it)) }
 
 fun <T> ((T) -> T).compose3(g: (T) -> T): (T) -> T = { this(g(it)) }
 
@@ -118,7 +130,7 @@ higherAndThen<Int, Int, Int>()(square)(::triple)(2)
 // If you're concerned with performance and reusability, you should use function references as often as possible
 
 val cos0 = higherCompose<Double, Double, Double>()({ x: Double -> Math.PI / 2 - x })(Math::sin)
-val cos1 = higherCompose<Double, Double, Double>()() { x: Double -> Math.PI / 2 - x }(Math::sin)
+val cos1 = higherCompose<Double, Double, Double> { x: Double -> Math.PI / 2 - x }(Math::sin)
 
 val cosValue: Double = cos1(2.0)
 
@@ -127,6 +139,7 @@ val cosValue: Double = cos1(2.0)
 fun cos2(arg: Double): Double {
   // local functions
   fun f(x: Double): Double = Math.PI / 2 - x
+
   fun sin(x: Double): Double = Math.sin(x)
   return higherCompose<Double, Double, Double>()(::f)(::sin)(arg)
 }
@@ -142,17 +155,28 @@ fun cos2(arg: Double): Double {
 // ---------- 3.7 ----------
 
 // write a function to partially apply a curried function of two arguments to its first argument
-fun <I, O, T> applyCurried1(input: I, f: (I) -> (T) -> O): (T) -> O = f(input)
+fun <I, O, T> applyCurried1(
+  input: I,
+  f: (I) -> (T) -> O,
+): (T) -> O = f(input)
 
 // ---------- 3.8 ----------
 
 // write a function to partially apply a curried function of two arguments to its second argument
-fun <I, O, T> applyCurried2(input: T, f: (I) -> (T) -> O): (I) -> O = { i -> f(i)(input) }
+fun <I, O, T> applyCurried2(
+  input: T,
+  f: (I) -> (T) -> O,
+): (I) -> O = { i -> f(i)(input) }
 
 // ---------- 3.9 ----------
 
 // convert the following function into a curried function
-fun <A, B, C, D> applyCurried3a(a: A, b: B, c: C, d: D): String = "$a, $b, $c, $d"
+fun <A, B, C, D> applyCurried3a(
+  a: A,
+  b: B,
+  c: C,
+  d: D,
+): String = "$a, $b, $c, $d"
 
 fun <A, B, C, D> applyCurried3b(): (A) -> (B) -> (C) -> (D) -> String = { a: A -> { b: B -> { c: C -> { d: D -> "$a, $b, $c, $d" } } } }
 
@@ -177,12 +201,17 @@ fun <A, B, C> swapCurried(f: (A) -> (B) -> C): (B) -> (A) -> C = { b -> { a -> f
 // ------------------------------
 
 // `value types` are types representing values: you can't mix types!
-data class Weight(val value: Double) {
+data class Weight(
+  val value: Double,
+) {
   operator fun plus(weight: Weight) = Weight(this.value + weight.value)
 }
 
-data class Price private constructor(private val value: Double) {
+data class Price private constructor(
+  private val value: Double,
+) {
   operator fun plus(price: Price) = Price(this.value + price.value)
+
   companion object {
     val identity = Price(0.0)
 
@@ -192,7 +221,10 @@ data class Price private constructor(private val value: Double) {
     // the private constructor of a data class isn't private because it's exposed by the generated copy function.
     // But this isn't a problem. You can only copy an object that has already been validated
     operator fun invoke(value: Double) =
-      if (value > 0) Price(value)
-      else throw IllegalArgumentException("Price must be positive or null") // Either ???
+      if (value > 0) {
+        Price(value)
+      } else {
+        throw IllegalArgumentException("Price must be positive or null") // Either ???
+      }
   }
 }

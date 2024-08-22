@@ -8,7 +8,6 @@ import org.postgresql.ds.PGSimpleDataSource
 import javax.sql.DataSource
 
 object DatabaseSetup {
-
   fun initDataSource(config: DatabaseConfig): DataSource =
     PGSimpleDataSource().apply {
       setURL(config.url)
@@ -18,8 +17,11 @@ object DatabaseSetup {
 
   // https://documentation.red-gate.com/fd/quickstart-api-184127575.html
   fun migrateDatabase(dataSource: DataSource): MigrateResult =
-    Flyway.configure().dataSource(dataSource).load().migrate()
+    Flyway
+      .configure()
+      .dataSource(dataSource)
+      .load()
+      .migrate()
 
-  fun initJdbiClient(dataSource: DataSource): Jdbi =
-    Jdbi.create(dataSource)
+  fun initJdbiClient(dataSource: DataSource): Jdbi = Jdbi.create(dataSource)
 }

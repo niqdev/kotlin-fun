@@ -19,14 +19,15 @@ aws --profile minio --endpoint-url http://localhost:9000 s3 cp --recursive ./loc
 
 */
 object aws {
-
   val localstackUrl = "http://localhost:4566"
   val minioUrl = "http://localhost:9000"
 
   val credentials = AwsBasicCredentials.create("LOCAL_ACCESS_KEY", "LOCAL_SECRET_KEY")
-  val s3Client = S3Client.builder()
-    .credentialsProvider(StaticCredentialsProvider.create(credentials))
-    .endpointOverride(java.net.URI.create(minioUrl))
-    .region(Region.US_EAST_1)
-    .build()
+  val s3Client =
+    S3Client
+      .builder()
+      .credentialsProvider(StaticCredentialsProvider.create(credentials))
+      .endpointOverride(java.net.URI.create(minioUrl))
+      .region(Region.US_EAST_1)
+      .build()
 }

@@ -16,15 +16,17 @@ private const val VERSION_HEADER = "X-My-Version"
 // HEADER https://youtrack.jetbrains.com/issue/KTOR-6481/ktor-server-header-validation
 // https://api.ktor.io/ktor-server/ktor-server-core/io.ktor.server.application/create-application-plugin.html
 // https://api.ktor.io/ktor-server/ktor-server-core/io.ktor.server.application/create-route-scoped-plugin.html
-private val myVersionPlugin = createRouteScopedPlugin("MyVersionPlugin") {
-  on(CallSetup) { call ->
-    if (!call.request.headers.contains(VERSION_HEADER)) {
-      val errorMessage = "Required header is missing"
-      call.application.environment.log.error(errorMessage)
-      return@on call.respond(HttpStatusCode.BadRequest, errorMessage)
+private val myVersionPlugin =
+  createRouteScopedPlugin("MyVersionPlugin") {
+    on(CallSetup) { call ->
+      if (!call.request.headers.contains(VERSION_HEADER)) {
+        val errorMessage = "Required header is missing"
+        call.application.environment.log
+          .error(errorMessage)
+        return@on call.respond(HttpStatusCode.BadRequest, errorMessage)
+      }
     }
   }
-}
 
 fun Route.versionRoutes() {
   route("/version") {

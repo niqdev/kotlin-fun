@@ -18,7 +18,8 @@ fun main() {
   val outputPath = Path.of("../../test.txt")
   val buffer = Files.newBufferedWriter(outputPath, StandardOpenOption.CREATE, StandardOpenOption.APPEND)
 
-  Flux.using({ Files.lines(inputPath) }, { lines -> Flux.fromStream(lines) }, { it.close() })
+  Flux
+    .using({ Files.lines(inputPath) }, { lines -> Flux.fromStream(lines) }, { it.close() })
     .map { line -> ">>> $line" }
     .subscribe(
       { stream ->
@@ -26,6 +27,6 @@ fun main() {
         buffer.newLine()
       },
       { buffer.close() },
-      { buffer.close() }
+      { buffer.close() },
     )
 }

@@ -8,7 +8,7 @@ data class Token(
   val lexeme: String,
   // TODO Value
   val literal: Any?,
-  val line: Int
+  val line: Int,
 )
 
 fun Token.pretty(): String = "type: $type | lexeme: $lexeme | literal: $literal | line: $line"
@@ -60,5 +60,5 @@ enum class TokenType {
   VAR,
   WHILE,
 
-  EOF
+  EOF,
 }

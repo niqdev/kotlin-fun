@@ -24,8 +24,7 @@ interface ListFFunctor<F> : Functor<ListFPartialOf<F>> {
 }
 
 @Suppress("NOTHING_TO_INLINE")
-inline fun <F, A> ListFOf<F, A>.fix(): ListF<F, A> =
-  this as ListF<F, A>
+inline fun <F, A> ListFOf<F, A>.fix(): ListF<F, A> = this as ListF<F, A>
 
 /**
  * Functor Pattern: project a data structure
@@ -34,7 +33,11 @@ inline fun <F, A> ListFOf<F, A>.fix(): ListF<F, A> =
  * In ListF<F, A>, A is the type of the value used to represent the tail of a list.
  */
 sealed interface ListF<out F, out A> : ListFOf<F, A> {
-  data class Cons<out F, out A>(val head: F, val tail: A) : ListF<F, A>
+  data class Cons<out F, out A>(
+    val head: F,
+    val tail: A,
+  ) : ListF<F, A>
+
   object Nil : ListF<Nothing, Nothing>
 }
 
@@ -45,8 +48,7 @@ sealed class ForFix private constructor()
 typealias FixOf<F> = Kind<ForFix, F>
 
 @Suppress("NOTHING_TO_INLINE")
-inline fun <A> FixOf<A>.fix(): FixOf<A> =
-  this as FixOf<A>
+inline fun <A> FixOf<A>.fix(): FixOf<A> = this as FixOf<A>
 
 /**
  * Fixed-point combinator represent any recursive data type.
@@ -56,7 +58,9 @@ inline fun <A> FixOf<A>.fix(): FixOf<A> =
  * - if `fix(f)` is the fixed-point of `f`, then `fix(f) = f(fix(f))`
  */
 // equivalent in scala: `case class Fix[F[_]](value: F[Fix[F]])
-data class Fix<A>(val unfix: Kind<A, FixOf<A>>) : FixOf<A>
+data class Fix<A>(
+  val unfix: Kind<A, FixOf<A>>,
+) : FixOf<A>
 
 // TODO check types: try to generate it with arrow and compare impl
 // ??? data class Fix2<F, A>(val unfix: Kind<F, Kind<Fix2<F, A>, F>>): FixOf<A>

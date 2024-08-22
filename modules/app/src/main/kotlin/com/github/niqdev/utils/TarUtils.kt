@@ -38,7 +38,10 @@ object TarUtils {
   private val log = LoggerFactory.getLogger(TarUtils::class.java)
   private val BLACKLIST_FILES = listOf("._", ".DS_Store")
 
-  fun compress(source: String, outputPrefix: String): String {
+  fun compress(
+    source: String,
+    outputPrefix: String,
+  ): String {
     val outputPath = Paths.get(source)
     val outputFile = Files.createTempFile(outputPrefix, ".tar.gz")
     log.info("Compressing outputPath=$outputPath outputFile=${outputFile.absolutePathString()}")
@@ -51,7 +54,10 @@ object TarUtils {
       Files.walkFileTree(
         outputPath,
         object : SimpleFileVisitor<Path>() {
-          override fun visitFile(file: Path, attrs: BasicFileAttributes): FileVisitResult =
+          override fun visitFile(
+            file: Path,
+            attrs: BasicFileAttributes,
+          ): FileVisitResult =
             runCatching {
               val targetFile = outputPath.relativize(file)
               log.debug("Archiving $targetFile")
@@ -60,15 +66,17 @@ object TarUtils {
               tOut.putArchiveEntry(tarEntry)
               Files.copy(file, tOut)
               tOut.closeArchiveEntry()
-            }
-              .onFailure { log.warn("Internal error archiving $file", it) }
+            }.onFailure { log.warn("Internal error archiving $file", it) }
               .run { FileVisitResult.CONTINUE }
 
-          override fun visitFileFailed(file: Path, error: IOException): FileVisitResult {
+          override fun visitFileFailed(
+            file: Path,
+            error: IOException,
+          ): FileVisitResult {
             log.error("Error archiving $file", error)
             return FileVisitResult.CONTINUE
           }
-        }
+        },
       )
       tOut.finish()
     }
@@ -76,7 +84,10 @@ object TarUtils {
     return outputFile.absolutePathString()
   }
 
-  fun decompress(archivePath: String, outputPrefix: String): String {
+  fun decompress(
+    archivePath: String,
+    outputPrefix: String,
+  ): String {
     val temporaryPath = Files.createTempDirectory(outputPrefix)
     log.info("Decompressing archivePath=$archivePath temporaryPath=${temporaryPath.absolutePathString()}")
 
@@ -109,7 +120,11 @@ object TarUtils {
     return temporaryPath.absolutePathString()
   }
 
-  fun addFileToArchive(archivePath: String, info: FileInfo, deleteTmpDir: Boolean = false): Result<String> =
+  fun addFileToArchive(
+    archivePath: String,
+    info: FileInfo,
+    deleteTmpDir: Boolean = false,
+  ): Result<String> =
     runCatching {
       val temporaryPath = decompress(archivePath, info.prefix)
 
@@ -127,4 +142,8 @@ object TarUtils {
     }
 }
 
-data class FileInfo(val name: String, val prefix: String, val data: String)
+data class FileInfo(
+  val name: String,
+  val prefix: String,
+  val data: String,
+)

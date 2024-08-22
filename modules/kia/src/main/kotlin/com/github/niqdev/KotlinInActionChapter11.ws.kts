@@ -29,11 +29,12 @@ fun buildString(builderAction: (StringBuilder) -> Unit): String {
   return sb.toString()
 }
 
-val s0 = buildString {
-  // "it" refer to StringBuilder instance
-  it.append("Hello")
-  it.append(" world!")
-}
+val s0 =
+  buildString {
+    // "it" refer to StringBuilder instance
+    it.append("Hello")
+    it.append(" world!")
+  }
 println(s0)
 
 // ------------------------------
@@ -54,10 +55,11 @@ fun buildStringWithReceiver(builderAction: StringBuilder.() -> Unit): String {
   return sb.toString()
 }
 
-val s1 = buildStringWithReceiver {
-  this.append("Hello")
-  append(" world")
-}
+val s1 =
+  buildStringWithReceiver {
+    this.append("Hello")
+    append(" world")
+  }
 println(s1)
 
 // an extension function type
@@ -89,8 +91,10 @@ inline fun <T> T.myApply(block: T.() -> Unit): T {
   return this
 }
 
-inline fun <T, R> myWith(receiver: T, block: T.() -> R): R =
-  receiver.block()
+inline fun <T, R> myWith(
+  receiver: T,
+  block: T.() -> R,
+): R = receiver.block()
 
 val map = mutableMapOf(1 to "one")
 map.myApply { this[2] = "two" }
@@ -104,29 +108,30 @@ println(map)
 // A Kotlin DSL for HTML is usually called an HTML builder, and it represents a more general concept of type-safe builders
 // Builders provide a way to create an object hierarchy in a declarative way
 
-open class Tag(val name: String) {
+open class Tag(
+  val name: String,
+) {
   private val children = mutableListOf<Tag>()
 
-  protected fun <T : Tag> doInit(child: T, init: T.() -> Unit) {
+  protected fun <T : Tag> doInit(
+    child: T,
+    init: T.() -> Unit,
+  ) {
     child.init()
     children.add(child)
   }
 
-  override fun toString(): String =
-    "<$name>${children.joinToString("")}</$name>"
+  override fun toString(): String = "<$name>${children.joinToString("")}</$name>"
 }
 
-fun table(init: TABLE.() -> Unit) =
-  TABLE().apply(init)
+fun table(init: TABLE.() -> Unit) = TABLE().apply(init)
 
 class TABLE : Tag("table") {
-  fun tr(init: TR.() -> Unit) =
-    doInit(TR(), init)
+  fun tr(init: TR.() -> Unit) = doInit(TR(), init)
 }
 
 class TR : Tag("tr") {
-  fun td(init: TD.() -> Unit) =
-    doInit(TD(), init)
+  fun td(init: TD.() -> Unit) = doInit(TD(), init)
 }
 
 class TD : Tag("td")
@@ -146,7 +151,9 @@ println(createTable())
 // the `invoke` convention allows you to call objects of custom types as functions
 // a class for which the `invoke` method with an `operator` modifier is defined can be called as a function
 
-class Greeter(val greeting: String) {
+class Greeter(
+  val greeting: String,
+) {
   operator fun invoke(name: String) {
     println("$greeting, $name")
   }
@@ -171,8 +178,7 @@ println(Greeter("Hello")("World"))
 
 class DependencyHandler {
   // defines a regular command API
-  fun compile(coordinate: String) =
-    println("Added dependency on coordinate")
+  fun compile(coordinate: String) = println("Added dependency on coordinate")
 
   // defines "invoke" to support the DSL API
   operator fun invoke(body: DependencyHandler.() -> Unit) =
@@ -204,10 +210,11 @@ interface Matcher<T> {
   fun test(value: T): Boolean
 }
 
-infix fun <T> T.should(matcher: Matcher<T>) =
-  matcher.test(this)
+infix fun <T> T.should(matcher: Matcher<T>) = matcher.test(this)
 
-class startsWith(val prefix: String) : Matcher<String> {
+class startsWith(
+  val prefix: String,
+) : Matcher<String> {
   override fun test(value: String): Boolean =
     when {
       value.startsWith(prefix) -> true
@@ -223,7 +230,9 @@ object starts
 
 infix fun String.verify(x: starts): StartWrapper = StartWrapper(this)
 
-class StartWrapper(val value: String) {
+class StartWrapper(
+  val value: String,
+) {
   infix fun with(prefix: String): Boolean =
     when {
       value.startsWith(prefix) -> true
@@ -231,7 +240,7 @@ class StartWrapper(val value: String) {
     }
 }
 
-"myString" verify starts with("my")
+"myString" verify starts with ("my")
 
 // ------------------------------
 

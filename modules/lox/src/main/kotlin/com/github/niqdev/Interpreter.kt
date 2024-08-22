@@ -1,12 +1,14 @@
 package com.github.niqdev
 
-class LoxRuntimeError(val token: Token, message: String) : RuntimeException(message)
+class LoxRuntimeError(
+  val token: Token,
+  message: String,
+) : RuntimeException(message)
 
 // >>> (7)
 
 // tree-walk interpreter
 class Interpreter {
-
   private val globals = Environment()
   private var environment = globals
 
@@ -36,10 +38,12 @@ class Interpreter {
       is Stmt.Empty -> println("TODO no statement")
     }
 
-  private fun executeBlock(statement: Stmt.Block): Unit =
-    executeBlock(statement.statements, Environment(environment))
+  private fun executeBlock(statement: Stmt.Block): Unit = executeBlock(statement.statements, Environment(environment))
 
-  fun executeBlock(statements: List<Stmt>, environment: Environment) {
+  fun executeBlock(
+    statements: List<Stmt>,
+    environment: Environment,
+  ) {
     val previous = this.environment
     try {
       // current innermost scope
@@ -56,26 +60,33 @@ class Interpreter {
     environment.define(statement.name.lexeme, LoxFunction(statement, environment))
 
   private fun executeIf(statement: Stmt.If): Any? =
-    if (isTruthy(evaluate(statement.condition))) execute(statement.thenBranch)
-    else execute(statement.elseBranch)
+    if (isTruthy(evaluate(statement.condition))) {
+      execute(statement.thenBranch)
+    } else {
+      execute(statement.elseBranch)
+    }
 
-  private fun executePrint(statement: Stmt.Print): Any? =
-    LoxCallable.nativePrintLine.call(this, listOf(evaluate(statement.expression)))
+  private fun executePrint(statement: Stmt.Print): Any? = LoxCallable.nativePrintLine.call(this, listOf(evaluate(statement.expression)))
 
   private fun executeReturn(statement: Stmt.Return): ReturnFunction {
     val value =
-      if (statement.value is Expr.Empty) Stmt.Empty
-      else evaluate(statement.value)
+      if (statement.value is Expr.Empty) {
+        Stmt.Empty
+      } else {
+        evaluate(statement.value)
+      }
 
     // ??? using exception class for control flow and not actual error handling
     // When we execute a return statement, we'll use an exception to unwind the interpreter
     // past the visit methods of all of the containing statements back to the code that began executing the body
     throw ReturnFunction(value)
   }
-  class ReturnFunction(val value: Any?) : RuntimeException(null, null, false, false)
 
-  private fun executeVar(statement: Stmt.Var): Unit =
-    environment.define(statement.name.lexeme, evaluate(statement.initializer))
+  class ReturnFunction(
+    val value: Any?,
+  ) : RuntimeException(null, null, false, false)
+
+  private fun executeVar(statement: Stmt.Var): Unit = environment.define(statement.name.lexeme, evaluate(statement.initializer))
 
   // returns unit
   private fun executeWhile(statement: Stmt.While) {
@@ -97,27 +108,28 @@ class Interpreter {
       is Expr.Empty -> println("TODO no expression")
     }
 
-  private fun evaluateAssign(expression: Expr.Assign): Any =
-    environment.assign(expression.name, evaluate(expression.value))
+  private fun evaluateAssign(expression: Expr.Assign): Any = environment.assign(expression.name, evaluate(expression.value))
 
-  private fun evaluateVariable(expression: Expr.Variable): Any? =
-    environment.get(expression.name)
+  private fun evaluateVariable(expression: Expr.Variable): Any? = environment.get(expression.name)
 
   private fun evaluateCall(expression: Expr.Call): Any? {
     val callee = evaluate(expression.callee)
 
-    val arguments = expression.arguments.fold(listOf<Any?>()) { list, argument ->
-      list + evaluate(argument)
-    }
+    val arguments =
+      expression.arguments.fold(listOf<Any?>()) { list, argument ->
+        list + evaluate(argument)
+      }
 
-    val function = when {
-      callee !is LoxCallable -> LoxRuntimeError(expression.paren, "Can only call functions and classes")
-      arguments.size != callee.arity() -> LoxRuntimeError(
-        expression.paren,
-        "Expected ${callee.arity()} arguments but got ${arguments.size}"
-      )
-      else -> callee.call(this, arguments)
-    }
+    val function =
+      when {
+        callee !is LoxCallable -> LoxRuntimeError(expression.paren, "Can only call functions and classes")
+        arguments.size != callee.arity() ->
+          LoxRuntimeError(
+            expression.paren,
+            "Expected ${callee.arity()} arguments but got ${arguments.size}",
+          )
+        else -> callee.call(this, arguments)
+      }
 
     return function
   }
@@ -178,8 +190,10 @@ class Interpreter {
     }
   }
 
-  private fun isEqual(left: Any?, right: Any?): Boolean =
-    (left == null && right == null) || left == right
+  private fun isEqual(
+    left: Any?,
+    right: Any?,
+  ): Boolean = (left == null && right == null) || left == right
 
   private fun evaluateUnary(expression: Expr.Unary): Any {
     val right = evaluate(expression.right)
@@ -206,12 +220,19 @@ class Interpreter {
       else -> true
     }
 
-  private fun checkNumberOperand(operator: Token, operand: Any?) {
+  private fun checkNumberOperand(
+    operator: Token,
+    operand: Any?,
+  ) {
     if (operand is Double) return
     throw LoxRuntimeError(operator, "Operand must be a number")
   }
 
-  private fun checkNumberOperands(operator: Token, left: Any?, right: Any?) {
+  private fun checkNumberOperands(
+    operator: Token,
+    left: Any?,
+    right: Any?,
+  ) {
     if (left is Double && right is Double) return
     throw LoxRuntimeError(operator, "Operands must be numbers")
   }

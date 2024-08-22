@@ -2,11 +2,20 @@ package com.github.niqdev
 
 interface Actor<T> {
   val context: ActorContext<T>
+
   fun self(): MyResult<Actor<T>> = MyResult(this)
 
   // messages shouldn't be sent to actors, but to actor references i.e. proxies, or some other substitute to transparently send messages to remote actors
-  fun tell(message: T, sender: MyResult<Actor<T>> = self())
-  fun tell(message: T, sender: Actor<T>) = tell(message, MyResult(sender))
+  fun tell(
+    message: T,
+    sender: MyResult<Actor<T>> = self(),
+  )
+
+  fun tell(
+    message: T,
+    sender: Actor<T>,
+  ) = tell(message, MyResult(sender))
+
   fun shutdown()
 
   companion object {
@@ -24,11 +33,15 @@ interface ActorContext<T> {
 }
 
 interface MessageProcessor<T> {
-  fun process(message: T, sender: MyResult<Actor<T>>)
+  fun process(
+    message: T,
+    sender: MyResult<Actor<T>>,
+  )
 }
 
-abstract class AbstractActor<T>(protected val id: String) : Actor<T> {
-
+abstract class AbstractActor<T>(
+  protected val id: String,
+) : Actor<T> {
   // java.util.concurrent.Executors.newSingleThreadExecutor(DaemonThreadFactory()) ???
   // - use a daemon thread factory to allow automatic shutdown when the main thread terminates
   // - creates daemon threads so that actors don't prevent the application from stopping when the main thread stops
@@ -42,12 +55,13 @@ abstract class AbstractActor<T>(protected val id: String) : Actor<T> {
   override val context: ActorContext<T> =
     // initial context
     object : ActorContext<T> {
-
       private var behavior: MessageProcessor<T> =
         object : MessageProcessor<T> {
           // delegates default behaviour to `onReceive`
-          override fun process(message: T, sender: MyResult<Actor<T>>) =
-            onReceive(message, sender)
+          override fun process(
+            message: T,
+            sender: MyResult<Actor<T>>,
+          ) = onReceive(message, sender)
         }
 
       override fun behavior(): MessageProcessor<T> = behavior
@@ -60,22 +74,27 @@ abstract class AbstractActor<T>(protected val id: String) : Actor<T> {
     }
 
   // implements business logics
-  abstract fun onReceive(message: T, sender: MyResult<Actor<T>>)
+  abstract fun onReceive(
+    message: T,
+    sender: MyResult<Actor<T>>,
+  )
 
   // process one message at the time
   @Synchronized
-  override fun tell(message: T, sender: MyResult<Actor<T>>) =
-    executor.execute {
-      try {
-        // when a message is received, it's processed by the current behavior returned by the actor context
-        context.behavior().process(message, sender)
-      } catch (e: java.util.concurrent.RejectedExecutionException) {
-        // this is probably normal and means all pending tasks were canceled because the actor was stopped
-      } catch (e: Exception) {
-        // TODO Either ???
-        throw java.lang.RuntimeException(e)
-      }
+  override fun tell(
+    message: T,
+    sender: MyResult<Actor<T>>,
+  ) = executor.execute {
+    try {
+      // when a message is received, it's processed by the current behavior returned by the actor context
+      context.behavior().process(message, sender)
+    } catch (e: java.util.concurrent.RejectedExecutionException) {
+      // this is probably normal and means all pending tasks were canceled because the actor was stopped
+    } catch (e: Exception) {
+      // TODO Either ???
+      throw java.lang.RuntimeException(e)
     }
+  }
 
   override fun shutdown() {
     executor.shutdown()
@@ -84,8 +103,14 @@ abstract class AbstractActor<T>(protected val id: String) : Actor<T> {
 
 // ------------------------------
 
-private class Player(id: String, private val referee: Actor<Int>) : AbstractActor<Int>(id) {
-  override fun onReceive(message: Int, sender: MyResult<Actor<Int>>) {
+private class Player(
+  id: String,
+  private val referee: Actor<Int>,
+) : AbstractActor<Int>(id) {
+  override fun onReceive(
+    message: Int,
+    sender: MyResult<Actor<Int>>,
+  ) {
     println("[$id] message: $message")
     if (message >= 10) {
       // game is over
@@ -108,13 +133,17 @@ object PingPong {
     val semaphore = java.util.concurrent.Semaphore(1)
 
     // translates to `arbitro`
-    val referee = object : AbstractActor<Int>("Referee") {
-      override fun onReceive(message: Int, sender: MyResult<Actor<Int>>) {
-        println("Game ended after $message shots")
-        // allows the main thread to resume
-        semaphore.release()
+    val referee =
+      object : AbstractActor<Int>("Referee") {
+        override fun onReceive(
+          message: Int,
+          sender: MyResult<Actor<Int>>,
+        ) {
+          println("Game ended after $message shots")
+          // allows the main thread to resume
+          semaphore.release()
+        }
       }
-    }
 
     val playerPing = Player("PING", referee)
     val playerPong = Player("PONG", referee)

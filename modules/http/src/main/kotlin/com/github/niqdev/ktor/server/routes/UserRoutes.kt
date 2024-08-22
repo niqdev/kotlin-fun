@@ -11,12 +11,19 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 
-data class UserRequest(val name: String, val age: Int)
-data class UserResponse(val userId: UserId)
+data class UserRequest(
+  val name: String,
+  val age: Int,
+)
+
+data class UserResponse(
+  val userId: UserId,
+)
 
 // TODO use instead of RESULT throwable
 sealed interface UserResponseError {
   data object InvalidRequest
+
   data object InternalError
 }
 
@@ -27,11 +34,11 @@ fun Route.userRoutes(userService: UserService) {
     }
     get("/{id}") {
       val idParameter = call.parameters["id"].orEmpty()
-      UserId.fromString(idParameter)
+      UserId
+        .fromString(idParameter)
         .onSuccess {
           userService.fetch(it).fold({ user -> call.respond(user) }, onHttpFailure("Failed to fetch user"))
-        }
-        .onFailure(onHttpFailure("Invalid id format", HttpStatusCode.BadRequest))
+        }.onFailure(onHttpFailure("Invalid id format", HttpStatusCode.BadRequest))
     }
     post {
       val userRequest = call.receive<UserRequest>()

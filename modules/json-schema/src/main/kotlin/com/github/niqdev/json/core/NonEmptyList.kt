@@ -2,18 +2,17 @@ package com.github.niqdev.json.core
 
 class NonEmptyList<out A> internal constructor(
   private val head: A,
-  private val tail: List<A>
+  private val tail: List<A>,
 ) {
-  override fun toString(): String =
-    "NonEmptyList(${listOf(head) + tail})"
+  override fun toString(): String = "NonEmptyList(${listOf(head) + tail})"
 
-  fun toList(): List<A> =
-    listOf(head) + tail
+  fun toList(): List<A> = listOf(head) + tail
 
   companion object {
-
-    fun <A> of(item: A, vararg items: A): NonEmptyList<A> =
-      NonEmptyList(item, listOf(*items))
+    fun <A> of(
+      item: A,
+      vararg items: A,
+    ): NonEmptyList<A> = NonEmptyList(item, listOf(*items))
   }
 }
 

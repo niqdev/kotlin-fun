@@ -18,17 +18,26 @@ import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
 interface FileService {
-  suspend fun uploadMultipartFile(multipart: MultiPartData, outputPath: String): Result<String>
-  suspend fun downloadArchive(inputPath: String, suffix: String): Result<ByteArrayOutputStream>
+  suspend fun uploadMultipartFile(
+    multipart: MultiPartData,
+    outputPath: String,
+  ): Result<String>
+
+  suspend fun downloadArchive(
+    inputPath: String,
+    suffix: String,
+  ): Result<ByteArrayOutputStream>
 }
 
 class FileServiceImpl : FileService {
-
   private companion object {
     val log = KotlinLogging.logger { }
   }
 
-  override suspend fun uploadMultipartFile(multipart: MultiPartData, outputPath: String): Result<String> =
+  override suspend fun uploadMultipartFile(
+    multipart: MultiPartData,
+    outputPath: String,
+  ): Result<String> =
     runCatching {
       // makes sure output path exists
       Files.createDirectories(Paths.get(outputPath))
@@ -62,17 +71,21 @@ class FileServiceImpl : FileService {
     }
 
   // https://github.com/ktorio/ktor-samples/blob/main/reverse-proxy/src/main/kotlin/io/ktor/samples/reverseproxy/ReverseProxyApplication.kt
-  override suspend fun downloadArchive(inputPath: String, suffix: String): Result<ByteArrayOutputStream> =
+  override suspend fun downloadArchive(
+    inputPath: String,
+    suffix: String,
+  ): Result<ByteArrayOutputStream> =
     runCatching {
-      File(inputPath).listFiles().orEmpty()
+      File(inputPath)
+        .listFiles()
+        .orEmpty()
         .filter { it.isFile && it.name.endsWith(suffix) }
         .asFlow()
         .map { file ->
           val filePath = "$inputPath/${file.name}"
           log.debug { "archiving $filePath" }
           filePath to file.name
-        }
-        .let { zipOutputStream(it) }
+        }.let { zipOutputStream(it) }
     }.onFailure {
       log.error { "error downloadArchive $it" }
     }

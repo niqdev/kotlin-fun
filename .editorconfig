@@ -1,3 +1,8 @@
 [*.{kt,kts}]
-indent_size=2
-disabled_rules = no-wildcard-imports
+indent_size = 2
+ij_kotlin_packages_to_use_import_on_demand = disabled
+
+# https://pinterest.github.io/ktlint/latest/rules/standard
+ktlint_standard_filename = disabled
+ktlint_standard_no-consecutive-comments = disabled
+ktlint_standard_class-naming = disabled

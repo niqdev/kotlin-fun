@@ -22,58 +22,62 @@ import io.kotest.matchers.shouldBe
 // https://github.com/uberto/kondor-json
 // https://github.com/uberto/kotlin-pearls/blob/master/src/main/kotlin/com/ubertob/adjunction/Profunctor.kt
 
-class QuerySpec : WordSpec({
+class QuerySpec :
+  WordSpec({
 
-  "Query" should {
+    "Query" should {
 
-    "parse query" {
-      val expected = FilterPredicate.In(
-        FilterPredicate.Filter(name = "foo", value = "3"),
-        FilterPredicate.Filter(name = "bar", value = "42")
-      )
-      val result = FilterParser.query("foo=3&bar=42")
-      result.isSuccess() shouldBe true
-      result.getOrNull() shouldBe expected
-    }
+      "parse query" {
+        val expected =
+          FilterPredicate.In(
+            FilterPredicate.Filter(name = "foo", value = "3"),
+            FilterPredicate.Filter(name = "bar", value = "42"),
+          )
+        val result = FilterParser.query("foo=3&bar=42")
+        result.isSuccess() shouldBe true
+        result.getOrNull() shouldBe expected
+      }
 
-    "parse json filter" {
-      val expected = FilterPredicate.Filter(name = "foo", value = "3")
-      val value = """{"name":"foo","value":"3"}"""
-      val result = FilterParser.json(value)
-      result.isSuccess() shouldBe true
-      result.getOrNull() shouldBe expected
-    }
+      "parse json filter" {
+        val expected = FilterPredicate.Filter(name = "foo", value = "3")
+        val value = """{"name":"foo","value":"3"}"""
+        val result = FilterParser.json(value)
+        result.isSuccess() shouldBe true
+        result.getOrNull() shouldBe expected
+      }
 
-    "parse json filters" {
-      val expected = FilterPredicate.In(
-        FilterPredicate.Filter(name = "foo", value = "3"),
-        FilterPredicate.Filter(name = "bar", value = "42")
-      )
-      // TODO ideally "[{"name":"foo","value":"3"},{"name":"bar","value":"42"}]"
-      val value = """{"filters":[{"name":"foo","value":"3"},{"name":"bar","value":"42"}]}"""
-      val result = FilterParser.json(value)
-      result.isSuccess() shouldBe true
-      result.getOrNull() shouldBe expected
-    }
+      "parse json filters" {
+        val expected =
+          FilterPredicate.In(
+            FilterPredicate.Filter(name = "foo", value = "3"),
+            FilterPredicate.Filter(name = "bar", value = "42"),
+          )
+        // TODO ideally "[{"name":"foo","value":"3"},{"name":"bar","value":"42"}]"
+        val value = """{"filters":[{"name":"foo","value":"3"},{"name":"bar","value":"42"}]}"""
+        val result = FilterParser.json(value)
+        result.isSuccess() shouldBe true
+        result.getOrNull() shouldBe expected
+      }
 
-    "simple" {
-      // https://dundalek.com/rql
-      val rql = "and(eq(foo,3),eq(foo,bar))"
-      val json = """
-        {
-          "query": {
-            "and": [
-              { "name": "color", "operator": "eq", "value": "red" },
-              { "name": "size", "operator": "gt", "value": "42" },
-              "or": [
-                { "name": "brand", "operator": "neq", "value": "nike" }
+      "simple" {
+        // https://dundalek.com/rql
+        val rql = "and(eq(foo,3),eq(foo,bar))"
+        val json =
+          """
+          {
+            "query": {
+              "and": [
+                { "name": "color", "operator": "eq", "value": "red" },
+                { "name": "size", "operator": "gt", "value": "42" },
+                "or": [
+                  { "name": "brand", "operator": "neq", "value": "nike" }
+                ]
               ]
-            ]
+            }
           }
-        }
-      """.trimIndent()
-      // json shouldBe "(color == red && size > 42) || brand != nike"
-      "foo" shouldBe "foo"
+          """.trimIndent()
+        // json shouldBe "(color == red && size > 42) || brand != nike"
+        "foo" shouldBe "foo"
+      }
     }
-  }
-})
+  })

@@ -10,27 +10,29 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class VersionRoutesTest {
+  @Test
+  fun testVersionWithoutHeader() =
+    testApplication {
+      application {
+        routing { versionRoutes() }
+      }
+
+      val response = client.get("/version")
+      assertEquals(HttpStatusCode.BadRequest, response.status)
+      assertEquals("Required header is missing", response.bodyAsText())
+    }
 
   @Test
-  fun testVersionWithoutHeader() = testApplication {
-    application {
-      routing { versionRoutes() }
-    }
+  fun testVersion() =
+    testApplication {
+      application {
+        routing { versionRoutes() }
+      }
 
-    val response = client.get("/version")
-    assertEquals(HttpStatusCode.BadRequest, response.status)
-    assertEquals("Required header is missing", response.bodyAsText())
-  }
-
-  @Test
-  fun testVersion() = testApplication {
-    application {
-      routing { versionRoutes() }
+      val response =
+        client.get("/version") {
+          header("X-My-Version", "foo")
+        }
+      assertEquals("foo", response.bodyAsText())
     }
-
-    val response = client.get("/version") {
-      header("X-My-Version", "foo")
-    }
-    assertEquals("foo", response.bodyAsText())
-  }
 }

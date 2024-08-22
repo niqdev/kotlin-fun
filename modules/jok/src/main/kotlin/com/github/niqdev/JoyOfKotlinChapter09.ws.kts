@@ -21,7 +21,10 @@ val myLazyValue: Boolean by Delegate()
 // the Delegate class, which can have any name you choose, doesn't need to implement any interface,
 // it must declare and implement the `getValue` function, which will be called through reflection
 class Delegate {
-  operator fun getValue(thisRef: Any?, property: kotlin.reflect.KProperty<*>): Boolean = TODO()
+  operator fun getValue(
+    thisRef: Any?,
+    property: kotlin.reflect.KProperty<*>,
+  ): Boolean = TODO()
 
   // if you were declaring a `var` instead of a `val`, the Delegate class should also implement the corresponding function to set the value
   // operator fun setValue(thisRef: Any?, property: kotlin.reflect.KProperty<*>, value: Boolean) = TODO()
@@ -33,7 +36,10 @@ val second: Boolean by lazy { throw IllegalStateException() }
 
 println("lazy evaluation: ${first || second}")
 
-fun orStrict(a: Boolean, b: Boolean): Boolean = if (a) true else b
+fun orStrict(
+  a: Boolean,
+  b: Boolean,
+): Boolean = if (a) true else b
 
 // if you pass it as argument it will still be invoked... not really lazy!
 // orStrict(first, second)
@@ -44,7 +50,10 @@ fun orStrict(a: Boolean, b: Boolean): Boolean = if (a) true else b
 val x: () -> Int = { 42 }
 x()
 
-fun orLazy(a: () -> Boolean, b: () -> Boolean): Boolean = if (a()) true else b()
+fun orLazy(
+  a: () -> Boolean,
+  b: () -> Boolean,
+): Boolean = if (a()) true else b()
 
 // - exception is not thrown
 // - if you use the value twice, the function is called twice
@@ -57,20 +66,36 @@ orLazy({ first }, { second })
 val myFirst = MyLazy { true }
 val mySecond = MyLazy { throw IllegalStateException() }
 
-fun orMyLazy(a: MyLazy<Boolean>, b: MyLazy<Boolean>): Boolean = if (a()) true else b()
+fun orMyLazy(
+  a: MyLazy<Boolean>,
+  b: MyLazy<Boolean>,
+): Boolean = if (a()) true else b()
 
 orMyLazy(myFirst, mySecond)
 
 // ---------- 9.2 ----------
 // ---------- 9.3 ----------
 
-fun MyLazy<String>.concat(): (MyLazy<String>) -> MyLazy<String> =
-  { value -> MyLazy { "${this.invoke()} | ${value()}" } }
+fun MyLazy<String>.concat(): (MyLazy<String>) -> MyLazy<String> = { value -> MyLazy { "${this.invoke()} | ${value()}" } }
 
 // hello is evaluated only once
-val hello = MyLazy { println("load hello"); "hello" }
-hello.concat()(MyLazy { println("load world"); "world" }).invoke()
-hello.concat()(MyLazy { println("load world"); "world" }).invoke()
+val hello =
+  MyLazy {
+    println("load hello")
+    "hello"
+  }
+hello.concat()(
+  MyLazy {
+    println("load world")
+    "world"
+  },
+).invoke()
+hello.concat()(
+  MyLazy {
+    println("load world")
+    "world"
+  },
+).invoke()
 
 // ------------------------------
 
