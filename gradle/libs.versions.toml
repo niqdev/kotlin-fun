@@ -83,7 +83,7 @@ ktor-client-content = { module = "io.ktor:ktor-client-content-negotiation" }
 ktor-jackson = { module = "io.ktor:ktor-serialization-jackson" }
 
 # database
-jdbi-bom = { module = "org.jdbi:jdbi3-bom", version = "3.45.1" }
+jdbi-bom = { module = "org.jdbi:jdbi3-bom", version = "3.45.4" }
 jdbi-core = { module = "org.jdbi:jdbi3-core" }
 jdbi-postgres = { module = "org.jdbi:jdbi3-postgres" }
 flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
