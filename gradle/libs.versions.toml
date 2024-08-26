@@ -88,7 +88,7 @@ jdbi-core = { module = "org.jdbi:jdbi3-core" }
 jdbi-postgres = { module = "org.jdbi:jdbi3-postgres" }
 flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 flyway-postgres = { module = "org.flywaydb:flyway-database-postgresql", version.ref = "flyway" }
-driver-postgres = { module = "org.postgresql:postgresql", version = "42.7.3" }
+driver-postgres = { module = "org.postgresql:postgresql", version = "42.7.4" }
 
 # confluent
 kafka-schema-provider = { module = "io.confluent:kafka-json-schema-provider", version.ref = "confluent" }
