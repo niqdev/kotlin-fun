@@ -106,7 +106,7 @@ junit-core = { module = "org.junit.jupiter:junit-jupiter" }
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api" }
 mockk = { module = "io.mockk:mockk", version = "1.13.12" }
 
-testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version = "1.20.1" }
+testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version = "1.20.2" }
 testcontainers-core = { module = "org.testcontainers:testcontainers" }
 testcontainers-junit = { module = "org.testcontainers:junit-jupiter" }
 testcontainers-postgres = { module = "org.testcontainers:postgresql" }
