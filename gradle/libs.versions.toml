@@ -101,7 +101,7 @@ kotest-assertions-json = { module = "io.kotest:kotest-assertions-json", version.
 kotest-property = { module = "io.kotest:kotest-property", version.ref = "kotest" }
 kotest-kafka = { module = "io.kotest.extensions:kotest-extensions-embedded-kafka", version = "2.0.0" }
 
-junit-bom = { module = "org.junit:junit-bom", version = "5.11.0" }
+junit-bom = { module = "org.junit:junit-bom", version = "5.11.1" }
 junit-core = { module = "org.junit.jupiter:junit-jupiter" }
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api" }
 mockk = { module = "io.mockk:mockk", version = "1.13.12" }
