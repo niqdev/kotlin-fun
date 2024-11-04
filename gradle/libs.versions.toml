@@ -36,7 +36,7 @@ zjsonpatch = { module = "com.flipkart.zjsonpatch:zjsonpatch", version = "0.4.16"
 everit-json-schema = { module = "com.github.erosb:everit-json-schema", version = "1.14.4" }
 json-kotlin-schema = { module = "net.pwall.json:json-kotlin-schema", version = "0.50" }
 
-jackson-bom = { module = "com.fasterxml.jackson:jackson-bom", version = "2.18.0" }
+jackson-bom = { module = "com.fasterxml.jackson:jackson-bom", version = "2.18.1" }
 jackson-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin" }
 jackson-jsr310 = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310" }
 
