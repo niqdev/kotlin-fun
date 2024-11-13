@@ -48,7 +48,7 @@ jwt = { module = "com.auth0:java-jwt", version = "4.4.0" }
 apache-compress = { module = "org.apache.commons:commons-compress", version = "1.27.1" }
 
 # reactor
-reactor-core = { module = "io.projectreactor:reactor-core", version = "3.6.11" }
+reactor-core = { module = "io.projectreactor:reactor-core", version = "3.7.0" }
 reactor-kotlin = { module = "io.projectreactor.kotlin:reactor-kotlin-extensions", version = "1.2.3" }
 
 # arrow
