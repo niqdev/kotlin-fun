@@ -56,7 +56,7 @@ arrow-stack = { module = "io.arrow-kt:arrow-stack", version = "1.2.4" }
 arrow-core = { module = "io.arrow-kt:arrow-core" }
 
 # aws
-aws-v2-bom = { module = "software.amazon.awssdk:bom", version = "2.29.12" }
+aws-v2-bom = { module = "software.amazon.awssdk:bom", version = "2.29.13" }
 aws-v2-lambda = { module = "software.amazon.awssdk:lambda" }
 aws-v2-s3 = { module = "software.amazon.awssdk:s3" }
 aws-v2-sqs = { module = "software.amazon.awssdk:sqs" }
