@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+
+  dev:
+    container_name: local-serverless-sqs-dev
+    build:
+      context: .
+    # docker run -i
+    stdin_open: true
+    # docker run -t
+    tty: true
+    networks:
+      - localstack
+    volumes:
+      - "./data:/usr/src/app/data"
+      - "./aws:/root/.aws"
+
+  localstack:
+    container_name: local-serverless-sqs-localstack
+    image: localstack/localstack:1.1.0
+    ports:
+      - "4566:4566"
+      - "4510-4559:4510-4559"
+    networks:
+      - localstack
+    # https://docs.localstack.cloud/localstack/configuration
+    environment:
+      - DEBUG=1
+      - PERSISTENCE=1
+      - LAMBDA_REMOTE_DOCKER=false
+      - LAMBDA_EXECUTOR=docker
+      - DOCKER_SOCK=unix:///var/run/docker.sock
+      # custom
+      - BUCKET_NAME=my-bucket
+      - QUEUE_NAME=MyQueue
+    volumes:
+      - ".localstack:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      # run custom scripts: requires credentials
+      - "./aws:/root/.aws"
+      - './entrypoint:/docker-entrypoint-initaws.d'
+
+networks:
+  localstack:
