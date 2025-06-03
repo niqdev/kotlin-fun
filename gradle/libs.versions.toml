@@ -22,7 +22,7 @@ logback-classic = { module = "ch.qos.logback:logback-classic", version = "1.5.18
 log4j-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j" }
 log4j-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j" }
 log4j-slf4j = { module = "org.apache.logging.log4j:log4j-slf4j-impl", version.ref = "log4j" }
-kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version = "7.0.3" }
+kotlin-logging = { module = "io.github.oshai:kotlin-logging-jvm", version = "7.0.7" }
 
 # config
 hoplite-core = { module = "com.sksamuel.hoplite:hoplite-core", version.ref = "hoplite" }
