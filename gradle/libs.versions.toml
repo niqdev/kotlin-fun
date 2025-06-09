@@ -52,7 +52,7 @@ reactor-core = { module = "io.projectreactor:reactor-core", version = "3.7.0" }
 reactor-kotlin = { module = "io.projectreactor.kotlin:reactor-kotlin-extensions", version = "1.2.3" }
 
 # arrow
-arrow-stack = { module = "io.arrow-kt:arrow-stack", version = "1.2.4" }
+arrow-stack = { module = "io.arrow-kt:arrow-stack", version = "2.1.2" }
 arrow-core = { module = "io.arrow-kt:arrow-core" }
 
 # aws
