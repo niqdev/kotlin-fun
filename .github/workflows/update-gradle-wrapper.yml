@@ -12,7 +12,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       # required for buildSrc only, fixes "Could not resolve project :buildSrc"
       # last failing workflow https://github.com/niqdev/kotlin-fun/actions/runs/7717490036
