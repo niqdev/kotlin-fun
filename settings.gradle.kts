@@ -5,6 +5,7 @@ include(
   "modules:aws-kotlin",
   "modules:aws-local",
   "modules:aws-serverless",
+  "modules:aws-serverless-sqs",
   "modules:bool",
   "modules:fpk",
   "modules:http",
